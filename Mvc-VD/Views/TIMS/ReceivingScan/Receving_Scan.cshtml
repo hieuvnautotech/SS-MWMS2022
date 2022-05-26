@@ -1,0 +1,186 @@
+﻿@{
+    ViewBag.Title = "Receving_Scan";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="@Html.Raw(ViewData["TIMS"])" data-level_2="@Html.Raw(ViewData["Receiving Management"])" data-level_3="@Html.Raw(ViewData["Receiving Scan"])"></div>
+}
+
+
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-1 text-right">
+                <label>PO No</label>
+            </div>
+            <div class="col-md-1">
+                <input type="text" name="po_no" id="s_po_no" class="input-text form-control">
+            </div>
+            <div class="col-md-1 text-right">
+                <label>Product</label>
+            </div>
+            <div class="col-md-1">
+                <input type="text" name="product" id="s_product" class="input-text form-control">
+            </div>
+            <div class="col-md-1 text-right">
+                <label>Container</label>
+            </div>
+            <div class="col-md-1">
+                <input type="text" name="bb_no" id="s_bb_no" class="input-text form-control">
+            </div>
+            <div class="col-md-1 text-right">
+                <label>Mapping Date</label>
+            </div>
+            <div class="col-md-1">
+                <input type="text" name="input_dt" id="s_input_dt" class="input-text form-control">
+            </div>
+            <div class="col-md-1 p-1 d-flex">
+                <button id="searchBtn" class="btn btn-sm btn-success button-srh ml-5"><i class="fa fa-save">&nbsp;Search</i></button>
+            </div>
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid" style="display:none;">
+    <div class="box-body my-2 bg-white">
+        <div class="p-0 m-0">
+            <table id="list"></table>
+            <div id="listPager"></div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+
+    <div class="row box-body my-2">
+        <div class="col-md-4 py-1">
+            <label>Container</label>
+            <input type="text" name='bb_no' id='bb_no' class="input-text form-control" placeholder="Container" required>
+            @*<button type="button" id="Clear_all" class="btn btn-danger button-sm"><i class="fa fa-trash">&nbsp;Clear All</i></button>*@
+        </div>
+        <div class="col-md-6 py-1">
+
+            @*<button type="button" id="Save_completed" class="btn btn-success button-sm"><i class="fa fa-save">&nbsp;Scan Completed</i></button>*@
+            @*<button type="button" id="Select_completed" class="btn btn-success button-sm"><i class="fa fa-check">&nbsp;Receiving (M)</i></button>*@
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="">
+            <table id="list1"></table>
+            <div id="listPager1"></div>
+        </div>
+    </div>
+</div>
+<div class="popup-dialog RD_Info_Popup" title="RD Infomation">
+    <div id="PartialView_RD_Info_Popup"></div>
+</div>
+@*-------------------------------------------------------------List ML NO-------------------------------------------------------------*@
+
+<div class="popup-dialog List_ML_NO_Info_Popup" title="Receving (M)">
+    <div id="PartialView_List_ML_NO_Info_Popup"></div>
+</div>
+@*-------------------------------------------------------------List ML NO-------------------------------------------------------------*@
+
+<div class="popup-dialog List_ML_NO_Info_Popup" title="Receving (M)">
+    <div id="PartialView_List_ML_NO_Info_Popup"></div>
+</div>
+
+
+<div class="container-fluid p-0 m-0">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-left">
+            <div class="row p-0 m-0">
+                <div class="col-md-2 py-1">
+                    <label>Product</label>
+                    <div class="input-group mt_plus">
+                        <input type="text" name="productCode" id="productCode" class="input-text form-control" placeholder="Product">
+                        <span class="input-group-addon psbom"><a href="#" class="poupdialogStyle"><i class="fa fa-search text-navy"></i></a></span>
+                    </div>
+                </div>
+                <div class="col-md-2 p-2">
+                    <label><b>Date</b></label>
+                    <div class="input-group mt_plus">
+                        <input type="text" name="input_dt" id="SeachDate" class="input-text form-control">
+                    </div>
+                </div>
+                <div class="col-md-2 p-2">
+                    <label><b>Ca Làm việc</b></label>
+                    <div class="input-group mt_plus">
+                        <select id="seachShift" class="form-control">
+                            <option value="">Ca Làm việc</option>
+                            <option value="Ca ngày">Ca ngày</option>
+                            <option value="Ca Đêm">Ca đêm</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-2 mt-5">
+                    <button type="button" class="btn btn-sm btn-warning button-srh" id="searchBtnPP" style="float: right;margin-right: 14px;">Seach</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class=" p-0 m-0">
+            <table id="tableDatetimeProcess"></table>
+            <div id="tableDatetimeProcessPage"></div>
+        </div>
+    </div>
+</div>
+<!--Dialog Product-->
+<div class="dialog_PRODUCT" title="Product Information">
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body well text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="style_no_popup" placeholder="Product Code" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="style_nm_popup" placeholder="Product Name" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="md_cd" id="md_cd_popup" placeholder="Model Code" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2 d-flex">
+                    <button id="searchBtn_product_popup" class="btn btn-sm mr-5 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button type="button" class="btn btn-sm btn-success button-srh disabled" id="savestyle_product"><i class="fa fa-save">&nbsp;Selected</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid  p-0 m-0">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0 boxProduct">
+                <table id="popupProduct"></table>
+                <div id="pagerProduct"></div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+
+    <script src="~/Scripts/DevManagement/BomMgt/Product_Poup.js"></script>
+    <script src="~/Scripts/TIMS/RecevingScan/RecevingScan.js"></script>
+
+    <script>
+        $(function () {
+
+            var tab = $('.nav-tabs-custom .nav.nav-tabs li a');
+            $(tab).click(function (e) {
+
+                var ul = $(e.target).closest('ul');
+                $(ul).find('li').removeClass('active');
+                $(e.target).closest('li').addClass('active');
+
+            });
+        });
+    </script>
+}

@@ -1,0 +1,363 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Print.cshtml";
+}
+
+
+
+<div class="actual">
+    <input type="hidden" name="name" value="@ViewBag.open_wmtid_popup_window__wmtid" id="pp_wmtid"/>
+    <div id="tagetcode"></div>
+    <div id="all_in1">
+        <div class="container-fluid">
+            <div class="row p-0 m-0">
+                <div class="col-md-3 all_cg">
+                    <img src="/Content/themes/Logo-suplier_in.jpg" style="width: 100%" />
+                </div>
+                <div class="col-md-7 pt-4 text-center">
+                    <h1 style="margin: 0; font-size: 35px;">Material Lot Infomation</h1>
+                    <h2 style="font-size: 20px;" id="title_actual"></h2>
+                </div>
+
+                <div class="col-md-2 p-2" style="border-top: 1px solid; border-bottom: 1px solid">
+                    <div class="row">
+                        <div class="col-md-6 pt-2 text-center">
+                            <p style="height: 65px;text-align: left;">Document Code</p>
+                            @*<p>Serial</p>*@
+                            <p style="margin:29px 0 0;text-align: left;"">Date</p>
+                        </div>
+                        <div class="col-md-6 pt-2 text-left">
+                            <div id="barcode_actual"></div>
+                            @*<div id="Serial"></div>*@
+                            <div id="datetimeactual" style="text-align: center; margin-top: 10px;">
+                                <script>
+                                    function formatDate() {
+                                        var d = new Date(),
+                                            month = '' + (d.getMonth() + 1),
+                                            day = '' + d.getDate(),
+                                            year = d.getFullYear(),
+                                            Hours = d.getHours(),
+                                            Minutes = d.getMinutes(); 
+
+                                        if (month.length < 2) { month = '0' + month; }
+                                        if (day.length < 2) { day = '0' + day; }
+                                        if (Hours < 10) { Hours = '0' + Hours; }
+                                        if (Minutes < 10) Minutes = '0' + Minutes;
+                                        time = Hours + ":" + Minutes;
+                                        var full = year + "-" + month + "-" + day + " " + time;
+                                        $("#datetimeactual").html(full);
+                                    }
+                                    formatDate()
+                                    setInterval(formatDate, 500);
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid py-4">
+            <h4>Standard</h4>
+            <table id="popup_actual" class="table table-hover table-bordered table-striped" style="width: 100%">
+                <thead>
+                    <tr class="table-warning">
+                        <th style="text-align: center !important">MT ML </th>
+                        <th style="text-align: center !important">MT NO </th>
+                        <th style="text-align: center !important">Mt Name </th>
+                        <th style="text-align: center !important">Group Qty </th>
+                        <th style="text-align: center !important">Process </th>
+                        <th style="text-align: center !important">Status </th>
+                        <th style="text-align: center !important">Location </th>
+                        <th style="text-align: center !important">Location Status</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+
+        <div class="container-fluid py-4">
+            <h4>Use Material</h4>
+            <table id="popup_use_material" class="table table-hover table-bordered table-striped" style="width: 100%">
+                <thead>
+                    <tr class="table-warning">
+                        <th style="text-align: center !important">Process </th>
+                        <th style="text-align: center !important">MT ML </th>
+                        <th style="text-align: center !important">MT NO </th>
+                        <th style="text-align: center !important">Mt Name </th>
+                        <th style="text-align: center !important">Group Qty </th>
+                        <th style="text-align: center !important">Use Date </th>
+                        <th style="text-align: center !important">Bobin</th>
+                        <th style="text-align: center !important">Status </th>
+                        <th style="text-align: center !important">Location </th>
+                        <th style="text-align: center !important">Location Status</th>
+
+                    </tr>
+                </thead>
+            </table>
+        </div>
+
+        <div class="container-fluid py-4">
+            <h4>Work Staff</h4>
+            <table id="popup_work_staff" class="table table-hover table-bordered table-striped" style="width: 100%">
+                <thead>
+                    <tr class="table-warning">
+                        <th style="text-align: center !important">Process</th>
+                        <th style="text-align: center !important">Staff Type</th>
+                        <th style="text-align: center !important">Staff Id </th>
+                        <th style="text-align: center !important">Staff Name </th>
+                        <th style="text-align: center !important">Work Date </th>
+
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="container-fluid py-4">
+            <h4>Use Machin</h4>
+            <table id="popup_use_machin" class="table table-hover table-bordered table-striped" style="width: 100%">
+                <thead>
+                    <tr class="table-warning">
+                        <th style="text-align: center !important">Process </th>
+                        <th style="text-align: center !important">MC Type </th>
+                        <th style="text-align: center !important">MC NO </th>
+                        <th style="text-align: center !important">Use Date </th>
+
+
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+@*end_actual_pp*@
+
+@*---------------------------------------------------------------------------------------------------------------------------*@
+
+<script src="/Content/grcodejs/qrcode.js"></script>
+<script>
+    $(function () {
+
+        var mt_cd = "@ViewBag.open_md_cd_popup_window__md_cd"
+        $("#title_actual").html(mt_cd);
+        var id = $('#pp_wmtid').val();
+      
+        var html = '<div id="code_' + id + '" class="all_cg"></div>';
+     
+        $("#barcode_actual").html(html);
+        var code = new QRCode(document.getElementById("code_" + id + ""), {
+            width: 80,
+            height: 80,
+        });
+        code.makeCode(mt_cd);
+
+        //-------------------
+        $('#popup_actual').DataTable({
+            "ajax": {
+                "url": '/wipwms/Get_data_Standard?id=' + id,
+                "type": "Post",
+                "datatype": "json",
+
+            },
+            "searching": false,
+            "paging": false,
+            "bInfo": false,
+            "columns": [
+                { "data": "ml_no" },
+                { "data": "mt_no" },
+                { "data": "mt_nm" },
+                { "data": "gr_qty", render: $.fn.dataTable.render.number(',', '.', 0, '') },
+                { "data": "process" },
+                { "data": "mt_sts_cd" },
+                { "data": "lct_nm" },
+                { "data": "lct_sts_cd" },
+
+            ],
+            //'rowsGroup': [0, 1, 2, 3],
+            'columnDefs': [
+                {
+                    "targets": 0, // your case first column
+                    "className": "text-left",
+                    "width": "35%"
+                },
+                 {
+                     "targets": 1, // your case first column
+                     "className": "text-left",
+                     "width": "10%"
+                 },
+                  {
+                      "targets": 2, // your case first column
+                      "className": "text-left",
+                      "width": "10%"
+                  },
+                   {
+                       "targets": 3, // your case first column
+                       "className": "text-right",
+                       "width": "10%"
+                   },
+                    {
+                        "targets": 4, // your case first column
+                        "className": "text-center",
+                        "width": "10%"
+                    },
+                     {
+                         "targets": 5, // your case first column
+                         "className": "text-left",
+                         "width": "10%"
+                     },
+                      {
+                          "targets": 6, // your case first column
+                          "className": "text-left",
+                          "width": "10%"
+                      },
+
+            ],
+            "bDestroy": true,
+        });//bảng 1
+
+        $('#popup_use_material').DataTable({
+            "ajax": {
+                "url": '/wipwms/Get_data_use_material?id=' + id,
+                "type": "Post",
+                "datatype": "json",
+
+            },
+            "searching": false,
+            "paging": false,
+            "bInfo": false,
+            "columns": [
+                { "data": "process" },
+                { "data": "ml_no" },
+                { "data": "mt_no" },
+                { "data": "mt_nm" },
+                { "data": "gr_qty", render: $.fn.dataTable.render.number(',', '.', 0, '') },
+                { "data": "mapping_dt" },
+                { "data": "bb_no" },
+                { "data": "mt_sts_cd" },
+                { "data": "lct_nm" },
+                { "data": "lct_sts_cd" },
+
+            ],
+            //'rowsGroup': [0, 1, 2, 3],
+            'columnDefs': [
+                {
+                    "targets": 0, // your case first column
+                    "className": "text-center",
+                    "width": "5%"
+                },
+                {
+                    "targets": 1, // your case first column
+                    "className": "text-left",
+                    "width": "30%"
+                },
+                  {
+                      "targets": 2, // your case first column
+                      "className": "text-left",
+                      "width": "20%"
+                  },
+                   {
+                       "targets": 3, // your case first column
+                       "className": "text-left",
+                       "width": "20%"
+                   },
+                    {
+                        "targets": 4, // your case first column
+                        "className": "text-right",
+                        "width": "5%"
+                    },
+                     {
+                         "targets": 5, // your case first column
+                         "className": "text-left",
+                         "width": "5%"
+                     },
+                      {
+                          "targets": 6, // your case first column
+                          "className": "text-left",
+                          "width": "5%"
+                      },
+
+            ],
+            "bDestroy": true,
+        });//bảng 2
+        $('#popup_work_staff').DataTable({
+            "ajax": {
+                "url": '/wipwms/Get_data_work_staff?id=' + id,
+                "type": "Post",
+                "datatype": "json",
+
+            },
+            "searching": false,
+            "paging": false,
+            "bInfo": false,
+            "columns": [
+                { "data": "process" },
+                { "data": "staff_tp" },
+                { "data": "staff_id" },
+                { "data": "staff_nm" },
+                { "data": "mapping_dt" },
+
+            ],
+            //'rowsGroup': [0, 1, 2, 3],
+            'columnDefs': [
+                {
+                    "targets": 0, // your case first column
+                    "className": "text-center",
+                    "width": "25%"
+                },
+                 {
+                     "targets": 4, // your case first column
+                     "className": "text-center",
+                     "width": "10%"
+                 },
+
+            ],
+            "bDestroy": true,
+        });//bảng 3
+        $('#popup_use_machin').DataTable({
+            "ajax": {
+                "url": '/wipwms/Get_data_use_machin?id=' + id,
+                "type": "Post",
+                "datatype": "json",
+
+            },
+            "searching": false,
+            "paging": false,
+            "bInfo": false,
+            "columns": [
+                 { "data": "process" },
+                { "data": "mc_type" },
+                { "data": "mc_no" },
+                { "data": "mapping_dt" },
+
+
+            ],
+            //'rowsGroup': [0, 1, 2, 3],
+            'columnDefs': [
+                {
+                    "targets": 0, // your case first column
+                    "className": "text-center",
+                    "width": "10%"
+                },
+                 {
+                     "targets": 3, // your case first column
+                     "className": "text-center",
+                     "width": "10%"
+                 },
+
+            ],
+            "bDestroy": true,
+        });//bảng 4
+    })
+</script>
+
+
+
+<style>
+    .all_cg {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    div#popup_actual_wrapper {
+        width: 100%;
+    }
+</style>

@@ -1,0 +1,3 @@
+Select id, buyer_qr, stamp_code, product_code, vendor_code, vendor_line, label_printer, is_sample, pcn, lot_date, serial_number, 
+machine_line, shift, standard_qty, is_sent, box_code, reg_id, reg_dt, chg_id, chg_dt
+From stamp_detail

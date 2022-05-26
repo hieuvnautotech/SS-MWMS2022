@@ -1,0 +1,2 @@
+Select id As Id, ProductCode, level, MaterialPrarent, MaterialNo, CreateId, ChangeId, CreateDate,  ChangeDate
+From product_material_detail;

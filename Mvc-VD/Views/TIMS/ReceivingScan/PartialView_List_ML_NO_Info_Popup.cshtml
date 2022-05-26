@@ -1,0 +1,189 @@
+﻿@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-1 text-right">
+                <label>Bobbin No</label>
+            </div>
+            <div class="col-md-2">
+                <input type="text" name="bb_no" id="s_bb_no" class="input-text form-control">
+            </div>
+            <div class="col-md-1 text-right">
+                <label>MT No</label>
+            </div>
+            <div class="col-md-2">
+                <input type="text" name="mt_no" id="s_mt_no" class="input-text form-control">
+            </div>
+            <div class="col-md-1 text-right">
+                <label>ML NO</label>
+            </div>
+            <div class="col-md-3">
+
+                <input type="text" name="mt_cd" id="s_mt_cd" class="input-text form-control">
+            </div>
+
+            <div class="col-md-2 p-1 d-flex">
+                <button id="searchBtn_M" class="btn btn-sm btn-success button-srh mr-3"><i class="fa fa-search">&nbsp;Search</i></button>
+                <button type="button" class="btn btn-sm btn-primary button-top" id="btn_Picking" style="float: right"><i class="fa fa-check-circle">&nbsp;Receiving</i></button>
+            </div>
+          
+        </div>
+
+    </div>
+</div>
+
+
+<div class="container-fluid">
+
+    <div class="box-body my-2 bg-white">
+        <div class=" p-0 m-0">
+            <table id="list_Material"></table>
+            <div id="list_Material_Pager"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $(function () {
+            $grid = $("#list_Material").jqGrid({
+                url: "/TIMS/Get_List_Material_TimsReceiving",
+                mtype: 'GET',
+                datatype: 'json',
+                colModel: [
+                    { key: true, label: 'wmtid', name: 'wmtid', width: 50, align: 'center', hidden: true },
+                    { label: 'Bobbin No', name: 'bb_no', width: 100, align: 'center' },
+                    { label: 'ML NO', name: 'mt_cd', width: 350, align: 'left' },
+                    { label: 'MT No', name: 'mt_no', width: 130, align: 'left' },
+                 
+
+                    { label: 'Material Type', name: 'mt_type_nm', width: 120, align: 'center' },
+                    { label: 'Material Type', name: 'mt_type', width: 150, align: 'center', hidden: true },
+
+                    { label: 'Quantity', name: 'gr_qty', width: 70, align: 'right', formatter: 'integer' },
+                    { label: 'mt_sts_cd', name: 'mt_sts_cd', width: 100, align: 'right', hidden: true },
+                    { label: 'Status', name: 'sts_nm', width: 80, align: 'center' },
+
+                    { label: 'Departure', name: 'from_lct_nm', width: 100, align: 'center' },
+                    { label: 'Departure Status', name: 'lct_sts_cd', width: 100, align: 'center' },
+                    { label: 'Receiving Date', name: 'recevice_dt_tims', width: 100, align: 'center', formatter: convertDate },
+                ],
+                loadonce: true,
+                shrinkToFit: false,
+                pager: '#list_Material_Pager',
+                rowNum: 50,
+                rownumbers: true,
+                rowList: [50, 100, 200, 500, 1000],
+                viewrecords: true,
+                caption: "Receiving (M)",
+                height: 350,
+                multiselect: true,
+                jsonReader:
+                {
+                    root: "rows",
+                    page: "page",
+                    total: "total",
+                    records: "records",
+                    repeatitems: false,
+                    Id: "0"
+                },
+                width: null,
+
+                onSelectRow: function (row_id, status, e) {
+                    var selectedRowId = $("#list_Material").jqGrid("getGridParam", 'selrow');
+                    row_id = $("#list_Material").getRowData(selectedRowId);
+
+                },
+            });
+        });
+
+    });
+
+    function convertDate(cellValue, options, rowdata, action) {
+
+        if (cellValue != null) {
+
+            a = cellValue.substr(0, 4);
+            b = cellValue.substr(4, 2);
+            c = cellValue.substr(6, 2);
+
+            var html = a + "-" + b + "-" + c;
+            return html;
+        }
+        else {
+            var html = "";
+            return html;
+        }
+
+
+
+    };
+
+
+
+
+    //-------SEARCH------------//
+    $("#searchBtn_M").click(function () {
+        var mt_no = $('#s_mt_no').val().trim();
+        var mt_cd = $('#s_mt_cd').val().trim();
+        var bb_no = $('#s_bb_no').val().trim();
+        
+        $.ajax({
+            url: "/TIMS/Get_List_Material_TimsReceiving",
+
+            type: "get",
+            dataType: "json",
+            data: {
+                mt_no: mt_no,
+                mt_cd: mt_cd,
+                bb_no: bb_no
+            },
+            success: function (result) {
+                $("#list_Material").jqGrid('clearGridData').jqGrid('setGridParam', { datatype: 'local', data: result }).trigger("reloadGrid");
+            }
+        });
+    });
+
+
+    $("#btn_Picking").on("click", function () {
+ 
+        var selRowIds = $('#list_Material').jqGrid("getGridParam", "selarrrow");
+        if (selRowIds.length >0) {
+             $.ajax({
+                 url: "/TIMS/Receving_Scan_M?data=" + selRowIds + "&rd_no=" + '@ViewBag.rd_no',
+                type: "get",
+                dataType: "json",
+
+                 success: function (response) {
+
+                     if (response.result) {
+          
+                         alert(response.message);
+                         $.each(response.datalist, function (key, item) {
+                            var id = item.wmtid;
+                            $("#list_Material").setRowData(id, item, { background: "#28a745", color:"#fff" });
+                        });
+                    }
+                    else {
+                  
+                        alert(data.message);
+                    }
+                }
+            });
+
+        }
+        else {
+            alert("Please select the data on the grid");
+        }
+       
+    });
+</script>
+<style>
+    button#searchBtn_M {
+        height: fit-content;
+    }
+    button#btn_Picking {
+        height: fit-content;
+    }
+</style>

@@ -1,0 +1,369 @@
+﻿@{
+    ViewBag.Title = "Status";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="@Html.Raw(ViewData["MMS"])" data-level_2="@Html.Raw(ViewData["Tools"])" data-level_3="@Html.Raw(ViewData["Status"])"></div>
+}
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-2 p-1">
+                <label><b>Container</b></label>
+                <input type="text" name="bb_no" id="bb_no" class="input-text form-control">
+            </div>
+            <div class="col-md-2 p-1">
+                <label><b>Composite</b></label>
+                <input type="text" name="mt_lot" id="mt_lot" class="input-text form-control">
+            </div>
+            <div class="col-md-2 p-1">
+                <label><b>Material Code</b></label>
+                <input type="text" name="mt_no" id="mt_no" class="input-text form-control">
+            </div>
+            <div class="col-md-1 p-1 text-left">
+                <label style="width:100%"><b> &nbsp;&nbsp;</b></label>
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+            <div class="col-md-1 p-1 text-left">
+                <label style="width:100%"><b> &nbsp;&nbsp;</b></label>
+                <button id="FinishBtn" class="btn btn-sm btn-danger button-srh"><i class="fa fa-trash">&nbsp;Xả liệu</i></button>
+            </div>
+            <div class="col-md-1 p-1 text-left">
+                <label style="width:100%"><b> &nbsp;&nbsp;</b></label>
+                <button id="RedoContainer" class="btn btn-sm btn-danger button-srh"><i class="fa fa-trash">&nbsp;Redo Container</i></button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white" style="height:60vh">
+        <label>Thông tin</label>
+        <div id="html"></div>
+        <input type="hidden" id="idWmid" value="" />
+        <input type="hidden" id="bb_no" value="" />
+    </div>
+</div>
+
+<script>
+    $(document).ready(function (e) {
+        $("#searchBtn").click(function () {
+            var param = new Object();
+            param.bb_no = $("#bb_no").val().trim();
+            param.mt_cd = $("#mt_lot").val().trim();
+            param.mt_no = $("#mt_no").val().trim();
+            $.ajax({
+                url: "/DevManagement/DetailContainerComposite",
+                type: "Get",
+                dataType: "json",
+                data: param,
+                success: function (responsie) {
+                    if (responsie.result) {
+                        var html = "";
+                        html = `
+                        <table class="table table-bordered table-dark">`;
+                        if (responsie.number == 1) {
+                            html += `
+                          <tr>
+                            <th>SD NO</th>
+                            <th>Trạng Thái</th>
+                            <th>Vị Trí</th>
+                             <th>Kết Luận</th>
+                          </tr>
+                          <tr>
+                            <td>`+ responsie.data.SD + `</td>
+                            <td>`+ responsie.data.trangthai + `</td>
+                            <td>`+ responsie.data.lct_cd + `</td>
+                            <td>`+ responsie.data.ketluan + `</td>
+                          </tr>`
+
+                        }
+                        if (responsie.number == 2) {
+                            html += `
+                          <tr>
+                            <th>SD NO</th>
+                            <th>Trạng Thái</th>
+                            <th>Vị Trí</th>
+                            <th>Process</th>
+                             <th>Product</th>
+                             <th>PO</th>
+                             <th>Thời gian Maping</th>
+                             <th>Sản Lượng</th>
+                             <th>Kết Luận</th>
+                          </tr>
+                          <tr>
+                            <td>`+ responsie.data.SD + `</td>
+                            <td>`+ responsie.data.trangthai + `</td>
+                            <td>`+ responsie.data.vitri + `</td>
+                            <td>`+ responsie.data.process + `</td>
+                            <td>`+ responsie.data.product + `</td>
+                            <td>`+ responsie.data.po + `</td>
+                            <td>`+ responsie.data.time_mapping + `</td>
+                            <td>`+ responsie.data.sanluong + `</td>
+                            <td>`+ responsie.data.ketluan + `</td>
+                          </tr>`
+                        }
+
+                        if (responsie.number == 10) {
+                            //debugger
+                            html += `
+                          <tr>
+                            <th>Phiếu xuất</th>
+                            <th>Trạng Thái</th>
+                            <th>Vị Trí</th>
+                             <th>Product</th>
+                             <th>PO</th>
+                             <th>Sản Lượng</th>
+                             <th>Tgian Mapping</th>
+                             <th>Kết Luận</th>
+                          </tr>
+                          <tr>
+                            <td>`+ responsie.datamachine.SD + `</td>
+                            <td>`+ responsie.datamachine.trangthai + `</td>
+                            <td>`+ responsie.datamachine.lct_cd + `</td>
+                            <td>`+ responsie.datamachine.product + `</td>
+                            <td>`+ responsie.datamachine.po + `</td>
+                            <td>`+ responsie.datamachine.sanluong + `</td>
+                            <td>`+ responsie.datamachine.time_mapping + `</td>
+                            <td>`+ responsie.datamachine.ketluan + `</td>
+                          </tr>`
+                        }
+
+
+                        if (responsie.number == 3 || responsie.number == 4) {
+                            $("#idWmid").val(responsie.data.SD);
+                            $("#bb_no").val(responsie.data.bobin);
+                            html += `
+                          <tr>
+                            <th>Trạng Thái</th>
+                            <th>Vị Trí Hiện Tại</th>
+                            <th>Process</th>
+                             <th>Product</th>
+                             <th>PO</th>
+                             <th>Đồ Đựng</th>
+                             <th>Thời gian Maping</th>
+                             <th>Sản Lượng</th>
+                             <th>Công Nhân</th>
+                             <th>Kết Luận</th>
+                          </tr>
+                          <tr>
+                            <td>`+ responsie.data.trangthai + `</td>
+                            <td>`+ responsie.data.lct_cd + `</td>
+                            <td>`+ responsie.data.process + `</td>
+                            <td>`+ responsie.data.product + `</td>
+                            <td>`+ responsie.data.po + `</td>
+                            <td>`+ responsie.data.bobin + `</td>
+                            <td>`+ responsie.data.time_mapping + `</td>
+                            <td>`+ responsie.data.sanluong + `</td>
+                            <td>`+ responsie.data.cong_nhan + `</td>
+                            <td>`+ responsie.data.ketluan + `</td>
+                          </tr>`
+                        }
+                        html += ` </table >
+                        `;
+                        $(`#html`).html(html);
+                        if (responsie.number == 5 || responsie.number == 6) {
+                            html = `<label>` + responsie.trangthai + `</label>`;
+                        }
+                        $(`#html`).html(html);
+
+
+                    } else {
+                        $(`#html`).html("");
+                    }
+                },
+                error: function (result) { $(`#html`).html(""); }
+            });
+        });
+
+    });
+
+
+    $("#bb_no").on("keydown", function (e) {
+        $(`#mt_lot`).val(``);
+        $(`#mt_no`).val(``);
+    });
+
+    $("#mt_lot").on("keydown", function (e) {
+        $(`#bb_no`).val(``);
+        $(`#mt_no`).val(``);
+    });
+
+    $("#mt_no").on("keydown", function (e) {
+        //debugger;
+        $(`#bb_no`).val(``);
+        $(`#mt_lot`).val(``);
+        var param = new Object();
+        param.bb_no = $("#bb_no").val().trim();
+        param.mt_cd = $("#mt_lot").val().trim();
+        param.mt_no = $("#mt_no").val().trim();
+        if (e.keyCode === 13) {
+
+
+            $.ajax({
+                url: "/DevManagement/DetailContainerComposite",
+                type: "Get",
+                dataType: "json",
+                data: param,
+                success: function (responsie) {
+                    if (responsie.result) {
+                        var html = "";
+                        html = `
+                        <table class="table table-bordered table-dark">`;
+                        if (responsie.number == 1) {
+                            html += `
+                          <tr>
+                            <th>SD NO</th>
+                            <th>Trạng Thái</th>
+                            <th>Vị Trí</th>
+                             <th>Kết Luận</th>
+                          </tr>
+                          <tr>
+                            <td>`+ responsie.data.SD + `</td>
+                            <td>`+ responsie.data.trangthai + `</td>
+                            <td>`+ responsie.data.lct_cd + `</td>
+                            <td>`+ responsie.data.ketluan + `</td>
+                          </tr>`
+
+                        }
+                        if (responsie.number == 2) {
+                            html += `
+                          <tr>
+                            <th>SD NO</th>
+                            <th>Trạng Thái</th>
+                            <th>Vị Trí</th>
+                            <th>Process</th>
+                             <th>Product</th>
+                             <th>PO</th>
+                             <th>Thời gian Maping</th>
+                             <th>Sản Lượng</th>
+                             <th>Kết Luận</th>
+                          </tr>
+                          <tr>
+                            <td>`+ responsie.data.SD + `</td>
+                            <td>`+ responsie.data.trangthai + `</td>
+                            <td>`+ responsie.data.lct_cd + `</td>
+                            <td>`+ responsie.data.process + `</td>
+                            <td>`+ responsie.data.product + `</td>
+                            <td>`+ responsie.data.po + `</td>
+                            <td>`+ responsie.data.time_mapping + `</td>
+                            <td>`+ responsie.data.sanluong + `</td>
+                            <td>`+ responsie.data.ketluan + `</td>
+                          </tr>`
+                        }
+                        if (responsie.number == 3 || responsie.number == 4) {
+                            html += `
+                          <tr>
+                            <th>Trạng Thái</th>
+                            <th>Vị Trí Hiện Tại</th>
+                            <th>Process</th>
+                             <th>Product</th>
+                             <th>PO</th>
+                             <th>Đồ Đựng</th>
+                             <th>Thời gian Maping</th>
+                             <th>Sản Lượng</th>
+                             <th>Công Nhân</th>
+                             <th>Kết Luận</th>
+                          </tr>
+                          <tr>
+                            <td>`+ responsie.data.trangthai + `</td>
+                            <td>`+ responsie.data.lct_cd + `</td>
+                            <td>`+ responsie.data.process + `</td>
+                            <td>`+ responsie.data.product + `</td>
+                            <td>`+ responsie.data.po + `</td>
+                            <td>`+ responsie.data.bobin + `</td>
+                            <td>`+ responsie.data.time_mapping + `</td>
+                            <td>`+ responsie.data.sanluong + `</td>
+                            <td>`+ responsie.data.cong_nhan + `</td>
+                            <td>`+ responsie.data.ketluan + `</td>
+                          </tr>`
+                        }
+                        html += ` </table >
+                        `;
+                        $(`#html`).html(html);
+                        if (responsie.number == 5 || responsie.number == 6) {
+                            html = `<label>` + responsie.trangthai + `</label>`;
+                        }
+                        $(`#html`).html(html);
+
+
+
+                        document.getElementById("mt_no").focus();
+                        $("#mt_no").val("");
+
+                    } else {
+                        $(`#html`).html("");
+                        document.getElementById("mt_no").focus();
+                        $("#mt_no").val("");
+                        $(`#html`).html("Mã này không tồn tại trong hệ thống.");
+                    }
+                },
+                error: function (result) {
+                    document.getElementById("mt_no").focus();
+                    $("#mt_no").val("");
+                    $(`#html`).html("Mã này không tồn tại trong hệ thống.");
+                }
+            });
+        }
+    });
+
+    $("#FinishBtn").click(function () {
+        var materialcode = $("#mt_no").val().trim();
+
+        if (confirm("Bạn có muốn xả liệu này không?")) {
+            $.ajax({
+                url: '/ActualWO/XaMaterial',
+                type: "get",
+                dataType: "json",
+                data:
+                {
+                    materialcode: materialcode
+                },
+
+                success: function (data) {
+                    if (data.result) {
+                        SuccessAlert(data.message);
+                    }
+                    else {
+                        ErrorAlert(data.message);
+                    }
+                },
+            });
+
+        }
+        else {
+            return false;
+        }
+    });
+    $("#RedoContainer").click(function () {
+        var wmtid = $("#idWmid").val().trim();
+        var bb_no = $("#bb_no").val().trim();
+        if (wmtid == null || wmtid == '' || wmtid == undefined) {
+            ErrorAlert("Không tìm thấy mã bobbin");
+            return false;
+        }
+        if (bb_no == null || bb_no == '' || bb_no == undefined) {
+            ErrorAlert("Không tìm thấy mã bobbin");
+            return false;
+        }
+        if (confirm("Bạn có muốn Redo lại không?")) {
+            $.ajax({
+                url: '/TIMS/redoLotCodeDMS?id=' + wmtid + "&bobbin=" + bb_no,
+                type: "get",
+                dataType: "json",
+
+                success: function (data) {
+                    if (data.result) {
+                        SuccessAlert(data.message);
+                    }
+                    else {
+                        ErrorAlert(data.message);
+                    }
+                },
+            });
+
+        }
+        else {
+            return false;
+        }
+    });
+</script>

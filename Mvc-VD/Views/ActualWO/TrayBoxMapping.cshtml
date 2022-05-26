@@ -1,0 +1,61 @@
+﻿@{
+    ViewBag.Title = "TrayBoxMapping";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="MMS" data-level_2="Actual WO" data-level_3="Tray Box Mapping"></div>
+}
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-1 px-1 py-2 text-right">
+                <label><b>Tray Box</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <div class="input-group mt_plus">
+                    <input type="text" name="bx_no" id="bx_no" class="form-control form-control-text" onkeyup="prd_qty(this);" required>
+                </div>
+            </div>
+            <div class="col-md-1 px-1 py-2 text-right">
+                <label><b>Product QR</b></label>
+            </div>
+            <div class="col-md-3 p-1">
+                <div class="input-group mt_plus">
+                    <input type="text" name="prd_lcd" id="prd_lcd" class="form-control form-control-text" required>
+                </div>
+            </div>
+            <div class="col-md-1 px-1 py-2 text-right">
+                <label><b>Qty</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <div class="input-group mt_plus">
+                    <input type="text" name="prd_qty" id="prd_qty" class="form-control form-control-text " value="0" style="text-align:right" readonly="readonly">
+                </div>
+            </div>
+
+            <div class="col-md-1 p-2 d-flex">
+                <button id="SaveBtn" class="btn btn-sm btn-primary button-srh mr-2"><i class="fa fa-check">&nbsp;Save</i></button>
+                <button id="ResetBtn" class="btn btn-sm btn-primary button-srh "><i class="fa fa-refresh">&nbsp;Reset</i></button>
+            </div>
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white boxA">
+        <div class="row p-0 m-0 ">
+            <div class="col-md-12 p-0 m-0">
+                <table id="list"></table>
+                <div id="gridpager"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+        <script src="~/Content/jquery.validate_V1.9/jquery.validate.min.js"></script>
+    <script src="~/Scripts/ActualWO/TrayBoxMapping/TrayBoxMapping.js"></script>
+}
+
+

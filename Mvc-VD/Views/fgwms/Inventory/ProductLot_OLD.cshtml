@@ -1,0 +1,416 @@
+﻿@{
+    ViewBag.Title = "Material_Information_Wip";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="FG-WMS" data-level_2="Inventory" data-level_3="Product Lot"></div>
+
+}
+
+<div class="container-fluid">
+    <div class="row text-right">
+
+
+        <div class="col-md-12 px-3">
+            <form method="post" id="exportData">
+                <button type="submit" id="excelBtn" class="btn btn-sm btn-warning button-top"><i class="fa fa-file-excel-o">&nbsp;Excel</i></button>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Box No</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <input type="text" name="mt_cd" id="mt_no" class="input-text form-control">
+            </div>
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Buyer</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <input type="text" name="s_buyer" id="s_buyer" class="form-control hasDatepicker">
+            </div>
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Mapping Date</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <input type="text" name="recevice_dt_start" id="recevice_dt_start" class="form-control">
+            </div>
+            ~
+            <div class="col-md-1 p-1">
+                <input type="text" name="recevice_dt_end" id="recevice_dt_end" class="form-control">
+            </div>
+            <div class="col-md-1 p-2">
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+            @*<div class="col-md-1 p-2">
+                    <button type="button" id="printBtn" class="btn btn-sm btn-warning form-control-text"><i class="fa fa fa-print">&nbsp;Print</i></button>
+                </div>*@
+        </div>
+    </div>
+</div>
+
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="p-0 m-0">
+            <table id="ProductLotGrid"></table>
+            <div id="ProductLotGridPager"></div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+
+    @*<div class="box-body my-2 bg-white" id="Partial_TreeProduct">
+        </div>*@
+        <ul id="myUL"></ul>
+</div>
+<div class="popup-dialog FG_Info_Popup" title="FG Product Lot">
+    <div id="PartialView_FG_Info_Popup"></div>
+</div>
+<style>
+    ul, #myUL {
+        list-style-type: none;
+    }
+    p:after {
+        content: none;
+    }
+    #myUL {
+        margin: 0;
+        padding: 0;
+    }
+    span.nosub {
+        font-size: 20px;
+    }
+    span.nosub:before {
+        content: "\2212";
+       
+    }
+    .caret1 {
+        font-size: 20px;
+        cursor: pointer;
+        -webkit-user-select: none; /* Safari 3.1+ */
+        -moz-user-select: none; /* Firefox 2+ */
+        -ms-user-select: none; /* IE 10+ */
+        user-select: none;
+    }
+
+    .caret1::before {
+        content: "\25B6";
+        color: black;
+        display: inline-block;
+        margin-right: 6px;
+    }
+
+    .caret1-down::before {
+        -ms-transform: rotate(90deg); /* IE 9 */
+        -webkit-transform: rotate(90deg); /* Safari */
+        transform: rotate(90deg);
+    }
+
+    .nested {
+        display: none;
+    }
+
+    .active {
+        display: block;
+    }
+    .detail_fg {
+        font-size: 19px;
+        margin: 0 19px;
+        color: red;
+        border: 1px solid;
+        padding: 1px 12px;
+        cursor: pointer;
+    }
+</style>
+
+
+
+
+
+
+
+@*<div class="container-fluid">
+        <div class="box-body my-2 bg-white" id="Partial_TreeProduct">
+        </div>
+    </div>*@
+@*------------------------------------------*@
+
+<!-- ./ Dialog -->
+@*<link href="~/CSS/DevManagement/LineMgt/LineMgt.css" rel="stylesheet" />*@
+@*css phàn bieu do 2*@
+@*<style>
+
+        .bieudo {
+            overflow-x: scroll;
+        }
+
+
+        .tree, .tree ul, .tree li {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            position: relative;
+        }
+
+        .tree {
+            margin: 0 0 1em;
+            text-align: center;
+        }
+
+            .tree, .tree ul {
+                display: table;
+            }
+
+                .tree ul {
+                    width: 100%;
+                }
+
+                .tree li {
+                    display: table-cell;
+                    padding: .5em 0;
+                    vertical-align: top;
+                }
+                    /* _________ */
+                    .tree li:before {
+                        outline: solid 1px #666;
+                        content: "";
+                        left: 0;
+                        position: absolute;
+                        right: 0;
+                        top: 0;
+                    }
+
+                    .tree li:first-child:before {
+                        left: 50%;
+                    }
+
+                    .tree li:last-child:before {
+                        right: 50%;
+                    }
+
+                .tree code1, .tree span {
+                    border: solid .1em #666;
+                    border-radius: .2em;
+                    display: inline-block;
+                    margin: 0 .2em .5em;
+                    padding: .2em .5em;
+                    position: relative;
+                }
+                /* If the tree represents DOM structure */
+                .tree code1 {
+                    font-family: monaco, Consolas, 'Lucida Console', monospace;
+                    color: #666;
+                }
+
+                    /* | */
+                    .tree ul:before,
+                    .tree code1:before,
+                    .tree span:before {
+                        outline: solid 1px #666;
+                        content: "";
+                        height: .5em;
+                        left: 50%;
+                        position: absolute;
+                    }
+
+                .tree ul:before {
+                    top: -.5em;
+                }
+
+                .tree code1:before,
+                .tree span:before {
+                    top: -.55em;
+                }
+
+                /* The root node doesn't connect upwards */
+                .tree > li {
+                    margin-top: 0;
+                }
+
+                    .tree > li:before,
+                    .tree > li:after,
+                    .tree > li > code1:before,
+                    .tree > li > span:before {
+                        outline: none;
+                    }
+    </style>*@
+@*css phàn bieu do 2*@
+@*css phàn bieu do 3*@
+@*<style>
+        /* Remove default bullets */
+        ul, #myUL {
+            list-style-type: none;
+        }
+
+        /* Remove margins and padding from the parent ul */
+        #myUL {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Style the caret/arrow */
+        .caret {
+            cursor: pointer;
+            user-select: none; /* Prevent text selection */
+        }
+
+            /* Create the caret/arrow with a unicode, and style it */
+            .caret::before {
+                content: "\25B6";
+                color: black;
+                display: inline-block;
+                margin-right: 6px;
+            }
+
+        /* Rotate the caret/arrow icon when clicked on (using JavaScript) */
+        .caret-down::before {
+            transform: rotate(90deg);
+        }
+
+        /* Hide the nested list */
+        .nested {
+            display: none;
+        }
+
+        /* Show the nested list when the user clicks on the caret/arrow (with JavaScript) */
+        .active {
+            display: block;
+        }
+    </style>*@
+@*css phàn bieu do 3*@
+
+
+@*<style>
+        span.input-group-addon {
+            padding: 0;
+            border: 0.1px solid;
+        }
+        /*//tree*/
+        /*Now the CSS*/
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .tree ul {
+            padding-top: 20px;
+            position: relative;
+            transition: all 0.5s;
+            -webkit-transition: all 0.5s;
+            -moz-transition: all 0.5s;
+        }
+
+        .tree li {
+            display: inline-block;
+            text-align: center;
+            list-style-type: none;
+            position: relative;
+            padding: 20px 5px 0 5px;
+            transition: all 0.5s;
+            -webkit-transition: all 0.5s;
+            -moz-transition: all 0.5s;
+        }
+
+            /*We will use ::before and ::after to draw the connectors*/
+
+            .tree li::before, .tree li::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                right: 50%;
+                border-top: 1px solid #ccc;
+                width: 50%;
+                height: 20px;
+            }
+
+            .tree li::after {
+                right: auto;
+                left: 50%;
+                border-left: 1px solid #ccc;
+            }
+
+            /*We need to remove left-right connectors from elements without
+        any siblings*/
+            .tree li:only-child::after, .tree li:only-child::before {
+                display: none;
+            }
+
+            /*Remove space from the top of single children*/
+            .tree li:only-child {
+                padding-top: 0;
+            }
+
+            /*Remove left connector from first child and
+        right connector from last child*/
+            .tree li:first-child::before, .tree li:last-child::after {
+                border: 0 none;
+            }
+            /*Adding back the vertical connector to the last nodes*/
+            .tree li:last-child::before {
+                border-right: 1px solid #ccc;
+                border-radius: 0 5px 0 0;
+                -webkit-border-radius: 0 5px 0 0;
+                -moz-border-radius: 0 5px 0 0;
+            }
+
+            .tree li:first-child::after {
+                border-radius: 5px 0 0 0;
+                -webkit-border-radius: 5px 0 0 0;
+                -moz-border-radius: 5px 0 0 0;
+            }
+
+        /*Time to add downward connectors from parents*/
+        .tree ul ul::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            border-left: 1px solid #ccc;
+            width: 0;
+            height: 20px;
+        }
+
+        .tree li a {
+            border: 1px solid #ccc;
+            padding: 5px 10px;
+            text-decoration: none;
+            color: #666;
+            font-family: arial, verdana, tahoma;
+            font-size: 11px;
+            display: inline-block;
+            border-radius: 5px;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            transition: all 0.5s;
+            -webkit-transition: all 0.5s;
+            -moz-transition: all 0.5s;
+        }
+
+            /*Time for some hover effects*/
+            /*We will apply the hover effect the the lineage of the element also*/
+            .tree li a:hover, .tree li a:hover + ul li a {
+                background: #c8e4f8;
+                color: #000;
+                border: 1px solid #94a0b4;
+            }
+                /*Connector styles on hover*/
+                .tree li a:hover + ul li::after,
+                .tree li a:hover + ul li::before,
+                .tree li a:hover + ul::before,
+                .tree li a:hover + ul ul::before {
+                    border-color: #94a0b4;
+                }
+
+        /*Thats all. I hope you enjoyed it.
+        Thanks :)*/
+    </style>*@
+@section scripts{
+    <script src="~/Scripts/fgwms/Inventory/ProductLot.js"></script>
+}

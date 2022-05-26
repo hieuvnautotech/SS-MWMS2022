@@ -1,0 +1,563 @@
+﻿@model IEnumerable<Mvc_VD.Models.w_policy_mt>
+@{ 
+    ViewBag.Title = "WorkPolicyInfor";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+@*<link href="http://cdn.jsdelivr.net/timepicker.js/latest/timepicker.min.css" rel="stylesheet" />*@
+<link href="~/Content/timepicker.min_2.2.0/timepicker.min.css" rel="stylesheet" />
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="MMS" data-level_2="Standard Management(WO)" data-level_3="Work Policy Information"></div>
+}
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <table id="wpmtGrid"></table>
+            <div id="wpmtGridPager"></div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <input type="hidden" name="color_bg_line" value=" " id="color_bg_line" />
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active" id="tab_1"><a href="#tab_1" data-toggle="tab">Create</a></li>
+                <li id="tab_2"><a href="#tab_2" data-toggle="tab">Modify</a></li>
+            </ul>
+        </div>
+
+        <div class="tab-content active" id="tab_c1">
+            <form id="form1">
+                <div class="box-body box-body-input-move">
+                    <input type="hidden" name="wid" id="c_wid">
+                    <div class="row p-0 m-0">
+                        <div class="col">
+                            <div class="col-md-1 p-2 pull-right text-right" style="margin-top:-39px">
+                                <button type="button" id="c_save_but" class="btn btn-success button-sm"><i class="fa fa-save">&nbsp;Create</i></button>
+                            </div>
+                        </div>
+                    </div>
+                      
+                    <div class="col-md-2">
+                        <label><b>Code </b></label>
+                        <input type="text" name="policy_code" id="c_policy_code" class="form-control form-control-text" readonly="readonly">
+                    </div>
+                    <div class="col-md-2">
+                        <label><b>Name </b></label>
+                        <input type="text" name="policy_name" id="c_policy_name" class="form-control form-control-text">
+                    </div>
+                         
+                    <div class="col-md-2">
+                        <label><b>Use</b></label>
+                        <select name="use_yn" id="c_use_yn" class="form-control form-control-text select2">
+                            <option value="Y" selected="selected">Use</option>
+                            <option value="N">UnUse</option>
+                        </select>
+                    </div>
+                           
+                    <div class="col-md-2">
+                        <label><b>Remark</b></label>
+                        <input type="text" name='re_mark' id='c_re_marks' class="input-text form-control" maxlength="100">
+                    </div>
+
+                    <div class="col-md-2">
+                        <label><b>Work Start </b></label>
+                        <input type="text" name="work_starttime" id="c_work_starttime" onmouseout="timeDiff();" style="text-align: center" class="form-control form-control-text">
+                    </div>
+                          
+                    <div class="col-md-2">
+                        <label><b>Work End </b></label>
+                        <input type="text" name="work_endtime" id="c_work_endtime" onmouseout="timeDiff();" style="text-align: center" class="form-control form-control-text">
+                    </div>
+                          
+                    <div class="col-md-2">
+                        <label><b>Lunch Start </b></label>
+                        <input type="text" name="work_starttime" id="c_lunch_start_time" onmouseout="timeDiff();" style="text-align: center" class="form-control form-control-text">
+                    </div>
+                          
+                    <div class="col-md-2">
+                        <label><b>Lunch End </b></label>
+                        <input type="text" name="work_endtime" id="c_lunch_end_time" onmouseout="timeDiff();" style="text-align: center" class="form-control form-control-text">
+                    </div>
+                          
+                    <div class="col-md-2">
+                        <label><b>Dinner Start</b></label>
+                        <input type="text" name="work_starttime" id="c_dinner_start_time" onmouseout="timeDiff();" style="text-align: center" class="form-control form-control-text">
+                    </div>
+                           
+                    <div class="col-md-2">
+                        <label><b>Dinner End</b></label>
+                        <input type="text" name="work_endtime" id="c_dinner_end_time" onmouseout="timeDiff();" style="text-align: center" class="form-control form-control-text">
+                    </div>
+                            
+                    <div class="col-md-2">
+                                <label><b>Work Hour</b></label>
+                                <input type="text" name="work_hour" id="c_work_hour" style="text-align: center" class="form-control form-control-text">
+                            </div>
+
+
+
+                </div>
+            </form>
+        </div>
+        <div class="tab-content hidden" id="tab_c2">
+            <form id="form2">
+                <div class="box-body box-body-input-move">
+                    <input type="hidden" name="wid" id="m_wid">
+                  
+                        <div class="col-md-12 pull-right" style="margin-top:-39px">
+                            <button type="button" id="del_save_but" class="btn btn-danger button-sm mr-3"><i class="fa fa-scissors">&nbsp;Delete&nbsp;</i></button>
+                            <button type="button" id="m_save_but" class="btn btn-success button-sm"><i class="fa fa-save">&nbsp;Modify&nbsp;</i></button>
+                        </div>
+                
+                            <div class="col-md-2">
+                                <label><b>Code </b></label>
+                                <input type="text" name="policy_code" id="m_policy_code" class="form-control form-control-text" readonly="readonly">
+                            </div>
+                            <div class="col-md-2">
+                                <label><b>Name </b></label>
+                                <input type="text" name="policy_name" id="m_policy_name" class="form-control form-control-text">
+                            </div>
+                         
+                            <div class="col-md-2">
+                                <label><b>Use</b></label>
+                                <select name="use_yn" id="m_use_yn" class="form-control form-control-text select2">
+                                    <option value="Y" selected="selected">Use</option>
+                                    <option value="N">UnUse</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label><b>Remark</b></label>
+                                <input type="text" name="re_mark" id="m_re_mark" class="form-control form-control-text">
+                            </div>
+                          
+                            <div class="col-md-2">
+                                <label><b>Work Start </b></label>
+                                <input type="text" name="work_starttime" id="m_work_starttime" onmouseout="timeDiff2();" style="text-align: center" class="form-control form-control-text">
+                            </div>
+                           
+                            <div class="col-md-2">
+                                <label><b>Work End </b></label>
+                                <input type="text" name="work_endtime" id="m_work_endtime" onmouseout="timeDiff2();" style="text-align: center" class="form-control form-control-text">
+                            </div>
+                          
+                            <div class="col-md-2">
+                                <label><b>Lunch Start </b></label>
+                                <input type="text" name="work_starttime" id="m_lunch_start_time" onmouseout="timeDiff2();" style="text-align: center" class="form-control form-control-text">
+                            </div>
+                          
+                            <div class="col-md-2">
+                                <label><b>Lunch End </b></label>
+                                <input type="text" name="work_endtime" id="m_lunch_end_time" onmouseout="timeDiff2();" style="text-align: center" class="form-control form-control-text">
+                            </div>
+                            <div class="col-md-2">
+                                <label><b>Dinner Start</b></label>
+                                <input type="text" name="work_starttime" id="m_dinner_start_time" onmouseout="timeDiff2();" style="text-align: center" class="form-control form-control-text">
+                            </div>
+                           
+                            <div class="col-md-2">
+                                <label><b>Dinner End</b></label>
+                                <input type="text" name="work_endtime" id="m_dinner_end_time" onmouseout="timeDiff2();" style="text-align: center" class="form-control form-control-text">
+                            </div>
+                          
+                            <div class="col-md-2">
+                                <label><b>Work Hour</b></label>
+                                <input type="text" name="work_hour" id="m_work_hour" style="text-align: center" class="form-control form-control-text">
+                            </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="dialogDangerous2" title="Are you make sure DELETE ?">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-success button-srh mr-3" id="closestyle_pm">No</button>
+                    <button type="button" class="btn btn-sm btn-danger button-srh" id="deletestyle_pm">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section scripts{
+
+    <script src="~/Scripts/StandardMgtWO/_WorkPoliInfor.js"></script>
+    @*<script src="//cdn.jsdelivr.net/timepicker.js/latest/timepicker.min.js"></script>*@
+    @*<link href="~/Content/timepicker.min_2.2.0/timepicker.min.css" rel="stylesheet" />*@
+    <script src="~/Content/timepicker.min_2.2.0/timepicker.min.js"></script>
+    <script src="~/Scripts/StandardMgtWO/_Wpmt_Del_Poup.js"></script>
+	  <script>
+
+        var times = {},
+            timepicker = new TimePicker(["c_work_starttime", "c_work_endtime", "m_work_hour", "c_work_hour",
+                "m_work_starttime", "m_work_endtime", "c_lunch_start_time", "c_lunch_end_time", "c_dinner_start_time", "c_dinner_end_time", "m_lunch_start_time", "m_lunch_end_time", "m_dinner_start_time", "m_dinner_end_time"], {
+                    theme: "white",
+                    lang: "en"
+                });
+        timepicker.on("change", function (e) {
+            var t = (e.hour || "00") + ":" + (e.minute || "00");
+            e.element.value = t;
+            var i = e.element.id;
+            times[i] = t, console.clear(), console.log(times)
+        });
+
+        function timeDiff() {
+            var start = document.getElementById("c_work_starttime").value,
+                end = document.getElementById("c_work_endtime").value,
+                lunch_start = document.getElementById("c_lunch_start_time").value,
+                lunch_end = document.getElementById("c_lunch_end_time").value,
+                dinner_start = document.getElementById("c_dinner_start_time").value,
+                dinner_end = document.getElementById("c_dinner_end_time").value,
+
+
+
+            start = start.split(":"),
+            end = end.split(":");
+
+            lunch_start = lunch_start.split(":"),
+            lunch_end = lunch_end.split(":");
+
+            dinner_start = dinner_start.split(":"),
+            dinner_end = dinner_end.split(":");
+            var
+                startDate = new Date(0, 0, 0, start[0], start[1], 0),
+                endDate = new Date(0, 0, 0, end[0], end[1], 0),
+                lunchStart = new Date(0, 0, 0, lunch_start[0], lunch_start[1], 0),
+                lunchEnd = new Date(0, 0, 0, lunch_end[0], lunch_end[1], 0),
+
+
+
+                dinnerStart = new Date(0, 0, 0, dinner_start[0], dinner_start[1], 0),
+                dinnerEnd = new Date(0, 0, 0, dinner_end[0], dinner_end[1], 0),
+
+                a = endDate.getTime(),
+                b = startDate.getTime(),
+                c = lunchStart.getTime(),
+                d = lunchEnd.getTime(),
+                e = dinnerStart.getTime(),
+                f = dinnerEnd.getTime();
+
+
+            if (a < b) {
+                l = a + 82800000
+                g = d - c,
+                h = f - e,
+                k = l - b,
+                g = g > 60000 ? g : 0,
+                h = h > 60000 ? h : 0,
+                k = k > 60000 ? k : 0,
+                //diff1 = (e - b) - (g) - (h),
+                diff1 = k - (g) - (h),
+                hours = (Math.floor(diff1 / 1000 / 60 / 60)); diff1 -= hours * 1000 * 60 * 60;
+            }
+            else {
+                g = d - c, //lunchEnd - lunchStart
+                h = f - e, //dinnerStart - dinnerEnd
+                k = a - b, //endDate - startDate
+
+                g = g > 60000 ? g : 0,
+                h = h > 60000 ? h : 0,
+                k = k > 60000 ? k : 0,
+                //diff1 = (e - b) - (g) - (h),
+
+                diff1 = k - g - h
+                hours = (Math.floor(diff1 / 1000 / 60 / 60));
+                diff1 -= hours * 1000 * 60 * 60;
+
+            }
+
+            var minutes = Math.floor(diff1 / 1000 / 60);
+            if (!(isNaN(hours)) && !(isNaN(minutes))) {
+                document.getElementById("c_work_hour").value = (hours) + ":" + (minutes < 9 ? "0" : "") + minutes;
+            }
+
+        }
+
+
+        function timeDiff2() {
+            //var start = document.getElementById("m_work_starttime").value,
+            //    end = document.getElementById("m_work_endtime").value;
+            //start = start.split(":"), end = end.split(":");
+            //var startDate = new Date(0, 0, 0, start[0], start[1], 0),
+            //    endDate = new Date(0, 0, 0, end[0], end[1], 0),
+            //    a = endDate.getTime(), b = startDate.getTime(), diff1 = a - b,
+            //    hours = Math.floor(diff1 / 1e3 / 60 / 60);
+            //diff1 -= 1e3 * hours * 60 * 60;
+            //var minutes = Math.floor(diff1 / 1e3 / 60);
+            //document.getElementById("m_work_hour").value = hours + ":" + (minutes < 9 ? "0" : "") + minutes;
+
+
+
+
+
+
+            var start = document.getElementById("m_work_starttime").value,
+              end = document.getElementById("m_work_endtime").value,
+              lunch_start = document.getElementById("m_lunch_start_time").value,
+              lunch_end = document.getElementById("m_lunch_end_time").value,
+              dinner_start = document.getElementById("m_dinner_start_time").value,
+              dinner_end = document.getElementById("m_dinner_end_time").value;
+
+            start = start.split(":"),
+            end = end.split(":");
+
+            lunch_start = lunch_start.split(":"),
+            lunch_end = lunch_end.split(":");
+
+            dinner_start = dinner_start.split(":"),
+            dinner_end = dinner_end.split(":");
+            var startDate = new Date(0, 0, 0, start[0], start[1], 0),
+                endDate = new Date(0, 0, 0, end[0], end[1], 0),
+                lunchStart = new Date(0, 0, 0, lunch_start[0], lunch_start[1], 0),
+                lunchEnd = new Date(0, 0, 0, lunch_end[0], lunch_end[1], 0),
+
+
+
+                dinnerStart = new Date(0, 0, 0, dinner_start[0], dinner_start[1], 0),
+                dinnerEnd = new Date(0, 0, 0, dinner_end[0], dinner_end[1], 0),
+
+                a = endDate.getTime(),
+                b = startDate.getTime(),
+                c = lunchStart.getTime(),
+                d = lunchEnd.getTime(),
+                e = dinnerStart.getTime(),
+                f = dinnerEnd.getTime();
+
+
+
+            //if (a < b) {
+            //    e = a + 86400000
+            //    g = d - c,
+            //  h = f - e, g = g > 60000 ? g : 0, h = h > 60000 ? h : 0, diff1 = (e - b) - (g) - (h),
+            //    hours = (Math.floor(diff1 / 1000 / 60 / 60));
+            //    diff1 -= hours * 1000 * 60 * 60;
+            //}
+            //else {
+            //    g = d - c,
+            //h = f - e, g = g > 60000 ? g : 0, h = h > 60000 ? h : 0, diff1 = (e - b) - (g) - (h), hours = (Math.floor(diff1 / 1000 / 60 / 60)); diff1 -= hours * 1000 * 60 * 60;
+
+            //} 25-03-2020
+
+
+            if (a < b) {
+                l = a + 82800000
+                g = d - c,
+                h = f - e,
+                k = l - b,
+                g = g > 60000 ? g : 0,
+                h = h > 60000 ? h : 0,
+                k = k > 60000 ? k : 0,
+                //diff1 = (e - b) - (g) - (h),
+                diff1 = k - (g) - (h),
+                hours = (Math.floor(diff1 / 1000 / 60 / 60)); diff1 -= hours * 1000 * 60 * 60;
+            }
+            else {
+                g = d - c, //lunchEnd - lunchStart
+                h = f - e, //dinnerStart - dinnerEnd
+                k = a - b, //endDate - startDate
+
+                g = g > 60000 ? g : 0,
+                h = h > 60000 ? h : 0,
+                k = k > 60000 ? k : 0,
+                //diff1 = (e - b) - (g) - (h),
+
+                diff1 = k - g - h
+                hours = (Math.floor(diff1 / 1000 / 60 / 60));
+                diff1 -= hours * 1000 * 60 * 60;
+
+            }
+
+
+
+            //    g = d - c,
+            //    h = f - e,
+            //       g = g > 60000 ? g : 0,
+            //h = h > 60000 ? h : 0,
+            //diff1 = (a - b) - (g) - (h),
+            //hours = (Math.floor(diff1 / 1000 / 60 / 60));
+
+            ////hours = (Math.floor(diff1 / 1000 / 60 / 60));
+            //diff1 -= hours * 1000 * 60 * 60;
+            var minutes = Math.floor(diff1 / 1000 / 60);
+            document.getElementById("m_work_hour").value = (hours) + ":" + (minutes < 9 ? "0" : "") + minutes;
+
+        }
+
+    </script>
+	
+	
+	
+    <!-- <script> -->
+
+        <!-- var times = {}, -->
+            <!-- timepicker = new TimePicker(["c_work_starttime", "c_work_endtime", "m_work_hour", "c_work_hour", -->
+                <!-- "m_work_starttime", "m_work_endtime", "c_lunch_start_time", "c_lunch_end_time", "c_dinner_start_time", "c_dinner_end_time", "m_lunch_start_time", "m_lunch_end_time", "m_dinner_start_time", "m_dinner_end_time"], { -->
+                    <!-- theme: "white", -->
+                    <!-- lang: "en" -->
+                <!-- }); -->
+        <!-- timepicker.on("change", function (e) { -->
+            <!-- var t = (e.hour || "00") + ":" + (e.minute || "00"); -->
+            <!-- e.element.value = t; -->
+            <!-- var i = e.element.id; -->
+            <!-- times[i] = t, console.clear(), console.log(times) -->
+        <!-- }); -->
+
+        <!-- function timeDiff() { -->
+            <!-- var start = document.getElementById("c_work_starttime").value, -->
+                <!-- end = document.getElementById("c_work_endtime").value, -->
+                <!-- lunch_start = document.getElementById("c_lunch_start_time").value, -->
+                <!-- lunch_end = document.getElementById("c_lunch_end_time").value, -->
+                <!-- dinner_start = document.getElementById("c_dinner_start_time").value, -->
+                <!-- dinner_end = document.getElementById("c_dinner_end_time").value, -->
+
+
+
+            <!-- start = start.split(":"), -->
+            <!-- end = end.split(":"); -->
+
+            <!-- lunch_start = lunch_start.split(":"), -->
+            <!-- lunch_end = lunch_end.split(":"); -->
+
+            <!-- dinner_start = dinner_start.split(":"), -->
+            <!-- dinner_end = dinner_end.split(":"); -->
+            <!-- var -->
+                <!-- startDate = new Date(0, 0, 0, start[0], start[1], 0), -->
+                <!-- endDate = new Date(0, 0, 0, end[0], end[1], 0), -->
+                <!-- lunchStart = new Date(0, 0, 0, lunch_start[0], lunch_start[1], 0), -->
+                <!-- lunchEnd = new Date(0, 0, 0, lunch_end[0], lunch_end[1], 0), -->
+
+
+
+                <!-- dinnerStart = new Date(0, 0, 0, dinner_start[0], dinner_start[1], 0), -->
+                <!-- dinnerEnd = new Date(0, 0, 0, dinner_end[0], dinner_end[1], 0), -->
+
+                <!-- a = endDate.getTime(), -->
+                <!-- b = startDate.getTime(), -->
+                <!-- c = lunchStart.getTime(), -->
+                <!-- d = lunchEnd.getTime(), -->
+                <!-- e = dinnerStart.getTime(), -->
+                <!-- f = dinnerEnd.getTime(); -->
+
+
+
+            <!-- if (a < b) { -->
+                <!-- e = a + 86400000 -->
+                <!-- g = d - c, -->
+              <!-- h = f - e, g = g > 60000 ? g : 0, h = h > 60000 ? h : 0, diff1 = (e - b) - (g) - (h), hours = (Math.floor(diff1 / 1000 / 60 / 60)); diff1 -= hours * 1000 * 60 * 60; -->
+            <!-- } -->
+            <!-- else { -->
+                <!-- g = d - c, -->
+            <!-- h = f - e, g = g > 60000 ? g : 0, h = h > 60000 ? h : 0, diff1 = (e - b) - (g) - (h), hours = (Math.floor(diff1 / 1000 / 60 / 60)); diff1 -= hours * 1000 * 60 * 60; -->
+
+            <!-- } -->
+
+            <!-- var minutes = Math.floor(diff1 / 1000 / 60); -->
+            <!-- if (!(isNaN(hours)) && !(isNaN(minutes))) { -->
+                <!-- document.getElementById("c_work_hour").value = (hours) + ":" + (minutes < 9 ? "0" : "") + minutes; -->
+            <!-- } -->
+
+        <!-- } -->
+
+
+        <!-- function timeDiff2() { -->
+            <!-- //var start = document.getElementById("m_work_starttime").value, -->
+            <!-- //    end = document.getElementById("m_work_endtime").value; -->
+            <!-- //start = start.split(":"), end = end.split(":"); -->
+            <!-- //var startDate = new Date(0, 0, 0, start[0], start[1], 0), -->
+            <!-- //    endDate = new Date(0, 0, 0, end[0], end[1], 0), -->
+            <!-- //    a = endDate.getTime(), b = startDate.getTime(), diff1 = a - b, -->
+            <!-- //    hours = Math.floor(diff1 / 1e3 / 60 / 60); -->
+            <!-- //diff1 -= 1e3 * hours * 60 * 60; -->
+            <!-- //var minutes = Math.floor(diff1 / 1e3 / 60); -->
+            <!-- //document.getElementById("m_work_hour").value = hours + ":" + (minutes < 9 ? "0" : "") + minutes; -->
+
+
+
+
+
+
+            <!-- var start = document.getElementById("m_work_starttime").value, -->
+              <!-- end = document.getElementById("m_work_endtime").value, -->
+              <!-- lunch_start = document.getElementById("m_lunch_start_time").value, -->
+              <!-- lunch_end = document.getElementById("m_lunch_end_time").value, -->
+              <!-- dinner_start = document.getElementById("m_dinner_start_time").value, -->
+              <!-- dinner_end = document.getElementById("m_dinner_end_time").value; -->
+
+            <!-- start = start.split(":"), -->
+            <!-- end = end.split(":"); -->
+
+            <!-- lunch_start = lunch_start.split(":"), -->
+            <!-- lunch_end = lunch_end.split(":"); -->
+
+            <!-- dinner_start = dinner_start.split(":"), -->
+            <!-- dinner_end = dinner_end.split(":"); -->
+            <!-- var startDate = new Date(0, 0, 0, start[0], start[1], 0), -->
+                <!-- endDate = new Date(0, 0, 0, end[0], end[1], 0), -->
+                <!-- lunchStart = new Date(0, 0, 0, lunch_start[0], lunch_start[1], 0), -->
+                <!-- lunchEnd = new Date(0, 0, 0, lunch_end[0], lunch_end[1], 0), -->
+
+
+
+                <!-- dinnerStart = new Date(0, 0, 0, dinner_start[0], dinner_start[1], 0), -->
+                <!-- dinnerEnd = new Date(0, 0, 0, dinner_end[0], dinner_end[1], 0), -->
+
+                <!-- a = endDate.getTime(), -->
+                <!-- b = startDate.getTime(), -->
+                <!-- c = lunchStart.getTime(), -->
+                <!-- d = lunchEnd.getTime(), -->
+                <!-- e = dinnerStart.getTime(), -->
+                <!-- f = dinnerEnd.getTime(); -->
+
+
+
+            <!-- if (a < b) { -->
+                <!-- e = a + 86400000 -->
+                <!-- g = d - c, -->
+              <!-- h = f - e, g = g > 60000 ? g : 0, h = h > 60000 ? h : 0, diff1 = (e - b) - (g) - (h), -->
+                <!-- hours = (Math.floor(diff1 / 1000 / 60 / 60)); -->
+                <!-- diff1 -= hours * 1000 * 60 * 60; -->
+            <!-- } -->
+            <!-- else { -->
+                <!-- g = d - c, -->
+            <!-- h = f - e, g = g > 60000 ? g : 0, h = h > 60000 ? h : 0, diff1 = (e - b) - (g) - (h), hours = (Math.floor(diff1 / 1000 / 60 / 60)); diff1 -= hours * 1000 * 60 * 60; -->
+
+            <!-- } -->
+            <!-- //    g = d - c, -->
+            <!-- //    h = f - e, -->
+            <!-- //       g = g > 60000 ? g : 0, -->
+            <!-- //h = h > 60000 ? h : 0, -->
+            <!-- //diff1 = (a - b) - (g) - (h), -->
+            <!-- //hours = (Math.floor(diff1 / 1000 / 60 / 60)); -->
+
+            <!-- ////hours = (Math.floor(diff1 / 1000 / 60 / 60)); -->
+            <!-- //diff1 -= hours * 1000 * 60 * 60; -->
+            <!-- var minutes = Math.floor(diff1 / 1000 / 60); -->
+            <!-- document.getElementById("m_work_hour").value = (hours) + ":" + (minutes < 9 ? "0" : "") + minutes; -->
+
+        <!-- } -->
+
+    <!-- </script> -->
+	
+	
+}
+
+<style>
+    button#del_save_but {
+        float: right;
+        display: inline-block;
+        margin-left: 8px;
+    }
+  
+</style>

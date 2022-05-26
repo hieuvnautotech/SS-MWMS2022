@@ -1,0 +1,1 @@
+Select mt_id, div_cd, mt_cd, mt_nm, mt_exp,memo, use_yn, reg_id, reg_dt, chg_id, chg_dt From comm_mt;

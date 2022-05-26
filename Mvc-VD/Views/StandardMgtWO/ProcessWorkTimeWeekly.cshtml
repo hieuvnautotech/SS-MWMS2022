@@ -1,0 +1,64 @@
+﻿@{
+    ViewBag.Title = "ProcessWorkTimeWeekly";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="MMS" data-level_2="Standard Management(WO)" data-level_3="Process Work Time Weekly"></div>
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-primary">
+                <div id="calendar"></div>
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <!-- /. box -->
+    </div>
+    <!-- /.col -->
+</div>
+<div class="dialogDangerous" title="Are you make sure change hour Events?">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <select id="hour" class="form-control">
+                        <option value="">*Hour*</option>
+                    </select>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Scripts/StandardMgtWO/ProcessWorkTimeWeekly/ProcessWorkTimeWeekly.js"></script>
+
+}
+<style>
+    .removebtn {
+        color: black;
+        position: absolute;
+        top: 0;
+        /* display: -webkit-inline-box; */
+        left: 0;
+        margin-right: 39px;
+        width: 13px;
+        height: 13px;
+        text-align: center;
+        border-radius: 50%;
+        font-size: 10px;
+        cursor: pointer;
+        background-color: #FFF;
+    }
+
+    span.fc-title {
+        text-align: center;
+        display: inherit;
+    }
+
+    button.ui-dialog-titlebar-close {
+        color: transparent;
+    }
+</style>

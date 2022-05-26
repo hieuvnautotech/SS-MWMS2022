@@ -1,0 +1,370 @@
+SET IDENTITY_INSERT ShinsungTest.[autodb-2129].w_material_info ON;
+INSERT INTO ShinsungTest.[autodb-2129].w_material_info ([wmtid]
+      ,[id_actual]
+      ,[id_actual_oqc]
+      ,[at_no]
+      ,[product]
+      ,[staff_id]
+      ,[staff_id_oqc]
+      ,[machine_id]
+      ,[mt_type]
+      ,[mt_cd]
+      ,[mt_no]
+      ,[gr_qty]
+      ,[real_qty]
+      ,[staff_qty]
+      ,[sp_cd]
+      ,[rd_no]
+      ,[sd_no]
+      ,[ext_no]
+      ,[ex_no]
+      ,[dl_no]
+      ,[recevice_dt]
+      ,[date]
+      ,[return_date]
+      ,[alert_NG]
+      ,[expiry_dt]
+      ,[dt_of_receipt]
+      ,[expore_dt]
+      ,[recevice_dt_tims]
+      ,[rece_wip_dt]
+      ,[picking_dt]
+      ,[shipping_wip_dt]
+      ,[end_production_dt]
+      ,[lot_no]
+      ,[mt_barcode]
+      ,[mt_qrcode]
+      ,[mt_sts_cd]
+      ,[bb_no]
+      ,[bbmp_sts_cd]
+      ,[lct_cd]
+      ,[lct_sts_cd]
+      ,[from_lct_cd]
+      ,[to_lct_cd]
+      ,[output_dt]
+      ,[input_dt]
+      ,[buyer_qr]
+      ,[orgin_mt_cd]
+      ,[remark]
+      ,[sts_update]
+      ,[use_yn]
+      ,[ExportCode]
+      ,[LoctionMachine]
+      ,[ShippingToMachineDatetime]
+      ,[Description]
+      ,[reg_id]
+      ,[reg_dt]
+      ,[chg_id]
+      ,[chg_dt])
+SELECT *
+FROM ShinsungTest.[autodb-2129].w_material_info01
+SET IDENTITY_INSERT ShinsungTest.[autodb-2129].w_material_info OFF;
+----
+SET IDENTITY_INSERT ShinsungTest.[autodb-2129].w_material_info ON;
+INSERT INTO ShinsungTest.[autodb-2129].w_material_info ([wmtid]
+      ,[id_actual]
+      ,[id_actual_oqc]
+      ,[at_no]
+      ,[product]
+      ,[staff_id]
+      ,[staff_id_oqc]
+      ,[machine_id]
+      ,[mt_type]
+      ,[mt_cd]
+      ,[mt_no]
+      ,[gr_qty]
+      ,[real_qty]
+      ,[staff_qty]
+      ,[sp_cd]
+      ,[rd_no]
+      ,[sd_no]
+      ,[ext_no]
+      ,[ex_no]
+      ,[dl_no]
+      ,[recevice_dt]
+      ,[date]
+      ,[return_date]
+      ,[alert_NG]
+      ,[expiry_dt]
+      ,[dt_of_receipt]
+      ,[expore_dt]
+      ,[recevice_dt_tims]
+      ,[rece_wip_dt]
+      ,[picking_dt]
+      ,[shipping_wip_dt]
+      ,[end_production_dt]
+      ,[lot_no]
+      ,[mt_barcode]
+      ,[mt_qrcode]
+      ,[mt_sts_cd]
+      ,[bb_no]
+      ,[bbmp_sts_cd]
+      ,[lct_cd]
+      ,[lct_sts_cd]
+      ,[from_lct_cd]
+      ,[to_lct_cd]
+      ,[output_dt]
+      ,[input_dt]
+      ,[buyer_qr]
+      ,[orgin_mt_cd]
+      ,[remark]
+      ,[sts_update]
+      ,[use_yn]
+      ,[ExportCode]
+      ,[LoctionMachine]
+      ,[ShippingToMachineDatetime]
+      ,[Description]
+      ,[reg_id]
+      ,[reg_dt]
+      ,[chg_id]
+      ,[chg_dt])
+SELECT *
+FROM ShinsungTest.[autodb-2129].w_material_infoPO04
+SET IDENTITY_INSERT ShinsungTest.[autodb-2129].w_material_info OFF;
+
+--
+SET IDENTITY_INSERT ShinsungTest.[autodb-2129].w_material_info ON;
+INSERT INTO ShinsungTest.[autodb-2129].w_material_info ([wmtid]
+      ,[id_actual]
+      ,[id_actual_oqc]
+      ,[at_no]
+      ,[product]
+      ,[staff_id]
+      ,[staff_id_oqc]
+      ,[machine_id]
+      ,[mt_type]
+      ,[mt_cd]
+      ,[mt_no]
+      ,[gr_qty]
+      ,[real_qty]
+      ,[staff_qty]
+      ,[sp_cd]
+      ,[rd_no]
+      ,[sd_no]
+      ,[ext_no]
+      ,[ex_no]
+      ,[dl_no]
+      ,[recevice_dt]
+      ,[date]
+      ,[return_date]
+      ,[alert_NG]
+      ,[expiry_dt]
+      ,[dt_of_receipt]
+      ,[expore_dt]
+      ,[recevice_dt_tims]
+      ,[rece_wip_dt]
+      ,[picking_dt]
+      ,[shipping_wip_dt]
+      ,[end_production_dt]
+      ,[lot_no]
+      ,[mt_barcode]
+      ,[mt_qrcode]
+      ,[mt_sts_cd]
+      ,[bb_no]
+      ,[bbmp_sts_cd]
+      ,[lct_cd]
+      ,[lct_sts_cd]
+      ,[from_lct_cd]
+      ,[to_lct_cd]
+      ,[output_dt]
+      ,[input_dt]
+      ,[buyer_qr]
+      ,[orgin_mt_cd]
+      ,[remark]
+      ,[sts_update]
+      ,[use_yn]
+      ,[ExportCode]
+      ,[LoctionMachine]
+      ,[ShippingToMachineDatetime]
+      ,[Description]
+      ,[reg_id]
+      ,[reg_dt]
+      ,[chg_id]
+      ,[chg_dt])
+SELECT *
+FROM ShinsungTest.[autodb-2129].w_material_infoPO05
+SET IDENTITY_INSERT ShinsungTest.[autodb-2129].w_material_info OFF;
+---
+SET IDENTITY_INSERT ShinsungTest.[autodb-2129].w_material_info ON;
+INSERT INTO ShinsungTest.[autodb-2129].w_material_info ([wmtid]
+      ,[id_actual]
+      ,[id_actual_oqc]
+      ,[at_no]
+      ,[product]
+      ,[staff_id]
+      ,[staff_id_oqc]
+      ,[machine_id]
+      ,[mt_type]
+      ,[mt_cd]
+      ,[mt_no]
+      ,[gr_qty]
+      ,[real_qty]
+      ,[staff_qty]
+      ,[sp_cd]
+      ,[rd_no]
+      ,[sd_no]
+      ,[ext_no]
+      ,[ex_no]
+      ,[dl_no]
+      ,[recevice_dt]
+      ,[date]
+      ,[return_date]
+      ,[alert_NG]
+      ,[expiry_dt]
+      ,[dt_of_receipt]
+      ,[expore_dt]
+      ,[recevice_dt_tims]
+      ,[rece_wip_dt]
+      ,[picking_dt]
+      ,[shipping_wip_dt]
+      ,[end_production_dt]
+      ,[lot_no]
+      ,[mt_barcode]
+      ,[mt_qrcode]
+      ,[mt_sts_cd]
+      ,[bb_no]
+      ,[bbmp_sts_cd]
+      ,[lct_cd]
+      ,[lct_sts_cd]
+      ,[from_lct_cd]
+      ,[to_lct_cd]
+      ,[output_dt]
+      ,[input_dt]
+      ,[buyer_qr]
+      ,[orgin_mt_cd]
+      ,[remark]
+      ,[sts_update]
+      ,[use_yn]
+      ,[ExportCode]
+      ,[LoctionMachine]
+      ,[ShippingToMachineDatetime]
+      ,[Description]
+      ,[reg_id]
+      ,[reg_dt]
+      ,[chg_id]
+      ,[chg_dt])
+SELECT *
+FROM ShinsungTest.[autodb-2129].w_material_infoPO06
+SET IDENTITY_INSERT ShinsungTest.[autodb-2129].w_material_info OFF;
+--
+SET IDENTITY_INSERT ShinsungTest.[autodb-2129].w_material_info ON;
+INSERT INTO ShinsungTest.[autodb-2129].w_material_info ([wmtid]
+      ,[id_actual]
+      ,[id_actual_oqc]
+      ,[at_no]
+      ,[product]
+      ,[staff_id]
+      ,[staff_id_oqc]
+      ,[machine_id]
+      ,[mt_type]
+      ,[mt_cd]
+      ,[mt_no]
+      ,[gr_qty]
+      ,[real_qty]
+      ,[staff_qty]
+      ,[sp_cd]
+      ,[rd_no]
+      ,[sd_no]
+      ,[ext_no]
+      ,[ex_no]
+      ,[dl_no]
+      ,[recevice_dt]
+      ,[date]
+      ,[return_date]
+      ,[alert_NG]
+      ,[expiry_dt]
+      ,[dt_of_receipt]
+      ,[expore_dt]
+      ,[recevice_dt_tims]
+      ,[rece_wip_dt]
+      ,[picking_dt]
+      ,[shipping_wip_dt]
+      ,[end_production_dt]
+      ,[lot_no]
+      ,[mt_barcode]
+      ,[mt_qrcode]
+      ,[mt_sts_cd]
+      ,[bb_no]
+      ,[bbmp_sts_cd]
+      ,[lct_cd]
+      ,[lct_sts_cd]
+      ,[from_lct_cd]
+      ,[to_lct_cd]
+      ,[output_dt]
+      ,[input_dt]
+      ,[buyer_qr]
+      ,[orgin_mt_cd]
+      ,[remark]
+      ,[sts_update]
+      ,[use_yn]
+      ,[ExportCode]
+      ,[LoctionMachine]
+      ,[ShippingToMachineDatetime]
+      ,[Description]
+      ,[reg_id]
+      ,[reg_dt]
+      ,[chg_id]
+      ,[chg_dt])
+SELECT *
+FROM ShinsungTest.[autodb-2129].w_material_infoPO07
+SET IDENTITY_INSERT ShinsungTest.[autodb-2129].w_material_info OFF;
+
+
+select wmtid 
+From [ShinsungTest].[autodb-2129].w_material_info 
+where
+ expore_dt is not null and TRY_PARSE( CONCAT(SUBSTRING(expore_dt,1,4),'-',SUBSTRING(expore_dt,5,2),'-',SUBSTRING(expore_dt,7,2)) AS datetime USING 'en-US') is null;
+ 
+ select *
+from  [ShinsungTest].[autodb-2129].w_material_info 
+where wmtid = 265854;
+
+update [ShinsungTest].[autodb-2129].w_material_info 
+set expore_dt = '20210211'
+where wmtid = 265854;
+
+SELECT  wmtid, expiry_dt,expore_dt,dt_of_receipt, mt_cd, reg_dt 
+From [ShinsungTest].[autodb-2129].w_material_info 
+WHERE  LEN(expiry_dt) <8 
+;
+update [ShinsungTest].[autodb-2129].w_material_info 
+set expore_dt = '20210211'
+where dt_of_receipt = '';
+
+delete 
+from [ShinsungTest].[autodb-2129].w_material_mapping
+where [ShinsungTest].[autodb-2129].w_material_mapping.mt_lot is null 
+
+
+select count(*)
+from inventory_products
+-- 465035
+select count(*)
+from w_material_info_mms
+461325
+
+select count(*)
+from w_material_info_tims
+868359
+
+465035+461325+868359== 1794719 (mssql)
+select count(*)
+from ShinsungTest.[real-autodb].w_material_info 
+-- 1793355(mysql)
+---
+select count(*)
+from ShinsungTest.[real-autodb].w_material_mapping
+-- 2859417(mysql)
+
+select count(*)
+from w_material_mapping_mms
+--1970765
+select count(*)
+from w_material_mapping_tims
+--891082
+
+2861847
+
+
+
+

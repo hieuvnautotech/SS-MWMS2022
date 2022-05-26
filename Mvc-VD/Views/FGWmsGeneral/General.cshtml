@@ -1,0 +1,131 @@
+﻿@{
+    ViewBag.Title = "FGGeneral";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="@Html.Raw(ViewData["FG-WMS"])" data-level_2="@Html.Raw(ViewData["Inventory"])" data-level_3="@Html.Raw(ViewData["General"])"></div>
+}
+<div class="container-fluid">
+
+    <div class="box-body my-2 bg-white">
+        <div class="col-md-1 p-1  text-right">
+            <label><b>Buyer</b></label>
+        </div>
+        <div class="col-md-3 p-1  text-right">
+            <div class="input-group mt_plus">
+                <input type="text" name="" id="scBuyerCode" class="input-text form-control">
+
+            </div>
+
+        </div>
+        <div class="col-md-3 p-1">
+        </div>
+        <div class="col-md-2 p-1 ">
+            <input type="file" name="file" id="imgupload" accept=".xlsx,.xls,.csv,.tsv,.xml,.json" class="valid">
+        </div>
+        <div class="col-md-1 p-2">
+            <button id="uploadBtn" class="btn btn-sm btn-primary button-srh mr-3"><i class="fa fa-upload">&nbsp;Upload</i></button>
+        </div>
+        <div class="col-md-2 p-2 css_button">
+            <label>
+            </label>
+            <a id="downloadBtn" href="/Excel/FileInventorySap/invertorySap.xlsx" class="btn btn-success btn-download btnDownload mr-3" download=""><i class="fa fa-download"> &nbsp;Download Form Excel</i></a>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 p-0 m-0" id="result">
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-2 p-1">
+                <label><b>Buyer</b></label>
+                <input type="text" name="buyer_cd" id="buyer_cd" class="input-text form-control">
+            </div>
+            <div class="col-md-2 p-1">
+                <label><b>Product Code</b></label>
+                <input type="text" name="productCode" id="productCode" class="input-text form-control">
+            </div>
+            <div class="col-md-2 p-1">
+                <label><b>Product Name</b></label>
+                <input type="text" name="productName" id="productName" class="input-text form-control">
+            </div>
+            <div class="col-md-1 p-1">
+                <label>Type(Roll/Sheet)</label>
+                <select id="s_bom_type" class="form-control">
+                    <option value="" selected="selected">*Type*</option>
+                    <option value="RollType">Roll Type</option>
+                    <option value="FOLDABLE">FOLDABLE</option>
+                    <option value="SAMPLE">SAMPLE</option>
+                    <option value="ZType">Z Type</option>
+                    <option value="SheetType">Sheet Type</option>
+                    <option value="METAL">METAL</option>
+                </select>
+            </div>
+            <div class="col-md-1 p-1">
+                <label><b>Receive Date</b></label>
+                <input type="text" name="recevice_dt_start" id="recevice_dt_start" class="form-control">
+            </div>
+            <div class="col-md-1 p-1">
+                <label style="width:100%">&nbsp;&nbsp;</label>
+                <input type="text" name="recevice_dt_end" id="recevice_dt_end" class="form-control">
+            </div>
+
+            <div class="col-md-1 p-2">
+                <label style="width:100%">&nbsp;&nbsp;</label>
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+
+            </div>
+            <div class="col-md-1 p-3">
+                <label style="width:100%">&nbsp;&nbsp;</label>
+                <form method="post" id="exportData">
+                    <button id="exportDataExcel" class="btn btn-success btn-download btnDownload mr-3"> <i class="fa fa-file-excel-o">&nbsp;Export To Excel</i></button>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2 py-1">
+            <label>Quantity</label>
+            <input type="number" name="quantity" id="quantity" class="input-text form-control  text-left valid">
+        </div>
+        <div class="col-md-3 ">
+            <label style="width:100%">&nbsp;&nbsp;</label>
+            <button type="button" id="change_quantity" class="btn btn-success button-srh2 active"><i class="fa fa-save">&nbsp;Update</i></button>
+        </div>
+        <div class="col-md-2 py-1">
+            <label>Lot No</label>
+            <input type="text" name="change_lotno" id="change_lotno" class="form-control">
+        </div>
+        <div class="col-md-3 ">
+            <label style="width:100%">&nbsp;&nbsp;</label>
+
+            <button type="button" id="change_LotNo" class="btn btn-success button-srh2 active"><i class="fa fa-save">&nbsp;Update Lot No</i></button>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12 p-0 m-0" id="result">
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+
+        <div class="p-0 m-0">
+            <table id="GeneralGrid"></table>
+            <div id="GeneralGridPager"></div>
+        </div>
+    </div>
+</div>
+@section scripts{
+
+    <script src="~/Scripts/FGWmsGeneral/General.js"></script>
+}

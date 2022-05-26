@@ -1,0 +1,4 @@
+Select mtid, mt_type, mt_no, mt_cd, mt_no_origin, mt_nm, mf_cd, gr_qty, unit_cd, bundle_qty, bundle_unit, sp_cd, s_lot_no, item_vcd, qc_range_cd,
+width, width_unit, spec, spec_unit, area, area_unit, thick, thick_unit, stick, stick_unit, consum_yn, price, tot_price, price_unit, price_least_unit,
+photo_file, re_mark, use_yn, del_yn, barcode, reg_id, reg_dt, chg_id, chg_dt
+From d_material_info

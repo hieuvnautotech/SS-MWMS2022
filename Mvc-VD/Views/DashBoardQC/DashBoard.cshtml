@@ -1,0 +1,582 @@
+﻿@*@model IEnumerable<Mvc_VD.Models.s_order_factory_info>*@
+@model  Mvc_VD.Models.mb_message
+
+@{ ViewBag.Title = "Index";
+   Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+@section Tilte {
+    <div class="col-xs-12">
+        <h4 class="m-0 text-dark"><b>Dash Board</b></h4>
+        <small style="font-size: 14px"><i class="fa fa-dashboard"></i>
+            HOME > DashBoard > Dash Board
+        </small>
+    </div>
+}
+
+<style type="text/css">
+    table#info {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 96%;
+    }
+
+    /*table#noticeGrid td a {
+        display: inline-block;
+        position: relative;
+        top: 50%;
+    }*/
+</style>
+
+
+@*<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">*@
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-aqua">
+                    <div class="inner">
+                        <h3 id="m_actual_efficiency"></h3>
+                        <p>Production Actual Efficiency</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion-pie-graph"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-green">
+                    <div class="inner">
+
+                        <h3 id="m_actual_amount"><sup style="font-size: 20px"></sup></h3>
+                        <p>Production Actual Amount</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-stats-bars"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-yellow">
+                    <div class="inner">
+                        <h3>3,856</h3>
+                        <p>Receiving Material</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-log-in"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-red">
+                    <div class="inner">
+                        <h3>65</h3>
+                        <p>Shipping Goods</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-log-out"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid clearfix">
+    <div class="row p-0 m-0 ">
+        <div class="col-lg-12 col-md-9 col-xs-6">
+            <div class="box-body bg-white">
+                <canvas id="myChart" height="81"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid clearfix">
+    <div class="row p-0 m-0 ">
+        <div class="box">
+            <div class="col-lg-3 col-md-4 col-xs-12">
+                <canvas id="myChart3" height="227"></canvas>
+            </div>
+            <div class="col-lg-3 col-md-4 col-xs-12">
+                <canvas id="myChart4" height="227"></canvas>
+            </div>
+            @*            <div class="col-lg-3 col-md-3 col-xs-12" style="margin: 1px;">
+                <canvas id="myChart5" height="227"></canvas>
+            </div>*@
+            <div class="col-lg-6 col-md-4 col-xs-6">
+                <div class="box-body bg-white boxnoticeGrid">
+                    <table id="noticeGrid"></table>
+                    <div id="noticeGridPager"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid clearfix">
+    <div class="row p-0 m-0">
+        <div class="col-lg-6 col-md-6 col-xs-12">
+            <div class="box-body my-2 bg-white">
+                <table id="dashBoardGrid"></table>
+                <div id="dashBoardGridPager"></div>
+            </div>
+
+
+            @*            <div class="box-body my-2 bg-white">
+                <h4>WO Management</h4>
+                <table id="dataTable" class="table table-bordered table-striped">
+                    <thead>
+
+                        <tr class="table-warning">
+                            <th style="text-align: center !important">WO</th>
+                            <th style="text-align: center !important">Taget</th>
+                            <th style="text-align: center !important">Actual</th>
+                            <th style="text-align: center !important">Defective</th>
+                            <th style="text-align: center !important">Efficiency</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>*@
+
+        </div>
+
+
+
+
+
+
+        <div class="col-lg-6 col-md-6 col-xs-12">
+            <div class="box box-danger direct-chat direct-chat-danger">
+                <div class="box-header with-border ">
+                    <div class="box-title">
+                        <label><b>Direct Chat</b></label>
+                    </div>
+                    @*                        <h3 </h3>*@
+                    @*                        <div class="box-tools pull-right text-right clearfix">
+                            <button class="btn btn-box-tool" data-widget="collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                            <button class="btn btn-box-tool" data-toggle="tooltip" title="Contacts" data-widget="chat-pane-toggle">
+                                <i class="fa fa-comments"></i>
+                            </button>
+                            <button class="btn btn-box-tool" data-widget="remove">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </div>*@
+                </div>
+                <div class="box-body" id="info2"></div>
+                <div class="box-footer">
+                    <div class="row">
+                        <div class="col-md-11">
+                            <input type="text" name="message" id="c_message" placeholder="Type Message ..." class="input-text form-control">
+                        </div>
+                        <div class="col-md-1 py-1 px-1 pull-right text-right">
+                            <button type="button" id="c_save_but" class="btn btn-success btn-flat"><i class="fa fa-plus">&nbsp;Send</i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ./col -->
+    </div>
+</div>
+
+
+
+<div class="dialog" title="Notice Information">
+    @* <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-primary button-srh" id="closestyle"><i class="fa fa-close">&nbsp;Close</i></button>
+                   
+                </div>
+            </div>
+        </div>
+    </div>*@
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="col-md-12 py-2">
+                <div id="info" class="table-responsive-md"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/DashBoard/_DashBoard.js">
+
+    </script>
+    <script src="~/Scripts/DashBoard/_Notice_Poup.js"></script>
+
+    <script src="~/Scripts/Chart.min.js"></script>
+    <script src="~/Scripts/JSCharting.js"></script>
+    <script src="~/Scripts/toolbar.js"></script>
+    <script src="~/Scripts/types.js"></script>
+    @*<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>*@
+    <script src="~/Content/jquery-ui.js_1.10.3/jquery-ui.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+    <script src="~/Scripts/jquery.dataTables.min.js"></script>
+
+    @*    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>*@
+
+
+    <script>
+
+        function lineChart() {
+            $.ajax({
+                url: "/DashBoard/getLineChart",
+                type: "get",
+                dataType: "json",
+                success: function (rtnData) {
+
+                    var list1 = "", list2 = "", list3 = "", list4 = "";
+                    $.each(rtnData, function (dataType, data) {
+                        if (dataType == "rows") { list1 = data[0] }
+                        if (dataType == "list2") { list2 = data[0] }
+                        if (dataType == "list3") { list3 = data[0] }
+                        if (dataType == "list4") { list4 = data[0] }
+
+
+                        console.log(list1);
+                        console.log(list2);
+                        console.log(list3);
+                        console.log(list4);
+                    });
+                    var ctx = document.getElementById("myChart").getContext("2d"),
+                        config = {
+                            type: "line",
+                            data: {
+
+                                labels: list4,
+
+                                datasets: [{
+                                    label: 'Target',
+                                    //backgroundColor: 'green',
+                                    //fillColor: "#D2DED6",
+                                    //strokeColor: "#D2DED6",
+                                    //pointStrokeColor: "#D2DED6",
+                                    data: list1,
+                                    borderColor: 'blue',
+                                    borderWidth: 1,
+                                    fill: true,
+                                    //yAxisID: 'y-axis-1',
+                                },
+                                {
+                                    label: 'Actual',
+                                    data: list2,
+                                    //fillColor: "#3c8dbc",
+                                    //strokeColor: "#3c8dbc",
+                                    //pointStrokeColor: "#3c8dbc",
+                                    borderColor: 'green',
+
+                                    borderWidth: 1,
+                                    fill: true,
+                                    //yAxisID: 'y-axis-2',
+
+                                },
+                                {
+                                    label: 'Defective',
+                                    data: list3,
+                                    borderColor: 'red',
+                                    borderWidth: 1,
+                                    fill: true,
+                                    //yAxisID: 'y-axis-2',
+
+                                }
+                                ]
+
+                            },
+                            options: {
+                                //datasetFill: true,
+                                responsive: true,
+                                title: {
+                                    display: true,
+                                    text: "",
+                                },
+                                scales: {
+                                    xAxes: [{
+                                        display: true,
+                                        scaleLabel: {
+                                            display: true,
+                                            labelString: 'Day'
+
+                                        },
+                                        ticks: {
+                                            beginAtZero: true
+                                        }
+                                    }]
+
+                                }
+
+                            }
+                        };
+                    window.myPie = new Chart(ctx, config);
+
+                },
+                error: function (rtnData) {
+                    alert('error' + rtnData);
+                }
+            });
+        }
+        lineChart();
+        setInterval(lineChart, 30000);
+
+    </script>
+    <script>
+
+        function pieChart1() {
+            $.ajax({
+                url: "/DashBoard/getPieChart",
+                type: "get",
+                dataType: "json",
+                success: function (rtnData) {
+                    var list1 = "";
+                    list2 = "",
+                    list3 = "";
+                    $.each(rtnData, function (dataType, data) {
+
+                        if (dataType == "pie") { list1 = data }
+                        if (dataType == "roundtarget") { list2 = data }
+                    });
+                    new Chart(document.getElementById("myChart3"), {
+                        type: 'doughnut',
+                        data: {
+                            datasets: [
+                              {
+                                  //label: "Smoke",
+
+                                  backgroundColor: ["green", "blue"],
+                                  data: [list1, list2],
+                                  //borderColor: "#FFCD56",
+                              }
+
+                            ],
+                            labels: ['Target' + ' ' + list1 + ' %'],
+
+                        },
+                        options: {
+                            title: {
+                                position: 'bottom',
+                                display: true,
+                                text: 'Actual Efficiency'
+                            },
+                            animation: {
+                                ////animateRotate: true,
+
+                                //duration: 250 * 1.5,
+                                //easing: 'linear',
+                                animateRotate: true,
+                                //rotation: -10 * Math.PI,
+                                //circumference: 50 * Math.PI,
+                                //cutoutPercentage: 50,
+                                //duration: 2000,
+
+
+
+
+                            },
+                            //layout: {
+                            //    padding: {
+                            //        bottom: 5
+                            //    }
+                            //}
+                            //,
+                            tooltips: {
+                                enabled: false,
+                            }
+                        }
+                    });
+                }
+
+            });
+        }
+
+
+        pieChart1();
+        setInterval(pieChart1, 30000);
+    </script>
+    <script>
+        function pieChart2() {
+            $.ajax({
+                url: "/DashBoard/getPieChart",
+                type: "get",
+                dataType: "json",
+                success: function (rtnData) {
+
+                    var list1 = "";
+                    list2 = "",
+                    list3 = "";
+                    $.each(rtnData, function (dataType, data) {
+                        if (dataType == "defective") { list1 = data }
+                        if (dataType == "targetsum") { list3 = data }
+                    });
+
+                    new Chart(document.getElementById("myChart4"), {
+                        type: 'doughnut',
+                        data: {
+                            datasets: [
+                              {
+                                  //label: "Smoke",
+
+                                  backgroundColor: ["red", "blue"],
+                                  data: [list1, list3],
+                                  //borderColor: "#FFCD56",
+                              }
+
+                            ],
+                            labels: ['Defective' + ' ' + list1]
+                        },
+                        options: {
+                            title: {
+                                position: 'bottom',
+                                display: true,
+                                text: 'Defective'
+                            },
+                            animation: {
+                                ////animateRotate: true,
+
+                                //duration: 250 * 1.5,
+                                //easing: 'linear',
+                                animateRotate: true,
+                                //rotation: -10 * Math.PI,
+                                //circumference: 50 * Math.PI,
+                                //cutoutPercentage: 50,
+                                //duration: 2000,
+
+
+
+
+                            },
+                            //layout: {
+                            //    padding: {
+                            //        bottom: 5
+                            //    }
+                            //}
+                            //,
+                            tooltips: {
+                                enabled: false,
+                            }
+                        }
+                    });
+
+
+                }
+
+            });
+        }
+
+        pieChart2();
+        setInterval(pieChart2, 30000);
+    </script>
+
+    <script>
+
+
+
+        function fun_check1() {
+            if ($("#c_message").val().trim() == "") {
+                alert("Please enter Message");
+                $("#c_message").val("");
+                $("#c_message").focus();
+                return false;
+            }
+            return true;
+        }
+        $(document).ready(function () {
+            $.ajax({
+                url: "/DashBoard/getMessageAll",
+                type: "get",
+                dataType: "json",
+                success: function (data) {
+                    if (data != null && data != undefined) {
+                        var html = '<div class="direct-chat-messages">';
+                        $.each(data, function (key, item) {
+                            html += '<div class="direct-chat-info clearfix">'
+                            html += '<div class="direct-chat-timestamp pull-left">' + item.reg_id + ' </div>'
+                            html += '<div class="direct-chat-timestamp pull-right text-right clearfix">' + item.reg_dt + ' </div></div>'
+                            html += '<div class="direct-chat-msg"><div class="direct-chat-text">' + item.message + '</div></div>';
+                        });
+                        html += '</div>';
+                        $("#info2").html(html);
+
+                    }
+                },
+                error: function (data) {
+                    alert('The Code is the same. Please check again.');
+                }
+            });
+        });
+
+        $("#c_save_but").click(function () {
+            if (fun_check1() == true) {
+                var message = $('#c_message').val();
+                $.ajax({
+                    url: "/DashBoard/insertmessage",
+                    type: "get",
+                    dataType: "json",
+                    data: {
+                        message: message,
+                    },
+                    success: function (data) {
+                        if (data != null && data != undefined) {
+                            var html = '<div class="direct-chat-messages">';
+                            $.each(data, function (key, item) {
+                                html += '<div class="direct-chat-info clearfix">'
+                                html += '<div class="direct-chat-timestamp pull-left">' + item.reg_id + ' </div>'
+                                html += '<div class="direct-chat-timestamp pull-right text-right clearfix">' + item.reg_dt + ' </div></div>'
+                                html += '<div class="direct-chat-msg"><div class="direct-chat-text">' + item.message + '</div></div>';
+                            });
+                            html += '</div>';
+                            $("#info2").html(html);
+                        }
+                    },
+                    error: function (data) {
+                        alert('The Code is the same. Please check again.');
+                    }
+                });
+            }
+        });
+
+
+    </script>
+}
+
+
+
+<style>
+    .to {
+        display: grid;
+    }
+
+    .title_name {
+        border: 1px solid #ccc;
+        padding: 5px;
+    }
+
+    h4.title_c {
+        font-size: 14px;
+        font-weight: 500;
+        color: #000;
+        transition: 1s;
+        text-align: left;
+        font-family: sans-serif;
+        color: red;
+    }
+</style>

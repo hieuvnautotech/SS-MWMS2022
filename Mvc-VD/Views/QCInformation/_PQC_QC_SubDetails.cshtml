@@ -1,0 +1,46 @@
+﻿<table id="pqcSubDetailsGrid" style="width: 100%"></table>
+<div id="pqcSubDetailGridPaging"></div>
+
+<script>
+
+    $(function () {
+        $("#pqcSubDetailsGrid")
+            .jqGrid({
+                url: "/QCInformation/processQcSub",
+                datatype: 'json',
+                mtype: 'Get',
+                colModel: [
+                   { label: 'PROCESS', name: 'process_no', width: 80, align: 'center', /* cellattr: form */ },
+                   { label: 'SUBJECT', name: 'check_subject', width: 100, align: 'left' },
+                   { label: 'VALUE', name: 'check_value', width: 150, align: 'right' },
+                   { label: 'QTy', name: 'check_qty', align: 'right', width: 120 },
+                ],
+
+                pager: "#pqcSubDetailGridPaging",
+                //pager: jQuery('#processQcSubGridPager'),
+                viewrecords: true,
+                rowList: [50, 100, 200, 500],
+                height: 220,
+                width: '100%',
+                autowidth: true,
+                rowNum: 50,
+                loadtext: "Loading...",
+                emptyrecords: "No data.",
+                rownumbers: true,
+                gridview: true,
+                shrinkToFit: false,
+                multiselect: false,
+                autowidth: true,
+                loadonce: true,
+                jsonReader:
+                {
+                    root: "rows",
+                    page: "page",
+                    total: "total",
+                    records: "records",
+                    repeatitems: false,
+                    Id: "0"
+                },
+            });
+    });
+</script>

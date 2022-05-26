@@ -1,0 +1,179 @@
+﻿@{
+    ViewBag.Title = "GenaralExportMaterial";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    @*<div class="col-xs-12" id="current_menu" data-level_1="WIP-WMS" data-level_2="Export Material" data-level_3="Export Material to Machine"></div>*@
+    <div class="col-xs-12" id="current_menu" data-level_1="@Html.Raw(ViewData["MMS"])" data-level_2="@Html.Raw(ViewData["Inventory"])" data-level_3="@Html.Raw(ViewData["General"])"></div>
+}
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white" style="overflow: hidden">
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active" id="tab_1"><a href="#tab_1" data-toggle="tab">Material</a></li>
+
+            </ul>
+        </div>
+        <div class="tab-content active" id="tab_c1">
+            <div class="container-fluid">
+                <div class="row text-right">
+                    <div class="col-md-12 px-3">
+                        <form method="post" id="exportData">
+                            <button type="submit" id="excelBtn" class="btn btn-sm btn-warning button-top"><i class="fa fa-file-excel-o">&nbsp;Excel</i></button>
+                            <button type="submit" id="htmlBtn" class="btn btn-sm btn-warning button-top" hidden="hidden"><i class="fa fa-print">&nbsp;HTML</i></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid">
+                <div class="box-body my-2 bg-white">
+
+                    <div class="row p-0 m-0">
+                        <div class="col-md-2     p-1">
+                            <label><b>MT No</b></label>
+                            <input type="text" name="s_mt_no" id="s_mt_no" class="input-text form-control">
+                        </div>
+                        <div class="col-md-3 p-1">
+                            <label><b>MT Code</b></label>
+                            <input type="text" name="ss_mt_cd" id="ss_mt_cd" class="input-text form-control">
+                        </div>
+                        <div class="col-md-2 p-1 hidden">
+                            <label><b>MT Name</b></label>
+                            <input type="text" name="s_mt_nm" id="s_mt_nm" class="input-text form-control">
+                        </div>
+
+                        <div class="col-md-2 py-1">
+                            <label><b>Product</b></label>
+                            <div class="input-group mt_plus">
+                                <input type="text" name="s_product_cd" id="s_product_cd" class="input-text form-control" placeholder="Product" required>
+                                <span class="input-group-addon psbom"><a href="#" class="poupdialogStyle"><i class="fa fa-search text-navy"></i></a></span>
+                            </div>
+                        </div>
+                        <div class="col-md-2 py-1" style="display:none">
+                            <label><b>Location</b></label>
+                            <div class="input-group mt_plus">
+                                <input type="hidden" name="s_locationCode" id="s_locationCode" class="input-text form-control" placeholder="Location" required>
+                                <input type="text" name="s_locationNAme" id="s_locationNAme" readonly class="input-text form-control" placeholder="Location" required>
+                                <span class="input-group-addon psbom"><a href="#" class="SelectLocation"><i class="fa fa-search text-navy"></i></a></span>
+                                <span class="input-group-addon psbom"><a href="#" onclick="getCheck(this)" id="myCheck" class="ClearLocation"><i class="fa fa-trash"></i></a></span>
+
+                            </div>
+                            @*<input type="checkbox" name="ClickClear" id="myCheck" ><br>*@
+                            @*<a href="#" onclick="getCheck(this)" id="myCheck">Clear</a>*@
+                        </div>
+                        <div class="col-md-1 p-1">
+                            <label><b>Status</b></label>
+                            <select name="status" id="status" class="form-control valid">
+                                <option value="" selected="selected">Tất Cả</option>
+                                <option value="002">Đang Sử Dụng </option>
+                                <option value="001">Chưa Sử Dụng</option>
+                                <option value="004">Trả về mà chưa comfirm</option>
+                            </select>
+                        </div>
+                        <div class="col-md-1 p-1">
+                            <label><b>Receive Date</b></label>
+                            <input type="text" name="recevice_dt_start" id="Rece_start" class="form-control">
+                        </div>
+
+                        <div class="col-md-1 p-1">
+                            <label style="width:100%"><b>&nbsp;&nbsp;&nbsp;</b></label>
+                            <input type="text" name="recevice_dt_end" id="Rece_end" class="form-control">
+                        </div>
+                        <div class="col-md-2">
+                            <label style="width:100%"><b>&nbsp;&nbsp;&nbsp;</b></label>
+                            <button id="searchBtn_list" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                            <button type="button" id="printBtn" class="btn btn-sm btn-warning form-control-text"><i class="fa fa fa-print">&nbsp;Print</i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*---------------------------------------------------------------------------------------------------------------------------*@
+            <div class="container-fluid">
+                <div class="box-body my-2 bg-white">
+                    <div class="row p-0 m-0">
+                        <table id="list"></table>
+                        <div id="listPager"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+
+<!--Dialog Product-->
+<div class="dialog_PRODUCT" title="Product Information">
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body well text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="style_no_popup" placeholder="Product Code" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="style_nm_popup" placeholder="Product Name" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="md_cd" id="md_cd_popup" placeholder="Model Code" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2 d-flex">
+                    <button id="searchBtn_product_popup" class="btn btn-sm mr-1 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button type="button" class="btn btn-sm btn-success button-srh disabled" id="savestyle_product"><i class="fa fa-save">&nbsp;Selected</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid  p-0 m-0">
+        <div class="box-body my-2 bg-white">
+            <div class="p-0 m-0 ">
+                <table id="popupProduct"></table>
+                <div id="pagerProduct"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*------------------------------------------*@
+
+<!-- ./ Dialog -->
+<!--Dialog SelectLocation-->
+<div class="poupdialogSelectLocation" title="Danh sách kệ kho sản xuất">
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body well text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-3 p-2">
+                    <input type="text" name="s_locationCode" id="s_locationCode" placeholder="Code" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="s_locationName" id="s_locationName" placeholder="Name" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2 d-flex">
+                    <button id="searchBtn_Location_popup" class="btn btn-sm mr-1 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button type="button" class="btn btn-sm btn-success button-srh disabled" id="SelectLocation"><i class="fa fa-save">&nbsp;Selected</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid  p-0 m-0">
+        <div class="box-body my-2 bg-white">
+            <div class="p-0 m-0 ">
+                <table id="ListRack"></table>
+                <div id="pagerListRack"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    span.input-group-addon {
+        border: 0.1px solid;
+    }
+</style>
+@section scripts{
+    <script src="~/scripts/wipwms/exporttomachine/general.js"></script>
+    <script src="~/Scripts/WIP/Inventory/LocationRackPoup.js"></script>
+    <script src="/Scripts/WIP/Inventory/Product_Poup.js"></script>
+}
+

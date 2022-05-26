@@ -1,0 +1,91 @@
+﻿@model Mvc_VD.Models.author_info
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Delete</title>
+</head>
+<body>
+    <h3>Are you sure you want to delete this?</h3>
+    <fieldset>
+        <legend>author_info</legend>
+    
+        <div class="display-label">
+             @Html.DisplayNameFor(model => model.atno)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.atno)
+        </div>
+    
+        <div class="display-label">
+             @Html.DisplayNameFor(model => model.at_cd)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.at_cd)
+        </div>
+    
+        <div class="display-label">
+             @Html.DisplayNameFor(model => model.at_nm)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.at_nm)
+        </div>
+    
+        <div class="display-label">
+             @Html.DisplayNameFor(model => model.use_yn)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.use_yn)
+        </div>
+    
+        <div class="display-label">
+             @Html.DisplayNameFor(model => model.reg_id)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.reg_id)
+        </div>
+    
+        <div class="display-label">
+             @Html.DisplayNameFor(model => model.reg_dt)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.reg_dt)
+        </div>
+    
+        <div class="display-label">
+             @Html.DisplayNameFor(model => model.chg_id)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.chg_id)
+        </div>
+    
+        <div class="display-label">
+             @Html.DisplayNameFor(model => model.chg_dt)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.chg_dt)
+        </div>
+    
+        <div class="display-label">
+             @Html.DisplayNameFor(model => model.re_mark)
+        </div>
+        <div class="display-field">
+            @Html.DisplayFor(model => model.re_mark)
+        </div>
+    </fieldset>
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+        <p>
+            <input type="submit" value="Delete" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </p>
+    }
+
+</body>
+</html>

@@ -1,0 +1,292 @@
+﻿@{
+    ViewBag.Title = "Material_Mgt";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="WMS" data-level_2="Material Status" data-level_3="Material LOT Management"></div>
+
+}
+
+<div class="container-fluid">
+    <div class="row text-right">
+        <div class="col-md-12 px-3">
+                
+                  <button id="PrintBtn" class="btn btn-sm btn-warning button-srh"><i class="fa fa-print">&nbsp;QR Print</i></button>
+             <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+               <div class="col-md-0 ml-5 px-1 py-2 text-right">
+                <label><b>ML NO</b></label>
+            </div>
+              <div class="col-md-2 p-1">
+                <input type="text" name="mt_cd" id="s_mt_cd" class="form-control form-control-text ">
+            </div>
+            <div class="col-md-1 px-1 py-2 text-right">
+                <label><b>MT No</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <div class="input-group mt_plus">
+                    <input type="text" name="mt_no" id="c_mt_no" class="input-text form-control">
+                    <span class="input-group-addon ">
+                        <button type="button" id="c_popupMater" class="btn btn-outline-warning button-sm  poupdialogMaterial"><i class="fa fa-search text-navy"></i></button>
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-1  px-1 py-2 text-right">
+                <label><b>MT Name</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <input type="text" name="mt_nm" id="s_mt_nm" class="form-control form-control-text ">
+            </div>
+            <div class="col-md-1 px-1 py-2 text-right">
+                <label><b>Create Date</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <input type="text" name="start_dt" id="start" class="form-control form-control-text">
+            </div>
+            <div class="col-md-0 px-1 py-2 text-right">
+                <label><b>~</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <input type="text" name="end_dt" id="end" class="form-control form-control-text">
+            </div>
+            </div>
+         <div class="row p-0 m-0">
+          <div class="col-md-0 ml-5 px-1 py-2 text-right">
+                <label><b>Type&nbsp;&nbsp;&nbsp</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <select name="mt_type" id="s_mt_type" class="form-control"></select>
+            </div>
+            <div class="col-md-1 px-1 py-2 text-right">
+                <label><b>Status</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <select name="mt_sts_cd" id="mt_sts_cd" class="form-control"></select>
+            </div>
+            <div class="col-md-1 px-1 py-2 text-right">
+                <label><b>Location</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <select name="lct_cd" id="c_lct_cd" class="form-control"></select>
+            </div>
+            <div class="col-md-1 px-1 py-2 text-right">
+                <label><b>Location Status</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <select name="lct_sts_cd" id="lct_sts_cd" class="form-control"></select>
+            </div>
+           
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-12 p-0 m-0">
+                <table id="Material_jqgrid"></table>
+                <div id="Material_jqgridGridPager"></div>      
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <!--BuyerInfo start -->
+        <div class="tab-content active" id="tab_c1">
+            <form id="form1">
+                <div class="box-body box-body-input-move">
+                    <input type="hidden" name="wmtid" id="wmtid">
+                    <div class="row p-0 m-0">
+                        <div class="col text-right">
+                            <div class="col-md-1 p-2 pull-right text-right">
+                                <button type="button" id="m_save_but" class="btn btn-success button-sm py-2"><i class="fa fa-save">&nbsp;Save</i></button>
+                            </div>
+                              <div class="col-md-1 p-2 pull-right text-right">
+                                <button type="button" id="save_but" class="btn btn-success button-sm py-2"><i class="fa fa-check">&nbsp;Split</i></button>
+                            </div>
+                              <div class="col-md-1 p-2 pull-right text-right">
+                                <button type="button" id="save_change" class="btn btn-success button-sm py-2"><i class="fa fa-check">&nbsp;Cutting Change</i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 px-3">
+                        <div class="row p-0 m-0">
+                            <div class="col-md-12">
+                                <div class="col-md-1 px-1 py-2 text-right">
+                                    <label><b>ML NO</b></label>
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="text" name='mt_cd' id='m_mt_cd' class="input-text form-control" readonly="readonly">
+                                </div>
+                                <div class="col-md-1 px-1 py-2 text-right">
+                                    <label><b>Group Qty</b></label>
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="number" name='gr_qty' id='m_gr_qty' class="input-text form-control text-right">
+                                </div>
+                                <div class="col-md-1 px-1 py-2 text-right">
+                                    <label><b>Status</b></label>
+                                </div>
+                                <div class="col-md-2">
+                                     <select name="mt_sts_cd" id="m_mt_sts_cd" class="form-control"></select>
+                                </div>
+                                <div class="col-md-1 px-1 py-2 text-right">
+                                    <label><b>Description</b></label>
+                                </div>
+                                <div class="col-md-2">
+                                      <input type="text" name='remark' id='m_remark' class="input-text form-control">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@*------------------------------------------*@
+    <div class="dialog2" title="Material">
+        <div class="container-fluid p-0 m-0">
+            <div class="box-body well text-right">
+                <div class="row p-0 m-0">
+                    <div class="col-md-3 p-2">
+                        <select name="mt_type" id="mt_type" class="form-control ">
+                            <option value="">* Type *</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 p-2">
+                        <input type="text" name="mt_no" id="mt_no" class="form-control" placeholder="Code">
+                    </div>
+                    <div class="col-md-3 p-2">
+                        <input type="text" name="mt_nm" id="mt_nm" class="form-control" placeholder="Name">
+                    </div>
+                    <div class="col-md-3 p-2 d-flex">
+                        <button id="searchBtn_pp_mt" class="btn btn-sm mr-5 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                        <button type="button" class="btn btn-sm btn-success button-srh disabled" id="selected"><i class="fa fa-save">&nbsp;Selected</i></button>
+                    </div>
+                </div>
+            </div>
+        </div>  
+        <div class="container-fluid">
+            <div class="box-body my-2 bg-white">
+                <div class="row p-0 m-0 boxM">
+                    <table id="popupMaterial"></table>
+                    <div id="pagerMaterial"></div>
+                </div>
+            </div>
+        </div>     
+    </div>
+@*------------------------------------------*@
+    <div class="dialog_Split" title="Material Split">
+        <div class="container-fluid p-0 m-0">
+            <div class="box-body well text-right">
+                <div class="row p-0 m-0">
+                    <div class="col-md-1 py-1">
+                        <label><b>ML No</b></label>
+                    </div>
+                    <div class="col-md-3 p-2">
+                       <input type="text" name="mt_cd_pp" id="mt_cd" class="form-control" placeholder="Code" readonly="readonly">
+                    </div>
+                      <div class="col-md-1 py-1">
+                        <label><b>Group Qty</b></label>
+                    </div>
+                    <div class="col-md-3 p-2">
+                        <input type="number" name="gr_qty" id="gr_qty_pp" class="form-control">
+                    </div>
+                    <div class="col-md-1 p-2">
+                          <label><b>Status</b></label>
+                    </div>
+                    <div class="col-md-3 p-2">
+                         <select name="mt_sts_cd" id="mt_sts_cd_pp" class="form-control"></select>
+                    </div>
+                </div>
+                 <div class="row p-0 m-0">
+                    <div class="col-md-1 py-1">
+                        <label><b>Origin ML No</b></label>
+                    </div>
+                    <div class="col-md-3 p-2">
+                       <input type="text" name="mt_cd_pp" id="mt_no_origin" class="form-control" placeholder="Origin ML No" readonly="readonly">
+                    </div>
+                      <div class="col-md-1 py-1">
+                        <label><b>Description</b></label>
+                    </div>
+                    <div class="col-md-3 p-2">
+                        <input type="text" name="remark" id="remark_pp" class="form-control">
+                    </div>
+                    <div class="col-md-3 p-2 d-flex">
+                        <button type="button" class="btn btn-sm btn-success button-srh " id="save"><i class="fa fa-save">&nbsp;Save</i></button>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </div>
+@*------------------------------------------*@
+    <div class="dialog_change" title="Material Cutting Change">
+        <div class="container-fluid p-0 m-0">
+            <div class="box-body well text-right">
+                <div class="row p-0 m-0">
+                    <div class="col-md-1 py-1">
+                        <label><b>ML No</b></label>
+                    </div>
+                    <div class="col-md-3 p-2">
+                       <input type="text" name="mt_cd_pp" id="mt_cd_cg" class="form-control" placeholder="Code" readonly="readonly">
+                    </div>
+                     <div class="col-md-1 p-2">
+                          <label><b>MT NO</b></label>
+                    </div>
+                    <div class="col-md-3 p-2">
+                         <select name="mt_no" id="mt_no_cg" class="form-control"></select>
+                    </div>
+                      <div class="col-md-1 py-1">
+                        <label><b>Group Qty</b></label>
+                    </div>
+                    <div class="col-md-3 p-2">
+                        <input type="number" name="gr_qty" id="gr_qty_cg" class="form-control">
+                    </div>
+                   
+                </div>
+                 <div class="row p-0 m-0">
+                      <div class="col-md-1 p-2">
+                          <label><b>Status</b></label>
+                    </div>
+                    <div class="col-md-3 p-2">
+                         <select name="mt_sts_cd" id="mt_sts_cd_cg" class="form-control"></select>
+                    </div>
+                    <div class="col-md-1 py-1">
+                        <label><b>Origin ML No</b></label>
+                    </div>
+                    <div class="col-md-3 p-2">
+                       <input type="text" name="mt_cd_pp" id="mt_no_origin_cg" class="form-control" placeholder="Origin ML No" readonly="readonly">
+                    </div>
+                      <div class="col-md-1 py-1">
+                        <label><b>Description</b></label>
+                    </div>
+                    <div class="col-md-2 p-2">
+                        <input type="text" name="remark" id="remark_cg" class="form-control">
+                    </div>
+                    <div class="col-md-1 p-2 d-flex">
+                        <button type="button" class="btn btn-sm btn-success button-srh " id="save_cg"><i class="fa fa-save">&nbsp;Save</i></button>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </div>
+<style>
+    span.input-group-addon {
+        padding: 0;
+        border: 0.1px solid;
+    }
+</style>
+@section scripts{
+    <script src="~/Scripts/MaterialInformation/Material_Poup.js"></script>
+    <script src="~/Scripts/MaterialInformation/material_mgt.js"></script>
+}

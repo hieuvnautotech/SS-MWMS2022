@@ -1,0 +1,2 @@
+ Select sid, style_no, style_nm, md_cd, prj_nm, standard, cust_rev, order_num, pack_amt,cav, bom_type,tds_no,item_vcd,qc_range_cd,stamp_code,expiry_month,expiry, 
+ use_yn, del_yn, reg_id, reg_dt, chg_id, chg_dt from d_style_info

@@ -1,0 +1,251 @@
+﻿@{
+    ViewBag.Title = "Printdetail_plan";
+    Layout = "~/Views/Shared/_Print.cshtml";
+}
+
+@*//pp_plan*@
+<div class="plan">
+    <input type="hidden" name="name" value="@ViewData["Message"]" id="pp_fno1" />
+    <div id="all_in">
+            <div class="container-fluid">
+                <div class="row p-0 m-0">
+                     <div class="col-md-3 all_cg">
+                        <img src="/Content/themes/Logo-suplier_in.jpg" style="width: 100%" />
+                    </div>
+                      <div class="col-md-5 pt-4 text-center">
+                        <h1 style="margin: 0;font-size: 35px;">Work Order Plan</h1>
+                        <h2 style="font-size: 20px;" id="title_plan"></h2>
+                    </div>
+                    <div class="col-md-4 p-2" style="border-top: 1px solid; border-bottom: 1px solid">
+                        <div class="row">
+                            <div class="col-md-5 pt-2 text-center">
+                                <p>Document Code</p>
+                                <p>Serial</p>
+                                <p style="margin: 0;">Date</p>
+                            </div>
+                             <div class="col-md-4 pt-2 text-center">
+                                <div id="barcode_plan"></div>
+                                <div id="datetime1" style="margin-top: 10px; ">
+                                    <script>
+                                        function formatDate() {
+                                            var d = new Date(),
+                                                month = '' + (d.getMonth() + 1),
+                                                day = '' + d.getDate(),
+                                                year = d.getFullYear(),
+                                                Hours = d.getHours(),
+                                                Minutes = d.getMinutes();
+
+                                            if (month.length < 2) { month = '0' + month; }
+                                            if (day.length < 2) { day = '0' + day; }
+                                            if (Hours < 10) { Hours = '0' + Hours; }
+                                            if (Minutes < 10) Minutes = '0' + Minutes;
+                                            time = Hours + ":" + Minutes;
+                                            var full = year + "-" + month + "-" + day + " " + time;
+                                            $("#datetime1").html(full);
+                                        }
+                                        formatDate()
+                                        setInterval(formatDate, 500);
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           <div class="container-fluid py-4">
+                <table id="info_plan" class="table table-hover table-bordered table-striped">
+                    <thead>
+                        <h4>Standard</h4>
+                        <tr class="table-warning">
+                            <th style="text-align:center !important">Wo </th>
+                            <th style="text-align:center !important">Po</th>
+                            <th style="text-align:center !important">Bom</th>
+                            <th style="text-align:center !important">Factory</th>
+                            <th style="text-align:center !important">Routing</th>
+                            <th style="text-align:center !important">Total Qty</th>
+                            <th style="text-align:center !important">Delivery date</th>
+                            <th style="text-align:center !important">Description</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div class="container-fluid py-4">
+                <table id="popup_plan" class="table table-hover table-bordered table-striped" style="width: 100%">
+                    <thead>
+                        <h4>Plan</h4>
+                        <tr class="table-warning">
+                            <th  style="text-align:center !important" >Date</th>
+                            <th  style="text-align:center !important" >Start Time</th>
+                            <th  style="text-align:center !important" >End Time</th>
+                            <th  style="text-align:center !important" >Process</th>
+                            <th  style="text-align:center !important" >Target</th>
+                            <th  style="text-align:center !important" >Machine</th>
+                            <th  style="text-align:center !important" >Staff</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+    </div>
+</div>
+
+<style>
+    div#popup_plan_wrapper {
+        width: 100%;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        var id = $('#pp_fno1').val();
+        print(id);
+        _getinfo(id);
+    });
+    function print(id) {
+        $('#popup_plan').DataTable({
+            "bServerSide": true,
+            "ajax": {
+                "url": '/ActualWO/pp_actual_wo?id=' + id,
+                "type": "Post",
+                "datatype": "json"
+            },
+            "searching": false,
+            "paging": false,
+            "bInfo": false,
+            "columns": [
+             { "data": "work_dt" },
+             { "data": "start_time" },
+             { "data": "end_time" },
+             { "data": "process" },
+             { "data": "prod_qty", render: $.fn.dataTable.render.number(',', '.', 0, '') },
+             { "data": "mc_no" },
+             { "data": "staff_id" },
+            ],
+            'columnDefs': [
+             {
+                 "targets": 0, // your case first column
+                 "className": "text-center",
+                 "width": "10%"
+             },
+              {
+                  "targets": 1, // your case first column
+                  "className": "text-center",
+                  "width": "10%"
+              },
+              {
+                  "targets": 2, // your case first column
+                  "className": "text-center",
+                  "width": "10%"
+              },
+              {
+                  "targets": 3, // your case first column
+                  "className": "text-center",
+                  "width": "10%"
+              },
+               {
+                   "targets": 4, // your case first column
+                   "className": "text-right",
+                   "width": "10%"
+               },
+                {
+                    "targets": 5, // your case first column
+                    "className": "text-center",
+                    "width": "10%"
+                },
+                {
+                    "targets": 6, // your case first column
+                    "className": "text-left",
+                    "width": "15%"
+                },
+            ],
+            'rowsGroup': [0, 1, 2, 3],
+            "bDestroy": true,
+
+        });
+        $('#info_plan').DataTable({
+            "bServerSide": true,
+            "ajax": {
+                "url": '/ActualWO/getActualWorkorder?fno=' + id,
+                "type": "Post",
+                "datatype": "json",
+
+            },
+            "searching": false,
+            "paging": false,
+            "bInfo": false,
+            "columns": [
+                { "data": "fo_no" },
+                { "data": "po_no" },
+                { "data": "bom_no" },
+                { "data": "lct_cd" },
+                { "data": "line_no" },
+                { "data": "fo_qty", render: $.fn.dataTable.render.number(',', '.', 0, '') },
+                { "data": "delivery_dt" },
+                { "data": "re_mark" },
+
+            ],
+            'columnDefs': [
+              {
+                  "targets": 0, // your case first column
+                  "className": "text-center",
+                  "width": "10%"
+              },
+               {
+                   "targets": 1, // your case first column
+                   "className": "text-center",
+                   "width": "10%"
+               },
+               {
+                   "targets": 2, // your case first column
+                   "className": "text-center",
+                   "width": "10%"
+               },
+               {
+                   "targets": 3, // your case first column
+                   "className": "text-left",
+                   "width": "10%"
+               },
+                {
+                    "targets": 4, // your case first column
+                    "className": "text-center",
+                    "width": "10%"
+                },
+                 {
+                     "targets": 5, // your case first column
+                     "className": "text-right",
+                     "width": "10%"
+                 },
+                 {
+                     "targets": 6, // your case first column
+                     "className": "text-center",
+                     "width": "15%"
+                 },
+                 {
+                     "targets": 7, // your case first column
+                     "className": "text-left",
+                     "width": "15%"
+                 },
+
+            ],
+            "bDestroy": true,
+
+        });
+    }
+    function _getinfo(id) {
+        $.get("/ActualWO/pp_actual1_wo" + "?id=" + id, function (data) {
+
+            var html1 = "WP-" + data.fo_no;
+            $('#barcode_plan').append(html1);
+            $('#barcode_plan').barcode(html1, "code128", { barWidth: 1, barHeight: 30 });
+
+            $("#title_plan").html("<h4 class='red'>" + data.style_no + " " + '[' + data.style_nm + " " + ']' + "</h4>");
+
+        });
+    }
+</script>
+
+<style> 
+     .all_cg {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+</style>

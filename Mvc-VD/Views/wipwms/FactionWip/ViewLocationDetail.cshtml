@@ -1,0 +1,283 @@
+﻿@{
+    ViewBag.Title = "Factory_Location";
+    Layout = "~/Views/Shared/_LayoutSIViewFatory.cshtml";
+
+}
+
+
+
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-12">
+                <h4 class="StyleTexttitle">@ViewBag.LocationName</h4>
+                <table id="table1" class="table table-bordered table-striped" style="width: 100%">
+                    <thead>
+                        <tr class="table-primary">
+                            <th style="font-size: 1.6rem;" class="text-uppercase text-center">STT</th>
+                            <th style="font-size: 1.6rem;" class="text-uppercase text-center">Layout</th>
+                            <th style="font-size: 1.6rem;" class="text-uppercase text-center">Model</th>
+                            <th style="font-size: 1.6rem;" class="text-uppercase text-center">Code</th>
+                            <th style="font-size: 1.6rem;" class="text-uppercase text-center">Material</th>
+                            <th style="font-size: 1.6rem;" class="text-uppercase text-center">Roll</th>
+                            <th style="font-size: 1.6rem;" class="text-uppercase text-center">M</th>
+                            <th style="font-size: 1.6rem;" class="text-uppercase text-center">Input(Roll)</th>
+                            <th style="font-size: 1.6rem;" class="text-uppercase text-center">Output(Roll)</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+
+
+
+<script>
+
+    $(function () {
+
+        var t = $('#table1').DataTable({
+            "searching": false,
+            "paging": false,
+            "bInfo": false,
+            "destroy": true,
+            "columns": [
+
+                { "data": "stt", className: 'StyleText'},
+                { "data": "lct_nm", className: 'StyleText'},
+                { "data": "md_cd", className: 'StyleText' },
+                { "data": "product_cd", className: 'StyleText' },
+                { "data": "mt_no", className: 'StyleText' },
+                { "data": "soCuon",
+
+                    render: function (data, type, row) {
+                        if (data == null || data == "") {
+                            return 0;
+                        }
+                        else {
+                            return data;
+                        }
+                    }
+                    , className: 'StyleText' },
+                { "data": "soMet", render: $.fn.dataTable.render.number(',', '.', 0, ''), className: 'StyleText' },
+                {
+                    "data": "input",
+                    className: 'StyleText',
+                    render: function (data, type, row) {
+                        if (data == null || data == "") {
+                            return 0;
+                        }
+                        else {
+                            return data;
+                        }
+                    }
+
+                },
+                {
+                    "data": "output", className: 'StyleText',
+                    render: function (data, type, row) {
+                        if (data == null || data == "") {
+                            return 0;
+                        }
+                        else {
+                            return data;
+                        }
+                    }
+                },
+            ],
+            'rowsGroup': [1,2,3],
+            'columnDefs': [
+                {
+                    "targets": 0, // your case first column
+                    "className": "text-center",
+                    "width": "1%",
+                },
+                {
+                    "targets": 1, // your case first column
+                    "className": "text-center",
+                    "width": "5%",
+                },
+                {
+                    "targets": 2, // your case first column
+                    "className": "text-center",
+                    "width": "20%"
+                },
+                {
+                    "targets": 3, // your case first column
+                    "className": "text-center",
+                    "width": "20%"
+                },
+                {
+                    "targets": 4, // your case first column
+                    "className": "text-center",
+                    "width": "30%",
+                },
+                {
+                    "targets": 5, // your case first column
+                    "className": "text-center",
+                    "width": "10%"
+                },
+                {
+                    "targets": 6, // your case first column
+                    "className": "text-center",
+                    "width": "1%"
+                },
+                {
+                    "targets": 7, // your case first column
+                    "className": "text-center",
+                    "width": "1%"
+                },
+            ],
+            "lengthMenu": [[20, 50, 100, 200, 500, -1], [20, 50, 100, 200, 500, "All"]],
+            "order": [[1, 'asc']],
+
+
+            "bDestroy": true,
+
+        });
+        t.on('order.dt search.dt', function () {
+            t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+                cell.innerHTML = i + 1;
+            });
+        }).draw();
+
+    });
+
+
+    var saveData;
+    function fGetData() {
+
+        $("html, body").animate({ scrollTop: $(document).height() }, 13000);
+            setTimeout(function () {
+                $('html, body').animate({ scrollTop: 0 }, 13000);
+            }, 13000);
+            var scrolltopbottom = setInterval(function () {
+                // 4000 - it will take 4 secound in total from the top of the page to the bottom
+                $("html, body").animate({ scrollTop: $(document).height() }, 13000);
+                setTimeout(function () {
+                    $('html, body').animate({ scrollTop: 0 }, 13000);
+                }, 13000);
+
+            }, 10000
+
+        );
+          
+
+
+    $.blockUI({
+        message: '<h1><img src="../Images/Share/loading.gif" /></h1>' });
+    $.ajax({
+        url: "/ExportToMachine/DetailRackWIP?lct_cd=@ViewBag.lct_cd",
+        type: "GET",
+        datatype: "json"
+    }).done(function (response) {
+
+        var table = $('#table1').DataTable();
+            table.clear();
+            table.rows.add(response.data).draw();
+
+        fSetColorRowDataTable();
+           
+            //var table = $('#table1').DataTable();
+            //table.clear();
+            ////table.rows.add(response.data).draw();
+            ////Trang hiện tại
+            //var pageCurrent = 0;
+            ////Số lượng Records trên mỗi trang
+            //var pageSize = 12;
+            ////Lưu trữ dữ liệu
+            //saveData = response.data;
+            ////Mỗi 5s sẽ thay đổi dữ liệu
+            //var tempData = new Array();
+            ////Push dữ liệu vào bảng tạm
+            //for (var item in saveData) {
+            //    tempData.push(saveData[item]);
+            //}
+            //table.clear();
+            //if (pageCurrent * pageSize - 1 >= tempData.length)
+            //    pageCurrent = 0;
+            //else
+            //    pageCurrent++;
+            //var pageStart = pageCurrent * pageSize;
+            //var pageEnd = pageStart + pageSize - 1;
+            ////Lấy mảng từ phân vùng pageStart đến pageEnd
+            //for (var i = pageStart; i <= pageEnd; i++) {
+            //    if (tempData[i])
+            //        table.row.add(tempData[i]).draw();
+            //}
+            //fSetColorRowDataTable();
+            //setInterval(function () {
+            //    table.clear();
+            //    if ( pageCurrent * pageSize - 1 >= tempData.length)
+            //        pageCurrent = 0;
+            //    else
+            //        pageCurrent++;
+            //     pageStart = pageCurrent * pageSize;
+            //     pageEnd = pageStart + pageSize - 1;
+            //    //Lấy mảng từ phân vùng pageStart đến pageEnd
+            //    for (var i = pageStart; i <= pageEnd; i++) {
+            //        if (tempData[i])
+            //            table.row.add(tempData[i]).draw();
+            //    }
+            //    fSetColorRowDataTable();
+            //}, 5000 );
+        });
+       
+    }
+    function fSetColorRowDataTable() {
+        $.unblockUI();
+        var b = new Array();
+        var back = ["#fff","#FCDAD5"];
+        var rand = back[Math.floor(Math.random() * back.length)];
+        var lastColor = back[0];
+        $('#table1 tbody tr').each(function () {
+
+            if ($(this).children().first().next().text() !== "" && !$(this).children().first().next().is(":hidden")) {
+                //if (!b.includes($(this).children().first().next().text())) {
+                if (b.indexOf($(this).children().first().next().text())) {
+                    b.push($(this).children().first().next().text());
+                    rand = back[Math.floor(Math.random() * back.length)];
+                    while (rand == lastColor) {
+                        rand = back[Math.floor(Math.random() * back.length)];
+                    }
+                        lastColor = rand;
+                    //Xóa random
+                }
+            }
+            $(this).css("background", rand);
+        });
+    }
+
+    fGetData();
+    setInterval(function () {
+        fGetData();
+    }, 1800000 );
+</script>
+<style>
+    .StyleText {
+        font-size: 2.2rem;
+        font-weight: 600;
+        text-align: center;
+        color: #3f3e3e;
+        vertical-align: middle !important;
+        table-layout: fixed;
+        overflow-wrap: normal;
+    }
+
+    .StyleTexttitle {
+        font-size: 3.5rem;
+        font-weight: 1000;
+        text-align: center;
+        color: #007bff;
+      
+    }
+</style>
+
+@section scripts{
+    <script src="~/Scripts/wipwms/FactionWip/Factory_Location.js"></script>
+    <script src="~/Scripts/rowsGroup_datatable/dataTables.rowsGroup.js"></script>
+}
+

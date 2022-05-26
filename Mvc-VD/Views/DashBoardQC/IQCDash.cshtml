@@ -1,0 +1,276 @@
+﻿@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+<link href="~/Content/important.css" rel="stylesheet" />
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="QMS" data-level_2="Dash Board" data-level_3="IQC Dash"></div>
+}
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Chart Type </b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <select name="barchart" id="barchart" class="form-control " >
+                    <option value="1">Bar Chart</option>
+                    <option value="2">Pie Chart</option>
+                </select>
+            </div>
+
+            @* nam test *@
+            <div class="col-md-1 p-1  text-right">
+                <label><b>MWR No </b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <div class="input-group mt_plus">
+                    <div class="input-group mt_plus">
+                        <input type="text" name="mwro_no" id="s_mwro_no" class="input-text form-control">
+                        <span class="input-group-addon psbom"><a href="#" class="poupdialogl"><i class="fa fa-search text-navy"></i></a></span>
+                    </div>
+                </div>
+            </div>
+            @* end *@
+
+            <div class="col-md-1 p-1  text-right">
+                <label><b>MT NO </b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <div class="input-group mt_plus">
+                    <div class="input-group mt_plus">
+                        <input type="text" name="s_mt_no" id="s_mt_no" class="input-text form-control">
+                        <span class="input-group-addon psbom"><a href="#" class="poupdialog"><i class="fa fa-search text-navy"></i></a></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Receive Date</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                @*                <input type="text" name="rec_input_dt" id="start" style="text-align: center" class="form-control hasDatepicker">*@
+                <input type="text" name="start" id="start" class="form-control form-control-text">
+            </div>
+            <div class="col-md-0 p-1  text-right">
+                <label><b>~</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                @*                <input type="text" name="rec_input_dt" id="end" style="text-align: center" class="form-control hasDatepicker">*@
+                <input type="text" name="end" id="end" class="form-control form-control-text">
+            </div>
+            <div class="col-md-1 p-2">
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+@*--Popup--*@
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white" style="min-height: 360px;overflow:hidden" id="PartialView_IQCDash_Bar">
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#tab_1" data-toggle="tab">Bar chart</a></li>
+                <li><a href="#tab_2" data-toggle="tab">Pie Chart</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white hidden" style="min-height: 360px;overflow:hidden" id="PartialView_IQCDash_Pie">
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#tab_3" data-toggle="tab">Bar chart</a></li>
+                <li><a href="#tab_4" data-toggle="tab">Pie Chart</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+@*--Popup--*@
+@*<div id="container-bar">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-sx-1">
+                <div id="table_prounit_info" class="active"></div>
+            </div>
+            <div class="col-md-5">
+                <div id="table_prounit" class="active"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="container-pie">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-2">
+                <div id="table_pie_info" class="hidden"></div>
+            </div>
+            <div class="col-md-10">
+                <div id="table_pie" class="hidden"></div>
+            </div>
+        </div>
+
+    </div>
+</div>*@
+
+
+@*--------------------------*@
+<div class="dialogMT" title="MT NO">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+
+            <div class="container-fluid">
+                <div class="box-body bg-white text-right">
+                    <div class="row p-0 m-0">
+                        <div class="col-md-12 p-2">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid p-0 m-0">
+                <div class="box-body well text-right">
+                    <div class="container-fluid">
+                        @*                        <div class="box-body my-2 bg-white">*@
+                        <div class="row p-0 m-0">
+                            <div class="col-md-1 px-1 py-2 text-right">
+                                <label><b>MT NO </b></label>
+                            </div>
+                            <div class="col-md-3 p-1">
+                                <input type="text" name="s_mt_no_popup" id="s_mt_no_popup" class="form-control form-control-text ">
+                            </div>
+                            <div class="col-md-2 px-1 py-2 text-right">
+                                <label><b>MT Name</b></label>
+                            </div>
+                            <div class="col-md-3 p-1">
+                                <input type="text" name="s_mt_name_popup" id="s_mt_name_popup" class="form-control form-control-text">
+                            </div>
+                            @*        <div class="col-md-1 px-1 py-2 text-right">
+                            <label><b>Model</b></label>
+                        </div>
+                        <div class="col-md-2 p-1">
+                            <input type="text" name="s_model_no_popup" id="s_model_no_popup_s" class="form-control form-control-text">
+                        </div>*@
+
+                            <div class="col-md-1 p-2 mr-5 clearfix">
+                                <button id="searchBtn_popup_s" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                            </div>
+
+
+                            <div class="col-md-1 p-2 clearfix">
+                                <button type="button" class="btn btn-sm btn-success button-srh disabled" id="saveMt"><i class="fa fa-save">&nbsp;Selected</i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @*</div>*@
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <table id="popupsMT"></table>
+                <div id="popupspagerMT"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*------------namtest--------------*@
+<div class="dialogMPO" title="MPO">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+
+            <div class="container-fluid">
+                <div class="box-body bg-white text-right">
+                    <div class="row p-0 m-0">
+                        <div class="col-md-12 p-2">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container-fluid p-0 m-0">
+                <div class="box-body well text-right">
+                    <div class="container-fluid">
+                        @*<div class="box-body my-2 bg-white">*@
+                        <div class="row p-0 m-0">
+                            <div class="col-md-1 px-1 py-2 text-right">
+                                <label><b>MPO NO </b></label>
+                            </div>
+                            <div class="col-md-3 p-1">
+                                <input type="text" name="s_mpo_popup" id="s_mpo_no_popup" class="form-control form-control-text ">
+                            </div>
+                            <div class="col-md-2 px-1 py-2 text-right">
+                                <label><b>MPO Name</b></label>
+                            </div>
+                            <div class="col-md-3 p-1">
+                                <input type="text" name="s_mt_name_popup" id="s_mpo_name_popup" class="form-control form-control-text">
+                            </div>
+                            @*<div class="col-md-1 px-1 py-2 text-right">
+                            <label><b>Model</b></label>
+                        </div>
+                        <div class="col-md-2 p-1">
+                            <input type="text" name="s_model_no_popup" id="s_model_no_popup_s" class="form-control form-control-text">
+                        </div>*@
+
+                            <div class="col-md-1 p-2 mr-5 clearfix">
+                                <button id="searchBtn_popup_s_MPO" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                            </div>
+
+
+                            <div class="col-md-1 p-2 clearfix">
+                                <button type="button" class="btn btn-sm btn-success button-srh disabled" id="saveMPO"><i class="fa fa-save">&nbsp;Selected</i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @*</div>*@
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <table id="popupsMPO"></table>
+                <div id="popupspagerMPO"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*--------------------------*@
+@section scripts{
+    @*<script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>*@
+    @*    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>*@
+
+
+    <script src="~/Content/charts/moment.min.js"></script>
+    <script src="~/Content/charts/Chart.min.js"></script>
+    <script src="~/Content/charts/chartjs-plugin-datalabels.js"></script>
+
+
+    <script src="~/Scripts/DashBoardQC/MaterialQC/MaterialQC.js"></script>
+
+    <script src="~/Scripts/DashBoardQC/MaterialQC/MaterialQC_Popup_MTNO.js"></script>
+    <script src="~/Scripts/DashBoardQC/MaterialQC/MaterialQC_Popup_MPO.js"></script>
+
+    <style>
+    
+     .nav-tabs-custom > .tab-content {
+            overflow: hidden;
+    }
+
+    </style>
+}
+
+

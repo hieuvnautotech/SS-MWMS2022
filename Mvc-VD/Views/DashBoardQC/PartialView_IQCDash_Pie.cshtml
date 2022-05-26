@@ -1,0 +1,200 @@
+﻿<div class="nav-tabs-custom">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#tab_3" data-toggle="tab">QC Result</a></li>
+        <li><a href="#tab_4" data-toggle="tab">QC Defective Result</a></li>
+    </ul>
+    <div class="tab-content">
+        @*  <div class="tab-pane active" id="tab_3">
+            <div class="row">
+                <div class="col-md-4" style="margin-bottom: 1em;">
+                    <div style="border: 1px solid #333">
+                        <canvas id="myChart_pie" width="350" height="200"></canvas>
+                    </div>
+                </div>
+              
+            </div>
+        </div>*@
+        <div class="tab-pane active" id="tab_3">
+            <div class="row">
+                @{
+                    int stt1 = 0;    
+                }
+                @if (Model.Count > 0)
+                {
+                    foreach (var item in Model[0].chart_info)
+                    {
+                        stt1++;
+                    <div class="col-md-4" style="margin-bottom: 1em;">
+                        <div style="border: 1px solid #333">
+                            <canvas id="pie_info_@stt1" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                    <script>
+
+                        $(function () {
+
+                            var data = {
+                                labels: ['Check Qty', 'Ok Qty', 'Defect Qty'],
+                                datasets: [
+                                        {
+                                            labels: ['@item.mt_no'],
+                                          data: ['@item.qc_qty', '@item.ok_qty', '@item.def_qty'],
+                                          backgroundColor: [
+                                              'rgba(255, 99, 132, 0.2)',
+                                              'rgba(54, 162, 235, 0.2)',
+                                              'rgba(255, 206, 86, 0.2)',
+                                              'rgba(75, 192, 192, 0.2)',
+                                              'rgba(153, 102, 255, 0.2)',
+                                              'rgba(255, 159, 64, 0.2)'
+                                          ],
+                                          borderColor: [
+                                              'rgba(255, 99, 132, 1)',
+                                              'rgba(54, 162, 235, 1)',
+                                              'rgba(255, 206, 86, 1)',
+                                              'rgba(75, 192, 192, 1)',
+                                              'rgba(153, 102, 255, 1)',
+                                              'rgba(255, 159, 64, 1)'
+                                          ],
+                                          borderWidth: 1
+                                      }
+                              ]
+                          }
+                          var options = {
+
+                              title: {
+                                  position: 'top',
+                                  display: true,
+                                  text: "  @item.mwro_no [ @item.rec_input_dt ]",
+                              },
+
+                              scaleLabel:
+                                 function (label) { return 'gfdfgdf'; }
+                          }
+
+                          var myBarChart = new Chart(document.getElementById('pie_info_@stt1').getContext('2d'), {
+                              type: 'pie',
+                              data: data,
+                              options: options
+                          });
+
+
+
+                      });
+                    </script>
+                    }
+                }
+            </div>
+        </div>
+        <div class="tab-pane" id="tab_4">
+            @{
+              
+                int stt = 0;    
+            }
+            @foreach (var item in Model)
+            {
+
+                stt++;
+                    
+                <div class="col-md-4" style="margin-bottom: 1em;">
+                    <div style="border: 1px solid #333">
+                        <canvas id="myChart_error_pie_@stt" width="350" height="200"></canvas>
+                    </div>
+                </div>
+                <script>
+                    $(function () {
+
+                        var data_pie2 = {
+                            labels: [@Html.Raw(item.labels)],
+
+                                datasets: [{
+                                    data: [@Html.Raw(item.datasets_pie)],
+                                    backgroundColor: ['#fe9c8f', '#88d8b0', '#0392cf', '#fad9c1', '#feb2a8', '#f9caa7', '#fec8c1', '#ee4035', '#f37736', '#fdf498', '#7bc043', '#96ceb4', '#ffeead', '#ff6f69', '#ffcc5c'],
+                                    borderColor: ['aqua', 'blue', 'fuchsia', 'gray', 'green', 'lime', 'maroon', 'navy', 'olive', 'orange', 'purple', 'red', 'silver', 'teal', 'white', 'yellow'],
+                                    borderWidth: 1
+                                }],
+                            }
+
+                            var options_pie2 = {
+                                title: {
+                                    position: 'top',
+                                    display: true,
+                                    text: "[ @item.mwro_no]  @item.rec_input_dt - [Total Defect Qty : @item.total_def_qty ]",
+                                },
+                                //legend: {
+                                //    display: false,
+                                //    labels: {
+                                //        boxWidth: 0
+                                //    }
+                                //},
+                            }
+
+                            var myBarChart2 = new Chart(document.getElementById('myChart_error_pie_@stt').getContext('2d'), {
+                                type: 'pie',
+                                data: data_pie2,
+                                options: options_pie2
+                            });
+                        })
+                </script>
+                
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+
+    //$(function () {
+    //    var start = $('#start').val().trim();
+    //    var end = $('#end').val().trim();
+    //    $.ajax({
+    //        url: "/DashBoardQC/Get_table_info?start=" + start + "&end=" + end,
+    //        type: "get",
+    //        success: function (response) {
+
+    //            if (!response.result) {
+    //                $('.tab-content .tab-pane .row').remove();
+    //            } else {
+
+    //                var data_pie = {
+    //                    labels: ['Check', 'Ok', 'Defective'],
+
+    //                    datasets: [{
+    //                        data: [
+    //                             response.data.qc_qty,
+    //                             response.data.ok_qty,
+    //                             response.data.def_qty,
+    //                        ],
+    //                        backgroundColor: [
+    //                           "blue", "yellow", "red"
+    //                        ],
+
+    //                    }],
+    //                }
+
+    //                var options_pie = {
+    //                    title: {
+    //                        position: 'bottom',
+    //                        display: true,
+    //                        text: response.data.mdpo_no + "[" + response.data.mt_no + "]",
+    //                    },
+    //                }
+    //                var myBarChart_pie = new Chart(document.getElementById('myChart_pie').getContext('2d'), {
+    //                    type: 'pie',
+    //                    data: data_pie,
+    //                    options: options_pie
+    //                });
+    //            }
+    //        }
+    //    });
+    //})
+
+    $(function () {
+
+        var tab = $('.nav-tabs-custom .nav.nav-tabs li a');
+        $(tab).click(function (e) {
+            var ul = $(e.target).closest('ul');
+            $(ul).find('li').removeClass('active');
+            $(e.target).closest('li').addClass('active');
+        })
+    })
+</script>

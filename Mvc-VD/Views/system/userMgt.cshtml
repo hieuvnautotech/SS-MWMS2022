@@ -1,0 +1,308 @@
+﻿@{
+    ViewBag.Title = "userInfo";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="@Html.Raw(ViewData["STANDARD"])" data-level_2="@Html.Raw(ViewData["System Management"])" data-level_3="@Html.Raw(ViewData["User Management"])"></div>
+}
+
+<!-- Search function -->
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-2 p-1">
+                <select name="searchType" id="searchType" class="form-control select2">
+                    <option value="userid">USER ID</option>
+                    <option value="uname">USER NAME</option>
+                    <option value="nick_name">NICK NAME</option>
+                </select>
+            </div>
+            <div class="col-md-2 p-1">
+                <input type="text" name="keyword" id="keywordInput" class="form-control form-control-text">
+            </div>
+            <div class="col-md-1 pt-2 text-right">
+                <label><b>Department</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <select name="department" id="s_department" class="form-control department">
+                    <option value="">*Department*</option>
+                </select>
+            </div>
+            <div class="col-md-1 pt-2 text-right">
+                <label><b>Position</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <select name="position" id="s_position" class="form-control position">
+                    <option value="">*Position*</option>
+                </select>
+            </div>
+            <div class="col-md-1 p-2">
+                <button id="searchBtn" class="btn btn-sm btn-primary"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+            <div class="col-md-1 p-2">
+                <button id="barCodeBtn" class="btn btn-sm btn-success"><i class="fa fa-qrcode">&nbsp;BarCode</i></button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ./Search function -->
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <table id="list"></table>
+            <div id="pager"></div>
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active" id="tab_1"><a href="#tab_1" data-toggle="tab">Create</a></li>
+                <li id="tab_2"><a href="#tab_2" data-toggle="tab">Modify</a></li>
+            </ul>
+        </div>
+        <div class="tab-content active" id="tab_c1">
+            <form id="form1">
+                <div class="box-body box-body-input-move">
+                    <input type="hidden" name="byno" id="c_byno" value="1">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="button" id="c_save_but" class="btn btn-success button-srh2 active"><i class="fa fa-save">&nbsp;Create</i></button>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-md-12 py-1">
+                                    <input type="text" name="c_userid" id="c_userid" class="form-control form-control-text" placeholder="User ID" />
+                                </div>
+                                <div class="col-md-12 py-1">
+                                    <input type="text" name="c_uname" id="c_uname" placeholder="Name" maxlength="20" class="form-control form-control-text" />
+                                </div>
+                                <div class="col-md-6 py-1">
+                                    <select name="department" id="c_department" class="form-control department">
+                                        <option value="">*Department*</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 py-1">
+                                    <select name="position" id="c_position" class="form-control position">
+                                        <option value="">*Position*</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-12 py-1">
+                                    <div class="box m-0 px-2">
+                                        <div class="row">
+                                            <div class="col-md-3 px-1">
+                                                <label>Screen Alarm :</label>
+                                            </div>
+                                            <div class="col-md-4 pb-2 form-inline">
+                                                <input type="radio" name="c_scr_yn" value="Y" id="c_scr_y">
+                                                <label>&nbsp;Receive</label>
+                                            </div>
+                                            <div class="col-md-4 pb-2 form-inline">
+                                                <input type="radio" name="c_scr_yn" value="N" id="c_scr_n">
+                                                <label>&nbsp;Non Receive</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-md-12 py-1">
+                                    <input type="password" name="c_upw" id="c_upw" maxlength="20" class="form-control form-control-text" placeholder="Password" />
+                                </div>
+                                <div class="col-md-12 py-1">
+                                    <input type="text" name="c_nick_name" id="c_nick_name" placeholder="Nick Name" maxlength="20" class="form-control form-control-text" />
+                                </div>
+                                <div class="col-md-6 py-1">
+                                    <input type="text" name="joinday" id="c_joinday" placeholder="Join day" maxlength="20" class="form-control form-control-text" />
+                                </div>
+                                <div class="col-md-6 py-1">
+                                    <input type="text" name="birthday" id="c_birthday" placeholder="Birth day" maxlength="20" class="form-control form-control-text" />
+                                </div>
+                                <div class="col-md-12 py-1">
+                                    <div class="box m-0 px-2">
+                                        <div class="row">
+                                            <div class="col-md-3 px-1">
+                                                <label>Notice Mail :</label>
+                                            </div>
+                                            <div class="col-md-4 pb-2 form-inline">
+                                                <input type="radio" name="c_mail_yn" value="Y" id="c_mail_y">
+                                                <label>&nbsp;Receive</label>
+                                            </div>
+                                            <div class="col-md-4 pb-2 form-inline">
+                                                <input type="radio" name="c_mail_yn" value="N" id="c_mail_n">
+                                                <label>&nbsp;Non Receive</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 pr-0">
+                            <div class="row">
+                                <div class="col-md-12 py-1 pr-0">
+                                    <select name="c_grade" id="c_p_grade" class="form-control form-control-text grade">
+                                    </select>
+                                </div>
+                                <div class="col-md-12 py-1 pr-0">
+                                    <input type="text" name="c_cel_nb" id="c_cel_nb" placeholder="Cell Phone" maxlength="20" class="form-control form-control-text" />
+                                </div>
+                                <div class="col-md-12 py-1 pr-0">
+                                    <select name="gender" id="c_gender" class="form-control gender">
+                                        <option value="">*Gender*</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-12 py-1 pr-0">
+                                    <input type="email" name="c_e_mail" id="c_e_mail" placeholder="Email" maxlength="20" class="form-control form-control-text" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <textarea name="c_memo" id="c_memo" rows="7" placeholder="Memory ..." maxlength="200" class="form-control form-control-text  mx-2"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+        <div class="tab-content hidden" id="tab_c2">
+            <form id="form2">
+                <div class="box-body box-body-input-move">
+                    <input type="hidden" name="mt_id" id="m_mt_id">
+                    <input type="hidden" name="name" value=" " id="remark_color" />
+                    <div class="row">
+                        <div class="col-md-12 text-right">
+                            <button type="button" id="del_save_but" class="btn btn-danger button-srh2 mr-5"><i class="fa fa-scissors">&nbsp;Delete</i></button>
+                            <button type="button" id="m_save_but" class="btn btn-success button-srh2"><i class="fa fa-save">&nbsp;Modify</i></button>
+
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-md-12 py-1">
+                                    <input type="text" name="m_userid" id="m_userid" class="form-control form-control-text" readonly="readonly" placeholder="User ID" />
+                                </div>
+                                <div class="col-md-12 py-1">
+                                    <input type="text" name="m_uname" id="m_uname" placeholder="Name" maxlength="20" class="form-control form-control-text" />
+                                </div>
+                                <div class="col-md-6 py-1">
+                                    <select name="department" id="m_department" class="form-control department">
+                                        <option value="">*Department*</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 py-1">
+                                    <select name="position" id="m_position" class="form-control position">
+                                        <option value="">*Position*</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-12 py-1">
+                                    <div class="box m-0 px-2">
+                                        <div class="row">
+                                            <div class="col-md-3 px-1">
+                                                <label>Screen Alarm :</label>
+                                            </div>
+                                            <div class="col-md-4 pb-2 form-inline">
+                                                <input type="radio" name="m_scr_yn" value="Y" id="m_scr_y">
+                                                <label>&nbsp;Receive</label>
+                                            </div>
+                                            <div class="col-md-4 pb-2 form-inline">
+                                                <input type="radio" name="m_scr_yn" value="N" id="m_scr_n">
+                                                <label>&nbsp;Non Receive</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-md-12 py-1">
+                                    <input type="password" name="m_upw" id="m_upw" maxlength="20" class="form-control form-control-text" placeholder="Password" />
+                                </div>
+                                <div class="col-md-12 py-1">
+                                    <input type="text" name="m_nick_name" id="m_nick_name" placeholder="Nick Name" maxlength="20" class="form-control form-control-text" />
+                                </div>
+                                <div class="col-md-6 py-1">
+                                    <input type="text" name="joinday" id="m_joinday" placeholder="Join day" maxlength="20" class="form-control form-control-text" />
+                                </div>
+                                <div class="col-md-6 py-1">
+                                    <input type="text" name="birthday" id="m_birthday" placeholder="Birth day" maxlength="20" class="form-control form-control-text" />
+                                </div>
+                                <div class="col-md-12 py-1">
+                                    <div class="box m-0 px-2">
+                                        <div class="row">
+                                            <div class="col-md-3 px-1">
+                                                <label>Notice Mail :</label>
+                                            </div>
+                                            <div class="col-md-4 pb-2 form-inline">
+                                                <input type="radio" name="m_mail_yn" value="Y" id="m_mail_y">
+                                                <label>&nbsp;Receive</label>
+                                            </div>
+                                            <div class="col-md-4 pb-2 form-inline">
+                                                <input type="radio" name="m_mail_yn" value="N" id="m_mail_n">
+                                                <label>&nbsp;Non Receive</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 pr-0">
+                            <div class="row">
+                                <div class="col-md-12 py-1 pr-0">
+                                    <select name="m_grade" id="m_p_grade" class="form-control form-control-text grade">
+                                        <option value="" disabled selected>Grade</option>
+                                        <option value="Unapproved">Unapproved</option>
+                                        <option value="GeneralManager">General Manager</option>
+                                        <option value="Systemadministrator">System administrator</option>
+                                        <option value="GeneralUser">General User</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-12 py-1 pr-0">
+                                    <input type="text" name="m_cel_nb" id="m_cel_nb" placeholder="Cell Phone" maxlength="20" class="form-control form-control-text" />
+                                </div>
+                                <div class="col-md-12 py-1 pr-0">
+                                    <select name="gender" id="m_gender" class="form-control gender">
+                                        <option value="">*Gender*</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-12 py-1 pr-0">
+                                    <input type="email" name="m_e_mail" id="m_e_mail" placeholder="Email" maxlength="20" class="form-control form-control-text" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <textarea name="m_memo" id="m_memo" rows="7" placeholder="Memory ..." maxlength="200" class="form-control form-control-text  mx-2"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--Popup -->
+<div id="dialogDangerous" title="Are you make sure DELETE ?">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-success button-srh mr-3" id="closestyle">No</button>
+                    <button type="button" class="btn btn-sm btn-danger button-srh" id="deletestyle">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ./ Popup -->
+
+@section scripts {
+    <script src="~/Scripts/system/Staff/StaffMgt.js"></script>
+    <script src="~/Scripts/system/Staff/StaffMgt_Poup.js"></script>
+}
+

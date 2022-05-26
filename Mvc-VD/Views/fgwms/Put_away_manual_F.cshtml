@@ -1,0 +1,194 @@
+﻿@{
+    ViewBag.Title = "Put_away_manual";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="FG-WMS" data-level_2="Receiving Management" data-level_3="Put Away Manual(F)"></div>
+
+}
+<!-- Search function -->
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-2 p-1">
+                <div class="tt" style="border: 1px solid #808080; display: inline-block; padding: 8px;">
+                    <div class="col-md-5 p-1 text-right">
+                        <label><b>Destination</b></label>
+                    </div>
+                    <div class="col-md-5 p-1 text-right mr-5">
+                        <select id="shelf_cd" class="form-control">
+                            <option value="">*Destination*</option>
+                        </select>
+                    </div>
+                    <div class="col-md-10 p-1 mr-5 text-right">
+                        <button id="getPutin" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Put Away</i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8 p-1">
+                 <div class="row p-0 m-0">
+                <div class="col-md-0 ml-5 px-1 py-2 text-right">
+                    <label><b>Finish Lot&nbsp;&nbsp;&nbsp;&nbsp;</b></label>
+                </div>
+                <div class="col-md-3 p-1">
+                    <div class="input-group mt_plus">
+                        <input type="text" name="prd_lcd" id="prd_lcd" class="input-text form-control">
+                        @*<span class="input-group-addon ">
+                            <button type="button" id="" class="btn btn-outline-warning button-sm form-control poupdialoglot"><i class="fa fa-search text-navy"></i></button>
+                        </span>*@
+                    </div>
+                </div>
+                <div class="col-md-1 px-1 py-2 text-right">
+                    <label><b>Product Code</b></label>
+                </div>
+                <div class="col-md-4">
+                    <div class="input-group mt_plus">
+                        <input type="text" name="style_no" id="m_style_no" class="input-text form-control" placeholder="Product" />
+                        @*<span class="input-group-addon">
+                            <button type="button" id="m_btnpoup" class="btn btn-outline-warning button-sm form-control poupdialogStyle"><i class="fa fa-search text-navy"></i></button>
+                        </span>*@
+                    </div>
+                </div>
+                     </div>
+                  <div class="row p-0 m-0">
+                <div class="col-md-0 ml-5 px-1 py-2 text-right">
+                    <label><b>Destination</b></label>
+                </div>
+                <div class="col-md-3 p-1">
+                    <select name="lct_cd" id="c_lct_cd" class="form-control"></select>
+                </div>
+                <div class="col-md-1 px-1 py-2 text-right">
+                    <label><b>Input Date</b></label>
+                </div>
+                <div class="col-md-2 p-1">
+                    <input type="text" name="start_dt" id="start" class="form-control form-control-text">
+                </div>
+                <div class="col-md-0 px-1 py-2 text-right">
+                    <label><b>~</b></label>
+                </div>
+                <div class="col-md-2 p-1">
+                    <input type="text" name="end_dt" id="end" class="form-control form-control-text">
+                </div>
+
+                <div class="col-md-1 p-1">
+                    <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                </div>
+                     </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+<!-- ./Search function -->
+
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <table id="list"></table>
+            <div id="gridpager"></div>
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+@*---------------------------------------------------------------------------------------------------------------------------*@
+@*popuplost*@
+<div class="lot_pp" title="Lot">
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <div class="col-md-8">
+                    <div class="row">
+                        <label class="col-xs-3 control-label text-right">
+                            <h6 class="control-label-text"><b>Lot Code</b></h6>
+                        </label>
+                        <div class="col-xs-9">
+                            <input type="text" name="pp_lot_code" id="pp_lot_code" class="form-control" style="width: 100%;">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 text-right">
+                    <button id="searchBtn_popuplot" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button type="button" class="btn btn-success button-srh2" id="selected"><i class="fa fa-check">Selected</i></button>
+                    <button type="button" class="btn btn-sm btn-primary button-srh" id="closelot"><i class="fa fa-close">&nbsp;Close</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <table id="popuplot"></table>
+                <div id="pagerlot"></div>
+            </div>
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<!--Dialog -->
+<div class="dialog" title="Product">
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <div class="col-md-3">
+                    <div class="col-md-4 p-1  text-right">
+                        <label><b>Product Code</b></label>
+                    </div>
+                    <div class="col-md-8 p-1">
+                        <input type="text" name="bom_no" id="s_style_no_pp" maxlength="20" class="input-text form-control">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="col-md-2 p-1  text-right">
+                        <label><b>Product Name</b></label>
+                    </div>
+                    <div class="col-md-4 p-1">
+                        <input type="text" name="bom_no" id="s_style_nm_pp" maxlength="20" class="input-text form-control">
+                    </div>
+                    <div class="col-md-2 p-1  text-right">
+                        <label><b>Model</b></label>
+                    </div>
+                    <div class="col-md-4 p-1  text-right">
+                        <input type="text" name="md_cd" id="s_md_cd_pp" class="form-control" maxlength="50">
+                    </div>
+                </div>
+
+                <div class="col-md-3 p-1 text-right">
+                    <button id="searchBtn_pp" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button type="button" class="btn btn-success button-srh2" id="selected1"><i class="fa fa-check">Selected</i></button>
+                    <button type="button" class="btn btn-sm btn-primary button-srh" id="closestyle1"><i class="fa fa-close">&nbsp;Close</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <table id="popupStyle"></table>
+                <div id="pagerStyle"></div>
+            </div>
+        </div>
+    </div>
+</div>
+ <div id="loading"><img id="loading-image" src="/Images/loding.gif" alt="Loading..." /></div>
+<!-- ./ Dialog -->
+
+
+<style>
+    span.input-group-addon {
+        padding: 0;
+        border: 0.1px solid;
+    }
+</style>
+@section scripts {
+    <script src="~/Scripts/fgwms/Put_away_manual_F/Put_away_manual.js"></script>
+    <script src="~/Scripts/fgwms/Put_away_manual_F/pp_lot.js"></script>
+    <script src="~/Scripts/fgwms/Put_away_manual_F/Style_Poup.js"></script>
+}
+
+

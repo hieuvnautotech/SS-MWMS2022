@@ -1,0 +1,136 @@
+﻿@{
+    ViewBag.Title = "Sorting";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="FG-WMS" data-level_2="Return" data-level_3="Sorting"></div>
+}
+
+
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="p-0 m-0">
+            <div class="col-md-6">
+                <div class="container-fluid">
+                    <div class="box-body my-2 bg-white">
+                        <div class="row p-0 m-0">
+                            <div class="col-md-3">
+                                <label>DL No</label>
+                                <input type="text" name="dl_no" id="s_dl_no" class="input-text form-control">
+                            </div>
+                            <div class="col-md-3">
+                                <label>DL Name</label>
+                                <input type="text" name="dl_nm" id="s_dl_nm" class="input-text form-control">
+                            </div>
+                            <div class="col-md-3">
+                                <label>Buyer Code</label>
+                                <input type="text" name="buyer" id="s_buyer" class="input-text form-control">
+                            </div>
+                            
+                            <div class="col-md-2 p-1 ">
+                                <label style="width:100%">&nbsp;&nbsp;</label>
+                                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                <table id="list"></table>
+                <div id="listPager"></div>
+            </div>
+            <div class="col-md-6">
+                <div class="container-fluid">
+                    <div class="box-body my-2 bg-white">
+                        <div class="row p-0 m-0">
+                            <div class="col-md-3 p-1">
+                                <label><b>Buyer</b></label>
+                                <input type="text" name="buyer_cd" id="buyer_cd" class="input-text form-control">
+                            </div>
+                            <div class="col-md-3 p-1">
+                                <label><b>Product</b></label>
+                                <input type="text" name="productCode" id="productCode" class="input-text form-control">
+                            </div>
+                            <div class="col-md-3 p-1 hidden">
+                                <label><b>PO</b></label>
+                                <input type="text" name="poCode" id="poCode" class="input-text form-control">
+                            </div>
+                            <div class="col-md-3 p-2">
+                                <label style="width:100%">&nbsp;&nbsp;</label>
+                                <button id="searchBtn_stock" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                                <button type="button" id="printBtn" class="btn btn-sm btn-warning form-control-text"><i class="fa fa fa-print">&nbsp;Print</i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @*---------------------------------------------------------------------------------------------------------------------------*@
+                <div class="container-fluid">
+                    <div class="box-body my-2 bg-white">
+                        <div class="p-0 m-0">
+                            <table id="GeneralGrid"></table>
+                            <div id="GeneralGridPager"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<input type="hidden" name="name" id="m_dlid" value="" />
+<input type="hidden" name="name" id="m_dl_no" value="" />
+<input type="hidden" name='dl_nm' id='m_dl_nm' class="input-text form-control" placeholder="Delivery Name" required>
+
+<div class="container-fluid">   
+
+    <div class="row box-body my-2">
+        <div class="col-md-4 py-1">
+            <label>Buyer Code</label>
+            <input type="text" name='bx_no' id='scan_bx_no' class="input-text form-control" placeholder="Buyer Code" required>
+        </div>
+        <div class="col-md-6 py-1">
+
+            <button type="button" id="Save_completed" class="btn btn-success button-sm"><i class="fa fa-save">&nbsp;Scan Completed</i></button>
+            <button type="button" id="Clear_all" class="btn btn-danger button-sm"><i class="fa fa-trash">&nbsp;Clear All</i></button>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="">
+            <table id="list1"></table>
+            <div id="listPage1"></div>
+        </div>
+    </div>
+</div>
+<div class="popup-dialog DL_Info_Popup" title="Shipping(FG)">
+    <div id="PartialView_DL_Info_Popup"></div>
+</div>
+
+@*---------------------------------------------------------------------------------------------------------------------------*@
+
+
+@section scripts{
+
+    <script src="~/Scripts/fgwms/Return/Return.js"></script>
+
+    <script>
+        $(function () {
+
+            var tab = $('.nav-tabs-custom .nav.nav-tabs li a');
+            $(tab).click(function (e) {
+
+                var ul = $(e.target).closest('ul');
+                $(ul).find('li').removeClass('active');
+                $(e.target).closest('li').addClass('active');
+
+            })
+        })
+    </script>
+}

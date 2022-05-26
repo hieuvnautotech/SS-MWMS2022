@@ -1,0 +1,38 @@
+truncate table [ShinsungMirgaNew].[dbo].[inventory_products];
+INSERT INTO [ShinsungMirgaNew].[dbo].[inventory_products]
+           ([materialid]
+           ,[id_actual]
+           ,[material_code]
+           ,[recei_wip_date]
+           ,[picking_date]
+           ,[sd_no]
+           ,[ex_no]
+           ,[lct_sts_cd]
+           ,[mt_no]
+           ,[mt_type]
+           ,[gr_qty]
+           ,[real_qty]
+           ,[bb_no]
+           ,[orgin_mt_cd]
+           ,[recei_date]
+           ,[expiry_date]
+           ,[export_date]
+           ,[date_of_receipt]
+           ,[lot_no]
+           ,[from_lct_cd]
+           ,[location_code]
+           ,[status]
+           ,[create_id]
+           ,[create_date]
+           ,[change_id]
+           ,[change_date]
+           ,[ExportCode]
+           ,[LoctionMachine]
+           ,[ShippingToMachineDatetime])
+Select 
+	   wmtid, id_actual, mt_cd, rece_wip_dt, picking_dt, sd_no, ex_no, lct_sts_cd, mt_no, mt_type, gr_qty, real_qty, bb_no, orgin_mt_cd,
+convert(datetime,recevice_dt,121),convert(datetime,expiry_dt,121),convert(datetime,expore_dt,121),convert(datetime,dt_of_receipt,121), 
+   lot_no, from_lct_cd, lct_cd, mt_sts_cd, reg_id, reg_dt, chg_id, chg_dt, ExportCode, LoctionMachine, ShippingToMachineDatetime
+From [ShinsungNewmirgas].[autodb1810].w_material_info
+where wmtid not in (SELECT wmtid FROM [ShinsungNewmirgas].[autodb1810].w_material_info WHERE id_actual IN( select id_actual from w_actual WHERE type = 'TIMS') OR mt_cd LIKE '%TIMS-NG%')
+and wmtid not in (SELECT wmtid FROM [ShinsungNewmirgas].[autodb1810].w_material_info WHERE id_actual IN( select id_actual from w_actual WHERE type = 'SX'));

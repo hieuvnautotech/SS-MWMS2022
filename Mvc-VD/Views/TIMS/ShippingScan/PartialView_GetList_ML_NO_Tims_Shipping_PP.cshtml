@@ -1,0 +1,209 @@
+﻿@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-1 text-right">
+                <label>Buyer Qr</label>
+            </div>
+            <div class="col-md-2">
+                <input type="text" name="buyer_qr" id="s_buyer_qr" class="input-text form-control">
+            </div>
+            <div class="col-md-1 text-right">
+                <label>ML NO</label>
+            </div>
+            <div class="col-md-3">
+                <input type="text" name="mt_cd" id="s_mt_cd" class="input-text form-control">
+            </div>
+            <div class="col-md-1 text-right">
+                <label>MT No</label>
+            </div>
+            <div class="col-md-2">
+                <input type="text" name="mt_no" id="s_mt_no" class="input-text form-control">
+            </div>
+            <div class="col-md-1 p-1 d-flex">
+                <button id="searchBtn_M" class="btn btn-sm btn-success button-srh mr-2"><i class="fa fa-search">&nbsp;Search</i></button>
+                <button type="button" class="btn btn-sm btn-primary button-top" id="btn_Picking"><i class="fa fa-check-circle">&nbsp;Shipping</i></button>
+            </div>
+         
+        </div>
+
+    </div>
+</div>
+
+
+<div class="container-fluid">
+
+    <div class="box-body my-2 bg-white">
+        <div class=" p-0 m-0">
+            <table id="list_Material"></table>
+            <div id="list_Material_Pager"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+         $("#list_Material").jqGrid({
+                url: "/TIMS/Get_List_Material_TimsShipping",
+                mtype: 'GET',
+                datatype: 'json',
+                colModel: [
+                    { key: true, label: 'wmtid', name: 'wmtid', width: 50, align: 'center', hidden: true },
+                    { label: 'Buyer Qr', name: 'buyer_qr', width: 100, align: 'left' },
+                    { label: 'ML NO', name: 'mt_cd', width: 350, align: 'left' },
+                    { label: 'MT NO', name: 'mt_no', width: 150, align: 'left' },
+                    { label: 'Bobbin No', name: 'bb_no', width: 100, align: 'left' },
+                   
+
+                    { label: 'Material Type', name: 'mt_type_nm', width: 150, align: 'center' },
+                    { label: 'Material Type', name: 'mt_type', width: 180, align: 'center', hidden: true },
+
+                    { label: 'Quantity', name: 'gr_qty', width: 80, align: 'right', formatter: 'integer' },
+                    { label: 'mt_sts_cd', name: 'mt_sts_cd', width: 100, align: 'right', hidden: true },
+                    { label: 'Status', name: 'sts_nm', width: 90, align: 'center' },
+
+                    { label: 'Departure', name: 'from_lct_nm', width: 130, align: 'center' },
+                    { label: 'Departure Status', name: 'lct_sts_cd', width: 100, align: 'center' },
+                    { label: 'Receiving Date', name: 'recevice_dt_tims', width: 90, align: 'center', formatter: convertDate },
+                ],
+                loadonce: true,
+                shrinkToFit: false,
+                pager: '#list_Material_Pager',
+                rowNum: 50,
+                rownumbers: true,
+                rowList: [50, 100, 200, 500, 1000],
+                viewrecords: true,
+                caption: "Shipping(M)",
+                height: 350,
+                multiselect: true,
+                jsonReader:
+                {
+                    root: "rows",
+                    page: "page",
+                    total: "total",
+                    records: "records",
+                    repeatitems: false,
+                    Id: "0"
+                },
+                width: null,
+
+                onSelectRow: function (row_id, status, e) {
+                    var selectedRowId = $("#list_Material").jqGrid("getGridParam", 'selrow');
+                    row_id = $("#list_Material").getRowData(selectedRowId);
+
+                },
+            });
+    
+
+    });
+
+    function convertDate(cellValue, options, rowdata, action) {
+
+        if (cellValue != null) {
+
+            a = cellValue.substr(0, 4);
+            b = cellValue.substr(4, 2);
+            c = cellValue.substr(6, 2);
+
+            var html = a + "-" + b + "-" + c;
+            return html;
+        }
+        else {
+            var html = "";
+            return html;
+        }
+
+
+
+    };
+
+    function getData(pdata) {
+
+        var params = new Object();
+
+        if ($("#list_Material").jqGrid('getGridParam', 'reccount') == 0) {
+            params.page = 1;
+        }
+        else { params.page = pdata.page; }
+
+        params.rows = pdata.rows;
+        params.sidx = pdata.sidx;
+        params.sord = pdata.sord;
+        params._search = pdata._search;
+
+        params.buyer_qr = $('#s_buyer_qr').val().trim();
+        params.mt_no = $('#s_mt_no').val().trim();
+        params.mt_cd = $('#s_mt_cd').val().trim();
+        $("#list_Material").jqGrid('setGridParam', { search: true });
+
+        $.ajax({
+            url: '/TIMS/Get_List_Material_TimsShipping',
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            traditional: true,
+            data: params,
+            success: function (data, st) {
+                if (st == "success") {
+                    var showing = $("#list_Material")[0];
+                    showing.addJSONData(data);
+                }
+            },
+            error: function () {
+                return;
+            }
+        });
+    };
+
+    //-------SEARCH------------//
+    $("#searchBtn_M").click(function () {
+        $("#list_Material").jqGrid('setGridParam', { search: true });
+        var pdata = $("#list_Material").jqGrid('getGridParam', 'postData');
+        getData(pdata);
+    });
+
+
+
+    $("#btn_Picking").on("click", function () {
+ 
+        var selRowIds = $('#list_Material').jqGrid("getGridParam", "selarrrow");
+        if (selRowIds.length >0) {
+             $.ajax({
+                 url: "/TIMS/TimsShipping_Scan_M?data=" + selRowIds + "&ext_no=" + '@ViewBag.ext_no',
+                type: "get",
+                dataType: "json",
+
+                 success: function (response) {
+
+                     if (response.result) {
+                   
+                         alert(response.message);
+                         $.each(response.datalist, function (key, item) {
+                            var id = item.wmtid;
+                            $("#list_Material").setRowData(id, item, { background: "#28a745", color:"#fff" });
+                        });
+                    }
+                    else {
+                  
+                        alert(data.message);
+                    }
+                }
+            });
+
+        }
+        else {
+            alert("Please select the data on the grid");
+        }
+       
+    });
+</script>
+<style>
+    button#searchBtn_M {
+        height: fit-content;
+    }
+
+    button#btn_Picking {
+        height: fit-content;
+    }
+</style>

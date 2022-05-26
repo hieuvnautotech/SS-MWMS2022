@@ -1,0 +1,224 @@
+﻿@{
+    ViewBag.Title = "ExportToMachineScan";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    @*<div class="col-xs-12" id="current_menu" data-level_1="WIP-WMS" data-level_2="Export Material" data-level_3="Export Material to Machine"></div>*@
+    <div class="col-xs-12" id="current_menu" data-level_1="@Html.Raw(ViewData["FG-WMS"])" data-level_2="@Html.Raw(ViewData["Sorting"])" data-level_3="@Html.Raw(ViewData["Shipping Sorting FG"])"></div>
+}
+<style>
+    .ui-jqgrid, .ui-jqgrid-view, .ui-jqgrid-hdiv, .ui-jqgrid-hdiv, .ui-jqgrid-bdiv, .ui-jqgrid-pager {
+        width: -webkit-fill-available !important;
+        width: -moz-available !important;
+    }
+</style>
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-1 text-right">
+                <label>SF No</label>
+            </div>
+            <div class="col-md-1">
+                <input type="text" name="sf_no" id="s_sf_no" class="input-text form-control">
+            </div>
+            <div class="col-md-1 text-right">
+                <label>Product Code</label>
+            </div>
+            <div class="col-md-1">
+                <input type="text" name="ProductCode" id="s_ProductCode" class="input-text form-control">
+            </div>
+            <div class="col-md-1 text-right">
+                <label>Product Name</label>
+            </div>
+            <div class="col-md-1">
+                <input type="text" name="ep_nm" id="s_ProductName" class="input-text form-control">
+            </div>
+            <div class="col-md-1 text-right">
+                <label>Description</label>
+            </div>
+            <div class="col-md-1">
+                <input type="text" name="Description" id="s_Description" class="input-text form-control">
+            </div>
+            <div class="col-md-1 p-1 d-flex">
+                <button id="searchBtn" class="btn btn-sm btn-success button-srh ml-5"><i class="fa fa-save">&nbsp;Search</i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ./Search function -->
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                @*<li class="active">
+                        <a data-toggle="tab" href="#Processing"><b>Processing</b></a>
+                    </li>*@
+                @* <li><a data-toggle="tab" href="#Finish"><b>Finished</b></a></li>*@
+            </ul>
+        </div>
+
+        <div class="tab-content">
+            <div id="Processing" class="tab-pane fade in in active">
+                <div>
+                    <table id="list-processing"></table>
+                    <div id="gridpagerprocessing"></div>
+                </div>
+            </div>
+            <div id="Finish" class="tab-pane fade in">
+                <div>
+                    <table id="list-finish"></table>
+                    <div id="gridpagerfinish"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li id="tab_1" class="active"><a href="#tab_c1" data-toggle="tab">Create</a></li>
+                <li id="tab_2"><a href="#tab_c2" data-toggle="tab">Modify</a></li>
+            </ul>
+        </div>
+        <div class="tab-content">
+            <div class="tab-pane active" id="tab_c1">
+                <form id="form1">
+                    <input type="hidden" name="CreateProductName" id="CreateProductName" class="input-text form-control">
+                    <div class="box-body box-body-input-move">
+                        <div class="col-md-12 pull-right" style="margin-top:-39px">
+                            <button type="button" id="c_save_but" class="btn btn-success button-sm"><i class="fa fa-save">&nbsp;Create</i></button>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+
+                                <div class="col-md-2  py-1">
+                                    <label>Product Code</label>
+                                    <div class="input-group mt_plus">
+                                        <input type="text" name="ProductCode" id="CreateProductCode" readonly class="input-text form-control" required>
+
+                                        <span class="input-group-addon psbom"><a href="#" class="poupdialogStyle"><i class="fa fa-search text-navy"></i></a></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2 py-1">
+                                    <label>Description</label>
+                                    <input type="text" name="Description" id="CreateDescription" class="form-control form-control-text" placeholder="Description">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="tab-pane" id="tab_c2">
+                <form id="form2">
+                    <input type="hidden" name="name" id="m_id" value="" />
+                    <input type="hidden" name="name" id="modifyShippingCode" value="" />
+                    <input type="hidden" name="ModifyProductName" id="ModifyProductName" class="input-text form-control">
+                    <div class="box-body box-body-input-move">
+                        <div class="col-md-12 pull-right" style="margin-top:-39px">
+                            <button type="button" id="m_delete_but" class="btn btn-danger button-sm"><i class="fa fa-trash">&nbsp;Delete</i></button>
+                            <button type="button" id="m_save_but" class="btn btn-success button-sm"><i class="fa fa-save">&nbsp;Modify</i></button>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+
+                                <div class="col-md-2  py-1">
+                                    <label>Product Code</label>
+                                    <div class="input-group mt_plus">
+                                        <input type="text" name="ProductCode" readonly id="ModifyProductCode" class="input-text form-control">
+                                        <span class="input-group-addon psbom"><a href="#" class="poupdialogStyle"><i class="fa fa-search text-navy"></i></a></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2 py-1">
+                                    <label>Description</label>
+                                    <input type="text" name="Description" id="ModifyDescription" class="form-control form-control-text" placeholder="Description">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="row box-body my-2">
+        <div class="col-md-4 py-1">
+            <label>Buyer QR</label>
+            <input type="text" name='buyer_qr' id='scan_buyer_qr' class="input-text form-control" placeholder="Buyer QR" required>
+            <button type="button" id="Clear_all" class="btn btn-danger button-sm"><i class="fa fa-trash">&nbsp;Clear All</i></button>
+        </div>
+        <div class="col-md-6 py-1">
+            <button type="button" id="Save_completed" class="btn btn-success button-sm"><i class="fa fa-save">&nbsp;Scan Completed</i></button>
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="p-0 m-0">
+            <table id="list1"></table>
+            <div id="listPager1"></div>
+        </div>
+    </div>
+</div>
+<div class="popup-dialog SF_Info_Popup" title="SF Infomation">
+    <div id="PartialViewShippingFGSortingPP"></div>
+</div>
+
+<!--Dialog Product-->
+<div class="dialog_PRODUCT" title="Product Information">
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body well text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="style_no_popup" placeholder="Product Code" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="style_nm_popup" placeholder="Product Name" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="md_cd" id="md_cd_popup" placeholder="Model Code" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2 d-flex">
+                    <button id="searchBtn_product_popup" class="btn btn-sm mr-1 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button type="button" class="btn btn-sm btn-success button-srh disabled" id="savestyle_product"><i class="fa fa-save">&nbsp;Selected</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid  p-0 m-0">
+        <div class="box-body my-2 bg-white">
+            <div class="p-0 m-0 ">
+                <table id="popupProduct"></table>
+                <div id="pagerProduct"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script src="~/Scripts/fgwms/SortingFG/ShippingFG/ShippingSortingFGScan.js"></script>
+    <script src="~/Scripts/fgwms/SortingFG/ShippingFG/Product_Poup.js"></script>
+
+    <script>
+        $(function () {
+
+            var tab = $('.nav-tabs-custom .nav.nav-tabs li a');
+            $(tab).click(function (e) {
+
+                var ul = $(e.target).closest('ul');
+                $(ul).find('li').removeClass('active');
+                $(e.target).closest('li').addClass('active');
+
+            })
+        })
+    </script>
+}

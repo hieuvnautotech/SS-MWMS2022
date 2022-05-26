@@ -1,0 +1,346 @@
+﻿@{
+    ViewBag.Title = "Product_mgt";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="FG-WMS" data-level_2="Product Information" data-level_3="Product Management"></div>
+
+}
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-0 ml-5 px-1 py-2 text-right">
+                <label><b>Finish Lot</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <div class="input-group mt_plus">
+                    <input type="text" name="mt_cd" id="s_mt_cd" class="input-text form-control">
+                    @*<span class="input-group-addon ">
+                        <button type="button" id="" class="btn btn-outline-warning button-sm form-control poupdialoglot"><i class="fa fa-search text-navy"></i></button>
+                    </span>*@
+                </div>
+            </div>
+
+            <div class="col-md-1 px-1 py-2 text-right">
+                <label><b>Product Code</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <div class="input-group mt_plus">
+                        <input type="text" name="style_no" id="m_style_no" class="input-text form-control" placeholder="Product" />
+                        @*<span class="input-group-addon">
+                            <button type="button" id="m_btnpoup" class="btn btn-outline-warning button-sm form-control poupdialogStyle"><i class="fa fa-search text-navy"></i></button>
+                        </span>*@
+                    </div>
+            </div>
+            <div class="col-md-1 px-1 py-2 text-right">
+                <label><b>Input Date</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <input type="text" name="start_dt" id="start" class="form-control form-control-text">
+            </div>
+            <div class="col-md-0 px-1 py-2 text-center">
+                <label><b>~</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <input type="text" name="end_dt" id="end" class="form-control form-control-text">
+            </div>
+             <div class="col-md-1 px-1 py-2 text-right">
+                <label><b>Out Date</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <input type="text" name="start_dt" id="start_out" class="form-control form-control-text">
+            </div>
+            <div class="col-md-0 px-1 py-2 text-center">
+                <label><b>~</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <input type="text" name="end_dt" id="end_out" class="form-control form-control-text">
+            </div>
+
+        </div>
+        <div class="row p-0 m-0">
+            <div class="col-md-0 ml-5 px-1 py-2 text-right">
+                <label><b>Location&nbsp;&nbsp;</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <select name="c_lct_cd" id="c_lct_cd" class="form-control"></select>
+            </div>
+           
+            <div class="col-md-1 px-1 py-2 text-right">
+                <label><b>WO</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <div class="input-group mt_plus">
+                    <input type="text" name="s_fo_no" id="s_fo_no" class="form-control form-control-text "/>
+                    @*<span class="input-group-addon ">
+                        <button type="button" id="" class="btn btn-outline-warning button-sm form-control poupdialogWO"><i class="fa fa-search text-navy"></i></button>
+                    </span>*@
+                </div>
+            </div>
+            <div class="col-md-1 px-1 py-2 text-right">
+                <label><b>PO</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <div class="input-group mt_plus">
+                    <input type="text" name="s_po_no" id="s_po_no" class="form-control form-control-text "/>
+                    @*<span class="input-group-addon ">
+                        <button type="button" id="" class="btn btn-outline-warning button-sm form-control poupdialogpo"><i class="fa fa-search text-navy"></i></button>
+                    </span>*@
+                </div>
+            </div>
+             <div class="col-md-0 px-1 py-2 text-right">
+                <label><b>BOM</b></label>
+            </div>
+              <div class="col-md-1 p-1">
+                 <div class="input-group mt_plus">
+                    <input type="text" name="bom_no" id="c_bom_no" class="input-text form-control" placeholder="Bom"/>
+                    @*<span class="input-group-addon dcmaterial">
+                        <button type="button" id="" class="btn btn-outline-warning button-sm form-control poupdialogbom"><i class="fa fa-search text-navy"></i></button>
+                    </span>*@
+                </div>
+            </div>
+            <div class="col-md-1 mx-2 p-2 d-flex">
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                &nbsp;&nbsp;  &nbsp;&nbsp;
+            </div>
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <table id="list"></table>
+            <div id="gridpager"></div>
+        </div>
+    </div>
+</div>
+@*popup*@
+@*---------------------------------------------------------------------------------------------------------------------------*@
+@*popuplost*@
+<div class="lot_pp" title="Lot">
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <div class="col-md-8">
+                    <div class="row">
+                        <label class="col-xs-3 control-label text-right">
+                            <h6 class="control-label-text"><b>Lot Code</b></h6>
+                        </label>
+                        <div class="col-xs-9">
+                            <input type="text" name="mt_cd" id="mt_cd" class="form-control" style="width: 100%;">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 text-right">
+                        <button id="searchBtn_popuplot" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                        <button type="button" class="btn btn-success button-srh2" id="selected"><i class="fa fa-check">Selected</i></button>
+                        <button type="button" class="btn btn-sm btn-primary button-srh" id="closelot"><i class="fa fa-close">&nbsp;Close</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <table id="popuplot"></table>
+                <div id="pagerlot"></div>
+            </div>
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+
+<!--Dialog Product-->
+<div class="dialog" title="Product Information">
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body well text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="s_style_no_pp" placeholder="Product Code" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="s_style_nm_pp" placeholder="Product Name" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="md_cd" id="s_md_cd_pp" placeholder="Model Code" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2 d-flex">
+                    <button id="searchBtn_product_popup" class="btn btn-sm mr-5 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button type="button" class="btn btn-sm btn-success button-srh disabled" id="savestyle_product"><i class="fa fa-save">&nbsp;Selected</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid  p-0 m-0">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0 boxProduct">
+                <table id="popupStyle"></table>
+                <div id="pagerStyle"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ./ Dialog -->
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <input type="hidden" name="color_bg_line" value=" " id="color_bg_line" />
+        <!--BuyerInfo start -->
+        <div class="tab-content active" id="tab_c1">
+            <form id="form1">
+                <div class="box-body box-body-input-move">
+                    <input type="hidden" name="plno" id="plno">
+                    <div class="row p-0 m-0">
+                        <div class="col">
+                            <div class="col-md-1 p-2 pull-right text-right">
+                                <button type="button" id="c_save_but" class="btn btn-success button-sm"><i class="fa fa-save">&nbsp;Save</i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-10 px-3">
+                        <div class="row p-0 m-0">
+                            <div class="col">
+                                <div class="col-md-1 px-1 py-2 text-right">
+                                    <label><b>Finish Lot</b></label>
+                                </div>
+                                <div class="col-md-3">
+                                        <input type="text" name="prd_lcd" id="prd_lcd" class="input-text form-control"  readonly="readonly">
+                                </div>
+                                <div class="col-md-1 px-1 py-2 text-right">
+                                    <label><b>Status</b></label>
+                                </div>
+                                <div class="col-md-3">
+                                    <select name="sts_cd" id="sts_cd" class="form-control"></select>
+                                </div>
+                                <div class="col-md-1 px-1 py-2 text-right">
+                                    <label><b>Description</b></label>
+                                </div>
+                                <div class="col-md-3">
+                                    <input type="text" name="re_mark" value=" " id="re_mark" class="input-text form-control"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+@*popupwo*@
+<div class="pp_wo" title="WO">
+    <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <div class="col-md-8">
+                    <div class="row">
+                        <label class="col-xs-3 control-label text-right">
+                            <h6 class="control-label-text"><b>WO NO</b></h6>
+                        </label>
+                        <div class="col-xs-9">
+                            <input type="text" name="fo_no" id="fo_no" class="form-control" style="width: 100%;">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4  text-right">
+                    <button id="searchBtn_popupfo_no" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button type="button" class="btn btn-success button-srh2" id="selected2"><i class="fa fa-check">Selected</i></button>
+                    <button type="button" class="btn btn-sm btn-primary button-srh" id="closewo"><i class="fa fa-close">&nbsp;Close</i></button>
+                </div>
+            </div>
+        </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <table id="popupwo"></table>
+                <div id="pagerwo"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*---------------------------------------------------------------------------------------------------------------------------*@
+
+@*POPUPPO_NO*@
+<div class="pp_po_no" title="PO">
+     <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <div class="col-md-8">
+                    <div class="row">
+                        <label class="col-xs-3 control-label text-right">
+                            <h6 class="control-label-text"><b>PO NO</b></h6>
+                        </label>
+                        <div class="col-xs-9">
+                            <input type="text" name="po_no" id="po_no" class="form-control" style="width: 100%;">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 text-right">
+                        <button id="searchBtn_popuppo_no" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                        <button type="button" class="btn btn-success button-srh2" id="selected3"><i class="fa fa-check">Selected</i></button>
+                        <button type="button" class="btn btn-sm btn-primary button-srh" id="closepo_no"><i class="fa fa-close">&nbsp;Close</i></button>
+                </div>
+            </div>
+        </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <table id="popuppo_no"></table>
+                <div id="pagerpo_no"></div>
+            </div>
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+
+<!--Dialog BOM-->
+<div class="dialog2" title="BOM Information">
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body well text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-3 p-2">
+                    <input type="text" name="bom_no" id="s_bom_no_popup" placeholder="Bom no" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="s_style_no_popup" placeholder="Product Code" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="md_cd" id="s_model_no_popup" placeholder="Model Code" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2 d-flex">
+                    <button id="searchBtn_BOM_popup" class="btn btn-sm mr-5 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button type="button" class="btn btn-sm btn-success button-srh disabled" id="savestyle_BOM"><i class="fa fa-save">&nbsp;Selected</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid  p-0 m-0">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0 boxBOM">
+                <table id="popupbom"></table>
+                <div id="pagerbom"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- //view so_do popup -->
+@*---------------------------------------------------------------------------------------------------------------------------*@
+
+@*------------------------------------------*@
+<style>
+    span.input-group-addon {
+        padding: 0;
+        border: 0.1px solid;
+    }
+</style>
+@section scripts{
+    <script src="~/Scripts/fgwms/Product_mgt/pp_lot.js"></script>
+    <script src="~/Scripts/fgwms/Product_mgt/pp_fo_no.js"></script>
+    <script src="~/Scripts/fgwms/Product_mgt/pp_po_no.js"></script>
+    <script src="~/Scripts/fgwms/Product_mgt/Style_Poup.js"></script>
+    <script src="~/Scripts/fgwms/Product_mgt/bom_popup.js"></script>
+    <script src="~/Scripts/fgwms/Product_mgt/Product_mgt.js"></script>
+}
+

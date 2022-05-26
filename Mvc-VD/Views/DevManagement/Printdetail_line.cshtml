@@ -1,0 +1,226 @@
+﻿@{
+    ViewBag.Title = "Printdetail_line";
+    Layout = "~/Views/Shared/_Print.cshtml";
+}
+
+<div id="all_in1">
+    <input type="hidden" id="lid" value="@ViewData["Message"]"/>
+
+    <div class="container-fluid">
+        <div class="row p-0 m-0">
+            <div class="col-md-3 all_cg">
+                <img src="/Content/themes/Logo-suplier_in.jpg" style="width: 100%" />
+            </div>
+            <div class="col-md-5 p-2 text-center" id="title">
+            </div>
+            <div class="col-md-4 p-2 all_cg" style="border-top: 1px solid; border-bottom: 1px solid">
+                <div class="row">
+                    <div class="col-md-5 text-center">
+                        <p>Document Code</p>
+                        <p>Serial</p>
+                        <p style="margin: 0;">Date</p>
+                    </div>
+                    <div class="col-md-7 text-left">
+                        <div id="barcode1"></div>
+                        <div id="datetime1" style="text-align: center; margin-top: 10px;">
+                            <script>
+                                function formatDate() {
+                                    var d = new Date(),
+                                        month = '' + (d.getMonth() + 1),
+                                        day = '' + d.getDate(),
+                                        year = d.getFullYear(),
+                                        Hours = d.getHours(),
+                                        Minutes = d.getMinutes();
+
+                                    if (month.length < 2) { month = '0' + month; }
+                                    if (day.length < 2) { day = '0' + day; }
+                                    if (Hours.length < 2) { Hours = '0' + Hours; }
+                                    if (Minutes.length < 2) { Minutes = '0' + Minutes; }
+
+                                    time = Hours + ":" + Minutes;
+                                    var full = year + "-" + month + "-" + day + " " + time;
+                                    $("#datetime1").html(full);
+                                }
+                                formatDate()
+                                setInterval(formatDate, 500);
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <h4>Standard</h4>
+            <div class="row p-0 m-0">
+                <table class="table table-hover table-bordered">
+                    <thead>
+                        <tr class="table-warning">
+                            <th scope="col">Line Code </th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Bom</th>
+                            <th scope="col">Product Code</th>
+                            <th scope="col">Product Name</th>
+                            <th scope="col">Model</th>
+                            <th scope="col">Project Name</th>
+                            <th scope="col">SS Version</th>
+                            <th scope="col">Part Name</th>
+                            <th scope="col">Standard</th>
+                            <th scope="col">Customer Rev</th>
+                            <th scope="col">Order Number</th>
+                            <th scope="col">Lead Time(EA/h)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="info"></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <h4>Process</h4>
+            <div class="row p-0 m-0">
+                <table id="popupbom1" class="table table-striped table-bordered" style="width: 100%">
+                    <thead>
+                        <tr class="table-warning">
+                            <th scope="col">No.</th>
+                            <th scope="col">Line Code </th>
+                            <th scope="col">Level</th>
+                            <th scope="col">Part</th>
+                            <th scope="col">Process Type</th>
+                            <th scope="col" style="text-align:left !important">Lead Time(EA/h)</th>
+                            <th scope="col">Staff</th>
+                            <th scope="col">Feeding</th>
+                            <th scope="col">Unit</th>
+                            <th scope="col">Division</th>
+                            <th scope="col">Material</th>
+                            <th scope="col">Material Name</th>
+                            <th scope="col">Width</th>
+                            <th scope="col">Need Qty</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<script>
+    $(document).ready(function () {
+        var lid = $('#lid').val();
+        print(lid);
+        _getinfo(lid);
+    });
+    function print(lid) {
+        $('#popupbom1').DataTable({
+            "bServerSide": true,
+            "ajax": {
+                "url": '/DevManagement/GetBomMgt1?lid=' + lid,
+                "type": "Post",
+                "datatype": "json"
+            },
+            "searching": false,
+            "paging": false,
+            "bInfo": false,
+            "columns": [
+                { "data": "RowNum" },
+                { "data": "line_no" },
+                { "data": "level" },
+                { "data": "process_part" },
+                { "data": "process_type" },
+                { "data": "need_time", render: $.fn.dataTable.render.number(',', '.', 0, '') },
+                { "data": "man_num" },
+                { "data": "feed_size" },
+                { "data": "feed_unit" },
+                { "data": "div_cd" },
+                { "data": "mt_no" },
+                { "data": "mt_nm" },
+                { "data": "width" },
+                { "data": "need_qty", render: $.fn.dataTable.render.number(',', '.', 0, '') },
+            ],
+
+            'columnDefs': [
+                {
+                    "targets": 0, // your case first column
+                    "className": "text-left",
+                },
+            {
+                "targets": 1, // your case first column
+                "className": "text-center",
+            },
+            {
+                "targets": 1, // your case first column
+                "className": "text-center",
+            },
+            {
+                "targets": 2, // your case first column
+                "className": "text-left",
+            },
+            {
+                "targets": 3, // your case first column
+                "className": "text-center",
+            },
+            {
+                "targets": 4, // your case first column
+                "className": "text-right",
+            },
+            {
+                "targets": 5, // your case first column
+                "className": "text-right",
+            },
+            {
+                "targets": 6, // your case first column
+                "className": "text-right",
+            },
+            {
+                "targets": 12, // your case first column
+                "className": "text-right",
+            },
+            {
+                "targets": 11, // your case first column
+                "className": "text-right",
+            },
+            ],
+            'rowsGroup': [0, 1, 2, 3],
+            "bDestroy": true,
+
+        });
+
+    }
+    function _getinfo(lid) {
+        $.get("/DevManagement/getinfo" + "?id=" + lid, function (data) {
+            if (data != null && data != undefined) {
+                $.each(data, function (key, item) {
+                    var html = '';
+                    var html = '<td>' + item.line_no + '</td>';
+                    html += '<td>' + item.line_nm + '</td>';
+                    html += '<td>' + item.bom_no + '</td>';
+                    html += '<td>' + item.style_no + '</td>';
+                    html += '<td>' + item.style_nm + '</td>';
+                    html += '<td>' + item.md_cd + '</td>';
+                    html += '<td>' + item.prj_nm + '</td>';
+                    html += '<td>' + item.ssver + '</td>';
+                    html += '<td>' + item.part_nm + '</td>';
+                    html += '<td>' + item.standard + '</td>';
+                    html += '<td>' + item.cust_rev + '</td>';
+                    html += '<td>' + item.order_num + '</td>';
+                    html += '<td class="text-right">' + item.need + '</td>';
+                    var html1 = "LN-" + item.line_no;
+                    $('#barcode1').append(html1);
+                    $('#barcode1').barcode(html1, "code128", { barWidth: 1, barHeight: 30 });
+
+                    $("#title").html("<h2>Routing</h2><h4 class='red'>" + item.style_no + " " + '[' + item.style_nm + " " + ']' + "</h4>");
+                    $("#info").html(html);
+                });
+            }
+        });
+    }
+</script>

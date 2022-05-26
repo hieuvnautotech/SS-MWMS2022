@@ -1,0 +1,48 @@
+﻿    button#allday {
+        margin-top: 15px;
+        float: right;
+        padding: 5px 12px;
+    }
+
+    button#saveupdate {
+        margin-top: 15px;
+        float: right;
+        padding: 5px 12px;
+    }
+
+    td.details-control {
+        background: url('https://cdn.rawgit.com/DataTables/DataTables/6c7ada53ebc228ea9bc28b1b216e793b1825d188/examples/resources/details_open.png') no-repeat center center;
+        cursor: pointer;
+    }
+
+    tr.shown td.details-control {
+        background: url('https://cdn.rawgit.com/DataTables/DataTables/6c7ada53ebc228ea9bc28b1b216e793b1825d188/examples/resources/details_close.png') no-repeat center center;
+    }
+
+    button#btn-show-all-children {
+        float: right;
+    }
+
+    button#btn-show-all-children1 {
+        float: right;
+    }
+
+    .btn_day {
+        cursor: pointer;
+        color: #000;
+        text-align: center;
+        border-radius: 4px;
+    }
+
+    .css_input {
+        width: 50%;
+        border: none;
+        text-align: right;
+        background: red;
+        padding: 4px;
+    }
+    .target_a {
+        border:none;
+        width:50%;
+        text-align:right;
+    }

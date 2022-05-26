@@ -1,0 +1,74 @@
+﻿@model Mvc_VD.Models.m_board
+
+@{
+    ViewBag.Title = "noticeRegister";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+
+@section Tilte {
+    <div class="col-xs-12">
+        <h4 class="m-0 text-dark"><b>Notice Modify</b></h4>
+        <small style="font-size: 14px;"><i class="fa fa-dashboard"></i>
+            HOME > Standard Management(WO) > Notice Management > Modify
+        </small>
+    </div>
+}
+
+
+<div class="container-fluid">
+    <form id='notice' name="notice" action="updateNotice" role="form" method="post" target="zeroFrame">
+        <input type="hidden" name="mno" value="@Html.DisplayFor(model => model.mno) " />
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <table class="table table-bordered ">
+                    <tbody>
+                        <tr>
+                            <th class="col-md-0 border border-secondary" scope="col">Writer</th>
+                            <td class="col-md-12 border border-secondary">@Html.DisplayTextFor(model => model.reg_id) &nbsp;&nbsp;@Html.DisplayTextFor(model => model.reg_dt)</td>
+                        </tr>
+                        <tr>
+                            <th class="col-md-0 border border-secondary" scope="col">Subject</th>
+                            <td class="col-md-12 border border-secondary">@Html.TextAreaFor(model => model.title, new { @class = "ckeditor", @id = "sampleEditor" })</td>
+                        </tr>
+                        <tr>
+                            <th class="col-md-0 border border-secondary" scope="col">Content</th>
+                            <td class="col-md-12 border border-secondary">@Html.TextAreaFor(model => model.content, new { @class = "ckeditor", @id = "sampleEditor1" })</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="col-md-12 pb-2 pt-4 text-right">
+                    <button type="submit" id="c_save" class="btn btn-success button-srh2 pull-left"><i class="fa fa-save">&nbsp;Save</i></button>&nbsp;&nbsp;&nbsp;&nbsp;
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section scripts{
+    <script src="~/ckeditor/ckeditor.js"></script>
+    <script type="text/javascript">
+        CKEDITOR.replace("sampleEditor");
+        CKEDITOR.replace("sampleEditor1");
+    </script>
+    <script>
+        $(document).ready(function () {
+            initSample();
+
+        });
+        $("#saveBtn").click(function () {
+            if (CKEDITOR.instances.sampleEditor.getData() == '') {
+                window.alert('Please enter Subject.');
+                CKEDITOR.instances.sampleEditor.focus();
+                return false;
+            }
+            if (CKEDITOR.instances.sampleEditor1.getData() == '') {
+                window.alert('Please enter Content.');
+                CKEDITOR.instances.sampleEditor1.focus();
+                return false;
+            }
+
+            $("#notice").submit();
+        })
+    </script>
+}

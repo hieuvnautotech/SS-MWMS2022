@@ -1,0 +1,389 @@
+﻿@{
+    ViewBag.Title = "PrintWorkorder";
+    Layout = "~/Views/Shared/_Print.cshtml";
+}
+
+@*Work order*@
+<div class="" title="Work order specification">
+    <div class="container-fluid">
+        <div class="row p-0 m-0">
+            <div class="col-md-3 all_cg ">
+                <img src="~/Content/themes/Logo-suplier_in.jpg" style="width: 100%" />
+            </div>
+              <div class="col-md-4 pt-5 text-center">
+                    <h1 style="margin: 0;font-size: 24px;">Work Order Specification</h1>
+                    <h2 style="font-size: 12px;" id="title_product"></h2>
+                </div>
+               <div class="col-md-5 p-2">
+                    <div class="row" style="border-top: 1px solid; border-bottom: 1px solid">
+                    <div class="col-md-3 text-center">
+                        <p style="padding-top: 5px;">Document Code</p>
+                        <p>Serial</p>
+                        <p style="margin:0">Date</p>
+                    </div>
+                    <div class="col-md-9" style="padding-top: 7px !important">
+                        <p id="barcode" style="margin: 0 auto;"></p>
+                        <p id="datetime" style="text-align: center; margin-top: 10px;">
+                            <script>
+                                function startTime() {
+                                    var d = new Date(),
+
+                                    month = '' + (d.getMonth() + 1),
+                                    day = '' + d.getDate(),
+                                    year = d.getFullYear(),
+                                    hours = d.getHours(),
+
+                                    minutes = d.getMinutes();
+                                    console.log(minutes);
+                                    console.log(hours);
+                                    if (month.length < 2) month = '0' + month;
+                                    if (day.length < 2) day = '0' + day;
+                                    if (hours < 10) hours = '0' + hours;
+                                    if (minutes < 10) minutes = '0' + minutes;
+                                    var full = year + "-" + month + "-" + day, time = hours + ":" + minutes;
+                                    var html = '';
+                                    $("#datetime").html("<h4 class='red'>" + full + " " + time + "</h4>");
+                                }
+                                startTime()
+                                setInterval(startTime, 500);
+                            </script>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+       
+     <div class="container-fluid py-4">
+            <table id="dataTable" class="table table-hover table-bordered">
+                <thead>
+                    <h4>Standard</h4>
+                    <tr class="table-warning">
+                        <th>WO NO</th>
+                        <th>PO</th>
+                        <th>Bom</th>
+                        <th style="text-align:center !important">Factory</th>
+                        <th style="text-align:center !important">Routing</th>
+                        <th style="text-align:center !important">Total Qty</th>
+                        <th>Delivery date</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="container-fluid py-4">
+            <table id="dataTable1" class="table table-hover table-bordered table-striped ">
+                <thead>
+                    <h4>Process and Material Infomation</h4>
+
+                    <tr class="table-warning">
+                        <th style="text-align:center !important">No.</th>
+                        <th style="text-align:center !important">Process Type</th>
+                        <th style="text-align:center !important">Material Name</th>
+                        <th style="text-align:center !important">Width</th>
+                        <th style="text-align:center !important">Need Qty</th>
+                        <th style="text-align:center !important">Feeding</th>
+                        <th style="text-align:center !important">Unit</th>
+                        <th style="text-align:center !important">Division</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="container-fluid py-4">
+            <table id="dataTable2" class="table table-hover table-bordered table-striped">
+                <thead>
+                    <h4>Process and Machine</h4>
+                    <tr class="table-warning">
+                        <th style="text-align:center !important">No.</th>
+                        <th>Process Unit Code</th>
+                        <th>Machine Type </th>
+                        <th>Machine Code</th>
+                        <th>Start date </th>
+                        <th>End date</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="container-fluid py-4">
+            <table id="dataTable3" class="table table-hover table-bordered table-striped">
+                <thead>
+                    <h4>Process and Staff</h4>
+                    <tr class="table-warning">
+                        <th style="text-align:center !important">No.</th>
+                        <th style="text-align:center !important">Process Unit Code</th>
+                        <th style="text-align:center !important">Staff Id</th>
+                        <th style="text-align:center !important"> Name</th>
+                        <th style="text-align:center !important">Type</th>
+                        <th style="text-align:center !important">Start date </th>
+                        <th style="text-align:center !important">End date</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+  
+</div>
+@*Work order*@
+
+<script>
+    var fno = "@ViewData["Message"]";
+    $(document).ready(function () {
+        print2(fno);
+    });
+  
+    function print2(fno) {
+
+        $.ajax({
+            url: "/ActualWO/getBarcodePrint_Workorder?fno=" + fno,
+            type: "get",
+            dataType: "json",
+            success: function (rtnData) {
+                $.each(rtnData, function (dataType, data) {
+                    {
+                        var html = "WS-" + data.fo_no + "-" + data.line_no;
+                        $('#barcode').append(html);
+                        $('#barcode').barcode(html, "code128", { barWidth: 1, barHeight: 30 });
+                        $("#title_product").html(data.style_no + " " + '[' + data.style_nm + " " + ']');
+                    }
+                });
+            }
+        });
+       
+        $('#dataTable').DataTable({
+            "bServerSide": true,
+            "ajax": {
+                "url": "/ActualWO/getActualWorkorder?" + "fno=" + fno,
+                "type": "GET",
+                "datatype": "json",
+                //"dataSrc": function (rtnData) {
+                //    $.each(rtnData, function (dataType, data) {
+                //        {
+                //            var html = "WS-" + fo_no + "-" + data[0].line_no;
+                //            var title_product = data[0].style_no + "[" + data[0].style_nm + "]";
+                //            $("#title_work").html(html);
+                //            $("#title_product").html(title_product);
+                //            $('#barcode').append(html);
+                //            $('#barcode').barcode(html, "code128", { barWidth: 1, barHeight: 30 });
+                //        }
+                //    });
+                //},
+            },
+            "searching": false,
+            "paging": false,
+            "bInfo": false,
+            "columns": [
+                //{ "data": "RowNum" },
+                { "data": "fo_no" },
+                { "data": "po_no" },
+                { "data": "bom_no" },
+                { "data": "lct_cd" },
+                { "data": "line_no" },
+                { "data": "fo_qty", render: $.fn.dataTable.render.number(',', '.', 0, '') },
+                { "data": "delivery_dt" },
+                { "data": "re_mark" },
+            ],
+            'columnDefs': [
+             {
+                 "targets": 0, // your case first column
+                 "className": "text-center",
+                 "width": "10%"
+             },
+              {
+                  "targets": 1, // your case first column
+                  "className": "text-center",
+                  "width": "10%"
+              },
+              {
+                  "targets": 2, // your case first column
+                  "className": "text-center",
+                  "width": "10%"
+              },
+              {
+                  "targets": 3, // your case first column
+                  "className": "text-left",
+                  "width": "15%"
+              },
+               {
+                   "targets": 4, // your case first column
+                   "className": "text-center",
+                   "width": "15%"
+               },
+                {
+                    "targets": 5, // your case first column
+                    "className": "text-right",
+                    "width": "10%"
+                },
+                {
+                    "targets": 6, // your case first column
+                    "className": "text-center",
+                    "width": "15%"
+                },
+                {
+                    "targets": 7, // your case first column
+                    "className": "text-right",
+                    "width": "15%"
+                },
+            ],
+            "bDestroy": true,
+        });
+        $('#dataTable1').DataTable({
+            "bServerSide": true,
+            "ajax": {
+                "url": "/ActualWO/GetActual_material?" + "fno=" + fno,
+                "type": "GET",
+                "datatype": "json"
+            },
+            "searching": false,
+            "paging": false,
+            "bInfo": false,
+            "columns": [
+                { "data": "RowNum" },
+                { "data": "process_type" },
+                { "data": "mt_nm" },
+                { "data": "width" },
+                { "data": "need_qty" },
+                { "data": "feed_size" },
+                { "data": "feed_unit" },
+                { "data": "div_cd" },
+
+            ],
+            'rowsGroup': [0],
+            'columnDefs': [
+              {
+                  "targets": 1, // your case first column
+                  "className": "text-center",
+                  "width": "15%"
+              },
+               {
+                   "targets": 3, // your case first column
+                   "className": "text-right",
+                   "width": "15%"
+               },
+               {
+                   "targets": 4, // your case first column
+                   "className": "text-right",
+                   "width": "15%"
+               },
+               {
+                   "targets": 5, // your case first column
+                   "className": "text-right",
+                   "width": "15%"
+               },
+            ],
+            "bDestroy": true,
+        });
+
+        $('#dataTable2').DataTable({
+            "bServerSide": true,
+            "ajax": {
+                "url": "/ActualWO/getActualMachin?" + "fno=" + fno,
+                "type": "GET",
+                "datatype": "json"
+            },
+            "searching": false,
+            "paging": false,
+            "bInfo": false,
+            "columns": [
+                { "data": "RowNum" },
+                { "data": "prounit_cd" },
+                { "data": "mc_type" },
+                { "data": "mc_no" },
+                { "data": "start_dt" },
+                { "data": "end_dt" },
+
+            ],
+            'rowsGroup': [0, 1],
+            'columnDefs': [
+             {
+                 "targets": 1, // your case first column
+                 "className": "text-center",
+                 "width": "30%"
+             },
+              {
+                  "targets": 2, // your case first column
+                  "className": "text-center",
+                  "width": "15%"
+              },
+              {
+                  "targets": 3, // your case first column
+                  "className": "text-center",
+                  "width": "20%"
+              },
+              {
+                  "targets": 4, // your case first column
+                  "className": "text-center",
+                  "width": "15%"
+              },
+               {
+                   "targets": 5, // your case first column
+                   "className": "text-center",
+                   "width": "15%"
+               },
+            ],
+            "bDestroy": true,
+        });
+        $('#dataTable3').DataTable({
+            "bServerSide": true,
+            "ajax": {
+                "url": "/ActualWO/GetActual_staff?" + "fno=" + fno,
+                "type": "GET",
+                "datatype": "json"
+            },
+            "searching": false,
+            "paging": false,
+            "bInfo": false,
+            "columns": [
+                { "data": "RowNum" },
+                { "data": "prounit_cd" },
+                { "data": "staff_id" },
+                { "data": "uname" },
+                { "data": "dt_nm" },
+                { "data": "start_dt" },
+                { "data": "end_dt" },
+            ],
+            'rowsGroup': [0],
+            'columnDefs': [
+             {
+                 "targets": 1, // your case first column
+                 "className": "text-center",
+                 "width": "10%"
+             },
+              {
+                  "targets": 2, // your case first column
+                  "className": "text-left",
+                  "width": "15%"
+              },
+              {
+                  "targets": 3, // your case first column
+                  "className": "text-left",
+                  "width": "15%"
+              },
+              {
+                  "targets": 4, // your case first column
+                  "className": "text-left",
+                  "width": "15%"
+              },
+               {
+                   "targets": 5, // your case first column
+                   "className": "text-center",
+                   "width": "15%"
+               },
+                {
+                    "targets": 6, // your case first column
+                    "className": "text-center",
+                    "width": "15%"
+                },
+            ],
+            "bDestroy": true,
+        });
+    };
+</script>
+  
+    <script src="~/Scripts/ActualWO/Web/web.js"></script>
+  <style>
+       
+        .all_cg {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>

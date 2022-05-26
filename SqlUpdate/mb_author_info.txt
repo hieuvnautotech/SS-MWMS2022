@@ -1,0 +1,11 @@
+SELECT 
+       mano
+      ,userid
+      ,at_cd
+      ,re_mark
+      ,use_yn
+      ,reg_id
+      ,reg_dt
+      ,chg_id
+      ,chg_dt
+  FROM mb_author_info

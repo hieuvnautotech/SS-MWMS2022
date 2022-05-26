@@ -1,0 +1,295 @@
+﻿@{
+    ViewBag.Title = "Receving_Scan";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    @*<div class="col-xs-12" id="current_menu" data-level_1="FG-WMS" data-level_2="Shipping Management" data-level_3="Shipping Scan(FG)"></div>*@
+    <div class="col-xs-12" id="current_menu" data-level_1="@Html.Raw(ViewData["FG-WMS"])" data-level_2="@Html.Raw(ViewData["Shipping Management"])" data-level_3="@Html.Raw(ViewData["Shipping Scan(FG)"])"></div>
+}
+@*---------------------------------------------------------------------------------------------------------------------------*@
+
+<div class="container-fluid">
+    <div class="row text-right">
+
+        <div class="col-md-12 px-3">
+
+            <form method="post" id="exportData" enctype="multipart/form-data" style="float: right;margin-left:16px">
+                <button type="submit" id="excelBtn" class="btn btn-sm btn-warning button-top"><i class="fa fa-file-excel-o">&nbsp;Excel Buyer</i></button>
+            </form>
+
+            <form method="post" id="exportData2" enctype="multipart/form-data">
+                <button type="submit" id="excelBtn2" class="btn btn-sm btn-warning button-top"><i class="fa fa-file-excel-o">&nbsp;Excel </i></button>
+            </form>
+        </div>
+
+        @*<button type="button" id="excelBtn" class="btn btn-sm btn-warning button-top"><i class="fa fa-file-excel-o">&nbsp;Excel</i></button>*@
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+
+        <div class="row p-0 m-0">
+            <div class="col-md-1 text-right">
+                <label>DL No</label>
+            </div>
+            <div class="col-md-1">
+                <input type="text" name="dl_no" id="s_dl_no" class="input-text form-control">
+            </div>
+            <div class="col-md-1 text-right">
+                <label>DL Name</label>
+            </div>
+            <div class="col-md-1">
+
+                <input type="text" name="dl_nm" id="s_dl_nm" class="input-text form-control">
+            </div>
+
+            <div class="col-md-1 text-right">
+                <label>Product</label>
+            </div>
+            <div class="col-md-2">
+                <input type="text" id="productCode" class="input-text form-control">
+            </div>
+
+            <div class="col-md-1 text-right">
+                <label>Date</label>
+            </div>
+            <div class="col-md-1">
+                <input type="text" id="start" class="input-text form-control">
+            </div>
+            <div class="col-md-auto">
+                ~
+            </div>
+            <div class="col-md-1">
+                <input type="text" id="end" class="input-text form-control">
+            </div>
+            <div class="col-md-1 p-1 d-flex">
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh ml-5"><i class="fa fa-save">&nbsp;Search</i></button>
+            </div>
+
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="p-0 m-0">
+            <table id="list"></table>
+            <div id="listPager"></div>
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li id="tab_1" class="active"><a href="#tab_c1" data-toggle="tab">Create</a></li>
+                <li id="tab_2"><a href="#tab_c2" data-toggle="tab">Modify</a></li>
+            </ul>
+        </div>
+        <div class="tab-content">
+            <div class="tab-pane active" id="tab_c1">
+                <form id="form1">
+                    <div class="box-body box-body-input-move">
+                        <div class="col-md-12 pull-right" style="margin-top:-39px">
+                            <button type="button" id="c_save_but" class="btn btn-success button-sm"><i class="fa fa-save">&nbsp;Create</i></button>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-2 py-1">
+
+                                    <div class="input-group mt_plus">
+
+                                        <input type="text" name="dl_nm" id="m_dl_nm" class="input-text form-control" placeholder="Buyer Name">
+
+                                        <span class="input-group-addon"><a href="#" class="poupdialogFG"><i class="fa fa-search text-navy"></i></a></span>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-2 py-1">
+
+                                    <input type="text" name="remark" id="c_remark" class="form-control form-control-text" placeholder="Remark">
+                                </div>
+                                <div class="col-md-2 py-1">
+
+                                    <input type="text" name="date" id="c_date" class="form-control form-control-text" placeholder="Date">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="tab-pane" id="tab_c2">
+                <form id="form2">
+                    <input type="hidden" name="name" id="m_dlid" value="" />
+                    <input type="hidden" name="name" id="m_dl_no" value="" />
+
+                    <div class="box-body box-body-input-move">
+                        <div class="col-md-12 pull-right" style="margin-top:-39px">
+
+                            <button type="button" id="m_delete_but" class="btn btn-danger button-sm"><i class="fa fa-trash">&nbsp;Delete</i></button>
+                            <button type="button" id="m_save_but" class="btn btn-success button-sm"><i class="fa fa-save">&nbsp;Modify</i></button>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-2 py-1">
+
+                                    <div class="input-group mt_plus">
+
+                                        <input type="text" name="dl_nm2" id="m_dl_nm2" class="input-text form-control" placeholder="Buyer Name">
+
+                                        <span class="input-group-addon"><a href="#" class="poupdialogFG"><i class="fa fa-search text-navy"></i></a></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 py-1">
+
+                                    <input type="text" name="remark" id="m_remark" class="form-control form-control-text" placeholder="Remark">
+                                </div>
+                                <div class="col-md-2 py-1">
+
+                                    <input type="text" name="date" id="m_date" class="form-control form-control-text" placeholder="Date">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="question" style="display:none; cursor: default">
+        <div class="noidung">
+            <h3>Bạn có chắc muốn xóa không</h3>
+            <input type="button" id="yes" value="Yes" />
+            <input type="button" id="no" value="No" />
+        </div>
+
+    </div>
+
+    <div class="row box-body my-2">
+        <div class="col-md-4 py-1">
+            <label>Mã tem thùng</label>
+            <input type="text" id='scan_bx_no' class="input-text form-control" placeholder="" required>
+            <button type="button" id="Clear_all_box" class="btn btn-danger button-sm" style="margin-top: 5px"><i class="fa fa-trash">&nbsp;Clear All</i></button>
+        </div>
+        <div class="col-md-8 py-1">
+            <div class="col-sm-2 py-1">
+                <button type="button" id="Save_completed" class="btn btn-success"><i class="fa fa-save">&nbsp;Scan Completed</i></button>
+            </div>
+            <div class="col-sm-10 py-1">
+                <div class="col-sm-3 py-1">
+                    <input type="file" name="file" id="excelupload_input" style="margin-top: 21px" accept=".xlsx,.xls,.csv,.tsv,.xml,.json" class="valid" />
+                </div>
+                <div class="col-sm-2 py-1">
+                    <button type="button" id="ExcelUpload" class="btn btn-primary"><i class="fa fa-upload">&nbsp;Upload</i></button>
+                </div>
+                <div class="col-md-2 p-2 css_button">
+                    <label>
+                    </label>
+                    <a id="downloadBtn" href="/Excel/ExcelShippingBox/Shipping_Box.xlsx" class="btn btn-success btn-download btnDownload mr-3" download=""><i class="fa fa-download"> &nbsp;Download Form Excel</i></a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="col-md-6">
+            <table id="list1"></table>
+            <div id="listPage1"></div>
+        </div>
+        <div class="col-md-6">
+            <table id="list2"></table>
+            <div id="listPage2"></div>
+        </div>
+    </div>
+</div>
+
+<div class="popup-dialog DL_Info_Popup" title="Shipping(FG)">
+    <div id="PartialView_DL_Info_Popup"></div>
+</div>
+
+<!--DIALOG CONFIRM DELETE-->
+<div id="dialogDangerous" title="Confirm to DELETE ?">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-success button-srh mr-3" id="closestyle">No</button>
+                    <button type="button" class="btn btn-sm btn-danger button-srh" id="deletestyle">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="dialogQC" title="Buyer Information">
+    <!-- Search function -->
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <div class="col-lg-auto pt-2">
+                    <label><b>Code</b></label>
+                </div>
+                <div class="col-lg-2 p-1 mr-5">
+                    <input type="text" name="sp_cd" id="sp_cd" maxlength="3" class="form-control form-control-text">
+                </div>
+                <div class="col-lg-auto pt-2">
+                    <label><b>Name</b></label>
+                </div>
+                <div class="col-lg-2 p-1 mr-5">
+                    <input type="text" name="sp_nm" id="sp_nm" class="form-control form-control-text">
+                </div>
+                <div class="col-md-2 p-2 mr-2">
+                    <button id="searchBtn1" name="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                </div>
+                <div class="col-md-2 p-2 ">
+                    <button type="button" class="btn btn-success button-srh2" id="selected_qc"><i class="fa fa-check">Selected</i></button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ./Search function -->
+
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <table id="popup_qc"></table>
+                <div id="page_qc"></div>
+            </div>
+        </div>
+    </div>
+</div>
+>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+
+@section scripts{
+    <script src="/Scripts/rowsGroup_datatable/dataTables.rowsGroup.js"></script>
+
+
+
+    <script src="~/Scripts/fgwms/Shipping_Scan_FG/Shipping_Scan_FG.js"></script>
+    <script src="~/Scripts/fgwms/Shipping_Scan_FG/Shipping_Poup.js"></script>
+
+    <script>
+        $(function ()
+        {
+
+            var tab = $('.nav-tabs-custom .nav.nav-tabs li a');
+            $(tab).click(function (e)
+            {
+
+                var ul = $(e.target).closest('ul');
+                $(ul).find('li').removeClass('active');
+                $(e.target).closest('li').addClass('active');
+
+            });
+        });
+    </script>
+}

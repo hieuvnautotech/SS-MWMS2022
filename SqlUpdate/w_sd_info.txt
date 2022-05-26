@@ -1,0 +1,1 @@
+ Select sid, sd_no, sd_nm, sd_sts_cd, product_cd, lct_cd, alert, remark, use_yn, del_yn, reg_id, reg_dt, chg_id, chg_dt from w_sd_info

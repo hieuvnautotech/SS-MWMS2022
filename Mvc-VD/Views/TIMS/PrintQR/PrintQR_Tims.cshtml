@@ -1,0 +1,61 @@
+﻿@{
+    ViewBag.Title = "Material_Information_Wip";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="TIMS" data-level_2="Return" data-level_3="Print QR"></div>
+
+}
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Code</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <input type="text" name="mt_cd" id="mt_no" class="input-text form-control">
+            </div>
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Return Date</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <input type="text" name="return_date" id="return_date" class="form-control">
+            </div>
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Receive Date</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <input type="text" name="recevice_dt_start" id="recevice_dt_start" class="form-control">
+            </div>
+            ~
+            <div class="col-md-1 p-1">
+                <input type="text" name="recevice_dt_end" id="recevice_dt_end" class="form-control">
+            </div>
+            <div class="col-md-1 p-2">
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+            <div class="col-md-3 p-2">
+                <button type="button" id="printBtn" class="btn btn-sm btn-warning form-control-text"><i class="fa fa fa-print">&nbsp;Print</i></button>
+
+                <button id="m_confirm" class="btn btn-sm btn-success button-srh"><i class="fa fa-save">&nbsp;Confirm</i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="p-0 m-0">
+            <table id="PrintQrGrid"></table>
+            <div id="PrintQrGridPager"></div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/TIMS/Return/PrintQR_Tims.js"></script>
+}

@@ -1,0 +1,326 @@
+﻿<div class="nav-tabs-custom">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#barChartTab" data-toggle="tab">Bar Chart</a></li>
+        <li><a href="#pieChartTab" data-toggle="tab">Pie Chart</a></li>
+    </ul>
+
+    <div class="tab-content">
+        @*----Bar Chart---*@
+        <div class="tab-pane active" id="barChartTab">
+            <div class="row">
+                <div class="col-md-4" style="margin-bottom: 1em;">
+                    <div style="border: 1px solid #333">
+                        <canvas id="barChartOQC" width="350" height="200"></canvas>
+                    </div>
+                </div>
+                @{
+                int num_bar = 0;
+                }
+                @foreach (var item in Model)
+                {
+
+                num_bar++;
+                <div class="col-md-4" style="margin-bottom: 1em;">
+                    <div style="border: 1px solid #333">
+                        <canvas id="barChartOQC_Error_@num_bar" width="350" height="200"></canvas>
+                    </div>
+                </div>
+                <script>
+                    $(function () {
+                        //debugger
+                        var data = {
+                            labels: [@Html.Raw(item.labels)],
+                        datasets: [{
+
+                            data: [
+                                                                                                        @Html.Raw(item.datasets)
+                                                                                                    ],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                        ],
+                            borderColor: [
+                                'rgba(255,99,132,1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                            ],
+                                borderWidth: 1
+                    }]
+
+                                                                                            }
+                                                                                            var options = {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        },
+                        title: {
+                            display: true,
+                            label: true,
+                            position: 'top',
+                            text: "@item.ml_no"
+                        },
+                        legend: {
+                            display: false,
+                            labels: {
+                                boxWidth: 0
+                            }
+                        },
+                    }
+                    var myBarChart = new Chart(document.getElementById('barChartOQC_Error_@num_bar').getContext('2d'), {
+                        type: 'bar',
+                        data: data,
+                        options: options
+                    });
+                                                                                        })
+                </script>
+                }
+            </div>
+        </div>
+        @*---end bar chart---*@
+
+        @*---Pie Chart---*@
+        <div class="tab-pane" id="pieChartTab">
+            <div class="row">
+                <div class="col-md-4" style="margin-bottom: 1em;">
+                    <div style="border: 1px solid #333">
+                        <canvas id="pieChartOQC" width="350" height="200"></canvas>
+                    </div>
+                </div>
+                @{
+                int num_pie = 0;
+                }
+                @foreach (var item in Model)
+                {
+                num_pie++;
+
+                <div class="col-md-4" style="margin-bottom: 1em;">
+                    <div style="border: 1px solid #333">
+                        <canvas id="pieChartOQC_Error_@num_pie" width="350" height="200"></canvas>
+                    </div>
+                </div>
+                <script>
+                    $(function () {
+                        var data_pie2 = {
+                            labels: [@Html.Raw(item.labels)],
+
+                        datasets: [{
+                            data: [@Html.Raw(item.datasets_pie)],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                        ],
+                            borderColor: [
+                                'rgba(255,99,132,1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                            ],
+                                borderWidth: 1
+                    }],
+                                                                                            }
+                                                                                            var options_pie2 = {
+                        title: {
+                            position: 'bottom',
+                            display: true,
+                            text: "@item.check_subject",
+                        },
+                    }
+                    var myBarChart2 = new Chart(document.getElementById('pieChartOQC_Error_@num_pie').getContext('2d'), {
+                        type: 'pie',
+                        data: data_pie2,
+                        options: options_pie2
+                    });
+                                                                                        })
+                </script>
+                }
+            </div>
+        </div>
+        @*---end pie chart---*@
+    </div>
+</div>
+
+<script>
+    $(function () {
+        var selectedRowId = $("#OQCListGrid").jqGrid("getGridParam", 'selrow');
+        var row_id = $("#OQCListGrid").getRowData(selectedRowId);
+
+        $.ajax({
+            url: "/QCInformation/OQC_OverviewChart?item_vcd=" + row_id.item_vcd + "&pq_no=" + row_id.pq_no,
+            type: "get",
+            success: function (response) {
+
+                if (!response.result) {
+                    $('.tab-content .tab-pane .row').remove();
+                }
+                else {
+                    var dataBarChart = {
+                        labels: ['CHECK', 'OK', 'DEFECTIVE'],
+                        datasets: [{
+                            data: [
+                                response.data.qc_qty,
+                                response.data.ok_qty,
+                                response.data.defective_qty
+                            ],
+                            backgroundColor: [
+                                '#00FFFF',
+                                '#33FF99',
+                                '#FF99FF',
+                            ],
+                            borderColor: [
+                                'rgba(255,99,132,1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                            ],
+                            borderWidth: 1
+                        }],
+
+                    }
+
+                    var options_bar = {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                            , xAxes: [{
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: response.data.ml_no,
+                                }
+                            }],
+                        },
+                        legend: {
+                            display: false,
+                            labels: {
+                                boxWidth: 0
+                            }
+                        },
+                        title: {
+                            display: true,
+                            label: true,
+                            position: 'top',
+                            text: response.data.pq_no + " [" + _Date(response.data.work_dt) + "]",
+                        },
+                    }
+                    var barChartOQC = new Chart(document.getElementById('barChartOQC').getContext('2d'), {
+                        type: 'bar',
+                        data: dataBarChart,
+                        options: options_bar
+                    });
+
+                    var dataPieChart = {
+                        labels: ['CHECK', 'OK', 'DEFECTIVE'],
+
+                        datasets: [{
+                            data: [
+                                response.data.qc_qty,
+                                response.data.ok_qty,
+                                response.data.defective_qty,
+                            ],
+                            backgroundColor: [
+                                "#00FFFF", "#33FF99", "#FF99FF"
+                            ],
+                            borderColor: [
+                                'rgba(255,99,132,1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                            ],
+                        }],
+                    }
+                    var options_pie = {
+                        title: {
+                            position: 'top',
+                            display: true,
+                            text: response.data.pq_no + " [" + _Date(response.data.work_dt) + "]",
+                        },
+                    }
+                    var myBarChart_pie = new Chart(document.getElementById('pieChartOQC').getContext('2d'), {
+                        type: 'pie',
+                        data: dataPieChart,
+                        options: options_pie
+                    });
+                }
+            }
+        });
+    })
+
+    $(function () {
+        var tab = $('.nav-tabs-custom .nav.nav-tabs li a');
+        $(tab).click(function (e) {
+            var ul = $(e.target).closest('ul');
+            $(ul).find('li').removeClass('active');
+            $(e.target).closest('li').addClass('active');
+        })
+    })
+
+
+
+    function _Date(cellvalue) {
+        if (cellvalue == null)
+            return "";
+        var reg = /(\d{4})(\d{2})(\d{2})/;
+        if (reg.test(cellvalue))
+            return cellvalue.replace(reg, "$1-$2-$3");
+        else {
+            reg = /(\d{4})(\d{2})\-(\d{2})/;
+            if (reg.test(cellvalue))
+                return cellvalue.replace(reg, "$1-$2-$3");
+            else {
+                reg = /(\d{4})\-(\d{2})(\d{2})/;
+                if (reg.test(cellvalue))
+                    return cellvalue.replace(reg, "$1-$2-$3");
+                else {
+                    reg = /(\d{4})\-(\d{2})\-(\d{2})/;
+                    if (reg.test(cellvalue))
+                        return cellvalue.replace(reg, "$1-$2-$3");
+                    else {
+                        reg = /(\d{4})(\d{2}).(\d{2})/;
+                        if (reg.test(cellvalue))
+                            return cellvalue.replace(reg, "$1-$2-$3");
+                        else {
+                            reg = /(\d{4}).(\d{2}).(\d{2})/;
+                            if (reg.test(cellvalue))
+                                return cellvalue.replace(reg, "$1-$2-$3");
+
+                            else {
+                                reg = /(\d{4})(\d{2})\\(\d{2})/;
+                                if (reg.test(cellvalue))
+                                    return cellvalue.replace(reg, "$1-$2-$3");
+                                else {
+                                    reg = /(\d{4})\\(\d{2})\\(\d{2})/;
+                                    if (reg.test(cellvalue))
+                                        return cellvalue.replace(reg, "$1-$2-$3");
+                                    else {
+                                        reg = /(\d{4})\\(\d{2})\.(\d{2})/;
+                                        if (reg.test(cellvalue))
+                                            return cellvalue.replace(reg, "$1-$2-$3");
+                                        else {
+                                            reg = /(\d{4})\.(\d{2})\\(\d{2})/;
+                                            if (reg.test(cellvalue))
+                                                return cellvalue.replace(reg, "$1-$2-$3");
+                                            else
+                                                return cellvalue;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    };
+</script>

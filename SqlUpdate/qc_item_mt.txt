@@ -1,0 +1,2 @@
+Select ino, item_type, item_vcd, item_cd, ver, item_nm, item_exp, use_yn, del_yn, reg_id, reg_dt, chg_id, chg_dt
+From qc_item_mt

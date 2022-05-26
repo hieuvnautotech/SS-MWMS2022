@@ -1,0 +1,277 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Print.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row p-0 m-0">
+        <div class="col-md-3 all_cg ">
+            <img src="~/Content/themes/Logo-suplier_in.jpg" style="width: 97%" />
+        </div>
+        <div class="col-md-5 p-2 text-center">
+            <h2 style="margin: 0">Shipping Direcction List</h2>
+            <h4 class='red'>@ViewData["Message"]</h4>
+        </div>
+        <div class="col-md-4 p-2">
+            <div class="row" style="border-top: 1px solid; border-bottom: 1px solid">
+                <div class="col-md-4 p-3 text-center">
+                    <p>Document Code</p>
+                    <p>Serial</p>
+                    <p style="margin: 0">Date</p>
+                </div>
+                <div class="col-md-8" style="padding-top: 12px !important">
+                    <p id="barcode_PartialView_RD_Info_Popup1" style="margin: 0 auto;"></p>
+                    <p id="datetime_PartialView_RD_Info_Popup1" style="text-align: center; margin-top: 10px;">
+                        <script>
+                            function formatDate() {
+                                var d = new Date(),
+                                    month = '' + (d.getMonth() + 1),
+                                    day = '' + d.getDate(),
+                                    year = d.getFullYear(),
+                                    Hours = d.getHours(),
+                                    Minutes = d.getMinutes();
+
+                                if (month.length < 2) { month = '0' + month; }
+                                if (day.length < 2) { day = '0' + day; }
+                                if (Hours < 10) { Hours = '0' + Hours; }
+                                if (Minutes < 10) Minutes = '0' + Minutes;
+                                time = Hours + ":" + Minutes;
+                                var full = year + "-" + month + "-" + day + " " + time;
+                                $("#datetime_PartialView_RD_Info_Popup1").html(full);
+                            }
+                            formatDate()
+                            setInterval(formatDate, 500);
+                        </script>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid py-4">
+    <h4>Standard</h4>
+    <table id="dataTable1_PartialView_RD_Info_Popup1" class="table table-bordered table-striped" style="width: 100%">
+        <thead>
+
+            <tr class="table-warning">
+                <th>RD NO</th>
+                <th>RD Name</th>
+                <th>Status</th>
+                <th>Remark</th>
+
+            </tr>
+        </thead>
+    </table>
+</div>
+
+<div class="container-fluid py-4">
+    <h4>List</h4>
+    <table id="dataTable2_PartialView_RD_Info_Popup1" class="table table-bordered table-striped" style="width: 100%">
+        <thead>
+
+            <tr class="table-warning">
+
+                <th style="text-align: center !important">STT</th>
+                <th style="text-align: center !important">ML No</th>
+                <th style="text-align: center !important">Bobbin No</th>
+                <th style="text-align: center !important">Material Type</th>
+                <th style="text-align: center !important">Quantity</th>
+                <th style="text-align: center !important">Status</th>
+                <th style="text-align: center !important">Departure</th>
+                <th style="text-align: center !important">Departure Status</th>
+                <th style="text-align: center !important">Receiving Date</th>
+            </tr>
+        </thead>
+
+    </table>
+
+
+</div>
+
+
+
+<script>
+    var rd_no = "@ViewData["Message"]";
+    $(function() {
+        $('#dataTable1_PartialView_RD_Info_Popup1').DataTable({
+            "ajax": {
+                
+                "url": "/TIMS/GetTimsReceivingScanPP?rd_no=" + rd_no,
+                "type": "GET",
+                "datatype": "json"
+            },
+            "searching": false,
+            "paging": false,
+            "bInfo": false,
+            "destroy": true,
+            "columns": [
+                { "data": "rd_no" },
+                { "data": "rd_nm" },
+                { "data": "rd_sts_cd" },
+                { "data": "remark" },
+
+            ],
+
+            'columnDefs': [
+                {
+                    "targets": 0, // your case first column
+                    "className": "text-center",
+
+                },
+                {
+                    "targets": 1, // your case first column
+                    "className": "text-center",
+
+                },
+                {
+                    "targets": 2, // your case first column
+                    "className": "text-center",
+
+                },
+                {
+                    "targets": 3, // your case first column
+                    "className": "text-center",
+
+                },
+               
+            ],
+            "bDestroy": true,
+
+        });
+
+        $('#dataTable2_PartialView_RD_Info_Popup1').DataTable({
+            "ajax": {
+                "url": "/TIMS/GetTimsReceivingScanListPP?rd_no=" + rd_no,
+                "type": "GET",
+                "datatype": "json",
+            },
+            "searching": false,
+            "paging": true,
+            "bInfo": false,
+            "destroy": true,
+            "columns": [
+
+                { "data": "wmtid" },
+                { "data": "mt_cd" },
+                { "data": "bb_no" },
+                { "data": "mt_type_nm" },
+                { "data": "gr_qty", render: $.fn.dataTable.render.number(',', '.', 0, '') },
+                { "data": "sts_nm" },
+
+                { "data": "from_lct_nm" },
+
+                { "data": "lct_sts_cd" },
+                {
+                    "data": "recevice_dt_tims",
+                    render: function (data) {
+                        return _Date(data);
+                    }
+                }
+            ],
+            'columnDefs': [
+                {
+                    "targets": 0, // your case first column
+                    "className": "text-center",
+
+                },
+                {
+                    "targets": 1, // your case first column
+                    "className": "text-center",
+
+                },
+                {
+                    "targets": 2, // your case first column
+                    "className": "text-center",
+
+                },
+                {
+                    "targets": 3, // your case first column
+                    "className": "text-center",
+
+                },
+                {
+                    "targets": 4, // your case first column
+                    "className": "text-center",
+
+                },
+                {
+                    "targets": 5, // your case first column
+                    "className": "text-center",
+                },
+
+            ],
+            "bDestroy": true,
+
+        });
+
+
+        
+    });
+    function _Date(cellvalue, options, rowObject) {
+        //debugger
+        if (cellvalue == null)
+            return "";
+        var reg = /(\d{4})(\d{2})(\d{2})/;
+        if (reg.test(cellvalue))
+            return cellvalue.replace(reg, "$1-$2-$3");
+        else {
+            reg = /(\d{4})(\d{2})\-(\d{2})/;
+            if (reg.test(cellvalue))
+                return cellvalue.replace(reg, "$1-$2-$3");
+            else {
+                reg = /(\d{4})\-(\d{2})(\d{2})/;
+                if (reg.test(cellvalue))
+                    return cellvalue.replace(reg, "$1-$2-$3");
+                else {
+                    reg = /(\d{4})\-(\d{2})\-(\d{2})/;
+                    if (reg.test(cellvalue))
+                        return cellvalue.replace(reg, "$1-$2-$3");
+                    else {
+                        reg = /(\d{4})(\d{2}).(\d{2})/;
+                        if (reg.test(cellvalue))
+                            return cellvalue.replace(reg, "$1-$2-$3");
+                        else {
+                            reg = /(\d{4}).(\d{2}).(\d{2})/;
+                            if (reg.test(cellvalue))
+                                return cellvalue.replace(reg, "$1-$2-$3");
+
+                            else {
+                                reg = /(\d{4})(\d{2})\\(\d{2})/;
+                                if (reg.test(cellvalue))
+                                    return cellvalue.replace(reg, "$1-$2-$3");
+                                else {
+                                    reg = /(\d{4})\\(\d{2})\\(\d{2})/;
+                                    if (reg.test(cellvalue))
+                                        return cellvalue.replace(reg, "$1-$2-$3");
+                                    else {
+                                        reg = /(\d{4})\\(\d{2})\.(\d{2})/;
+                                        if (reg.test(cellvalue))
+                                            return cellvalue.replace(reg, "$1-$2-$3");
+                                        else {
+                                            reg = /(\d{4})\.(\d{2})\\(\d{2})/;
+                                            if (reg.test(cellvalue))
+                                                return cellvalue.replace(reg, "$1-$2-$3");
+                                            else
+                                                return cellvalue;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    $(function () {
+        var code = rd_no;
+
+        $('#barcode_PartialView_RD_Info_Popup1').append(code);
+        $('#barcode_PartialView_RD_Info_Popup1').barcode(code, "code128", { barWidth: 1, barHeight: 30 });
+
+        $('.popup-dialog-close').click(function () {
+            $(".popup-dialog").dialog('close');
+        });
+    })
+</script>

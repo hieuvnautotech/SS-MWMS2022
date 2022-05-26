@@ -1,0 +1,40 @@
+SELECT 
+   userid
+  ,uname
+  ,nick_name
+  ,upw
+  ,grade
+  ,depart_cd
+  ,gender
+  ,position_cd
+  ,tel_nb
+  ,cel_nb
+  ,e_mail
+  ,sms_yn
+  ,DATE_FORMAT(join_dt,'%Y-%m-%d %H:%i:%s')
+  ,DATE_FORMAT(birth_dt,'%Y-%m-%d %H:%i:%s')
+  ,scr_yn
+  ,mail_yn
+  ,join_ip
+  ,join_domain
+  ,ltacc_dt
+  ,ltacc_domain
+  ,mbout_dt
+  ,mbout_yn
+  ,accblock_yn
+  ,session_key
+  ,session_limit
+  ,memo
+  ,del_yn
+  ,check_yn
+  ,rem_me
+  ,barcode
+  ,mbjoin_dt
+  ,log_ip
+  ,lct_cd
+  ,reg_id
+  ,reg_dt
+  ,chg_id
+  ,chg_dt
+  ,re_mark
+  FROM mb_info

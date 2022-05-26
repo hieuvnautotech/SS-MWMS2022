@@ -1,0 +1,211 @@
+﻿@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+
+            <div class="col-md-1 text-right">
+                <label>MT No</label>
+            </div>
+            <div class="col-md-2">
+                <input type="text" name="mt_no" id="s_mt_no" class="input-text form-control">
+            </div>
+            <div class="col-md-1 text-right">
+                <label>ML NO</label>
+            </div>
+            <div class="col-md-3">
+
+                <input type="text" name="mt_cd" id="s_mt_cd" class="input-text form-control">
+            </div>
+            <div class="col-md-2 p-1 d-flex">
+                <button id="searchBtn_M" class="btn btn-sm btn-success button-srh mr-3">
+                    <i class="fa fa-search">&nbsp;Search</i>
+                </button>
+                <button type="button" class="btn btn-sm btn-primary button-top" id="btn_Picking">
+                    <i class="fa fa-check-circle">&nbsp;Shipping</i>
+                </button>
+            </div>
+
+           
+        </div>
+
+    </div>
+</div>
+
+
+<div class="container-fluid">
+
+    <div class="box-body my-2 bg-white">
+        <div class=" p-0 m-0">
+            <table id="list_Material"></table>
+            <div id="list_Material_Pager"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $(function () {
+            $grid = $("#list_Material").jqGrid({
+                mtype: 'GET',
+                datatype: function (postData) { getDataOutBox(postData); },
+                //url: "/ShippingMgt/Get_List_Material_ShippingPickingPage",
+              
+                //datatype: 'json',
+                colModel: [
+                    { key: true, label: 'wmtid', name: 'wmtid', width: 50, align: 'center', hidden: true },
+                    { label: 'ML NO', name: 'mt_cd', width: 300, align: 'left' },
+                    { label: 'MT NO', name: 'mt_no', width: 150, align: 'left' },
+                    { label: 'Lot No', name: 'lot_no', width: 100, align: 'left' },
+                    { label: 'Quantity', name: 'gr_qty', width: 100, align: 'right', formatter: 'integer' },
+                    { label: 'Expiry Date', name: 'expiry_dt', width: 180, align: 'center', formatter: convertDate },
+                    { label: 'Date of Receipt', name: 'dt_of_receipt', width: 180, align: 'center', formatter: convertDate },
+                    { label: 'Expore Date', name: 'expore_dt', width: 180, align: 'center', formatter: convertDate },
+                ],
+                loadonce: false,
+                shrinkToFit: false,
+                pager: '#list_Material_Pager',
+                rowNum: 50,
+                rownumbers: true,
+                rowList: [50, 100, 200, 500, 1000],
+                viewrecords: true,
+                caption: "Picking (M)",
+              
+                height: 350,
+                multiselect: true,
+                jsonReader:
+                {
+                    root: "rows",
+                    page: "page",
+                    total: "total",
+                    records: "records",
+                    repeatitems: false,
+                    Id: "0"
+                },
+                width: null,
+
+                onSelectRow: function (row_id, status, e) {
+                    var selectedRowId = $("#list_Material").jqGrid("getGridParam", 'selrow');
+                    row_id = $("#list_Material").getRowData(selectedRowId);
+
+                },
+            });
+        });
+
+    });
+
+    function convertDate(cellValue, options, rowdata, action) {
+
+        if (cellValue != null) {
+
+            a = cellValue.substr(0, 4);
+            b = cellValue.substr(4, 2);
+            c = cellValue.substr(6, 2);
+
+            var html = a + "-" + b + "-" + c;
+            return html;
+        }
+        else {
+            var html = "";
+            return html;
+        }
+
+
+
+    };
+
+
+    function getDataOutBox(pdata) {
+        //$('.loading-gif-1').show();
+        var params = new Object();
+        var rows = $("#list_Material").getDataIDs();
+        //if (gridLot.jqGrid('getGridParam', 'reccount') == 0)
+        if (rows.length == 0) {
+            params.page = 1;
+        }
+        else { params.page = pdata.page; }
+        params.rows = pdata.rows;
+        params.sidx = pdata.sidx;
+        params.sord = pdata.sord;
+        params._search = pdata._search;
+        params.mt_no = $('#s_mt_no').val() == null ? "" : $('#s_mt_no').val().trim();
+        params.mt_cd = $('#s_mt_cd').val() == null ? "" : $('#s_mt_cd').val().trim();
+
+       
+        $("#list_Material").jqGrid('setGridParam', { search: true, postData: { searchString: $("#auto_complete_search").val() } });
+        $.ajax({
+            url: "/ShippingMgt/Get_ListMaterialPickingM",
+
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            traditional: true,
+            data: params,
+            success: function (data, st) {
+                if (st == "success") {
+                    var showing = $("#list_Material")[0];
+                    showing.addJSONData(data);
+                    //$('.loading-gif-1').hide();
+                }
+            },
+            error: function () {
+                //$('.loading-gif-1').hide();
+                return;
+            }
+        });
+    };
+
+
+    //-------SEARCH------------//
+    $("#searchBtn_M").click(function () {
+        $("#list_Material").clearGridData();
+        $("#list_Material").jqGrid('setGridParam', { search: true });
+        var pdata = $("#list_Material").jqGrid('getGridParam', 'postData');
+        getDataOutBox(pdata)
+
+        
+    });
+
+
+    $("#btn_Picking").on("click", function () {
+ 
+        var selRowIds = $('#list_Material').jqGrid("getGridParam", "selarrrow");
+        if (selRowIds.length >0) {
+             $.ajax({
+                url: "/ShippingMgt/ShippingPicking_M?data=" + selRowIds + "&sd_no=" + '@ViewBag.sd_no',
+                type: "Get",
+                dataType: "json",
+
+                 success: function (response) {
+
+                     if (response.result) {
+                  
+                         alert(response.message);
+                         $.each(response.datalist, function (key, item) {
+                            var id = item.wmtid;
+                            $("#list_Material").setRowData(id, item, { background: "#28a745", color:"#fff" });
+                        });
+                    }
+                    else {
+                  
+                        alert(data.message);
+                    }
+                }
+            });
+
+        }
+        else {
+            alert("Please select the data on the grid");
+        }
+       
+    });
+</script>
+<style>
+    button#searchBtn_M {
+        height: fit-content;
+    }
+
+    button#btn_Picking {
+        height: fit-content;
+    }
+</style>

@@ -1,0 +1,1 @@
+Select id, buyer_qr, product_code, at_no, type, md_cd, dl_no, qty, lot_no, sts_cd, use_yn, reg_id, reg_dt, chg_id, chg_dt From generalfg

@@ -1,0 +1,197 @@
+﻿@model IEnumerable<Mvc_VD.Models.w_policy_mt>
+@{ 
+    ViewBag.Title = "WorkPolicyInfor";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+<link href="~/Content/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="MMS" data-level_2="Standard Management(WO)" data-level_3="Display Policy Information"></div>
+}
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-auto px-1 py-2">
+                <label><b>Policy Type</b></label>
+            </div>
+            <div class="col-md-1 p-1 mr-5">
+                <select name="s_policy_type" id="s_policy_type" class="form-control policy_type"></select>
+            </div>
+
+            <div class="col-md-1 mx-2 p-2 d-flex">
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <table id="dpinfoGrid"></table>
+            <div id="dpinfoGridPager"></div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <input type="hidden" name="name" value=" " id="color_bg_line" />
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active" id="tab_1"><a href="#tab_1" data-toggle="tab">Create</a></li>
+                <li id="tab_2"><a href="#tab_2" data-toggle="tab">Modify</a></li>
+            </ul>
+        </div>
+        <div class="tab-content active" id="tab_c1">
+            <form id="form1">
+                <div class="box-body box-body-input-move">
+                    <input type="hidden" name="c_mpid" id="c_mpid">
+                    <div class="row">
+                        <div class="col-md-10">
+                            <div class="row p-0 m-0">
+                                <div class="col-md-1 py-1 text-right" >
+                                    <label><b>Code </b></label>
+                                </div>
+                                <div class="col-md-2 py-1">
+                                    <input type="text" name="c_policy_code" id="c_policy_code" class="form-control form-control-text" readonly="readonly">
+                                </div>
+                                <div class="col-md-1 py-1 text-right">
+                                    <label><b>Name </b></label>
+                                </div>
+                                <div class="col-md-2 py-1">
+                                    <input type="text" name="c_policy_name" id="c_policy_name" class="form-control form-control-text">
+                                </div>
+                                <div class="col-md-1 py-1 text-right">
+                                    <label><b>Start Date</b></label>
+                                </div>
+                                <div class="col-md-2 py-1">
+                                    <input type="text" name="c_policy_start_dt" id="c_policy_start_dt" style="text-align: center" class="form-control form-control-text">
+                                </div>
+                                <div class="col-md-1 py-1 text-right">
+                                    <label><b>End Date</b></label>
+                                </div>
+                                <div class="col-md-2 py-1">
+                                    <input type="text" name="c_policy_end_dt" id="c_policy_end_dt" value="9999-12-31 23:59:59" style="text-align: center" class="form-control form-control-text">
+                                </div>  
+                                <div class="col-md-1 py-1 text-right">
+                                    <label><b>Time</b></label>
+                                </div>
+                                <div class="col-md-2 py-1">
+                                    <input type="text" name='c_doing_time' id='c_doing_time' class="input-text form-control" maxlength="100">
+                                </div>
+                                <div class="col-md-1 py-1 text-right">
+                                    <label><b>Use</b></label>
+                                </div>
+                                <div class="col-md-2 py-1">
+                                    <select name="use_yn" id="c_use_yn" class="form-control form-control-text select2">
+                                        <option value="Y" selected="selected">Use</option>
+                                        <option value="N">UnUse</option>
+                                    </select>
+                                </div>                                  
+                                <div class="col-md-1 py-1 text-right">
+                                    <label><b>Policy Type </b></label>
+                                </div>
+                                <div class="col-md-2 py-1">
+                                    <select name="c_policy_type" id="c_policy_type" class="form-control policy_type"></select>
+                                </div>
+                                <div class="col-md-1 py-1 text-right">
+                                    <label><b>Description</b></label>
+                                </div>
+                                <div class="col-md-2 py-1">
+                                    <input type="text" name='re_mark' id='c_re_marks' class="input-text form-control" maxlength="100">
+                                </div>
+                            </div>
+                        </div>                            
+                        <div class="col-md-2">
+                            <div class="row p-0 m-0">
+                                <div class="col-md-2 d-flex">
+                                    <button type="button" id="c_save_but" class="btn btn-success button-sm"><i class="fa fa-save">&nbsp;Save</i></button>
+                                </div>
+                            </div>                           
+                        </div>                                                                
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="tab-content hidden" id="tab_c2">
+            <form id="form2">
+                <div class="box-body box-body-input-move">
+                    <input type="hidden" name="m_mpid" id="m_mpid">
+                    <div class="row">
+                        <div class="col-md-10">
+                            <div class="row p-0 m-0">
+                                <div class="col-md-1 py-1 text-right" >
+                                    <label><b>Code </b></label>
+                                </div>
+                                <div class="col-md-2 py-1">
+                                    <input type="text" name="m_policy_code" id="m_policy_code" class="form-control form-control-text" readonly="readonly">
+                                </div>
+                                <div class="col-md-1 py-1 text-right">
+                                    <label><b>Name </b></label>
+                                </div>
+                                <div class="col-md-2 py-1">
+                                    <input type="text" name="m_policy_name" id="m_policy_name" class="form-control form-control-text">
+                                </div>
+                                <div class="col-md-1 py-1 text-right">
+                                    <label><b>Start Date</b></label>
+                                </div>
+                                <div class="col-md-2 py-1">
+                                    <input type="text" name="m_policy_start_dt" id="m_policy_start_dt" style="text-align: center" class="form-control form-control-text">
+                                </div>
+                                <div class="col-md-1 py-1 text-right">
+                                    <label><b>End Date</b></label>
+                                </div>
+                                <div class="col-md-2 py-1">
+                                    <input type="text" name="m_policy_end_dt" id="m_policy_end_dt" value="9999-12-31 23:59:59" style="text-align: center" class="form-control form-control-text">
+                                </div>  
+                                <div class="col-md-1 py-1 text-right">
+                                    <label><b>Time</b></label>
+                                </div>
+                                <div class="col-md-2 py-1">
+                                    <input type="text" name='m_doing_time' id='m_doing_time' class="input-text form-control" maxlength="100">
+                                </div>
+                                <div class="col-md-1 py-1 text-right">
+                                    <label><b>Use</b></label>
+                                </div>
+                                <div class="col-md-2 py-1">
+                                    <select name="m_use_yn" id="m_use_yn" class="form-control form-control-text select2">
+                                        <option value="Y" selected="selected">Use</option>
+                                        <option value="N">UnUse</option>
+                                    </select>
+                                </div>                                  
+                                <div class="col-md-1 py-1 text-right">
+                                    <label><b>Policy Type </b></label>
+                                </div>
+                                <div class="col-md-2 py-1">
+                                    <select name="m_policy_type" id="m_policy_type" class="form-control policy_type"></select>
+                                </div>
+                                <div class="col-md-1 py-1 text-right">
+                                    <label><b>Description</b></label>
+                                </div>
+                                <div class="col-md-2 py-1">
+                                    <input type="text" name='m_re_mark' id='m_re_mark' class="input-text form-control" maxlength="100">
+                                </div>
+                            </div>
+                        </div>                            
+                        <div class="col-md-2">
+                            <div class="row p-0 m-0">
+                                <div class="col-md-2 d-flex">
+                                    <button type="button" id="m_save_but" class="btn btn-success button-srh2"><i class="fa fa-save">&nbsp;Modify</i></button>
+                                </div>
+                            </div>                           
+                        </div>                                                                
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+    @*<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js" type="text/javascript"></script>*@
+    <script src="~/Content/jquery.validate_V1.9/jquery.validate.min.js"></script>
+    <script src="~/Scripts/StandardMgtWO/DisplayPolicyInfo/DisplayPolicyInfo.js"></script>
+}
+

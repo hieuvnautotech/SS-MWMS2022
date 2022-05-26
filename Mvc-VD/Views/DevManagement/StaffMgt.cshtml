@@ -1,0 +1,217 @@
+﻿@{
+    ViewBag.Title = "userInfo";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+    //Layout = null;
+
+}
+
+@section Tilte {
+    @*<div class="col-xs-12" id="current_menu" data-level_1="MMS" data-level_2="Tools" data-level_3="Staff Management"></div>*@
+    <div class="col-xs-12" id="current_menu" data-level_1="@Html.Raw(ViewData["MMS"])" data-level_2="@Html.Raw(ViewData["Tools"])" data-level_3="@Html.Raw(ViewData["Staff Management"])"></div>
+
+}
+<!-- Search function -->
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-2 p-1">
+                <select name="searchType" id="searchType" class="form-control select2">
+                    <option value="userid">USER ID</option>
+                    <option value="uname">USER NAME</option>
+                </select>
+            </div>
+            <div class="col-md-2 p-1">
+                <input type="text" name="keyword" id="keywordInput" class="form-control form-control-text">
+            </div>
+            <div class="col-md-1 pt-2 text-right">
+                <label><b>Position</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <select name="position" id="s_position" class="form-control position">
+                    <option value="">*Position*</option>
+                </select>
+            </div>
+            <div class="col-md-1 p-2">
+                <button id="searchBtn" class="btn btn-sm btn-primary"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+            <div class="col-md-1 p-2">
+                <button id="barCodeBtn" class="btn btn-sm btn-success"><i class="fa fa-qrcode">&nbsp;BarCode</i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--UPLOAD EXCEL-->
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-3 py-1 ml-10">
+                <input type="file" name="file" id="imgupload" accept=".xlsx,.xls" class="valid">
+            </div>
+            <div class="col-md-4 py-2 px-3">
+                <button id="uploadBtn" class="btn btn-sm btn-primary button-srh mr-3"><i class="fa fa-upload">&nbsp;Upload</i></button>
+                <a id="downloadBtn" class="btn btn-success btn-download btnDownload mr-3" href="~/Excel/ExcelStaff/DS CNV T10.2020.xlsx" download="DS CNV T10.2020.xlsx"><i class="fa fa-download">&nbsp;Download Form Excel</i></a>
+            </div>
+            <div class="col-md-2 p-0 m-0" id="result">
+            </div>
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <table id="list"></table>
+            <div id="pager"></div>
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active" id="tab_1"><a href="#tab_1" data-toggle="tab">Create</a></li>
+                <li id="tab_2"><a href="#tab_2" data-toggle="tab">Modify</a></li>
+            </ul>
+        </div>
+        <div class="tab-content active" id="tab_c1">
+            <form id="form1">
+                <div class="box-body box-body-input-move">
+                    <input type="hidden" name="byno" id="c_byno" value="1">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="button" id="c_save_but" class="btn btn-success button-srh2 active"><i class="fa fa-save">&nbsp;Create</i></button>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-2 py-1">
+                                    <input type="text" id="c_userCode" class="form-control form-control-text" placeholder="User QR Code" />
+                                </div>
+                                <div class="col-md-1 py-1">
+                                    <input type="text" name="c_userid" id="c_userid" class="form-control form-control-text" placeholder="User ID" />
+                                </div>
+                                <div class="col-md-2 py-1">
+                                    <input type="text" name="c_uname" id="c_uname" placeholder="Name" maxlength="200" class="form-control form-control-text" />
+                                </div>
+                                @*<div class="col-md-1 py-1">
+                                    <input type="text" id="c_birthday" style="display:none" placeholder="Birthday" maxlength="30" class="form-control form-control-text" />
+                                </div>*@
+                                <div class="col-md-1 py-1">
+                                    <select id="c_gender" class="form-control">
+                                        <option value="M">Male</option>
+                                        <option value="W">Female</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 py-1">
+                                    <select id="c_department" class="form-control"></select>
+                                </div>
+                                @*<div class="col-md-1 py-1">
+                                    <input type="text" id="c_joinDate" style="display:none" placeholder="Join Date" maxlength="30" class="form-control form-control-text" />
+                                </div>*@
+                                <div class="col-md-2 py-1">
+                                    <select name="position" id="c_position" class="form-control position"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+        <div class="tab-content hidden" id="tab_c2">
+            <form id="form2">
+                @*<div class="box-body box-body-input-move">
+                        <input type="hidden" name="mt_id" id="m_mt_id">
+                        <input type="hidden" name="name" value=" " id="remark_color" />
+                        <div class="row">
+                            <div class="col-md-12 text-right">
+                                <button type="button" id="del_save_but" class="btn btn-danger button-srh2 mr-5"><i class="fa fa-scissors">&nbsp;Delete</i></button>
+                                <button type="button" id="m_save_but" class="btn btn-success button-srh2"><i class="fa fa-save">&nbsp;Modify</i></button>
+
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-4 py-1">
+                                        <input type="text" name="m_userid" id="m_userid" class="form-control form-control-text" readonly="readonly" placeholder="User ID" />
+                                    </div>
+                                    <div class="col-md-4 py-1">
+                                        <input type="text" name="m_uname" id="m_uname" placeholder="Name" maxlength="20" class="form-control form-control-text" />
+                                    </div>
+                                    <div class="col-md-4 py-1">
+                                        <select name="position" id="m_position" class="form-control position">
+                                            <option value="">*Position*</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>*@
+                <div class="box-body box-body-input-move">
+                    <input type="hidden" name="mt_id" id="m_mt_id">
+                    <input type="hidden" name="name" value=" " id="remark_color" />
+                    <div class="row">
+                        <div class="col-md-12 text-right">
+                            <button type="button" id="del_save_but" class="btn btn-danger button-srh2 mr-5"><i class="fa fa-scissors">&nbsp;Delete</i></button>
+                            <button type="button" id="m_save_but" class="btn btn-success button-srh2"><i class="fa fa-save">&nbsp;Modify</i></button>
+
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-2 py-1">
+                                    <input type="text" name="m_userCode" id="m_userCode" class="form-control form-control-text" placeholder="User QR Code" />
+                                </div>
+                                <div class="col-md-1 py-1">
+                                    <input type="text" name="m_userid" id="m_userid" class="form-control form-control-text" readonly="readonly" placeholder="User ID" />
+                                </div>
+                                <div class="col-md-2 py-1">
+                                    <input type="text" name="m_uname" id="m_uname" placeholder="Name" maxlength="200" class="form-control form-control-text" />
+                                </div>
+                                <div class="col-md-1 py-1">
+                                    <input type="text" id="m_birthday" placeholder="Birthday" maxlength="30" class="form-control form-control-text" style="display:none"/>
+                                </div>
+                                <div class="col-md-1 py-1">
+                                    <select id="m_gender" class="form-control">
+                                        <option value="M">Male</option>
+                                        <option value="W">Female</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 py-1">
+                                    <select id="m_department" class="form-control"></select>
+                                </div>
+                                <div class="col-md-1 py-1">
+                                    <input type="text" id="m_joinDate" placeholder="Join Date" maxlength="30" class="form-control form-control-text" style="display:none"/>
+                                </div>
+                                <div class="col-md-2 py-1">
+                                    <select name="position" id="m_position" class="form-control position"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--Popup -->
+<div id="dialogDangerous" title="Are you make sure DELETE ?">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-success button-srh mr-3" id="closestyle">No</button>
+                    <button type="button" class="btn btn-sm btn-danger button-srh" id="deletestyle">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ./ Popup -->
+
+@section scripts {
+    <script src="~/Scripts/DevManagement/Staff/StaffMgt.js"></script>
+    <script src="~/Scripts/DevManagement/Staff/StaffMgt_Poup.js"></script>
+}
+

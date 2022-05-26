@@ -1,0 +1,206 @@
+﻿@model IEnumerable<Mvc_VD.Models.w_mr_info>
+
+@{
+    ViewBag.Title = "Directions Generation(S)";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="WMS" data-level_2="Shipping Management" data-level_3="Directions Generation(S)"></div>
+}
+
+
+<div class="container-fluid">
+    <div class="row text-right">
+        <div class="col-md-12 px-3">
+  @*          <button type="submit" id="excelBtn" class="btn btn-sm btn-warning button-top"><i class="fa fa-file-excel-o">&nbsp;Excel</i></button>
+            <button type="submit" id="htmlBtn" class="btn btn-sm btn-warning button-top"><i class="fa fa-print">&nbsp;HTML</i></button>
+            <button type="submit" id="pdfBtn" class="btn btn-sm btn-warning button-top"><i class="fa fa-print">&nbsp;PDF</i></button>*@
+         
+            <button id="Direction" class="btn btn-sm btn-info button-srh"><i class="fa ">&nbsp;&nbsp;&nbsp;&nbsp;Direction</i></button>
+        </div>
+    </div>       
+</div>
+
+<!-- Search function -->
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-1 p-1  text-right">
+                <label><b>MR NO </b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <div class="input-group mt_plus">
+                    <input type="text" name="mr_no" id="mr_no" class="input-text form-control">
+                    <span class="input-group-addon psbom"><a href="#" class="poupdialogMR"><i class="fa fa-search text-navy"></i></a></span>
+                </div>
+            </div>
+            <div class="col-md-1 p-1  text-right">
+                <label><b>BOM </b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                 <div class="input-group mt_plus">
+                    <input type="text" name="bom_no" id="bom_no" class="input-text form-control">
+                    <span class="input-group-addon psbom"><a href="#" class="poupdialogBom"><i class="fa fa-search text-navy"></i></a></span>
+                </div>
+            </div>
+            <div class="col-md-1 p-1  text-right">
+                <label><b>MT NO</b></label>
+            </div>
+             <div class="col-md-2 p-1">
+                  <div class="input-group mt_plus">
+                    <input type="text" name="mt_no" id="mt_no" class="input-text form-control">
+                    <span class="input-group-addon psbom"><a href="#" class="poupdialogMT"><i class="fa fa-search text-navy"></i></a></span>
+                </div>
+            </div>
+             <div class="col-md-2 p-2">
+               <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+             </div>
+        </div>
+    </div>
+</div>
+<!-- ./Search function -->
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<form id="form3">
+<div class="container-fluid">
+    <div class="col-md-3">
+        <div class="box-body my-2 bg-white">
+            <div class="row">
+                <div class="col-md-2 text-right p-4">
+                    <label>Location</label>
+                </div>
+                <div class="col-md-9 p-4">
+                    <div class="input-group" style="width: 100%;">
+                        <select name="lct_cd" id="lct_cd" class="form-control selectMf select2"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="row ">
+                <div class="col-md-2 text-right p-4">
+                    <label>Worker</label>
+                </div>
+                <div class="col-md-9 p-4">
+                    <input type="text" name="userid" id="userid" class="input-text form-control">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 p-4 text-right"></div>
+                <div class="col-md-9 p-4" id="new">
+                    <input type="text" name="uname" id="uname" class="input-text form-control" placeholder="Name" readonly="readonly">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 text-right p-4">
+                    <label>Manager</label>
+                </div>
+                <div class="col-md-9 p-4">
+                    <input type="text" name="userid" id="userid2" class="input-text form-control">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 text-right p-4"></div>
+                <div class="col-md-9 p-4" id="new1" >
+                    <input type="text" name="uname" id="uname2" class="input-text form-control" placeholder="Name" readonly="readonly">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 text-right p-4">
+                    <label>Work date</label>
+                </div>
+                <div class="col-md-9 p-4">
+                    <input type="text" name="work_date" id="work_date" class="form-control">
+                </div>
+            </div>
+              <div class="row">
+                  <div class="col-md-2 text-right p-4">
+                    <label>MR NO</label>
+                </div>
+                <div class="col-md-9 p-4"  >
+                    <input type="text" name="mr_no" id="mr_no1" class="input-text form-control" placeholder="Name" readonly="readonly">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="box-body my-2 bg-white boxlist1">
+            <div class="row p-0 m-0">
+                <table id="list"></table>
+                <div id="gridpager"></div>
+            </div>
+        </div>
+    </div>
+</div>
+    </form>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="box-body my-2 bg-white">
+    <div class="row p-0 m-0 boxlist2">
+        <table id="list2"></table>
+        <div id="list2Page"></div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+
+<!--Dialog -->
+<div class="dialogMR">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    @*<button type="button" class="btn btn-sm btn-primary button-srh" id="closeMR"><i class="fa fa-close">&nbsp;Close</i></button>*@
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <table id="popupsMR"></table>
+                <div id="popupspagerMR"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="dialogBom">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    @*<button type="button" class="btn btn-sm btn-primary button-srh" id="closeBom"><i class="fa fa-close">&nbsp;Close</i></button>*@
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <table id="popupBom"></table>
+                <div id="popupspagerBom"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="dialogMT">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    @*<button type="button" class="btn btn-sm btn-primary button-srh" id="closeMT"><i class="fa fa-close">&nbsp;Close</i></button>*@
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <table id="popupsMT"></table>
+                <div id="popupspagerMT"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ./ Dialog -->
+
+<script src="~/Scripts/ShippingMgt/bom_popup.js"></script>
+<script src="~/Scripts/ShippingMgt/Mr_no_popup.js"></script>
+<script src="~/Scripts/ShippingMgt/mt_no_popup.js"></script>
+<script src="~/Scripts/Shippingmgt/DirectionsGeneration_ship.js"></script>

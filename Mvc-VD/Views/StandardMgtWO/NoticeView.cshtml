@@ -1,0 +1,97 @@
+﻿@model Mvc_VD.Models.m_board
+
+@{
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    <div class="col-xs-12">
+        <h4 class="m-0 text-dark"><b>Notice View</b></h4>
+        <small style="font-size: 14px;"><i class="fa fa-dashboard"></i>
+            HOME > Standard Management(WO) > Notice Management > View
+        </small>
+    </div>
+}
+<style type="text/css">
+    a.my_class {
+        color: #fff;
+    }
+
+        a.my_class:active, link, visited, hover {
+            color: #fff;
+        }
+
+    /*.border-2 {
+        border-width: 2px;
+        border-style: solid;
+        border-color: #0000ff;
+    }*/
+</style>
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-12 py-2 text-right">
+                <button type="submit" id="c_list" class="btn btn-sm btn-success button-srh"><i class="fa fa-list">&nbsp;List</i></button>
+                <button type="submit" id="c_modify" class="btn btn-sm btn-success button-srh">
+                    <i class="fa fa-save">&nbsp;</i>@Html.ActionLink("Modify", "NoticeModify", new { mno = @Html.DisplayFor(model => model.mno) }, new { @class = "my_class" })
+                </button>
+            </div>
+            <div class="col-md-12 py-2">
+                <table class="table table-bordered ">
+                    <tbody>
+                        <tr>
+                            <th class="col-md-0 border border-secondary" scope="col">Writer</th>
+                            <td class="col-md-12 border border-secondary">@Html.DisplayTextFor(model => model.reg_id) &nbsp;&nbsp; @Html.DisplayTextFor(model => model.reg_dt)</td>
+                        </tr>
+                        <tr>
+                            <th class="col-md-0 border border-secondary" scope="col">Subject</th>
+                            <td class="col-md-12 border border-secondary">@Html.DisplayTextFor(model => model.title)</td>
+                        </tr>
+                        <tr>
+                            <th class="col-md-0 border border-secondary" scope="col">Content</th>
+                            <td class="col-md-12 border border-secondary">@Html.DisplayTextFor(model => model.content)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            @*            <div class="col-md-12 py-2">
+                <div class="box box-solid">
+                    <div class="box-header with-border">
+                        <label>Writer</label>&nbsp;&nbsp; 
+                       
+
+                    </div>
+                    <div class="box-header with-border">
+                        <p>
+                            <label>Subject</label>@Html.DisplayTextFor(model => model.title)
+                        </p>
+
+                    </div>
+                    <div class="box-header with-border">
+                        <p>
+                            <label>Content</label>@Html.DisplayTextFor(model => model.content)
+                        </p>
+                    </div>
+                </div>
+            </div>*@
+
+        </div>
+    </div>
+</div>
+@*<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+    </div>
+</div>*@
+<script>
+
+    $(document).ready(function () {
+        $("#c_list").on("click", function (n) {
+            location.href = "/StandardMgtWO/NoticeManagement"
+        }),
+        $("#c_modify").on("click", function (n) {
+            location.href = "/StandardMgtWO/NoticeModify"
+        })
+    });
+
+</script>

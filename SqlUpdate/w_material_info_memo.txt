@@ -1,0 +1,2 @@
+ Select id, md_cd, style_no, style_nm, mt_cd, width, width_unit, spec, spec_unit, sd_no, lot_no, sts_cd, memo, month_excel, receiving_dt, Tx, total_m, total_m2, total_ea, use_yn, reg_id, reg_dt, chg_id, chg_dt
+ From w_material_info_memo;

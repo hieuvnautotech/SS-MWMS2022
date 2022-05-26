@@ -1,0 +1,2 @@
+Select fqhno As Id, fq_no, product, shift, item_vcd, check_id, check_cd, check_value, check_qty, date_ymd, reg_id, reg_dt, chg_id, chg_dt
+ From m_facline_qc_value

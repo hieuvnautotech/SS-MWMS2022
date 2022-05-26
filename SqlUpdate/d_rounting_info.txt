@@ -1,0 +1,2 @@
+Select idr, style_no, name, level, don_vi_pr, type, item_vcd, description, reg_dt, reg_id, chg_id, chg_dt
+ From d_rounting_info

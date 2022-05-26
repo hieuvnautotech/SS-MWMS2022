@@ -1,0 +1,22 @@
+truncate table [ShinsungMirgaNew].[dbo].[author_info];
+INSERT INTO [ShinsungMirgaNew].[dbo].[author_info]
+           ([at_cd]
+           ,[at_nm]
+           ,[role]
+           ,[use_yn]
+           ,[reg_id]
+           ,[reg_dt]
+           ,[chg_id]
+           ,[chg_dt]
+           ,[re_mark])
+Select 
+	at_cd,
+        at_nm,
+        role,
+        use_yn,
+        reg_id,
+        reg_dt,
+        chg_id,
+        chg_dt,
+        re_mark
+From [ShinSungNewMirga].[autodb0314].[author_info];

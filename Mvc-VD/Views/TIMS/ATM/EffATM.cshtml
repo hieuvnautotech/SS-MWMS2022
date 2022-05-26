@@ -1,0 +1,77 @@
+﻿@{
+    ViewBag.Title = "ATM";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    @*<div class="col-xs-12" id="current_menu" data-level_1="TIMS" data-level_2="Actual" data-level_3="ATM"></div>*@
+    <div class="col-xs-12" id="current_menu" data-level_1="@Html.Raw(ViewData["TIMS"])" data-level_2="@Html.Raw(ViewData["Actual"])" data-level_3="@Html.Raw(ViewData["EffATM"])"></div>
+}
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-auto p-1">
+                <label><b>Product</b></label>
+            </div>
+            <div class="col-md-1 p-1 mr-5">
+                <input type="text" name="SearchProductCode" id="SearchProductCode" class="input-text form-control">
+            </div>
+            <div class="col-md-auto p-1">
+                <label><b>Product Name</b></label>
+            </div>
+            <div class="col-md-1 p-1 mr-5">
+                <input type="text" name="SearchProductName" id="SearchProductName" class="form-control">
+            </div>
+            <div class="col-md-auto p-1">
+                <label>Type(Roll/Sheet)</label>
+            </div>
+            <div class="col-md-1 py-1">
+
+                <select id="s_bom_type" class="form-control">
+                </select>
+            </div>
+            <div class="col-md-auto p-1">
+                <label><b>PO No</b></label>
+            </div>
+            <div class="col-md-1 p-1 mr-5">
+                <input type="text" name="SearchPO" id="SearchPO" class="form-control">
+            </div>
+            <div class="col-md-auto p-1">
+                <label><b>Tuần</b></label>
+            </div>
+            <div class="col-md-1 p-1 mr-5">
+                <input type="text" name="SearchRemark" id="SearchRemark" class="form-control">
+            </div>
+            <div class="col-md-1 p-1">
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+
+            <div class="col-md-3 px-3">
+                <form method="post" id="exportData">
+                    <button id="excelBtn" class="btn btn-success btn-download btnDownload mr-3"> <i class="fa fa-file-excel-o">&nbsp;Export To Excel</i></button>
+
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="box-body">
+        <div class=" bg-white">
+            <table id="list"></table>
+            <div id="listPager"></div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/TIMS/ATM/EffATM.js"></script>
+
+}
+
+
+
+
+

@@ -1,0 +1,80 @@
+﻿@{
+    ViewBag.Title = "TIMS_ATM";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="TIMS" data-level_2="Actual" data-level_3="ATM"></div>
+}
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-auto p-1">
+                <label><b>Product</b></label>
+            </div>
+            <div class="col-md-1 p-1 mr-5">
+                <input type="text" name="product_nm" id="product_id" class="input-text form-control">
+            </div>
+            <div class="col-md-auto p-1">
+                <label><b>Name</b></label>
+            </div>
+            <div class="col-md-1 p-1 mr-5">
+                <input type="text" name="name_nm" id="name_id" class="form-control">
+            </div>
+            <div class="col-md-1 p-1">
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="box-body all_cg">
+        <div class="width_luoi bg-white">
+
+            <table id="list" class="table table-bordered table-hover"></table>
+            <div id="listPager"></div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+
+    
+    <script src="~/Scripts/TIMS/TIMS_ATM.js"></script>
+}
+
+
+<style>
+    tr.ui-jqgrid-labels th {
+        background: #ffd867 !important;
+        font-weight: bold !important;
+    }
+
+    /*div#jqgh_list_fo_no {
+        padding: 5px;
+    }*/
+
+    .all_cg {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .ui-jqgrid tr.ui-row-ltr td {
+        padding: 17px;
+    }
+
+    .box-body.all_cg {
+        HEIGHT: 80VH;
+    }
+
+    button.btn.btn-xs.btn-primary {
+        padding: 10px;
+        margin: -10px;
+    }
+
+    .ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+        border: 1px solid #828282;
+    }
+</style>

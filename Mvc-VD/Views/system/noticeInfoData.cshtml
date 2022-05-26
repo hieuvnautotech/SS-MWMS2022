@@ -1,0 +1,140 @@
+﻿@{
+    ViewBag.Title = "noticeInfoData";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="STANDARD" data-level_2="System Management" data-level_3="Notice Management Web"></div>
+}
+<div class="container-fluid">
+    <form method="post" action="/system/noticeRegister">
+        <div class="row text-right">
+            <div class="col-md-12 px-3">
+                <button id="registerBtn" class="btn btn-sm btn-success button-srh" onclick="fun_check1()">
+                    <i class="fa fa-save"></i>
+                    &nbsp;Create
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+<!-- Search function -->
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-2 p-1">
+                <select name="searchType1" id="searchType1" class="form-control select2">
+                    <option value="title">title</option>
+                    <option value="content">content</option>
+                    <option value="create_name">creat name</option>
+                </select>
+                <input type="hidden" name="bno" id="s_bno" value="" />
+            </div>
+            <div class="col-md-2 p-1">
+                <input type="text" name="keyword1" id="keywordInput1" class="form-control form-control-text">
+            </div>
+            <div class="col-md-2 pt-2 text-right">
+                <label><b>Create Date</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <input type="text" name="start_dt" id="start1" class="form-control form-control-text">
+            </div>
+            <div class="p-1 text-right">
+                <label><b>~</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <input type="text" name="end_dt" id="end1" class="form-control form-control-text" />
+            </div>
+            <div class="col-md-1 p-2">
+                <button id="searchBtn1" class="btn btn-sm btn-primary"><i class="fa fa-search">&nbsp;Search</i></button>
+@*                <button type="button" id="del_save_but" class="btn btn-danger button-sm deletebtn"><i class="fa fa-scissors">&nbsp;Delete</i></button>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ./Search function -->
+
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <table id="noticeMgt"></table>
+            <div id="jqGridPager2"></div>
+        </div>
+    </div>
+</div>
+
+
+<div class="dialog" title="Notice">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-primary button-srh" id="close"><i class="fa fa-close">&nbsp;Close</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="nav-tabs-custom">
+        <ul class="nav nav-tabs">
+            <li class="active" id="tab_1"><a href="#tab_1" data-toggle="tab">View </a></li>
+            <li class="" id="tab_2"><a href="#tab_2" data-toggle="tab">Modify</a></li>
+        </ul>
+    </div>
+    <div class="container-fluid">
+        <div class="tab-content active" id="tab_c1">
+            <form name='form1' id='form1' role="form" method="post" target="zeroFrame">
+                <div class="box-body my-2 bg-white">
+                    <div class="row p-0 m-0">
+                        <div id="info" class="table-responsive-md"></div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="tab-content hidden" id="tab_c2">
+            <form name='form2' id='form2' action="/system/updatemanu2" role="form" method="post" target="zeroFrame">
+                <input type="hidden" name="bno" value="" id="bno" />
+                <div class="box-body my-2 bg-white">
+                    <label>Title</label>
+                    <div>
+                        <div id="title"></div>
+
+                    </div>
+                    <label>Content</label>
+                    <div id="content2"></div>
+                    <br />
+                    <br />
+                    <button type="submit" id="saveBtn" class="btn btn-sm btn-primary pull-left" onclick="TreeFilterChanged2(); "><i class="fa fa-save">&nbsp; Modify</i></button>
+
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<style>
+    div#info {
+        width: 100%;
+    }
+
+    .title_name {
+        border: 1px solid #ccc;
+        padding: 5px;
+    }
+
+    h4.title_c {
+        font-size: 14px;
+        font-weight: 500;
+        color: #000;
+        transition: 1s;
+        text-align: left;
+        font-family: sans-serif;
+        color: red;
+    }
+</style>
+@section scripts{
+    <script src="~/ckeditor/ckeditor.js"></script>
+    <script src="~/Scripts/system/noticeInfoData/noticeInfoData.js"></script>
+}

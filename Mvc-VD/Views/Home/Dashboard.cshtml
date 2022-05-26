@@ -1,0 +1,128 @@
+﻿@*@model IEnumerable<Mvc_VD.Models.s_order_factory_info>*@
+@model  Mvc_VD.Models.mb_message
+
+@{ ViewBag.Title = "Index";
+   Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="HOME" data-level_2="DashBoard" data-level_3="Dash Board"></div>
+}
+
+<style type="text/css">
+    .to {
+        display: grid;
+    }
+
+    .title_name {
+        border: 1px solid #ccc;
+        padding: 5px;
+    }
+
+    h4.title_c {
+        font-size: 14px;
+        font-weight: 500;
+        color: #000;
+        transition: 1s;
+        text-align: left;
+        font-family: sans-serif;
+        color: red;
+    }
+
+    table#info {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 96%;
+    }
+
+    table#noticeGrid td a {
+        display: inline-block;
+        position: relative;
+        top: 50%;
+    }
+</style>
+
+
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-3">
+                <!-- small box -->
+                <div class="small-box bg-aqua">
+                    <div class="inner">
+                        <h3 id="m_actual_efficiency">0%</h3>
+                        <p>Production Actual Efficiency</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-pie-chart fa-1x"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-md-3">
+                <!-- small box -->
+                <div class="small-box bg-green">
+                    <div class="inner">
+
+                        <h3 id="m_actual_amount"><sup style="font-size: 20px">0</sup></h3>
+                        <p>Production Actual Amount</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-bar-chart fa-1x"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-md-3">
+                <!-- small box -->
+                <div class="small-box bg-yellow">
+                    <div class="inner">
+                        <h3 id="m_rec_material">0</h3>
+                        <p>Receiving Material</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-sign-in fa-1x"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-md-3">
+                <!-- small box -->
+                <div class="small-box bg-red">
+                    <div class="inner">
+                        <h3>0</h3>
+                        <p>Shipping Goods</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-sign-out fa-1x"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+@section scripts{
+    @*<script src="~/Content/charts/Chart.min.js"></script>
+    <script src="~/Content/charts/chartjs-plugin-datalabels.js"></script>*@
+    @*<script src="~/Scripts/Home/_DashBoard.js"></script>*@
+    @*<script src="~/Scripts/Home/_Notice_Poup.js"></script>
+    <script src="~/Scripts/Home/JSCharting.js"></script>
+    <script src="~/Scripts/Home/toolbar.js"></script>
+    <script src="~/Scripts/Home/types.js"></script>
+    <script src="~/ckeditor/ckeditor.js"></script>*@
+
+}

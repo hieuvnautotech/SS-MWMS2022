@@ -1,0 +1,472 @@
+﻿@model IEnumerable<Mvc_VD.Models.w_enviro_mt>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+<style>
+    myChart {
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+    }
+</style>
+
+@section Tilte {
+     <div class="col-xs-12" id="current_menu" data-level_1="WMS" data-level_2="Standard Management(WH)" data-level_3="Warehouse Environmental">
+     </div>
+}
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-light">
+        <div class="row p-0 m-0">
+            <div class="col-md-3 clearfix">
+                <div id="chartDiv" style="width: 350px; height: 300px;"></div>
+            </div>
+            <div class="col-md-3 clearfix">
+                <div id="chartDiv2" style="width: 350px; height: 300px;"></div>
+            </div>
+            <div class="col-md-3 clearfix">
+                <div class="form-control" style="width: 350px; height: 295px;">
+                    <canvas id="myChart3" class="chartjs" height="295" width="350" style="width: 350px; height: 295px;"></canvas>
+                </div>
+            </div>
+            <div class="col-md-3 clearfix">
+                <div class="form-control" style="width: 350px; height: 295px;">
+                    <canvas id="myChart4" class="chartjs" height="295" width="350" style="width: 350px; height: 295px;"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-light">
+        <div class="row p-0 m-0">
+            <div class="col-md-6 clearfix">
+                <div class="form-control" style="position: relative; background-color: white; width: 1638px; height: 300px; padding: 2px">
+                    <canvas id="myChart" style="display: block; width: 1638px; height: 300px;"></canvas>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-light">
+        <div class="row p-0 m-0">
+            <table id="VolTempGrid"></table>
+            <div id="VolTempGridPager"></div>
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+
+@section scripts{
+    <script src="~/Scripts/StandardMgtWh/WarehouseEnvironmental/_WhsEnviro.js"></script>
+    <script src="~/Scripts/StandardMgtWh/WarehouseEnvironmental/JSCharting.js"></script>
+    <script src="~/Scripts/StandardMgtWh/WarehouseEnvironmental/toolbar.js"></script>
+    <script src="~/Scripts/StandardMgtWh/WarehouseEnvironmental/types.js"></script>
+    <script src="~/Scripts/StandardMgtWh/WarehouseEnvironmental/_VolTemp.js"></script>
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>*@
+    <script src="~/Content/charts/moment.min.js"></script>
+   <script>
+       function myTimer() {
+           $.ajax({
+               url: "/StandardMgtWh/getVolVal",
+               type: "get",
+               dataType: "json",
+               success: function (data) {
+                   console.clear;
+                   console.log(data);
+                   var chart = JSC.chart('chartDiv', {
+                       debug: true,
+                       type: 'gauge',
+                       width: 350,
+                       height: 300,
+                       toolbar_visible: false,
+                       legend_visible: false,
+                       yAxis: {
+                           defaultMinorTick: {},
+                           scale: {
+                               range: [0, 500]
+                           }
+                           //,
+                           //markers: [{
+                           //    value: [80, 100],
+                           //    color: '#ff5d5f',
+                           //    //label_text: 'Warning'
+                           //},]
+                       },
+                       chartArea: { fill: '#FFFFFF' },
+                       series: [{
+                           palette: 'default',
+                           shape: {
+                               label: {
+                                   text: 'Voltage (V)',
+                                   verticalAlign: 'bottom'
+                               }
+                           },
+                           points: [{
+                               legendEntry_visible: false,
+                               y: parseFloat(data),
+                           }]
+                       }]
+                   });
+               }
+           });
+           $.ajax({
+               url: "/StandardMgtWh/getTempVal",
+               type: "get",
+               dataType: "json",
+               success: function (data) {
+                   console.clear;
+                   console.log(data);
+                   var chart = JSC.chart('chartDiv2', {
+                       debug: true,
+                       type: 'gauge',
+                       width: 350,
+                       height: 300,
+                       toolbar_visible: false,
+                       legend_visible: false,
+                       legend: {
+                           position: 'top',
+                           boxVisible: false
+                       },
+                       yAxis: {
+                           defaultMinorTick: {},
+                           scale: {
+                               range: [0, 50]
+                           }
+                           //,
+                           //markers: [{
+                           //    //value: [80, 100],
+                           //    //color: '#ff5d5f',
+                           //    label_text: 'Warning'
+                           //},]
+                       },
+                       chartArea: { fill: '#FFFFFF' },
+                       series: [{
+                           palette: 'default',
+                           shape: {
+                               label: {
+                                   text: 'Temperature (°C)',
+                                   verticalAlign: 'bottom'
+                               }
+                           },
+                           points: [{
+                               legendEntry_visible: false,
+                               y: parseFloat(data),
+                           }]
+                       }]
+                   });
+               }
+           });
+       }
+
+       function myTimer2() {
+
+           $(document).ready(function () {
+               $.ajax({
+                   url: "/StandardMgtWh/getMotionVal",
+                   type: "get",
+                   dataType: "json",
+                   success: function (data) {
+                       console.clear;
+                       console.log(data);
+                       if (data == 0) {
+                           new Chart(document.getElementById("myChart3"), {
+                               type: 'doughnut',
+                               data: {
+
+                                   datasets: [
+                                     {
+                                         //label: "Motion",
+                                         backgroundColor: ["#FFCD56"],
+                                         borderColor: "#FFCD56",
+                                         data: [12],
+
+
+                                     }
+                                   ]
+                               },
+                               options: {
+                                   title: {
+                                       position: 'bottom',
+                                       display: true,
+                                       text: 'Motion'
+
+                                   },
+
+                                   animation: {
+                                       animateRotate: false,
+                                   },
+                                   //layout: {
+                                   //    padding: {
+                                   //        bottom: 1
+                                   //    }
+                                   //},
+                                   tooltips: {
+                                       enabled: false,
+                                   }
+
+                               }
+                           });
+                       }
+                       if (data == 1) {
+                           new Chart(document.getElementById("myChart3"), {
+                               type: 'doughnut',
+                               data: {
+
+                                   datasets: [
+                                     {
+                                         //label: "Motion",
+                                         backgroundColor: ["#FF6384"],
+                                         borderColor: "#FF6384",
+                                         data: [12],
+
+
+                                     }
+                                   ]
+                               },
+                               options: {
+                                   title: {
+                                       position: 'bottom',
+                                       display: true,
+                                       text: 'Motion'
+                                   },
+
+                                   animation: {
+                                       animationEnabled: true,
+                                       animateRotate: false,
+                                       animateScale: true,
+                                       duration: 5000,
+                                   },
+                                   //layout: {
+                                   //    padding: {
+                                   //        bottom: 1
+                                   //    }
+                                   //},
+                                   tooltips: {
+                                       enabled: false,
+                                   }
+                                   //,elements:
+                                   //    {
+
+                                   //    }
+
+                               }
+                           });
+                       }
+                   }
+
+               });
+           });
+
+           $(document).ready(function () {
+               $.ajax({
+                   url: "/StandardMgtWh/getSmokeVal",
+                   type: "get",
+                   dataType: "json",
+                   success: function (data) {
+                       if (data == 0) {
+                           new Chart(document.getElementById("myChart4"), {
+                               type: 'pie',
+                               data: {
+                                   datasets: [
+                                     {
+                                         //label: "Smoke",
+
+                                         backgroundColor: ["#FFCD56"],
+                                         data: [12],
+                                         borderColor: "#FFCD56",
+                                     }
+
+                                   ]
+                               },
+                               options: {
+                                   title: {
+                                       position: 'bottom',
+                                       display: true,
+                                       text: 'Smoke'
+                                   },
+                                   animation: {
+                                       ////animateRotate: true,
+
+                                       //duration: 250 * 1.5,
+                                       //easing: 'linear',
+                                       animateRotate: false,
+                                       //rotation: -10 * Math.PI,
+                                       //circumference: 50 * Math.PI,
+                                       //cutoutPercentage: 50,
+                                       //duration: 2000,
+
+
+
+
+                                   },
+                                   //layout: {
+                                   //    padding: {
+                                   //        bottom: 5
+                                   //    }
+                                   //}
+                                   //,
+                                   tooltips: {
+                                       enabled: false,
+                                   }
+                               }
+                           });
+                       }
+                       if (data == 1) {
+                           new Chart(document.getElementById("myChart4"), {
+                               type: 'pie',
+                               data: {
+                                   datasets: [
+                                     {
+                                         //label: "Smoke",
+
+                                         backgroundColor: ["#FF6384"],
+                                         data: [12],
+                                         borderColor: "#FF6384",
+                                     }
+
+                                   ]
+                               },
+                               options: {
+                                   title: {
+                                       position: 'bottom',
+                                       display: true,
+                                       text: 'Smoke'
+                                   },
+                                   animation: {
+                                       animationEnabled: true,
+                                       animateRotate: false,
+                                       animateScale: true,
+                                       duration: 5000,
+
+                                   },
+                                   //layout: {
+                                   //    padding: {
+                                   //        bottom: 5
+                                   //    }
+                                   //}
+                                   //,
+                                   tooltips: {
+                                       enabled: false,
+                                   }
+                               }
+                           });
+                       }
+                   }
+
+               });
+           });
+       }
+
+       myTimer();
+       myTimer2();
+       setInterval(myTimer, 30000);
+       setInterval(myTimer2, 2000);
+
+    </script>
+    <script>
+        var ajax = $.ajax({
+            url: "/StandardMgtWh/getLineVolTemp",
+            type: "get",
+            dataType: "json",
+            success: function (rtnData) {
+                var list1 = "",
+                    list2 = "",
+                    list3 = "";
+                $.each(rtnData, function (dataType, data) {
+                    if (dataType == "rows") { list1 = data[0] }
+                    if (dataType == "list2") { list2 = data[0] }
+                    if (dataType == "list3") { list3 = data[0] }
+                });
+                //console.log(rtnData);
+                //console.log(list2);
+                //console.log(list3);
+
+                var ctx = document.getElementById("myChart").getContext("2d"),
+                    config = {
+                        type: "line",
+                        data: {
+
+                            labels: list2,
+                            datasets: [{
+                                label: 'Voltage (V)',
+                                data: list1,
+                                borderColor: 'red',
+                                borderWidth: 1,
+                                fill: false,
+                                yAxisID: 'y-axis-1',
+                            },
+                            {
+                                label: 'Temperature (°C)',
+                                data: list3,
+                                borderColor: 'green',
+                                borderWidth: 1,
+                                fill: false,
+                                yAxisID: 'y-axis-2',
+
+                            }]
+
+                        },
+                        options: {
+                            responsive: true,
+                            title: {
+                                display: true,
+                                text: "Voltage & Temperature",
+                            },
+                            scales: {
+                                xAxes: [{
+                                    display: true,
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Date Time'
+
+                                    },
+                                    ticks: {
+                                        beginAtZero: true
+                                    }
+                                }],
+                                yAxes: [{
+                                    type: 'linear',
+                                    display: true,
+                                    position: 'left',
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Value of Voltage (V)'
+                                    },
+                                    id: 'y-axis-1',
+                                },
+                                {
+                                    type: 'linear',
+                                    display: true,
+                                    position: 'right',
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Value of Temperature (°C)'
+                                    },
+                                    id: 'y-axis-2',
+                                }
+
+                                ]
+                            }
+
+                        }
+                    };
+                window.myPie = new Chart(ctx, config);
+
+            },
+            error: function (rtnData) {
+                alert('error' + rtnData);
+            }
+        });
+
+    </script>
+}

@@ -1,0 +1,7 @@
+﻿.jquery-modal.blocker {
+    z-index: 9999;
+}
+
+.jquery-modal .modal {
+    overflow: initial;
+}

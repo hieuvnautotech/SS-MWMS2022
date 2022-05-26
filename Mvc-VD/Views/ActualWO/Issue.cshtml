@@ -1,0 +1,826 @@
+﻿@model IEnumerable<Mvc_VD.Models.s_order_info>
+
+@{
+    ViewBag.Title = "PoMgt";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="MMS" data-level_2="Actual WO" data-level_3="Issue"></div>
+}
+<link href="~/Content/ActualWO/slick.css" rel="stylesheet" />
+<link href="~/Content/ActualWO/slick-theme.css" rel="stylesheet" />
+<style type="text/css">
+    table#info {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 96%;
+    }
+
+    .to {
+        display: grid;
+    }
+
+    .title_name {
+        border: 1px solid #ccc;
+        padding: 5px;
+    }
+
+    .title_name_content {
+        height: 100px;
+        border: 1px solid #ccc;
+        padding: 5px;
+        height: 226px;
+    }
+
+    h4.title_c {
+        font-size: 14px;
+        font-weight: 500;
+        color: #000;
+        transition: 1s;
+        text-align: left;
+        font-family: sans-serif;
+        color: red;
+    }
+
+</style>
+
+<div class="container-fluid">
+    <div class="row text-right">
+        <div class="col-md-12 px-3">
+            <button type="submit" id="excelBtn" class="btn btn-sm btn-warning button-top"><i class="fa fa-file-excel-o">&nbsp;Excel</i></button>
+            <button type="submit" id="htmlBtn" class="btn btn-sm btn-warning button-top"><i class="fa fa-print">&nbsp;HTML</i></button>
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-auto py-2">
+                <label><b>WO NO</b></label>
+            </div>
+            <div class="col-md-1 py-2 mr-5">
+                <div class="input-group mt_plus">
+                    <input type="text" name="s_fo_no" id="s_fo_no" class="form-control form-control-text">
+                    <span class="input-group-addon psbom"><a href="#" id="poupdialogsfono" class="poupdialogsfono"><i class="fa fa-search text-navy"></i></a></span>
+                </div>
+            </div>
+            <div class="col-md-auto py-2">
+                <label><b>Product Code</b></label>
+            </div>
+            <div class="col-md-1 py-2 mr-5">
+                <div class="input-group mt_plus">
+                    <input type="text" name="s_style_no" id="s_style_no" class="form-control form-control-text">
+                    <span class="input-group-addon psbom"><a href="#" id="poupdialogsstyleno" class="poupdialogsstyleno"><i class="fa fa-search text-navy"></i></a></span>
+                </div>
+            </div>
+
+            <div class="col-md-auto py-2">
+                <label><b>Process</b></label>
+            </div>
+            <div class="col-md-1 py-2 mr-5">
+                <div class="input-group mt_plus">
+                    <input type="text" name="s_process_nm" id="s_process_nm" class="form-control form-control-text">
+                    <span class="input-group-addon psbom"><a href="#" id="poupdialog3" class="poupdialog3"><i class="fa fa-search text-navy"></i></a></span>
+                </div>
+            </div>
+            <div class="col-md-auto py-2">
+                <label><b>Issue</b></label>
+            </div>
+            <div class="col-md-1 py-2 mr-5">
+                <input type="text" name="s_title" id="s_title" class="form-control form-control-text">
+            </div>
+            <div class="col-md-auto py-2">
+                <label><b>Start</b></label>
+            </div>
+            <div class="col-md-1 py-2 mr-5">
+                <input type="text" name="start_dt" id="start" class="form-control form-control-text">
+            </div>
+            <div class="col-md-auto py-2">
+                <label><b>~</b></label>
+            </div>
+            <div class="col-md-1 py-2 mr-5">
+                <input type="text" name="end_dt" id="end" class="form-control form-control-text">
+            </div>
+            <div class="col-md-1 py-2">
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0  d-flex">
+            <div class="col-md-12 text-right">
+                <input type="hidden" name="name" value=" " id="mdii" />
+                <button id="ac_save_but" class="btn btn-success my-3  mr-5"><i class="fa fa-save">&nbsp;Create</i></button>
+                <button id="bdel_save_but" class="btn btn-danger my-3" disabled="disabled"><i class="fa fa-scissors">&nbsp;Delete</i></button>
+            </div>
+            <div class="col-md-12 p-0 m-0 boxA">
+                <table id="issueGrid"></table>
+                <div id="issueGridPager"></div>
+            </div>
+        </div>
+    </div>
+</div>
+@*--------------------------------------------------------------------------------------------------------------------------*@
+<div class="dialog" title="Issues Information">
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="col-md-12 py-2">
+                <div id="info" class="table-responsive-md"></div>
+            </div>
+        </div>
+    </div>
+</div>
+@*--------------------------------------------------------------CREATE------------------------------------------------------------*@
+<div class="dialog2" title="ISSUE NEW">
+    <input type="hidden" name="old_no_c" id="old_no_c">
+    <input type="hidden" id="condition_fo_no">
+    <input type="hidden" id="condition_process_nm">
+    <input type="hidden" id="condition_start_dt">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-success button-srh" id="savestyle2"><i class="fa fa-save">&nbsp;Save</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <form name="form1" id="form1">
+                <div class="row">
+                    <div class="col-md-2 offset-md-1">
+                        <div class="errorTxt"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-1 px-1 py-2 text-right">
+                        <label><b>WO NO </b></label>
+                    </div>
+                    <div class="col-md-2 p-1">
+                        <div class="input-group mt_plus">
+                            <input type="text" name="fo_no" id="fo_no_c" class="form-control form-control-text" readonly="readonly">
+                            <span class="input-group-addon psbom"><a href="#" id="poupdialogfo_no" class="poupdialogfo_no"><i class="fa fa-search text-navy"></i></a></span>
+                        </div>
+
+                    </div>
+                    <div class="col-md-2 px-1 py-2 text-right">
+                        <label><b>Product Code</b></label>
+                    </div>
+                    <div class="col-md-2 p-1">
+                        <input type="text" name="style_no_c" id="style_no_c" class="form-control form-control-text" readonly="readonly">
+                    </div>
+                    <div class="col-md-2 px-1 py-2 text-right">
+                        <label><b>Product Name</b></label>
+                    </div>
+                    <div class="col-md-3 p-1">
+                        <input type="text" name="style_nm_c" id="style_nm_c" class="form-control form-control-text" readonly="readonly">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-1 px-1 py-2 text-right">
+                        <label><b>Process </b></label>
+                    </div>
+                    <div class="col-md-2 p-1">
+                        <input type="text" name="process_nm_c" id="process_nm_c" class="form-control form-control-text" readonly="readonly">
+                    </div>
+                    <div class="col-md-2 px-1 py-2 text-right">
+                        <label><b>Start</b></label>
+                    </div>
+                    <div class="col-md-2 p-1">
+                        <input type="text" name="start_c" id="start_c" class="form-control form-control-text" readonly="readonly">
+                    </div>
+                    <div class="col-md-2 px-1 py-2 text-right">
+                        <label><b>End</b></label>
+                    </div>
+                    <div class="col-md-3 p-1">
+                        <input type="text" name="end_c" id="end_c" class="form-control form-control-text" readonly="readonly">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-1 px-1 py-2 text-right">
+                        <label><b>Issue </b></label>
+                    </div>
+                    <div class="col-md-2 p-1">
+                        <input type="text" name="issue_c" id="issue_c" class="form-control form-control-text">
+                    </div>
+                    <div class="col-md-2 px-1 py-2 text-right">
+                        <label><b>Doing time </b></label>
+                    </div>
+                    <div class="col-md-2 p-1">
+                        <input type="text" name="doing_time_c" id="doing_time_c" class="form-control form-control-text" style="text-align: right">
+                    </div>
+                </div>
+            </form>
+            <form name="form2" id="form2">
+                <div class="row">
+                    <div class="col-md-1 px-1 py-2 text-right">
+                        <label>Content</label>
+                    </div>
+                    <div class="col-md-5 p-1">
+                        <textarea class="" cols="20" id="c_SumEditor" name="content" rows="2"></textarea>
+                    </div>
+                    <div class="col-md-1 px-1 py-2 text-right">
+                        <label><b>Preview </b></label>
+                    </div>
+                    <div class="col-md-5 p-0 m-0">
+                        <div class="box box-body bg-light">
+                            <div class="row">
+                                <div class="col-md-12 border-bottom info_customPhoto" id="info_customPhoto">
+                                </div>
+                                <div class="col-md-12 border-bottom info_customPhoto" id="info_customPhoto2">
+                                </div>
+                                <div class="col-md-12 border-bottom info_customPhoto" id="info_customPhoto3">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+            <form name="form3" id="form3">
+                <div class="row mt-2">
+                    <div class="col-md-1 px-1 py-2 text-right">
+                        <label><b>FILE 01</b></label>
+                    </div>
+                    <div class="custom-file col-md-5 p-1">
+                        <div class="input-group mt_plus">
+                            <input type="file" id="customFile" name="customFile"  class="customFile form-control" accept="application/*, audio/*, example/*, font/*, message/*, model/*, multipart/*, text/*,video/*,.xlsx,.xls,.doc, .docx,.ppt, .pptx,.txt,.pdf, .CSV">
+                        </div>
+                    </div>
+                    <div class="col-md-1 px-1 py-2 text-right">
+                        <label><b>PHOTO 01</b></label>
+                    </div>
+                    <div class="custom-file col-md-5 p-1 ">
+                        <div class="input-group mt_plus">
+                            <input type="file" class="customPhoto form-control" id="customPhoto" accept="image/gif, image/jpeg, image/png">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-1 px-1 py-2 text-right">
+                        <label><b>FILE 02</b></label>
+                    </div>
+                    <div class="custom-file col-md-5 p-1">
+                        <div class="input-group mt_plus">
+                            <input type="file" class="customFile form-control" id="customFile2" accept="application/*, audio/*, example/*, font/*, message/*, model/*, multipart/*, text/*,video/*,.xlsx,.xls,.doc, .docx,.ppt, .pptx,.txt,.pdf, .CSV">
+                        </div>
+                    </div>
+                    <div class="col-md-1 px-1 py-2 text-right">
+                        <label><b>PHOTO 02</b></label>
+                    </div>
+                    <div class="custom-file col-md-5 p-1">
+                        <div class="input-group mt_plus">
+                            <input type="file" class="customPhoto form-control" id="customPhoto2" accept="image/gif, image/jpeg, image/png">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-1 px-1 py-2 text-right">
+                        <label><b>FILE 03</b></label>
+                    </div>
+
+                    <div class="custom-file col-md-5 p-1">
+                        <div class="input-group mt_plus">
+                            <input type="file" class="customFile form-control" id="customFile3" accept="application/*, audio/*, example/*, font/*, message/*, model/*, multipart/*, text/*,video/*,.xlsx,.xls,.doc, .docx,.ppt, .pptx,.txt,.pdf, .CSV">
+                        </div>
+                    </div>
+                    <div class="col-md-1 px-1 py-2 text-right">
+                        <label><b>PHOTO 03</b></label>
+                    </div>
+                    <div class="custom-file col-md-5 p-1">
+                        <div class="input-group mt_plus">
+                            <input type="file" class="customPhoto form-control" id="customPhoto3" accept="image/gif, image/jpeg, image/png">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+@*--------------------------------------------------------------UPDATE------------------------------------------------------------*@
+<div class="dialogM" title="ISSUE UPDATE">
+    <input type="hidden" name="old_no_m" id="old_no_m">
+    <input type="hidden" name="mdii_m" id="mdii_m">
+    <input type="hidden" id="m_condition_fo_no">
+    <input type="hidden" id="m_condition_process_nm">
+    <input type="hidden" id="m_condition_start_dt">
+
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-success button-srh" id="savestyleM"><i class="fa fa-save">&nbsp;Update</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form name="form4" id="form4">
+        <div class="row">
+            <div class="col-md-2 offset-md-1">
+                <div class="errorTxt"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-1 px-1 py-2 text-right">
+                <label><b>WO NO </b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <div class="input-group mt_plus">
+                    <input type="text" name="fo_no" id="fo_no_m" class="form-control form-control-text" readonly="readonly">
+                </div>
+            </div>
+            <div class="col-md-2 px-1 py-2 text-right">
+                <label><b>Product Code</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <input type="text" name="style_no_c" id="style_no_m" class="form-control form-control-text" readonly="readonly">
+            </div>
+            <div class="col-md-2 px-1 py-2 text-right">
+                <label><b>Product Name</b></label>
+            </div>
+            <div class="col-md-3 p-1">
+                <input type="text" name="style_nm_c" id="style_nm_m" class="form-control form-control-text" readonly="readonly">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-1 px-1 py-2 text-right">
+                <label><b>Process </b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <input type="text" name="process_nm_c" id="process_nm_m" class="form-control form-control-text" readonly="readonly">
+            </div>
+            <div class="col-md-2 px-1 py-2 text-right">
+                <label><b>Start</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <input type="text" name="start_c" id="start_m" class="form-control form-control-text" readonly="readonly">
+            </div>
+            <div class="col-md-2 px-1 py-2 text-right">
+                <label><b>End</b></label>
+            </div>
+            <div class="col-md-3 p-1">
+                <input type="text" name="end_c" id="end_m" class="form-control form-control-text" readonly="readonly">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-1 px-1 py-2 text-right">
+                <label><b>Issue </b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <input type="text" name="issue_c" id="issue_m" class="form-control form-control-text">
+            </div>
+            <div class="col-md-2 px-1 py-2 text-right">
+                <label><b>Doing time </b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <input type="text" name="doing_time_c" id="doing_time_m" class="form-control form-control-text" style="text-align: right">
+            </div>
+        </div>
+    </form>
+    <form name="form5" id="form5">
+        <div class="row">
+            <div class="col-md-1 px-1 py-2 text-right">
+                <label>Content</label>
+            </div>
+            <div class="col-md-5 p-1">
+                <textarea class="" cols="20" id="m_SumEditor" name="content" rows="2"></textarea>
+            </div>            
+            <div class="col-md-1 px-1 py-2 text-right">
+                <label><b>Preview </b></label>
+            </div>
+            <div class="col-md-5 p-0 m-0">
+                <div class="box box-body bg-light">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="slider" id="photo_item">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <form name="form6" id="form6">
+        <div class="row mt-2">
+            <div class="col-md-1 px-1 py-2 text-right">
+                <label><b>FILE 01</b></label>
+            </div>
+
+            <div class="custom-file col-md-5 p-1">
+                <div class="input-group mt_plus">
+                    <div class="input-group mt_plus">
+                        <input type="file" class="custom-file-input" id="customFile_m" accept="application/*, audio/*, example/*, font/*, message/*, model/*, multipart/*, text/*,video/*,.xlsx,.xls,.doc, .docx,.ppt, .pptx,.txt,.pdf">
+                        <p class="custom-file-label" id="customFile_n">...</p>
+                    </div>
+                    <span class="input-group-addon btndel_file_save_but"><a href="#" id="btndel_file_save_but" class="p-0"><i class="fa fa-remove text-red p-0"></i></a></span>
+                </div>
+            </div>
+            <div class="col-md-1 px-1 py-2 text-right">
+                <label><b>PHOTO 01</b></label>
+            </div>
+            <div class="custom-file col-md-5 p-1 ">
+            <div class="input-group mt_plus">
+                <div class="input-group mt_plus">
+                    <input type="file" class="custom-file-input" id="customPhoto_m" accept="image/gif, image/jpeg, image/png">
+                    <p class="custom-file-label" id="customPhoto_n">...</p>
+                </div>
+                <span class="input-group-addon btndel_photo_save_but"><a href="#" id="btndel_photo_save_but" class="p-0"><i class="fa fa-remove text-red p-0"></i></a></span>
+            </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-1 px-1 py-2 text-right">
+                <label><b>FILE 02</b></label>
+            </div>
+            <div class="custom-file col-md-5 p-1">
+            <div class="input-group mt_plus">
+                <div class="input-group mt_plus">
+                    <input type="file" class="custom-file-input" id="customFile2_m" accept="application/*, audio/*, example/*, font/*, message/*, model/*, multipart/*, text/*,video/*,.xlsx,.xls,.doc, .docx,.ppt, .pptx,.txt,.pdf">
+                    <p class="custom-file-label" id="customFile_n2">...</p>
+                </div>
+                <span class="input-group-addon btndel_file_save_but"><a href="#" id="btndel_file_save_but2" class="p-0"><i class="fa fa-remove text-red p-0"></i></a></span>
+            </div>                                           
+
+            </div>
+            <div class="col-md-1 px-1 py-2 text-right">
+                <label><b>PHOTO 02</b></label>
+            </div>
+            <div class="custom-file col-md-5 p-1">
+                    <div class="input-group mt_plus">
+                    <div class="input-group mt_plus">
+                        <input type="file" class="custom-file-input" id="customPhoto2_m" accept="image/gif, image/jpeg, image/png">
+                        <p class="custom-file-label" id="customPhoto_n2">...</p>
+                    </div>
+                    <span class="input-group-addon btndel_photo_save_but"><a href="#" id="btndel_photo_save_but2" class="p-0"><i class="fa fa-remove text-red p-0"></i></a></span>
+                </div>                                           
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-1 px-1 py-2 text-right">
+                <label><b>FILE 03</b></label>
+            </div>
+
+            <div class="custom-file col-md-5 p-1">
+                <div class="input-group mt_plus">
+                    <div class="input-group mt_plus">
+                        <input type="file" class="custom-file-input" id="customFile3_m" accept="application/*, audio/*, example/*, font/*, message/*, model/*, multipart/*, text/*,video/*,.xlsx,.xls,.doc, .docx,.ppt, .pptx,.txt,.pdf">
+                        <p class="custom-file-label" id="customFile_n3">...</p>
+                    </div>
+                    <span class="input-group-addon btndel_file_save_but"><a href="#" id="btndel_file_save_but3" class="p-0"><i class="fa fa-remove text-red p-0"></i></a></span>
+                </div>                                           
+
+            </div>
+            <div class="col-md-1 px-1 py-2 text-right">
+                <label><b>PHOTO 03</b></label>
+            </div>
+            <div class="custom-file col-md-5 p-1">
+            <div class="input-group mt_plus">
+                <div class="input-group mt_plus">
+                    <input type="file" class="custom-file-input" id="customPhoto3_m" accept="image/gif, image/jpeg, image/png">
+                    <p class="custom-file-label" id="customPhoto_n3">...</p>
+                </div>
+                <span class="input-group-addon btndel_photo_save_but"><a href="#" id="btndel_photo_save_but3" class="p-0"><i class="fa fa-remove text-red p-0"></i></a></span>
+            </div>                                           
+            </div>
+        </div>
+    </form>
+ </div>
+    <input type="hidden" name="pi_m" id="pi_m">
+    <input type="hidden" name="fi_m" id="fi_m">
+    <input type="hidden" name="pi_m2" id="pi_m2">
+    <input type="hidden" name="fi_m2" id="fi_m2">
+    <input type="hidden" name="pi_m3" id="pi_m3">
+    <input type="hidden" name="fi_m3" id="fi_m3">
+
+
+@*--------------DELETE FILE & PHOTO--------------------*@
+
+<div id="dialogDangerousfile" title="Are you make sure DELETE ?">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-success button-srh mr-3" id="closestylefile">No</button>
+                    <button type="button" class="btn btn-sm btn-danger button-srh" id="deletestylefile">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="dialogDangerousphoto" title="Are you make sure DELETE ?">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-success button-srh mr-3" id="closestylephoto">No</button>
+                    <button type="button" class="btn btn-sm btn-danger button-srh" id="deletestylephoto">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*--------------------------------------------------------------------------SEARCH-------------------------------------------------*@
+<!--Dialog Line-->
+<div class="dialogActual" title="WO NO">
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body well text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="wo_no_popup" placeholder="WO no" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2 d-flex">
+                    <button id="searchBtn_wo_popup" class="btn btn-sm mr-5 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button type="button" class="btn btn-sm btn-success button-srh disabled" id="savestyle_web"><i class="fa fa-save">&nbsp;Selected</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid  p-0 m-0">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0 boxWO">
+                <table id="popupsActual"></table>
+                <div id="popupspagerActual"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ./ Dialog -->
+
+
+<!--Dialog Product-->
+<div class="dialog_PRODUCT" title="Product Information">
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body well text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="style_no_popup" placeholder="Product Code" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="style_nm_popup" placeholder="Product Name" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="md_cd" id="md_cd_popup" placeholder="Model Code" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2 d-flex">
+                    <button id="searchBtn_product_popup" class="btn btn-sm mr-5 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button type="button" class="btn btn-sm btn-success button-srh disabled" id="savestyle_product"><i class="fa fa-save">&nbsp;Selected</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid  p-0 m-0">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0 boxProduct">
+                <table id="popupProduct"></table>
+                <div id="pagerProduct"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ./ Dialog -->
+<!--Dialog Proccess-->
+<div class="dialogsprocessnm" title="Process">
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body well text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="process_no_popup" placeholder="Process" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="process_no_start" placeholder="Start date" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="process_no_end" placeholder="End date" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2 d-flex">
+                    <button id="searchBtn_process_popup" class="btn btn-sm mr-5 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button type="button" class="btn btn-sm btn-success button-srh disabled" id="savestylesprocessnm"><i class="fa fa-save">&nbsp;Selected</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid  p-0 m-0">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0 boxProcess">
+                <table id="popupssprocessnm"></table>
+                <div id="popupssprocessnmpager"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ./ Dialog -->
+
+@*---------------------------------------------------------------ISSUE NEW >> WO_NO_POPUP------------------------------------------------------------*@
+<div class="dialogfo_no" title="ISSUE NEW >> WO NO">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-success button-srh" id="savestylefo_no" disabled><i class="fa fa-save">&nbsp;Selected</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row row p-0 m-0">
+            <div class="col-md-12">
+                <div class="box-body my-2 bg-white">
+                    <div class="row p-0 m-0  boxA_New">
+                        <table id="list"></table>
+                        <div id="gridpager"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row row p-0 m-0">
+            <div class="col-md-6 pl-0">
+                <div class="box-body my-2 bg-white">
+                    <div class="row p-0 m-0 boxB_New">
+                        <table id="list1"></table>
+                        <div id="gridpager1"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 pl-0">
+                <div class="box-body my-2 bg-white">
+                    <div class="row p-0 m-0 boxC_New">
+                        <table id="list2"></table>
+                        <div id="gridpager2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*---------------------------------------------------------------/ISSUE NEW >> WO_NO_POPUP------------------------------------------------------------*@
+
+
+@*---------------------------------------------------------------VIEW------------------------------------------------------------*@
+
+
+<div class="dialoglinedetail" title="ISSUE">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="submit" id="c_print" class="btn btn-sm btn-warning button-top"><i class="fa fa-print">&nbsp;PRINT</i></button>
+                    <button type="button" class="btn btn-sm btn-warning button-srh" id="closeinedetail"><i class="fa fa-close">&nbsp;Close</i></button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <input type="hidden" name="mdii_v" id="mdii_v">
+        <div class="row p-0 m-0">
+            <div class="col-md-3 all_cg">
+                <img src="/Content/themes/Logo-suplier_in.jpg" style="width: 100%" />
+            </div>
+
+
+            <div class="col-md-5 p-2 text-center" id="title">
+                <h1 style="font-size: 43px;">ISSUE</h1>
+                <h2 style="font-size: 20px;" id="title1"></h2>
+            </div>
+
+            <div class="col-md-4 p-2 all_cg" style="border-top: 1px solid; border-bottom: 1px solid">
+                <div class="row">
+                    <div class="col-md-3 text-center">
+                        <p>Document Code</p>
+                        <p style="padding: 5px 0px 0px 0px">Serial</p>
+                        <p>Date</p>
+                    </div>
+                    <div class="col-md-9 text-left">
+                        <div id="barcode" style="margin: 0 auto"></div>
+                        <div id="datetime" style="text-align: center; margin-top: 20px;">
+
+                            <script>
+                                function startTime() {
+                                    var d = new Date(),
+                                    month = '' + (d.getMonth() + 1),
+                                    day = '' + d.getDate(),
+                                    year = d.getFullYear(),
+                                    hours = d.getHours(),
+
+                                    minutes = d.getMinutes();
+                                    if (month.length < 2) month = '0' + month;
+                                    if (day.length < 2) day = '0' + day;
+                                    if (hours < 10) hours = '0' + hours;
+                                    if (minutes < 10) minutes = '0' + minutes;
+                                    var full = year + "-" + month + "-" + day, time = hours + ":" + minutes;
+                                    //var date = d.toLocaleDateString();
+                                    //var time = d.toLocaleTimeString({ hour12: false });
+                                    var html = '';
+                                    $("#datetime").html(full + " " + time);
+                                }
+                                startTime()
+                                setInterval(startTime, 500);
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+
+            <h4>Standard</h4>
+            <table id="dataTable" class="table table-bordered table-striped" style="width: 100%">
+                <thead>
+                    <tr class="table-warning">
+                        <th>WO NO</th>
+                        <th>LINE</th>
+                        <th>PROCESS</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>ISSUE</th>
+                        <th>CONTENT</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <div id="photo2" style="width: 100%; text-align: center;"></div>
+
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row px-1 py-2 m-0">
+                <label style="padding: 10px 0px 0px 0px"><b>FILE: </b></label>
+                <div id="file"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*----------------------------------------------------------------------///VIEW--------------------------------------------------------------------------*@
+
+
+<!--Popup -->
+<div id="dialogDangerous" title="Are you make sure DELETE ?">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-success button-srh mr-3" id="closestyle">No</button>
+                    <button type="button" class="btn btn-sm btn-danger button-srh" id="deletestyle">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ./ Popup -->
+
+
+@section scripts{
+    <script src="~/Scripts/ActualWO/Issue/slick.min.js"></script>
+    <script src="~/Scripts/ActualWO/Issue/_Issue.js"></script>
+    <script src="~/Scripts/ActualWO/Issue/_IssuesPoup.js"></script>
+    <script src="~/Scripts/ActualWO/Issue/_IssuesPoupC.js"></script>
+    <script src="~/Scripts/ActualWO/Issue/_IssuesWoNo_Popup.js"></script>
+    <script src="~/Scripts/ActualWO/Issue/_IssuesProduct_Poup.js"></script>
+    <script src="~/Scripts/ActualWO/Issue/_IssuesProcess_Popup.js"></script>
+    <script src="~/Scripts/ActualWO/Issue/_IssuesWoNo_Popup_Create.js"></script>
+    <script src="~/Scripts/ActualWO/Issue/_IssuesPoup_View.js"></script>
+    <script src="~/Content/themes/base/resources/summernote/summernote-lite.js"></script>
+
+    <script src="~/Scripts/ActualWO/Issue/_Issues_DelFile_Poup.js"></script>
+    <script src="~/Scripts/ActualWO/Issue/_Issues_DelPhoto_Poup.js"></script>
+
+    <script src="~/ckeditor/ckeditor.js"></script>
+    <script type="text/javascript">
+        //CKEDITOR.replace("sampleEditor", {
+        //    height: 100
+        //});
+        
+        $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+    </script>
+
+
+}

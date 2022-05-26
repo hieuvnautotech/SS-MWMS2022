@@ -1,0 +1,228 @@
+﻿@{
+    ViewBag.Title = "WorkRequest";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="TIMS" data-level_2="Delivery Plan" data-level_3="Delivery Plan"></div>
+}
+@*<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-0 ml-5 px-1 py-2 text-right">
+                <label><b>PO NO</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                   <div class="input-group mt_plus">
+                    <input type="text" name="po_no" id="po_no" class="form-control form-control-text" maxlength="20">
+                    <span class="input-group-addon psbom"><a href="#" id="s_popup_po_no" class="popup_po_no"><i class="fa fa-search text-navy"></i></a></span>
+                </div>
+            </div>
+
+
+
+
+            <div class="col-md-1 px-1 py-2 text-right">
+                <label><b>Delivery Date</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <input type="text" name="input_dt" id="input_dt" class="form-control form-control-text ">
+            </div>
+
+            <div class="col-md-1 mx-2 p-2 d-flex">
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                &nbsp;&nbsp;  &nbsp;&nbsp;
+            </div>
+        </div>
+    </div>
+</div>                                                        
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="p-0 m-0">
+            <table id="list"></table>
+            <div id="listPage"></div>
+        </div>
+    </div>
+</div>*@
+
+
+<div class="container-fluid">
+    <form id="form3">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <div class="col-md-1 px-1 py-2 text-right">
+                    <label><b>DELIVERY PLAN </b></label>
+                </div>
+                <div class="col-md-1 p-1">
+                    <input type="text" name="start_delivery" id="start_delivery" class="form-control form-control-text">
+                </div>
+
+                <div class="col-md-1 px-1 py-2 text-right">
+                    <label><b>Model </b></label>
+                </div>
+                <div class="col-md-1">
+                    <input type="text" name='s_model_deli' id='s_model_deli' class="input-text form-control">
+                </div>
+                <div class="col-md-1 px-1 py-2 text-right">
+                    <label><b>Code </b></label>
+                </div>
+                <div class="col-md-1 mx-2 py-2 ">
+                    <input type="text" name='s_code_deli' id='s_code_deli' class="input-text form-control">
+                </div>
+                @*<div class="col-md-0 px-1 py-2 text-right">
+                <label><b>~</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <input type="text" name="end__delivery" id="end__delivery" class="form-control form-control-text">
+            </div>*@
+
+                <div class="col-md-5 mx-2 py-2 d-flex">
+                    <button type="button" id="searchBtn_delivery" class="btn btn-sm btn-primary button-srh mr-11"><i class="fa fa-search">&nbsp;Show</i></button>
+                    @*<button type="submit" id="excelBtn_deli" class="btn btn-sm btn-warning button-top "><i class="fa fa-file-excel-o">&nbsp;Excel</i></button>*@
+                </div>
+                <div class="col-md-0 mx-2 py-2 d-flex text-right">
+                    <button type="button" id="excelBtn_deli" class="btn btn-sm btn-warning button-top "><i class="fa fa-file-excel-o">&nbsp;Excel</i></button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <table id="list_delv"></table>
+            <div id="list_delivery_gridpager"></div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container-fluid">
+    <form id="form3">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <div class="col-md-7 px-1 py-2 text-left">
+                    <label><b>DELIVERY PLAN DETAIL</b></label>
+                </div>
+                  <div class="col-md-1 px-1 py-2 text-right">
+                    <label><b>Start Date</b></label>
+                </div>
+                <div class="col-md-1 p-1">
+                    <input type="text" name="start_dt" id="start_dt" class="form-control form-control-text">
+                </div>
+                <div class="col-md-0 px-1 py-2 text-right">
+                    <label><b>~</b></label>
+                </div>
+                <div class="col-md-1 p-1">
+                    <input type="text" name="end_dt" id="end_dt" class="form-control form-control-text">
+                </div>
+                <div class="col-md-1 p-2 d-flex">
+                   <button type="button" id="searchBtn_delivery_detail" class="btn btn-sm btn-primary button-srh mr-11"><i class="fa fa-search">Search</i></button>
+                </div>
+                @*                <div class="col-md-1 p-1">
+                    <input type="text" name="start_delivery" id="start_delivery" class="form-control form-control-text">
+                </div>
+
+                <div class="col-md-1 px-1 py-2 text-right">                              
+                    <label><b>Model </b></label>
+                </div>
+                <div class="col-md-1">
+                    <input type="text" name='s_model_deli' id='s_model_deli' class="input-text form-control" >
+                </div>
+                 <div class="col-md-1 px-1 py-2 text-right">
+                    <label><b>Code </b></label>
+                </div>
+                <div class="col-md-1 mx-2 py-2 ">
+                    <input type="text" name='s_code_deli' id='s_code_deli' class="input-text form-control" >
+                </div>*@
+                @*<div class="col-md-0 px-1 py-2 text-right">
+                <label><b>~</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <input type="text" name="end__delivery" id="end__delivery" class="form-control form-control-text">
+            </div>*@
+
+                @* <div class="col-md-5 mx-2 py-2 d-flex">
+                  <button type="button" id="searchBtn_delivery" class="btn btn-sm btn-primary button-srh mr-11"><i class="fa fa-search">&nbsp;Show</i></button>
+                 <button type="submit" id="excelBtn_deli" class="btn btn-sm btn-warning button-top "><i class="fa fa-file-excel-o">&nbsp;Excel</i></button>
+               </div>
+                 <div class="col-md-0 mx-2 py-2 d-flex text-right">
+                   <button type="button" id="excelBtn_deli" class="btn btn-sm btn-warning button-top "><i class="fa fa-file-excel-o">&nbsp;Excel</i></button>
+                </div>
+            </div>*@
+            </div>
+    </form>
+</div>
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <table id="list_delv_detail"></table>
+            <div id="list_delivery_detail_gridpager"></div>
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+
+
+<!-- ./ Dialog -->
+<div class="dialog_PO" title="PO information">
+    <div class="container-fluid p-0 my-3">
+        <div class="row text-right">
+            <div class="col-md-12 px-3">
+                <button id="searchBtn_po_popup" class="btn btn-sm mr-3 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                <button type="button" class="btn btn-sm  btn-success button-srh" id="selectPO"><i class="fa fa-save">&nbsp;Selected</i></button>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid p-0 m-0">
+        <form name="form" id="form_pp_po" enctype="multipart/form-data" role="form" method="post" target="zeroFrame" novalidate="novalidate">
+            <div class="box-body well text-right">
+                <div class="row p-0 m-0">
+                    <div class="col-md-12 p-0 m-0">
+                        <div class="col-md-2 p-2">
+                            <input type="text" name="s_po_no" id="s_po_no" placeholder="PO" maxlength="50" class="input-text form-control">
+                        </div>
+                        <div class="col-md-2 p-2">
+                            <div class="input-group mt_plus">
+                                <input type="text" name="s_style_no" id="s_style_no" placeholder="Product Code" maxlength="50" class="input-text form-control">
+                                <span class="input-group-addon psbom"><a href="#" id="poupdialogStyle" class="poupdialogStyle"><i class="fa fa-search text-navy"></i></a></span>
+                            </div>
+                        </div>
+                        <div class="col-md-2 p-2">
+                            <input type="text" name="s_start" placeholder="Order Date" id="s_start" class="form-control form-control-text">
+                        </div>
+
+                        <div class="col-md-2 p-2">
+                            <input type="text" name="s_end" placeholder="Order Date" id="s_end" class="form-control form-control-text">
+                        </div>
+                        <div class="col-md-2 p-2">
+                            <div class="input-group mt_plus">
+                                <input type="text" name="s_bom_no" id="s_bom_no" placeholder="Bom" maxlength="50" class="input-text form-control">
+                                <span class="input-group-addon psbom"><a href="#" id="poupdialog_BOM" class="poupdialog_BOM"><i class="fa fa-search text-navy"></i></a></span>
+                            </div>
+                        </div>
+                        <div class="col-md-2 p-2">
+                            <select id="s_destination" class="form-control">
+                                <option value="">*Destination*</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0 boxPo">
+                <table id="popups_PO"></table>
+                <div id="popupspager_PO"></div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Scripts/TIMS/WorkRequest/WorkRequest.js"></script>
+    <script src="~/Scripts/TIMS/WorkRequest/Request_Poup_po.js"></script>
+}
+

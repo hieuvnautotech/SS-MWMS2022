@@ -1,0 +1,2 @@
+Select icdno, item_vcd, check_id, check_cd, defect_yn, check_name, order_no, re_mark, use_yn, del_yn, reg_id, reg_dt, chg_id, chg_dt
+From qc_itemcheck_dt

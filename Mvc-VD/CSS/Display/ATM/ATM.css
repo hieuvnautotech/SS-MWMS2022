@@ -1,0 +1,27 @@
+﻿ tr.ui-jqgrid-labels th {
+        background: #ffd867!important;
+        font-weight: bold!important;
+    }
+
+    /*div#jqgh_list_fo_no {
+        padding: 5px;
+    }*/
+
+    .all_cg {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .ui-jqgrid tr.ui-row-ltr td {
+    padding: 17px;
+}
+    .box-body.all_cg {
+    HEIGHT: 80VH;
+}
+button.btn.btn-xs.btn-primary {
+    padding: 10px;
+    margin: -10px;
+}
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+    border: 1px solid #828282;
+}

@@ -1,0 +1,105 @@
+ Select wmtid, 
+        id_actual, 
+        mt_cd, 
+        mt_type, 
+        gr_qty, 
+        real_qty, 
+        id_actual_oqc,
+		mt_sts_cd,
+        mt_no, 
+        bb_no, 
+        lct_cd, 
+        lot_no, 
+        from_lct_cd, 
+        to_lct_cd, 
+         DATE_FORMAT(recevice_dt,'%Y-%m-%d %H:%i:%s'), 
+        reg_dt, 
+        reg_id, 
+        chg_dt, 
+        chg_id,
+        bbmp_sts_cd,
+        orgin_mt_cd,
+        sd_no
+    from w_material_info
+    where lct_cd like '002%' and mt_sts_cd = '002' and gr_qty > 0
+
+
+/* thành phẩm của mms đả chuyển qua kho tims với mt_sts_cd ='008' và lct_cd='006000000000000000'*/
+Select wmtid, 
+        id_actual, 
+        mt_cd, 
+        mt_type, 
+        gr_qty, 
+        real_qty, 
+        id_actual_oqc,
+		mt_sts_cd,
+        mt_no, 
+        bb_no, 
+        lct_cd, 
+        lot_no, 
+        from_lct_cd, 
+        to_lct_cd, 
+         DATE_FORMAT(recevice_dt,'%Y-%m-%d %H:%i:%s'), 
+        reg_dt, 
+        reg_id, 
+        chg_dt, 
+        chg_id,
+        bbmp_sts_cd,
+        orgin_mt_cd,
+        sd_no
+    from w_material_info
+    where (ct_cd like '002%' and mt_sts_cd = '002' and gr_qty > 0) 
+	--DÀNH CHO RECEITIMS--
+		OR (lct_cd like '006%' and mt_sts_cd = '008') 
+
+
+-- CÂU SQL Kế Cuối
+SELECT * FROM w_material_info WHERE id_actual IN( select id_actual from w_actual WHERE type = 'TIMS') OR mt_cd LIKE '%TIMS-NG%' -- 209470  INFO TIMS
+SELECT * FROM w_material_info WHERE id_actual IN( select id_actual from w_actual WHERE type = 'SX') -- 203245 INFO MMS
+
+SELECT * FROM w_material_info WHERE id_actual NOT  IN( select id_actual from w_actual WHERE type IN ('TIMS','SX')) AND mt_cd NOT LIKE '%TIMS-NG%' -- 1223 INVETORY PRODUCT
+
+select * from w_material_info where id_actual is not null and (mt_cd like '%NG%' OR mt_cd like '%DD%' OR mt_cd like '%LH%' OR mt_cd like '%SK%' OR mt_cd like '%OQC%') 
+
+SELECT * FROM w_material_info WHERE mt_cd NOT IN (SELECT mt_cd FROM w_material_info WHERE id_actual IN( select id_actual from w_actual WHERE type = 'TIMS') OR mt_cd LIKE '%TIMS-NG%')
+AND mt_cd NOT IN (SELECT mt_cd FROM w_material_info WHERE id_actual IN( select id_actual from w_actual WHERE type = 'SX'))
+AND mt_cd NOT IN (SELECT mt_cd FROM w_material_info WHERE id_actual  NOT  IN( select id_actual from w_actual WHERE type IN ('TIMS','SX')) AND  mt_cd NOT LIKE '%TIMS-NG%')-- 12272 INVETORY PRODUCT
+
+
+
+
+
+
+
+
+-- CÂU SQL CUOI CUNG
+SELECT wmtid, 
+        id_actual, 
+        mt_cd, 
+        mt_type, 
+        gr_qty, 
+        real_qty, 
+        0 As 'number divide',
+        id_actual_oqc,
+	mt_sts_cd,
+        mt_no, 
+        bb_no, 
+        sd_no,
+        DATE_FORMAT(expiry_dt,'%Y-%m-%d %H:%i:%s'),
+        DATE_FORMAT(expore_dt,'%Y-%m-%d %H:%i:%s'),
+        DATE_FORMAT(recevice_dt_tims,'%Y-%m-%d %H:%i:%s'),
+        lot_no,
+        lct_cd, 
+        lot_no, 
+        from_lct_cd, 
+        to_lct_cd, 
+         DATE_FORMAT(recevice_dt,'%Y-%m-%d %H:%i:%s'), 
+         DATE_FORMAT(reg_dt,'%Y-%m-%d %H:%i:%s'), 
+        reg_id, 
+        DATE_FORMAT(chg_dt,'%Y-%m-%d %H:%i:%s'), 
+        chg_id,
+        bbmp_sts_cd,
+        orgin_mt_cd
+       
+FROM w_material_info 
+WHERE id_actual IN( select id_actual from w_actual WHERE type = 'SX')

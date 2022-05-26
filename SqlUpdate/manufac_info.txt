@@ -1,0 +1,2 @@
+Select mfno, mf_cd, mf_nm, brd_nm, logo, phone_nb, web_site, address, re_mark, use_yn, del_yn, reg_id, reg_dt, chg_id, chg_dt
+ From manufac_info

@@ -1,0 +1,140 @@
+﻿@model IEnumerable<Mvc_VD.Models.w_vt_dt>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+@*<style>
+    .ui-state-hover {
+   border : 1px solid blue;
+   background: #32a8a8;
+}
+</style>*@
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="FG-WMS" data-level_2="Inventory" data-level_3="Check Inventory(F)"></div>
+
+}
+
+<div class="container-fluid">
+    <div class="row text-right">
+        <div class="col-md-12 px-3">
+            <button type="submit" id="excelBtn" class="btn btn-sm btn-warning button-top"><i class="fa fa-file-excel-o">&nbsp;Excel</i></button>
+            <button type="submit" id="htmlBtn" class="btn btn-sm btn-warning button-top"><i class="fa fa-print">&nbsp;HTML</i></button>
+            @*<button type="submit" id="pdfBtn" class="btn btn-sm btn-warning button-top"><i class="fa fa-print">&nbsp;PDF</i></button>*@
+        </div>
+    </div>       
+</div>
+
+<!-- Search function -->
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+             @*<div class="col-md-1 p-1  text-right">
+                <label><b>Inventory</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <div class="input-group mt_plus">
+                      <select id="vn_nm" class="form-control">
+                        <option value="">*vn_nm*</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Check location </b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                 <div class="input-group mt_plus">
+                      <select name="real_lct_cd" id="real_lct_cd" class="form-control selectMf select2"></select>
+                </div>
+            </div>
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Location</b></label>
+            </div>
+             <div class="col-md-2 p-1">
+                  <div class="input-group mt_plus">
+                        <select name="lct_cd" id="lct_cd" class="form-control selectMf select2"></select>
+                </div>
+            </div>
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Create Date</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <input type="text" name="start" id="start" class="form-control">
+            </div>
+            <div class="col-md-1 p-1">
+                <input type="text" name="end" id="end" class="form-control"> 
+            </div>
+         </div>
+         <div class="row p-0 m-0">
+             <div class="col-md-1 p-1  text-right">
+                <label><b>Match</b></label>
+            </div>
+             <div class="col-md-2 p-1">
+                  <div class="input-group mt_plus style="width: 100%;"">
+                   <select id="match" class="form-control">
+                        <option value="">*match*</option>
+                    </select>
+                </div>
+            </div>*@
+            <div class="col-md-1 p-1  text-right">
+                <h6 class="control-label-text"><b>Product</b></h6>
+            </div>
+            <div class="col-md-2 p-1">
+                <div class="input-group mt_plus">
+                    <input type="text" name="style_no" id="style_no" class="input-text form-control">
+                    @*<span class="input-group-addon psbom"><a href="#" id="poupdialogStyle" class="poupdialogStyle"><i class="fa fa-search text-navy"></i></a></span>*@
+                </div>
+            </div>
+               <div class="p-2">
+                    <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+              </div>
+        </div>
+    </div>
+</div>
+
+<!-- ./Search function -->
+
+@*---------------------------------------------------------------------------------------------------------------------------*@
+ <div class="box-body my-2 bg-white">
+    <div class="row p-0 m-0">
+        <table id="list"></table>
+        <div id="gridpager"></div>
+    </div>
+</div>
+<!--Dialog Product-->
+<div class="dialog_PRODUCT" title="Product Information">
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body well text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="style_no_popup" placeholder="Product Code" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="style_nm_popup" placeholder="Product Name" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="md_cd" id="md_cd_popup" placeholder="Model Code" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2 d-flex">
+                    <button id="searchBtn_product_popup" class="btn btn-sm mr-5 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button type="button" class="btn btn-sm btn-success button-srh disabled" id="savestyle_product"><i class="fa fa-save">&nbsp;Selected</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid  p-0 m-0">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0 boxProduct">
+                <table id="popupProduct"></table>
+                <div id="pagerProduct"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ./ Dialog -->      
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<script src="~/Scripts/fgwms/checkInventory/checkInventory(F).js"></script>
+<script src="/Scripts/fgwms/checkInventory/Product_Poup.js"></script>
+

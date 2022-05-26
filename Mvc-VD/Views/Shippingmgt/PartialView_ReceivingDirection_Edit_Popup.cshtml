@@ -1,0 +1,207 @@
+﻿@{
+}
+
+MT NO : @ViewBag.info.mt_no
+<input type="hidden" name="name" id="mt_no" value="@ViewBag.info.mt_no " />
+<input type="hidden" name="name" id="sdid" value="@ViewBag.sdid " />
+<input type="hidden" name="name" id="sd_no" value="@ViewBag.info.sd_no " />
+<input type="hidden" name="name" id="send_bundle_qty" value="@ViewBag.send_bundle_qty " />
+<input type="hidden" name="name" id="send_qty" value="@ViewBag.send_qty " />
+
+<!--Popup Add-->
+
+<div class="container-fluid p-0 m-0">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" id="c_print" class="btn btn-success button-srh2 mr-3"><i class="fa fa-print">&nbsp;QR Print</i></button>
+                    <button type="button" class="btn btn-sm btn-success button-srh" data-sdmid ="@ViewBag.sdid" onclick="btn_Add_new(this);" id="Add"  style="float: right;">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <input type="hidden" name="sdmid" value=" " id="sdmid" />
+    <div class="box-body my-2 bg-white">
+        <div class=" p-0 m-0">
+            <table id="list_edit"></table>
+            <div id="list_edit_Pager"></div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+        $(function () {
+            $grid = $("#list_edit").jqGrid({
+                url: "/ShippingMgt/Get_ShippingDirection_edit?sdid=@ViewBag.sdid",
+                mtype: 'GET',
+                datatype: 'json',
+                colModel: [
+                  { key: true, label: 'sdmid', name: 'sdmid', width: 50, hidden: true },
+                 { key: false, label: 'SD NO', name: 'sd_no', width: 90, align: 'center' },
+                 { label: 'ML NO', name: 'mt_cd', width: 350, align: 'left' },
+                 { label: 'Group Qty', name: 'gr_qty_unit', width: 80, align: 'right' },
+                 { label: 'Location', name: 'lct_cd', width: 100, align: 'left' },
+                 { label: 'MT No', name: 'mt_no', width: 200, align: 'left' },
+                 { label: 'MT Name', name: 'mt_nm', width: 200, align: 'left' },
+                 { label: 'Status', name: 'mt_sts_cd', width: 110, align: 'left' },
+                 { label: 'Location Status', name: 'lct_sts_cd', width: 110, align: 'left' },
+                 { label: 'Split', name: 'Split', width: 80, align: 'center', formatter: bntCellSplit },
+                 { label: 'Delete', name: 'Delete', width: 80, align: 'center', formatter: bntCellDelete },
+
+
+                ],
+                loadonce: true,
+                shrinkToFit: false,
+                pager: '#list_edit_Pager',
+                rowNum: 50,
+                rownumbers: true,
+                rowList: [50, 100, 200, 500, 1000],
+                viewrecords: true,
+                caption: "Shipping Derection Edit",
+                height: 270,
+                multiselect: true,
+                jsonReader:
+              {
+                  root: "rows",
+                  page: "page",
+                  total: "total",
+                  records: "records",
+                  repeatitems: false,
+                  Id: "0"
+              },
+                width: null,
+
+                onSelectRow: function (row_id, status, e) {
+                    var selectedRowId = $("#list_edit").jqGrid("getGridParam", 'selrow');
+                    row_id = $("#list_edit").getRowData(selectedRowId);
+                    $('#sdmid').val(row_id.sdmid);
+                },
+            });
+        });
+
+    });
+    ////Button Delete
+    function bntCellDelete(cellvalue, options, rowdata, action) {
+        var html = '<button' +
+            ' data-sdmid=' + rowdata.sdmid +
+            ' data-mt_no=' + rowdata.mt_no +
+            ' class=" del_save_but btn btn-xs btn-danger " onclick="del_save_but(this);" >Delete</button>';
+        return html;
+    }
+    function del_save_but(e) {
+        var that = $(e);
+
+        $('#dialogDelete').dialog('open');
+
+    }
+    $("#dialogDelete").dialog({
+        width: 350,
+        height: 100,
+        maxWidth: 350,
+        maxHeight: 200,
+        minWidth: 350,
+        minHeight: 200,
+        resizable: false,
+        fluid: true,
+        modal: true,
+        autoOpen: false,
+        classes: {
+            "ui-dialog": "ui-dialog",
+            "ui-dialog-titlebar": "ui-dialog ui-dialog-titlebar-sm",
+            "ui-dialog-titlebar-close": "visibility: hidden",
+        },
+        resize: function (event, ui) {
+            $('.ui-dialog-content').addClass('m-0 p-0');
+        },
+        open: function (event, ui) {
+
+        },
+    });
+    //popup delete info
+    $('#closestyle').click(function () {
+        $('#dialogDelete').dialog('close');
+    });
+
+    //popup delete info
+
+</script>
+<!-- ./ //pp Add new -->
+
+<script>
+    function btn_Add_new(e) {
+        var that = $(e);
+
+        $('.popup-dialog.ReceivingDirection_Add_Popup').dialog('open');
+    }
+    $("#list_add").setGridParam({ url: "/ShippingMgt/Get_ShippingDirection_Material_list?sdid=@ViewBag.sdid", datatype: "json" }).trigger("reloadGrid");
+    $(document).ready(function () {
+        $(function () {
+
+            $grid = $("#list_add").jqGrid({
+                url: "/ShippingMgt/Get_ShippingDirection_Material_list?sdid=@ViewBag.sdid",
+                mtype: 'GET',
+                datatype: 'json',
+                colModel: [
+                 { key: true, label: 'wmtid', name: 'wmtid', width: 50, hidden: true },
+                 { key: false, label: 'ML NO', name: 'mt_cd', width: 400, align: 'left' },
+                 { label: 'Group Qty', name: 'gr_qty_unit', width: 80, align: 'right' },
+                 { label: 'Location', name: 'lct_cd', width: 150, align: 'left' },
+                 { label: 'MT No', name: 'mt_no', width: 200, align: 'left' },
+                 { label: 'MT Name', name: 'mt_nm', width: 200, align: 'left' },
+                 { label: 'Status', name: 'mt_sts_cd', width: 80, align: 'left' },
+                 { label: 'Location Status', name: 'lct_sts_cd', width: 120, align: 'left' },
+                ],
+                loadonce: true,
+                shrinkToFit: false,
+                pager: '#ListPager_add',
+                rowNum: 50,
+                rownumbers: true,
+                rowList: [50, 100, 200, 500, 1000],
+                viewrecords: true,
+                caption: "Material List",
+                height: 270,
+                multiselect: true,
+                jsonReader:
+              {
+                  root: "rows",
+                  page: "page",
+                  total: "total",
+                  records: "records",
+                  repeatitems: false,
+                  Id: "0"
+              },
+                width: null,
+
+                onSelectRow: function (row_id, status, e) {
+                    var selectedRowId = $("#list_add").jqGrid("getGridParam", 'selrow');
+                    row_id = $("#list_add").getRowData(selectedRowId);
+                    $('#sdmid').val(row_id.sdmid);
+                    $('#Btn_Add').attr("disabled", false);
+                },
+            });
+        });
+    });
+
+
+
+
+
+    $("#c_print").on("click", function () {
+        var i, selRowIds = $('#list_edit').jqGrid("getGridParam", "selarrrow"), n, rowData;
+        if (selRowIds.length > 0) {
+            window.open("/ShippingMgt/_Print_sdmt_list?sdmid=" + selRowIds, "PRINT", "width=600, height=800, left=200, top=100, location=no, status=no")
+        }
+        else {
+            alert("Please select Grid.");
+        }
+    })
+</script>
+
+

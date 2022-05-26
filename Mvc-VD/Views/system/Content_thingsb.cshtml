@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            _getckeditor();
+        });
+        function _getckeditor() {
+            $.ajax({
+                url: "/Display/getckeditor",
+                type: "get",
+                dataType: "json",
+                success: function (data) {
+                    var x = data.content;
+                    $("#html").html(x);
+                }
+            });
+        }
+    </script>
+    <style>
+       html {
+            width:819px;
+            height:778px;
+        }
+    </style>
+</head>
+<body>
+    <div id="html"></div>
+</body>
+</html>
+

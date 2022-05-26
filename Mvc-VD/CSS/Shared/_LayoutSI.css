@@ -1,0 +1,246 @@
+﻿.error{
+    color: red;
+  }
+
+.menu-init {
+    /*background-color:#ffd800;*/
+     background-color:#282828;
+    width: 100%;
+    height: 3px;
+}
+
+.menu-focus {
+    /*background-color:#4cff00;*/
+    background-color:#ffd800;
+    width: 100%;
+    height: 3px;
+}
+
+/*==Style cho menu===*/
+.menu-detail{
+  position: relative;
+  text-align: center;
+}
+
+.menu-detail h4 a span:hover{
+  font-weight: bold;
+}
+.menu-detail h4 a img:hover{
+  transform: scale(1.4,1.4);
+}
+
+.menubar {
+  position: relative;
+}
+
+.sub-menu {
+    display: none;
+    position: absolute;
+    margin-top: 3px;
+    padding: 0px;
+    background: #AABBCC;
+    z-index: 10;
+    /*transition: all 1s 0.2s ease-in;
+ -moz-transition: all 1s 0.2s ease-in;
+ -webkit-transition: all 1s 0.2s ease-in;*/
+    margin-left: -29px;
+}
+
+    .sub-menu li {
+        position: relative;
+        width: 130px;
+        height: 44px;
+
+        font-size: 1.3em;
+        text-align: center;
+        line-height: 50px;
+        color: #fff;
+        list-style-type: none;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    }
+tr.tr_menu:hover {
+    background: #e6e6e6;
+}
+td.popup a:hover {
+    color: #1e2ee8;
+    font-weight: bold;
+}
+.sub-menu li:hover {
+    font-weight: bold;
+    background: #AAC5CC;
+}
+
+.navmenu {
+    background: #282828;
+}
+.navmenu-right {
+    background-image: url('../../Images/AccountImg/langbar.png');
+
+}
+/*cai nay cua Kiet*/
+@media only screen and (max-width: 768px) {
+
+    .head .Logo_chinhgiua .all_cg {
+        /*font-size: 2em;
+        float: left;*/
+        visibility: hidden;
+    }
+
+    .head {
+        padding: 0vh !important;
+    }
+
+    .headmobi .head {
+        height: 8vh;
+        background-color: #d55051;
+        border-bottom-left-radius: 4vh;
+        border-bottom-right-radius: 4vh;
+    }
+
+        .headmobi .head .head_p {
+            visibility: hidden;
+            /*border-radius: 2vh;
+        width: 20vh;
+        height: 20vh;
+        float:right;*/
+        }
+
+    .content {
+        width: 100% !important;
+    }
+
+    .col-md-2.logo {
+        /*padding: 2.5vh;*/
+        width: 100%;
+        text-align: center;
+    }
+
+    .headmobi .head .head_p .nd h2 {
+        font-size: 1em;
+        color: #fff;
+    }
+
+    .bao .col-md-3 {
+        line-height: 2;
+        width: 50%;
+        float: left;
+        padding-right: 0px;
+        padding-left: 0px;
+    }
+
+    .pt_page .content .container-fluid .button_ht {
+        width: 100%;
+        text-align: left !important;
+    }
+
+
+    .content .button_ht .button-top {
+        width: 25% !important;
+        padding: 9px 6px !important;
+        margin: 10px !important;
+        color: white !important;
+        border-radius: 15px !important;
+        font-size: 3vw !important;
+    }
+
+    .content .button_ht .button-back {
+        width: 25% !important;
+    }
+
+    .pt_page .content .bao .bg_khoi .title_line {
+        font-size: 3vw;
+    }
+
+    .pt_page .content .bao .bg_khoi .content_detail p {
+        font-size: 3vw !important;
+        margin: 0 0 0 0px;
+    }
+
+    .pt_page .content .bao .bg_khoi .all_cg .number_left {
+        font-size: 5vw !important;
+    }
+
+    .pt_page .content .bao .bg_khoi .all_cg .number_right {
+        font-size: 5vw !important;
+    }
+
+    .pt_page .content .bao .bg_khoi .compost {
+        font-size: 3vw;
+        height: 5vw !important;
+    }
+
+    #dialog_cg {
+        height: auto !important;
+    }
+
+    #save {
+        margin-top: 10px;
+    }
+}
+
+button{
+    border-radius: 0px;
+}
+.btn{
+    border-radius: 0px;
+}
+button#Clear_all {
+    margin-top: 13px;
+    font-size: 14px;
+    padding: 7px;
+}
+button#Save_completed {
+    padding: 4px;
+    font-size: 15px;
+    margin-top: 21px;
+    cursor: pointer;
+}
+
+button#ExcelUpload {
+    padding: 4px;
+    font-size: 15px;
+    margin-top: 21px;
+    cursor: pointer;
+}
+
+button#Select_completed {
+    padding: 4px;
+    font-size: 15px;
+    margin-top: 21px;
+    cursor: pointer;
+    margin-left: 18px;
+}
+
+.css_pp_cilck {
+    color: #a53535 !important;
+    border: none;
+    background: none;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 13px !important;
+}
+input#remain_qty {
+    width: 30%;
+    text-align: center;
+    font-size: 15px;
+    padding: 14px 0;
+    border: 2px solid;
+    background: #deb3b3;
+    margin-top: 17px;
+    color: #3a3333;
+    font-weight: 700;
+}
+button#Create_NVL {
+     padding: 4px;
+    font-size: 15px;
+    margin-top: 21px;
+    cursor: pointer;
+    margin-left: 18px;
+}
+.buttonDMS {
+    padding: 4px;
+    font-size: 15px;
+    margin-top: 21px;
+    cursor: pointer;
+    margin-left: 18px;
+}

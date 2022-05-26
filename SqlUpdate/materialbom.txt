@@ -1,0 +1,2 @@
+Select Id, ProductCode, MaterialPrarent, MaterialNo, CreateId, CreateDate, ChangeId, ChangeDate
+From materialbom

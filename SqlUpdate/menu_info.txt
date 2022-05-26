@@ -1,0 +1,20 @@
+ SELECT 
+ 	mnno
+      ,mn_cd
+      ,mn_nm
+      ,up_mn_cd
+      ,level_cd
+      ,url_link
+      ,re_mark
+      ,col_css
+      ,sub_yn
+      ,order_no
+      ,use_yn
+      ,mn_full
+      ,mn_cd_full
+      ,reg_id
+      ,reg_dt
+      ,chg_id
+      ,chg_dt
+      ,selected
+  FROM menu_info

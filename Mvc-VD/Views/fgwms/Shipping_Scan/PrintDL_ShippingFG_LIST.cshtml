@@ -1,0 +1,347 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Print.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row p-0 m-0">
+        <div class="col-md-3 all_cg ">
+            <img src="~/Content/themes/Logo-suplier_in.jpg" style="width: 97%" />
+        </div>
+        <div class="col-md-5 p-2 text-center">
+            <h2 style="margin: 0">Shipping Direcction List</h2>
+            <h4 class='red'>@ViewData["Message"]</h4>
+        </div>
+        <div class="col-md-4 p-2">
+            <div class="row" style="border-top: 1px solid; border-bottom: 1px solid">
+                <div class="col-md-4 p-3 text-center">
+                    <p>Document Code</p>
+                    <p>Serial</p>
+                    <p style="margin: 0">Date</p>
+                </div>
+                <div class="col-md-8" style="padding-top: 12px !important">
+                    <p id="barcode_PartialView_DL_Info_Popup1" style="margin: 0 auto;"></p>
+                    <p id="datetime_PartialView_DL_Info_Popup1" style="text-align: center; margin-top: 10px;">
+                        <script>
+                            function formatDate() {
+                                var d = new Date(),
+                                    month = '' + (d.getMonth() + 1),
+                                    day = '' + d.getDate(),
+                                    year = d.getFullYear(),
+                                    Hours = d.getHours(),
+                                    Minutes = d.getMinutes();
+
+                                if (month.length < 2) { month = '0' + month; }
+                                if (day.length < 2) { day = '0' + day; }
+                                if (Hours < 10) { Hours = '0' + Hours; }
+                                if (Minutes < 10) Minutes = '0' + Minutes;
+                                time = Hours + ":" + Minutes;
+                                var full = year + "-" + month + "-" + day + " " + time;
+                                $("#datetime_PartialView_DL_Info_Popup1").html(full);
+                            }
+                            formatDate()
+                            setInterval(formatDate, 500);
+                        </script>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Standard</h4>
+            <table id="dataTable1_PartialView_DL_Info_Popup" class="table table-bordered table-striped" style="width: 100%">
+                <thead>
+
+                    <tr class="table-warning">
+                        <th>DL NO</th>
+                        <th>DL Name</th>
+                        <th>Delivery Date</th>
+                        <th>Remark</th>
+
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <h4>Delivery</h4>
+            <table id="dataTable3_PartialView_DL_Info_Popup" class="table table-bordered table-striped" style="width: 100%">
+                <thead>
+                    <tr class="table-warning">
+                        <th>STT</th>
+                        <th>Product</th>
+                        <th>Lot No</th>
+                        <th>Delivery Date</th>
+                        <th>Quantity</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        </div>
+    </div>
+
+    <div class="container-fluid py-4">
+        <h4>List</h4>
+        <table id="dataTable2_PartialView_DL_Info_Popup" class="table table-bordered table-striped" style="width: 100%">
+            <thead>
+                <tr class="table-warning">
+
+                    <th style="text-align: center !important">STT</th>
+                    <th style="text-align: center !important">Box No</th>
+                    <th style="text-align: center !important">Buyer QR</th>
+                    <th style="text-align: center !important">Quantity</th>
+                    <th style="text-align: center !important">Shipping Date</th>
+
+                </tr>
+            </thead>
+
+        </table>
+    </div>
+
+
+
+    <script>
+    var dl_no = "@ViewData["Message"]";
+    $(function() {
+        $('#dataTable1_PartialView_DL_Info_Popup').DataTable({
+            "ajax": {
+                "url": "/fgwms/Get_DL_ShippingScanPP?dl_no=" + dl_no,
+                "type": "GET",
+                "datatype": "json"
+            },
+            "searching": false,
+            "paging": false,
+            "bInfo": false,
+            "destroy": true,
+            "columns": [
+                { "data": "dl_no" },
+                { "data": "dl_nm" },
+                { "data": "work_dt" },
+                { "data": "remark" },
+
+            ],
+
+            'columnDefs': [
+                {
+                    "targets": 0, // your case first column
+                    "className": "text-center",
+
+                },
+                {
+                    "targets": 1, // your case first column
+                    "className": "text-center",
+
+                },
+                {
+                    "targets": 2, // your case first column
+                    "className": "text-center",
+
+                },
+                {
+                    "targets": 3, // your case first column
+                    "className": "text-center",
+
+                },
+
+            ],
+            "bDestroy": true,
+
+        });
+
+        var t =$('#dataTable2_PartialView_DL_Info_Popup').DataTable({
+            "ajax": {
+                "url": "/fgwms/Get_DL_ShippingScanListPP?dl_no=" + dl_no,
+                "type": "GET",
+                "datatype": "json",
+            },
+            "searching": false,
+            "paging": true,
+            "bInfo": false,
+            "destroy": true,
+
+            "columns": [
+                { "data": "wmtid" },
+                {
+                    "data": "box_no",
+                    render: function (data) {
+                        return data;
+                    }
+                },
+                { "data": "buyer_qr" },
+
+                { "data": "gr_qty", render: $.fn.dataTable.render.number(',', '.', 0, '') },
+
+                {
+                    "data": "shippingDt",
+
+                },
+            ],
+            'columnDefs': [
+                {
+                    "targets": 0, // your case first column
+                    "className": "text-center",
+                    "width:": "3%",
+                },
+                {
+                    "targets": 1, // your case first column
+                    "className": "text-left",
+
+                },
+                {
+                    "targets": 2, // your case first column
+                    "className": "text-center",
+
+                },
+                {
+                    "targets": 3, // your case first column
+                    "className": "text-center",
+                    "width:": "10%",
+                },
+                {
+                    "targets": 4, // your case first column
+                    "className": "text-center",
+                    "width:": "10%",
+                },
+
+
+
+            ],
+            "lengthMenu": [[20, 50, 100, 200, 500, -1], [20, 50, 100, 200, 500, "All"]],
+            "order": [[0, 'asc']],
+
+            "bDestroy": true,
+
+        });
+          var t2 = $('#dataTable3_PartialView_DL_Info_Popup').DataTable({
+            "ajax": {
+                  "url": "/fgwms/GetDeliveryFG?dl_no=" + dl_no,
+                "type": "GET",
+                "datatype": "json",
+            },
+            "rowGroup": true,
+            "processing": true,
+            "searching": false,
+            "paging": false,
+            "bInfo": false,
+            "destroy": true,
+            "autoWidth": true,
+            "scrollX": false,
+            "columns": [
+
+                { "data": "id" },
+                { "data": "product" },
+                { "data": "end_production_dt" },
+                { "data": "work_dt" },
+                { "data": "qty", render: $.fn.dataTable.render.number(',', '.', 0, '') },
+            ],
+
+
+            'columnDefs': [
+                {
+                    "targets": 0, // your case first column
+                    "className": "text-center",
+                    "width:": "3%",
+                },
+                {
+                    "targets": 1, // your case first column
+                    "className": "text-left",
+
+                },
+                {
+                    "targets": 2, // your case first column
+                    "className": "text-center",
+
+                },
+            ],
+
+            "lengthMenu": [[20, 50, 100, 200, 500, -1], [20, 50, 100, 200, 500, "All"]],
+            "order": [[1, 'asc']],
+            "bDestroy": true,
+          });
+        t2.on('order.dt search.dt', function ()
+        {
+            t2.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i)
+            {
+                cell.innerHTML = i + 1;
+            });
+        }).draw();
+        t.on('order.dt search.dt', function () {
+            t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+                cell.innerHTML = i + 1;
+            });
+        }).draw();
+
+
+    });
+
+    $(function () {
+
+        $('#barcode_PartialView_DL_Info_Popup1').append(dl_no);
+        $('#barcode_PartialView_DL_Info_Popup1').barcode(dl_no, "code128", { barWidth: 1, barHeight: 30 });
+
+        $('.popup-dialog-close').click(function () {
+            $(".popup-dialog").dialog('close');
+        });
+    });
+
+
+    function _Date(cellvalue, options, rowObject) {
+
+        if (cellvalue == null)
+            return "";
+        var reg = /(\d{4})(\d{2})(\d{2})/;
+        if (reg.test(cellvalue))
+            return cellvalue.replace(reg, "$1-$2-$3");
+        else {
+            reg = /(\d{4})(\d{2})\-(\d{2})/;
+            if (reg.test(cellvalue))
+                return cellvalue.replace(reg, "$1-$2-$3");
+            else {
+                reg = /(\d{4})\-(\d{2})(\d{2})/;
+                if (reg.test(cellvalue))
+                    return cellvalue.replace(reg, "$1-$2-$3");
+                else {
+                    reg = /(\d{4})\-(\d{2})\-(\d{2})/;
+                    if (reg.test(cellvalue))
+                        return cellvalue.replace(reg, "$1-$2-$3");
+                    else {
+                        reg = /(\d{4})(\d{2}).(\d{2})/;
+                        if (reg.test(cellvalue))
+                            return cellvalue.replace(reg, "$1-$2-$3");
+                        else {
+                            reg = /(\d{4}).(\d{2}).(\d{2})/;
+                            if (reg.test(cellvalue))
+                                return cellvalue.replace(reg, "$1-$2-$3");
+
+                            else {
+                                reg = /(\d{4})(\d{2})\\(\d{2})/;
+                                if (reg.test(cellvalue))
+                                    return cellvalue.replace(reg, "$1-$2-$3");
+                                else {
+                                    reg = /(\d{4})\\(\d{2})\\(\d{2})/;
+                                    if (reg.test(cellvalue))
+                                        return cellvalue.replace(reg, "$1-$2-$3");
+                                    else {
+                                        reg = /(\d{4})\\(\d{2})\.(\d{2})/;
+                                        if (reg.test(cellvalue))
+                                            return cellvalue.replace(reg, "$1-$2-$3");
+                                        else {
+                                            reg = /(\d{4})\.(\d{2})\\(\d{2})/;
+                                            if (reg.test(cellvalue))
+                                                return cellvalue.replace(reg, "$1-$2-$3");
+                                            else
+                                                return cellvalue;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    </script>

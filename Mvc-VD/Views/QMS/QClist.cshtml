@@ -1,0 +1,150 @@
+﻿@{
+    ViewBag.Title = "QClist";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="QMS" data-level_2="Qms Management" data-level_3="Process QC List"></div>
+} 
+
+<div class="container-fluid">
+    <div class="row text-right">
+        <div class="col-md-12 px-3">
+            <button type="submit" id="excelBtn" class="btn btn-sm btn-warning button-top"><i class="fa fa-file-excel-o">&nbsp;Excel</i></button>
+            <button type="submit" id="htmlBtn" class="btn btn-sm btn-warning button-top"><i class="fa fa-print">&nbsp;HTML</i></button>
+        </div>
+    </div>
+</div>
+      
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+       
+       <div class="row p-0 m-0">
+
+            
+            <div class="col-md-1 p-1  text-right">
+                <label><b>WO NO </b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <div class="input-group mt_plus">
+                    <input type="text" name="fo_no" id="fo_no" class="input-text form-control">
+                    <span class="input-group-addon psbom"><a href="#" class="poupdialogWO"><i class="fa fa-search text-navy"></i></a></span>
+                </div>
+            </div>
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Line </b></label>
+            </div>
+
+            <div class="col-md-1 p-1">
+                <div class="input-group mt_plus">
+                    <input type="text" name="line_no" id="line_no" class="input-text form-control">
+                    <span class="input-group-addon psbom"><a href="#" class="poupdialogLine"><i class="fa fa-search text-navy"></i></a></span>
+                </div>
+            </div>
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Process  </b></label>
+            </div>
+
+            <div class="col-md-1 p-1">
+                <div class="input-group mt_plus">
+                    <input type="text" name="process_no" id="process_no" class="input-text form-control">
+                   
+                </div>
+            </div>
+            <div class="col-md-1 px-1 py-2  text-right">
+                <label><b>Create Date</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <input type="text" name="end" id="end" class="form-control">
+            </div>
+            <div class="col-md-1 p-2">
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+
+        </div>
+     
+    </div>
+
+</div>
+
+
+<div class="container-fluid">
+    <div class="row p-0 m-0">
+        <div class="col-xs-12 pl-0">
+            <div class="box-body my-2 bg-white" id="two">
+                <div class="row p-0 m-0">
+                    
+                    <div class="col-xs-12 p-0">
+                        <table id="list1"></table>
+                        <div id="PagegridAu_Mem"></div>
+                    </div>
+                </div>  
+            </div>
+        </div>
+       
+    </div>
+</div>
+
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+              
+            <table id="list3"></table>
+            <div id="list1Pager"></div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div class="dialogWO" title="WO NO">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-primary button-srh" id="closesWO"><i class="fa fa-close">&nbsp;Close</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <table id="popupsWO"></table>
+                <div id="popupspagerWO"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="dialogLine" title="Line No">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-primary button-srh" id="closestyleLine"><i class="fa fa-close">&nbsp;Close</i></button>
+                    @*<button type="button" class="btn btn-sm btn-success button-srh" id="savestyle"><i class="fa fa-save">&nbsp;Selected</i></button>*@
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <table id="popupsLine"></table>
+                <div id="popupspagerLine"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/Scripts/QMS/QClist/QClist.js"></script>
+<script src="~/Scripts/QMS/QClist/POPUPwo.js"></script>
+<script src="~/Scripts/QMS/QClist/linepopup.js"></script>
+<script src="~/Scripts/QMS/jszip.min.js"></script>
+<script src="~/Scripts/QMS/pdfmake.min.js"></script>
+<script src="~/Scripts/QMS/vfs_fonts.js"></script>

@@ -1,0 +1,203 @@
+﻿@{
+    ViewBag.Title = "authMgt";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="@Html.Raw(ViewData["STANDARD"])" data-level_2="@Html.Raw(ViewData["System Management"])" data-level_3="@Html.Raw(ViewData["Authority Management"])"></div>
+}
+
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<!-- Search function -->
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-1 pt-2 text-right">
+                <label><b>Authority Code</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <input type="text" name="at_cd" id="at_cd" class="form-control form-control-text">
+            </div>
+            <div class="col-md-1 pt-2 text-right">
+                <label><b>Authority Name</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <input type="text" name="at_nm" id="at_nm" class="form-control form-control-text">
+            </div>
+            <div class="col-md-1 p-2">
+                <button id="searchBtn" class="btn btn-sm btn-primary"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ./Search function -->
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white" id="one">
+        <div class="row p-0 m-0">
+            <table id="list"></table>
+            <div id="gridpagerAu"></div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active" id="tab_1"><a href="#tab_1" data-toggle="tab">Create</a></li>
+                <li id="tab_2"><a href="#tab_2" data-toggle="tab">Modify</a></li>
+            </ul>
+        </div>
+        <div class="tab-content active" id="tab_c1">
+            <form id="form1">
+                <div class="row p-2">
+                    <div class="col-lg-1 py-1">
+                        <input type="text" name='at_cd' id='c_at_cd' class="form-control form-control-text" required="required" placeholder="Authority Code" readonly="readonly">
+                    </div>
+                    <div class="col-lg-2 py-1">
+                        <input type="text" name='at_nm' id='c_at_nm' class="form-control form-control-text" placeholder="Authority Name" required="required">
+                    </div>
+                    <div class="col-lg-2 py-1">
+                        <input type="text" name='re_mark' id='c_re_mark' class="form-control form-control-text" placeholder="Description" required="required">
+                    </div>
+                    @*<div class="col-lg-2 py-1">
+                        <select name='role' id='c_role' class="form-control form-control-text role">
+                        </select>
+                    </div>*@
+                    <div class="col-lg-2 py-1">
+                        <div class="input-group" style="width: 100%;">
+                            <select name='use_yn' id='c_use_yn' class="form-control form-control-text select2">
+                                <option value="Y" selected="selected">Use</option>
+                                <option value="N">UnUse</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-1 py-1 d-flex">
+                        <button type="button" id="c_save_but" class="btn btn-success button-srh2"><i class='fa fa-save'>&nbsp;Create</i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="tab-content hidden" id="tab_c2">
+            <form id="form2">
+                <div class="row p-2">
+                    <div class="col-lg-1 py-1">
+                        <input type="text" name='at_cd' id='m_at_cd' class="form-control form-control-text" placeholder="Authority Code" readonly="readonly">
+                    </div>
+                    <div class="col-lg-2 py-1">
+                        <input type="text" name='at_nm' id='m_at_nm' class="form-control" placeholder="Authority Name">
+                    </div>
+                    <div class="col-lg-2 py-1">
+                        <input type="text" name='re_mark' id='m_re_mark' class="form-control form-control-text" placeholder="Description">
+                    </div>
+                    @*<div class="col-lg-2 py-1">
+                        <select name='role' id='m_role' class="form-control form-control-text role">
+                        </select>
+                    </div>*@
+                    <div class="col-lg-1 py-1">
+                        <select name='use_yn' id='m_use_yn' class="form-control form-control-text select2">
+                            <option value="Y" selected="selected">Use</option>
+                            <option value="N">UnUse</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-1 py-1 d-flex">
+                        <button type="button" id="m_save_but" class="btn btn-success button-srh2 mr-5"><i class='fa fa-save'>&nbsp;Modify</i></button>
+                        <button type="button" id="del_save_but" class="btn btn-danger button-srh2"><i class='fa fa-scissors'>&nbsp;Delete</i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row p-0 m-0">
+        <div class="col-xs-4 pl-0">
+            <div class="box-body my-2 bg-white" id="two">
+                <div class="row p-0 m-0">
+                    <div class="col-md-12 pt-2">
+                        <h5 class="box-title">Member Connection</h5>
+                    </div>
+                    <div class="col-md-3 p-2">
+                        <input type="text" name="userid" id="userid" placeholder="Userid" maxlength="50" class="input-text form-control">
+                    </div>
+                    <div class="col-md-3 p-2">
+                        <input type="text" name="uname" id="uname" placeholder="Name" maxlength="50" class="input-text form-control">
+                    </div>
+                    <div class="col-md-3 pb-3 pt-2 d-flex">
+                        <button id="searchBtn_staff" class="btn btn-sm mr-5 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                        <button type="submit" id="mbSave" class="btn btn-sm btn-success button-srh"><i class="fa fa-save">&nbsp;Save</i></button>
+                    </div>
+                    <div class="col-md-12 p-0">
+                        <table id="list2"></table>
+                        <div id="PagegridAu_Mem"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-8 pr-0">
+            <div class="box-body my-2 bg-white" id="three">
+                <div class="row p-0 m-0">
+                    <div class="col-md-12 pt-2">
+                        <h5 class="box-title">Authority & Menu Connection</h5>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="col-md-4 p-2">
+                            <input type="text" name="mn_cd" id="mn_cd" placeholder="Menu Code" class="input-text form-control">
+                        </div>
+                        <div class="col-md-4 p-2">
+                            <input type="text" name="mn_full" id="mn_full" placeholder="Full Name" class="input-text form-control">
+                        </div>
+                        <div class="col-md-4 p-2 ">
+                            <button id="searchBtn_menu" class="btn btn-sm mr-2 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                            <button type="submit" id="menuSave" class="btn btn-sm btn-success button-srh"><i class="fa fa-save">&nbsp;Save</i></button>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 p-0">
+                        <table id="list3"></table>
+                        <div id="PageGetJqAuMn"></div>
+                    </div>
+
+
+
+                    <div class="col-lg-6 pt-2">
+
+                    </div>
+                    <div class="col-lg-6 ">
+
+                    </div>
+                    <div class="col-xs-12 p-0">
+                        <table id=""></table>
+                        <div id=""></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*---------------------------------------------------------------------------------------------------------------------------*@
+
+<!--Popup -->
+<div id="dialogDangerous" title="Are you make sure DELETE ?">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-success button-srh mr-3" id="closestyle">No</button>
+                    <button type="button" class="btn btn-sm btn-danger button-srh" id="deletestyle">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ./ Popup -->
+
+@section scripts {
+    <script src="~/Scripts/system/authMgt/_authMgt.js"></script>
+    <script src="~/Scripts/system/authMgt/_authMgt_Poup.js"></script>
+}
+
+
+

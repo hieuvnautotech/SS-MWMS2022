@@ -1,0 +1,383 @@
+﻿body {
+    font-family: Arial;
+}
+
+.tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+}
+
+.tab1 {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+}
+
+.tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: 0;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: .3s;
+    font-size: 17px;
+}
+
+    .tab button:hover {
+        background-color: #ddd;
+    }
+
+    .tab button.active {
+        background-color: #ccc;
+    }
+
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+}
+
+.tabcontent {
+    animation: fadeEffect 1s;
+}
+
+@keyframes fadeEffect {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.col-md-4 {
+    width: 33.33333333%;
+    float: left;
+}
+
+.col-xs-6 {
+    width: 50%;
+    float: left;
+}
+
+.col-xs-3 {
+    width: 25%;
+    float: left;
+}
+
+.col-xs-9 {
+    width: 50%;
+    float: left;
+}
+
+.col-xs-4 {
+    width: 30%;
+    float: left;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+.tab1 button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: 0;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: .3s;
+    font-size: 17px;
+}
+
+    .tab1 button:hover {
+        background-color: #ddd;
+    }
+
+    .tab1 button.active {
+        background-color: #ccc;
+    }
+
+.tabcontent1 {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+}
+
+.tabcontent1 {
+    animation: fadeEffect 1s;
+}
+
+.col-xs-8 {
+    width: 66.66666667%;
+    float: left;
+}
+
+.row {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.col-xs-12 {
+    width: 100%;
+    float: left;
+    position: relative;
+    min-height: 1px;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+.box {
+    position: relative;
+    border-radius: 5px;
+    background: #fff;
+    border-top: 1px solid #d2d6de;
+    margin-bottom: 5px;
+    width: 100%;
+    box-shadow: 0 1px 1px rgba(0,0,0,.1);
+}
+
+.nav-tabs-custom {
+    margin-bottom: 5px;
+    background: #fff;
+    box-shadow: 0 1px 1px rgba(0,0,0,.1);
+    border-radius: 3px;
+}
+
+    .nav-tabs-custom > .nav-tabs {
+        margin: 0;
+        border-bottom-color: #f4f4f4;
+        border-top-right-radius: 3px;
+        border-top-left-radius: 3px;
+    }
+
+.nav-tabs {
+    border-bottom: 1px solid #ddd;
+}
+
+.nav {
+    padding-left: 0;
+    list-style: none;
+}
+
+.nav-tabs-custom > .nav-tabs > li:first-of-type {
+    margin-left: 0;
+}
+
+.nav-tabs-custom > .nav-tabs > li {
+    border-top: 3px solid transparent;
+    margin-bottom: -2px;
+    margin-right: 5px;
+}
+
+.nav-tabs > li {
+    float: left;
+}
+
+.nav > li {
+    position: relative;
+    display: block;
+}
+
+.nav-tabs-custom > .nav-tabs > li > a, .nav-tabs-custom > .nav-tabs > li > a:hover {
+    background: 0 0;
+    margin: 0;
+}
+
+.nav-tabs-custom > .nav-tabs > li > a {
+    color: #444;
+    border-radius: 0;
+}
+
+.nav-tabs > li > a {
+    margin-right: 2px;
+    line-height: 1;
+    border: 1px solid transparent;
+    border-radius: 3px 3px 0 0;
+}
+
+.nav > li > a {
+    position: relative;
+    display: block;
+    padding: 5px 10px;
+}
+
+.nav-tabs-custom > .nav-tabs > li.active {
+    border-top-color: #3c8dbc;
+}
+
+.nav-tabs-custom > .nav-tabs > li {
+    border-top: 3px solid transparent;
+    margin-bottom: -2px;
+    margin-right: 5px;
+}
+
+.nav-tabs > li {
+    float: left;
+    margin-bottom: -1px;
+}
+
+.nav > li {
+    position: relative;
+    display: block;
+}
+
+.nav-tabs-custom > .nav-tabs > li.active > a {
+    border-top-color: transparent;
+    border-right-color: #f4f4f4;
+}
+
+.nav-tabs-custom > .nav-tabs > li.active:hover > a, .nav-tabs-custom > .nav-tabs > li.active > a {
+    background-color: #fff;
+    color: #444;
+}
+
+.nav-tabs-custom > .nav-tabs > li > a, .nav-tabs-custom > .nav-tabs > li > a:hover {
+    background: 0 0;
+    margin: 0;
+}
+
+.hidden {
+    display: none!important;
+}
+
+form {
+    display: block;
+    margin-top: 0;
+}
+
+.box-body-bottom-input {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.box-body {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    padding: 5px;
+}
+
+.col-md-4 {
+    width: 33.33333333%;
+    float: left;
+    position: relative;
+    min-height: 1px;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+.col-xs-6 {
+    position: relative;
+    min-height: 1px;
+    padding-right: 5px;
+    padding-left: 5px;
+    width: 50%;
+    float: left;
+}
+
+.col-xs-12 {
+    width: 100%;
+    float: left;
+    position: relative;
+    min-height: 1px;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+.col-xs-2 {
+    width: 16.66666667%;
+    float: left;
+    position: relative;
+    min-height: 1px;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+.col-xs-4 {
+    width: 33.33333333%;
+    float: left;
+    position: relative;
+    min-height: 1px;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.nav-tabs-custom > .nav-tabs > li > a {
+    border-radius: 0;
+}
+
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
+    cursor: default;
+    border: 1px solid #ddd;
+    border-bottom-color: transparent;
+}
+
+.nav-tabs > li > a {
+    margin-right: 2px;
+    line-height: 1;
+    border: 1px solid transparent;
+    border-radius: 3px 3px 0 0;
+}
+
+.nav > li > a {
+    position: relative;
+    display: block;
+    padding: 5px 10px;
+}
+
+.nav-tabs-custom > .nav-tabs > li > a, .nav-tabs-custom > .nav-tabs > li > a:hover {
+    background: 0 0;
+    margin: 0;
+}
+
+.nav-tabs-custom > .nav-tabs > li > a {
+    color: #444;
+    border-radius: 0;
+}
+
+.col-xs-8 {
+    width: 66.66666667%;
+    float: left;
+    position: relative;
+    min-height: 1px;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+.btn:hover {
+    text-decoration: none;
+}
+
+.btn {
+    border-radius: 0;
+}
+
+.content-header {
+    position: relative;
+    padding: 5px 5px 0 5px;
+}
+
+.fa {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+}
+
+.h4, h4 {
+    font-size: 1.5rem;
+    font-family: inherit;
+    font-weight: 500;
+    line-height: 1.2;
+    color: inherit;
+}

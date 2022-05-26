@@ -1,0 +1,258 @@
+﻿@model IEnumerable<Mvc_VD.Models.w_product_info>
+
+@{
+    ViewBag.Title = "Finished Product List";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="FG-WMS" data-level_2="Product Information" data-level_3="ProductList(F)"></div>
+
+}
+<div class="container-fluid">
+    <div class="box-body my-2">
+        <div class="row p-0 m-0 text-right">
+            <div class="col-md-12">
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Search function -->
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-3">
+                <div class="row">
+                    <div class="col-xs-4 control-label text-right">
+                        <h6 class="control-label-text"><b>Finish Lot</b></h6>
+                    </div>
+                    <div class="col-xs-8">
+                        <input type="text" name="prd_lcd" id="prd_lcd" maxlength="50" class="input-text form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4 text-right">
+                        <h6 class="control-label-text"><b>Product</b></h6>
+                    </div>
+                    <div class="col-xs-8">
+                        <div class="input-group mt_plus">
+                            <input type="text" name="style_no" id="style_no" class="input-text form-control">
+                            <span class="input-group-addon psbom"><a href="#" id="poupdialogStyle" class="poupdialogStyle"><i class="fa fa-search text-navy"></i></a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="row">
+                    <div class="col-xs-4 control-label text-right">
+                        <h6 class="control-label-text"><b>Finish Code</b></h6>
+                    </div>
+                    <div class="col-xs-8">
+                        <input type="text" name="prd_cd" id="prd_cd" maxlength="50" class="input-text form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4 control-label text-right">
+                        <h6 class="control-label-text"><b>PO</b></h6>
+                    </div>
+                    <div class="col-xs-8">
+                        <div class="input-group mt_plus">
+                            <input type="text" name="po_no" id="po_no" class="form-control form-control-text" maxlength="20">
+                            <span class="input-group-addon"><a href="#" class="popup_po_no"><i class="fa fa-search text-navy"></i></a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="row">
+                    <div class="col-xs-4 control-label text-right">
+                        <h6 class="control-label-text"><b>Division</b></h6>
+                    </div>
+                    <div class="col-xs-8">
+                        <select id="lot_div_cd" class="form-control" name="lot_div_cd">
+                            <option value="">**</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4 control-label text-right">
+                        <h6 class="control-label-text"><b>WO</b></h6>
+                    </div>
+                    <div class="col-xs-8">
+                        <div class="input-group mt_plus">
+                            <input type="text" name="fo_no" id="fo_no" class="input-text form-control">
+                            <span class="input-group-addon psbom"><a href="#" class="ACtualWopopup"><i class="fa fa-search text-navy"></i></a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="row">
+                    <label class="col-xs-4 control-label text-right">
+                        <label><b>BOM</b></label>
+                    </label>
+                    <div class="col-xs-8">
+                        <div class="input-group mt_plus">
+                            <input type="text" name="bom_no" id="bom_no" class="input-text form-control">
+                            <span class="input-group-addon psbom"><a href="#" id="poupdialog_BOM" class="poupdialog_BOM"><i class="fa fa-search text-navy"></i></a></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-xs-4 control-label text-right">
+                        <h6 class="control-label-text"><b>Product Date</b></h6>
+                    </label>
+                    <div class="col-xs-4">
+                        <input type="text" name="start_dt" id="start" class="form-control" style="width: 100%;">
+                    </div>
+                    <div class="col-xs-4">
+                        <input type="text" name="end_dt" id="end" class="form-control" style="width: 100%;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ./Search function -->
+
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <table id="list"></table>
+            <div id="gridpager"></div>
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<!--Dialog WO-->
+<div class="dialogActual" title="WO NO">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-success button-srh disabled" id="SelectWO"><i class="fa fa-check">&nbsp;Selected</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <table id="popupsActual"></table>
+                <div id="popupspagerActual"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Dialog -->
+<!--Dialog Product-->
+<div class="dialog_PRODUCT" title="Product Information">
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body well text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="style_no_popup" placeholder="Product Code" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="style_nm_popup" placeholder="Product Name" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="md_cd" id="md_cd_popup" placeholder="Model Code" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2 d-flex">
+                    <button id="searchBtn_product_popup" class="btn btn-sm mr-5 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button type="button" class="btn btn-sm btn-success button-srh disabled" id="savestyle_product"><i class="fa fa-save">&nbsp;Selected</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid  p-0 m-0">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0 boxProduct">
+                <table id="popupProduct"></table>
+                <div id="pagerProduct"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ./ Dialog -->
+
+<!--Dialog BOM-->
+<div class="dialog_BOM" title="BOM Information">
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body well text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-3 p-2">
+                    <input type="text" name="bom_no" id="s_bom_no_popup" placeholder="BOM no" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="s_style_no_popup" placeholder="Product Code" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="md_cd" id="s_model_no_popup" placeholder="Model Code" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2 d-flex">
+                    <button id="searchBtn_BOM_popup" class="btn btn-sm mr-5 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button type="button" class="btn btn-sm btn-success button-srh disabled" id="savestyle_BOM"><i class="fa fa-save">&nbsp;Selected</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid  p-0 m-0">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0 boxBOM">
+                <table id="popupBOM"></table>
+                <div id="pagerBOM"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="dialog_PO" title="PO">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-success button-srh" id="selectPO"><i class="fa fa-save">&nbsp;Selected</i></button>
+                    <button type="button" class="btn btn-sm btn-primary button-srh" id="closePO"><i class="fa fa-close">&nbsp;Close</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <table id="popups_PO"></table>
+                <div id="popupspager_PO"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ./ Dialog -->
+@section scripts {
+    <script src="~/Scripts/fgwms/ProductList/ProductList.js"></script>
+    <script src="~/Scripts/fgwms/ProductList/Wo_popup.js"></script>
+    <script src="~/Scripts/fgwms/ProductList/Product_Poup.js"></script>
+    <script src="~/Scripts/fgwms/ProductList/Bom_Poup.js"></script>
+    <script src="/Scripts/fgwms/ProductList/Request_Poup_po.js"></script>
+    <script>
+        $("#start").datepicker({
+            changeMonth: false,
+            changeYear: false,
+            dateFormat: 'yy-mm-dd',
+            duration: 'fast',
+            stepMonths: 0
+        });
+        $("#end").datepicker({
+            changeMonth: false,
+            changeYear: false,
+            dateFormat: 'yy-mm-dd',
+            duration: 'fast',
+            stepMonths: 0
+        });
+
+    </script>
+}

@@ -1,0 +1,2 @@
+Select icno, item_vcd, check_id, check_type, check_subject, min_value, max_value, range_type, order_no, re_mark, use_yn, del_yn, reg_id, reg_dt, chg_id, chg_dt
+From qc_itemcheck_mt

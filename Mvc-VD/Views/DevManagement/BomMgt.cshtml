@@ -1,0 +1,306 @@
+﻿
+@{
+    ViewBag.Title = "Bom";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+<style>
+    .all_cg {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="@Html.Raw(ViewData["DMS"])" data-level_2="@Html.Raw(ViewData["Development Management"])" data-level_3="@Html.Raw(ViewData["BOM Management"])"></div>
+}
+
+
+<!-- Search function -->
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row p-0 m-0">
+
+                    <div class="col-md-1 py-1 text-right">
+                        <label><b>Product Code</b></label>
+                    </div>
+                    <div class="col-md-2 py-1">
+                        <input type="text" name="style_no" id="s_style_no" maxlength="20" class="input-text form-control">
+                    </div>
+                    <div class="col-md-1 py-1 text-right">
+                        <label><b>Product Name</b></label>
+                    </div>
+                    <div class="col-md-2 py-1">
+                        <input type="text" name="style_nm" id="s_style_nm" maxlength="20" class="input-text form-control">
+                    </div>
+                    <div class="col-md-1 py-1 text-right">
+                        <label><b>Model</b></label>
+                    </div>
+                    <div class="col-md-2 py-1">
+                        <input type="text" name="md_cd" id="s_md_cd" class="form-control" maxlength="50">
+                    </div>
+
+                    <div class="col-md-1 py-1"></div>
+
+                    <div class="col-md-2 py-1 d-flex">
+                        <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    </div>
+
+                    <div class="col-md-1 py-1 text-right">
+                        <label><b>Material Code</b></label>
+                    </div>
+                    <div class="col-md-2 py-1">
+                        <input type="text" name="mt_cd" id="s_mt_cd" class="form-control">
+                    </div>
+                    <div class="col-md-1 py-1 text-right">
+                        <label><b>Material Name</b></label>
+                    </div>
+                    <div class="col-md-2 py-1">
+                        <input type="text" name="mt_nm" id="s_mt_nm" class="form-control">
+                    </div>
+                </div>
+            </div>
+
+            @*<div class="col-md-1">
+                    <div class="col-md-1 py-1 d-flex">
+                        <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    </div>
+                </div>*@
+        </div>
+    </div>
+</div>
+<!-- ./Search function -->
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-3 py-1 ml-10">
+                <input type="file" name="file" id="imgupload" accept=".xlsx,.xls,.csv,.tsv,.xml,.json" class="valid">
+            </div>
+            <div class="col-md-4 py-2 px-3">
+                <button id="uploadBtn" class="btn btn-sm btn-primary button-srh mr-3"><i class="fa fa-upload">&nbsp;Upload</i></button>
+                <a id="downloadBtn" class="btn btn-success btn-download btnDownload mr-3" href="~/Excel/ExcelBom/demo_bom.xlsx" download="demo_bom.xlsx"><i class="fa fa-download">&nbsp;Download Form Excel</i></a>
+                <button type="button" id="del_save_but" class="btn btn-danger" style="width: 75px;"><i class="fa fa-scissors">&nbsp;Delete</i></button>
+            </div>
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white boxList">
+        <div class="row p-0 m-0">
+            <table id="list"></table>
+            <div id="jqGridPager"></div>
+
+        </div>
+    </div>
+</div>
+<div class="hidden">
+    <table id="list_ex"></table>
+    <div id="jqGridexPager"></div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+
+<div class="container-fluid">
+    <input type="hidden" value="" name="name" id="bid" />
+    <input type="hidden" name="name" value="" id="ProductCode" />
+
+    <div class="box-body my-2 bg-white">
+        <div class="nav-tabs-custom">
+            <button type="button" id="m_save_but" class="btn btn-info button-srh2 "><i class="fa fa-save">&nbsp;Modify</i></button>
+
+            <button type="button" id="c_save_but" class="btn btn-success button-srh2 " style=" margin-right: 10px;"><i class="fa fa-save">&nbsp;Create</i></button>
+
+        </div>
+        <div class="row p-0 m-0">
+            <form name="form1" id="form1" enctype="multipart/form-data" role="form" method="post" target="zeroFrame" style=" width: 100%; ">
+                <div class="col-md-12">
+                    <div class="col-md-2 py-1 hidden">
+                        <label>Bom Code</label>
+                        <input type="text" name="bom_no" id="c_bom_no" class="input-text form-control" placeholder="Bom Code" />
+                    </div>
+                    <div class="col-md-2 py-1">
+                        <label>Product</label>
+                        <div class="input-group mt_plus">
+                            <input type="text" name="style_no" id="c_style_no" class="input-text form-control" readonly placeholder="Product" />
+                            <span class="input-group-addon psbom"><a href="#" class="poupdialogStyle"><i class="fa fa-search text-navy"></i></a></span>
+                        </div>
+                    </div>
+                    <div class="col-md-2 py-1 materialpp">
+                        <label>Material</label>
+                        <input type="text" name="mt_no" id="c_mt_no" class="input-text form-control hidden" placeholder="Material">
+                        <div class="input-group mt_plus">
+
+                            <input type="text" name="mt_no" id="c_mt_no_view" class="input-text form-control" readonly placeholder="Material" />
+                            <span class="input-group-addon psbom"><a href="#" class="poupdialogMaterial"><i class="fa fa-search text-navy"></i></a></span>
+                        </div>
+                    </div>
+                    <div class="col-md-2 py-1">
+                        <label>CAVIT</label>
+                        <input type="text" name="cav" id="c_cav" class="input-text form-control" placeholder="CAV" style="text-align: right" />
+                    </div>
+                    <div class="col-md-2 py-1">
+                        <label>Số lần sử dụng</label>
+                        <input type="text" name="need_time" id="c_need_time" class="input-text form-control" style="text-align: right" />
+                    </div>
+                    <div class="col-md-2 py-1">
+                        <label>Bước dập/Số đo (mm)</label>
+                        <input type="text" name="buocdap" id="c_buocdap" class="input-text form-control" style="text-align: right" />
+                    </div>
+                    <div class="col-md-2 py-4">
+                        <label>Check hiệu suất</label>
+                        <input type="checkbox" id="isActive" name="isActive" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<!--Dialog Product-->
+<div class="dialog_PRODUCT" title="Product Information">
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body well text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="style_no_popup" placeholder="Product Code" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="style_nm_popup" placeholder="Product Name" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="md_cd" id="md_cd_popup" placeholder="Model Code" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2 d-flex">
+                    <button id="searchBtn_product_popup" class="btn btn-sm mr-5 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button type="button" class="btn btn-sm btn-success button-srh disabled" id="savestyle_product"><i class="fa fa-save">&nbsp;Selected</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid  p-0 m-0">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0 boxProduct">
+                <table id="popupProduct"></table>
+                <div id="pagerProduct"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ./ Dialog -->
+<!--Dialog Material-->
+<div class="dialog_MATERIAL2" title="Material Information">
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body well text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-3 p-2">
+                    <select id="s_mt_type_popup" class="form-control gettype">
+                        <option value="">*Type*</option>
+                    </select>
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="mt_no" id="mt_no_popup" placeholder="Material Code" class="form-control form-control-text">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="mt_nm" id="mt_nm_popup" placeholder="Material Name" class="form-control form-control-text">
+                </div>
+                <div class="col-md-3 p-2 d-flex">
+                    <button id="searchBtn_material_popup" class="btn btn-sm mr-5 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button type="button" class="btn btn-sm btn-success button-srh disabled" id="savestyle_material"><i class="fa fa-save">&nbsp;Selected</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid  p-0 m-0">
+        <div class="box-body my-2 bg-white">
+            <div class="p-0 m-0">
+                <table id="popupMaterial"></table>
+                <div id="pagerMaterial"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Dialog Material-->
+<div class="dialog_addMATERIAL" title="Material Information">
+
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body well text-right">
+            <div class="row p-0 m-0">
+                <input type="hidden" name="name" value="" id="prd_cd" />
+
+                <div class="col-md-3 p-2">
+                    <select id="s_mt_type_popup1" class="form-control gettype">
+                        <option value="">*Type*</option>
+                    </select>
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="mt_no" id="mt_no_popup1" placeholder="Material Code" class="form-control form-control-text">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="mt_nm" id="mt_nm_popup1" placeholder="Material Name" class="form-control form-control-text">
+                </div>
+                <div class="col-md-3 p-2 d-flex">
+                    <button id="searchBtn_material_popup1" class="btn btn-sm mr-5 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button type="button" class="btn btn-sm btn-success button-srh disabled" id="savestyle_material1"><i class="fa fa-save">&nbsp;Add</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid  p-0 m-0">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <table id="popupMaterial1"></table>
+                <div id="pagerMaterial1"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ./ Dialog -->
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<!-- end popup -->
+<!--Popup -->
+<div id="dialogDangerous" title="Are you make sure DELETE ?">
+    <input type='hidden' name="bpid" id="status_delete" value="">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-success button-srh mr-3" id="closestyle">No</button>
+                    <button type="button" class="btn btn-sm btn-danger button-srh" id="deletestyle">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- ./ Popup -->
+<style>
+    div#popupbom_wrapper {
+        width: 100%;
+    }
+
+    td.details-control {
+        /*background: url('https://cdn.rawgit.com/DataTables/DataTables/6c7ada53ebc228ea9bc28b1b216e793b1825d188/examples/resources/details_open.png') no-repeat center center;*/
+        background: url('/Content/DataTables/details_open.png') no-repeat center center;
+        cursor: pointer;
+    }
+
+    tr.shown td.details-control {
+        /*background: url('https://cdn.rawgit.com/DataTables/DataTables/6c7ada53ebc228ea9bc28b1b216e793b1825d188/examples/resources/details_close.png') no-repeat center center;*/
+        background: url('/Content/DataTables/details_close.png') no-repeat center center;
+    }
+</style>
+@section scripts{
+    <script src="~/Content/jquery.validate_V1.9/jquery.validate.min.js"></script>
+    <script src="~/Scripts/DevManagement/BomMgt/Bom.js"></script>
+    <script src="~/Scripts/DevManagement/BomMgt/material_Poup.js"></script>
+    <script src="~/Scripts/DevManagement/BomMgt/material_PoupAdd.js"></script>
+    <script src="~/Scripts/DevManagement/BomMgt/Product_Poup.js"></script>
+    <script src="~/Scripts/DevManagement/BomMgt/BomUpload.js"></script>
+}
+
+

@@ -1,0 +1,412 @@
+﻿
+<div class="container-fluid">
+    <div class="box-body bg-white text-right">
+        <div class="row p-0 m-0">
+            <div class="col-md-12 p-2">
+                <button type="submit" id="PrintDetail_PartialView_EX_Info_Popup" class="btn btn-sm btn-warning button-top"><i class="fa fa-print mr-2"></i>PRINT</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row p-0 m-0">
+        <div class="col-md-3 all_cg ">
+            <img src="~/Content/themes/Logo-suplier_in.jpg" style="width: 97%" />
+        </div>
+        <div class="col-md-5 p-2 text-center">
+            <h3 style="margin: 0">Shipping Sorting</h3>
+            <h4 class='red'>@ViewBag.ShippingCode </h4>
+        </div>
+        <div class="col-md-4 p-2">
+            <div class="row" style="border-top: 1px solid; border-bottom: 1px solid">
+                <div class="col-md-4 p-3 text-center">
+                    <p>Document Code</p>
+                    <p>Serial</p>
+                    <p style="margin: 0">Date</p>
+                </div>
+                <div class="col-md-8" style="padding-top: 12px !important">
+                    <p id="barcode_PartialView_EX_Info_Popup" style="margin: 0 auto;"></p>
+                    <p id="datetime_PartialView_EX_Info_Popup" style="text-align: center; margin-top: 10px;">
+                        <script>
+                            function formatDate() {
+                                var d = new Date(),
+                                    month = '' + (d.getMonth() + 1),
+                                    day = '' + d.getDate(),
+                                    year = d.getFullYear(),
+                                    Hours = d.getHours(),
+                                    Minutes = d.getMinutes();
+
+                                if (month.length < 2) { month = '0' + month; }
+                                if (day.length < 2) { day = '0' + day; }
+                                if (Hours < 10) { Hours = '0' + Hours; }
+                                if (Minutes < 10) Minutes = '0' + Minutes;
+                                time = Hours + ":" + Minutes;
+                                var full = year + "-" + month + "-" + day + " " + time;
+                                $("#datetime_PartialView_EX_Info_Popup").html(full);
+                            }
+                            formatDate()
+                            setInterval(formatDate, 500);
+                        </script>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-md-7">
+            <h4>Standard</h4>
+            <table id="dataTable1_PartialView_EX_Info_Popup" class="table table-bordered table-striped" style="width: 100%">
+                <thead>
+                    <tr class="table-warning">
+                        <th>Code</th>
+                        <th>Product</th>
+                        <th>Product Name</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+
+        @*<div class="col-md-5">
+            <h4>Count ML NO</h4>
+            <table id="dataTable4_PartialView_EX_Info_Popup" class="table table-bordered table-striped" style="width: 100%">
+                <thead>
+                    <tr class="table-warning">
+                        <th>MT NO</th>
+                        <th>Cấp</th>
+                        <th>Đang sử dụng</th>
+                        <th>Đã sử dụng hết</th>
+
+                        <th>Trả về</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>
+                            total
+                        </th>
+                        <th>
+                        </th>
+                        <th>
+                        </th>
+                        <th>
+                        </th>
+                        <th>
+                            </th>
+
+                    </tr>
+                </tfoot>
+            </table>
+        </div>*@
+    </div>
+</div>
+<div class="container-fluid py-4">
+    <h4>List</h4>
+    <table id="dataTable2_PartialView_EX_Info_Popup" class="table table-bordered table-striped" style="width: 100%">
+        <thead>
+
+            <tr class="table-warning">
+
+                <th style="text-align: center !important">STT</th>
+                <th style="text-align: center !important">Buyer QR</th>
+              
+              
+
+            </tr>
+        </thead>
+
+    </table>
+    <input type="hidden" name="name" value=" " id="value_html" />
+
+</div>
+<script>
+    $(document).ready(function () {
+        $('#dataTable1_PartialView_EX_Info_Popup').DataTable({
+            "ajax": {
+
+                "url": "/fgwms/GetShippingSortingFGPP?ShippingCode=@ViewBag.ShippingCode",
+                "type": "GET",
+                "datatype": "json"
+            },
+            "searching": false,
+            "paging": false,
+            "bInfo": false,
+            "destroy": true,
+            "columns": [
+                { "data": "ShippingCode" },
+                { "data": "ProductCode" },
+                { "data": "ProductName" },
+                { "data": "Description" },
+
+            ],
+
+            'columnDefs': [
+                {
+                    "targets": 0, // your case first column
+                    "className": "text-center",
+
+                },
+                {
+                    "targets": 1, // your case first column
+                    "className": "text-center",
+
+                },
+                {
+                    "targets": 2, // your case first column
+                    "className": "text-center",
+
+                },
+            ],
+            "bDestroy": true,
+
+        });
+
+        var t = $('#dataTable2_PartialView_EX_Info_Popup').DataTable({
+            "ajax": {
+                "url": "/fgwms/GetListShippingFGSorting?ShippingCode=@ViewBag.ShippingCode",
+                "type": "GET",
+                "datatype": "json",
+            },
+            "searching": true,
+            "paging": true,
+            "bInfo": false,
+           
+            "columns": [
+
+                { "data": "id" },
+                { "data": "buyer_qr" },
+               
+            ],
+            'columnDefs': [
+                {
+                    "targets": 0, // your case first column
+                    "className": "text-center",
+                    "width:": "3%",
+                },
+               
+
+            ],
+            "lengthMenu": [[20, 50, 100, 200, 500, -1], [20, 50, 100, 200, 500, "All"]],
+            "order": [[1, 'asc']],
+           
+        });
+                    t.on('order.dt search.dt', function () {
+                        t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+                            cell.innerHTML = i + 1;
+                        });
+                    }).draw();
+
+       
+
+        @*$('#dataTable4_PartialView_EX_Info_Popup').DataTable({
+                        "ajax": {
+
+                            "url": "/ExportToMachine/GetShippingScanPP_Count_MT_no?ExportCode=@ViewBag.ExportCode",
+                "type": "GET",
+                "datatype": "json"
+                        },
+
+
+            "searching": false,
+            "paging": false,
+            "bInfo": false,
+            "destroy": true,
+            "columns": [
+                { "data": "mt_no" },
+                { "data": "cap" },
+                { "data": "dangsd" },
+                { "data": "dasd" },
+                { "data": "trave" },
+
+
+            ],
+            "footerCallback": function (row, data, start, end, display) {
+                            var api = this.api(), data;
+
+                            // converting to interger to find total
+                            var intVal = function (i) {
+                                return typeof i === 'string' ?
+                                    i.replace(/[\$,]/g, '') * 1 :
+                                    typeof i === 'number' ?
+                                        i : 0;
+                            };
+
+                            // computing column Total of the complete result
+                            var monTotal = api
+                                .column(1)
+                                .data()
+                                .reduce(function (a, b) {
+                                return intVal(a) + intVal(b);
+                            }, 0);
+
+                            var tueTotal = api
+                                .column(2)
+                                .data()
+                                .reduce(function (a, b) {
+                                return intVal(a) + intVal(b);
+                            }, 0);
+
+                            var wedTotal = api
+                                .column(3)
+                                .data()
+                                .reduce(function (a, b) {
+                                return intVal(a) + intVal(b);
+                            }, 0);
+
+                var thuTotal = api
+                    .column(4)
+                    .data()
+                    .reduce(function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+
+
+
+                // Update footer by showing the total with the reference of the column index
+                $(api.column(0).footer()).html('Total');
+                $(api.column(1).footer()).html(monTotal);
+                $(api.column(2).footer()).html(tueTotal);
+                $(api.column(3).footer()).html(wedTotal);
+                $(api.column(4).footer()).html(thuTotal);
+                        },
+            "processing": true,
+
+            'columnDefs': [
+                {
+                            "targets": 0, // your case first column
+                    "className": "text-left",
+                    "width:": "15%",
+
+                },
+                {
+                            "targets": 1, // your case first column
+                    "className": "text-center",
+
+                },
+                {
+                            "targets": 2, // your case first column
+                    "className": "text-center",
+
+                },
+
+            ],
+            "bDestroy": true,
+        });*@
+
+        $("#PrintDetail_PartialView_EX_Info_Popup").on("click", function () {
+                        window.open(
+                            "/ExportToMachine/PrintExport_LIST?ExportCode=@ViewBag.ExportCode",
+                            "PRINT",
+                            "width=860, height=800, left=0, top=100, location=no, status=no,");
+                    });
+    });
+
+                    function PrintfQR(code) {
+
+                        //alert(code)
+                        //$.ajax({
+                        //    method: "GET",
+                        //    url: "/ActualWO/PrintfQRCode?code=" + code,
+                        //    data: null,
+                        //    datatype: "text/html",
+                        //}).done(function (data) {
+                        //    window.open(data, '_blank');
+                        //    console.log(data);
+                        //}).fail(function (data) {
+                        //    console.log(data.responseText)
+                        //});
+                        window.open("/ActualWO/PrintfQRCode?code=" + code, "map", "width=500, height=300, left=0, top=100, location=no, status=no,");
+                    }
+                    function formatDate_(date) {
+                        //var d = new Date(date),
+                        month = '' + (date.getMonth() + 1),
+            day = '' + date.getDate(),
+            year = date.getFullYear();
+                        hours = date.getHours(),
+            minutes = date.getMinutes();
+
+                        if (month.length < 2)
+                            month = '0' + month;
+                        if (day.length < 2)
+                            day = '0' + day;
+                        if (hours < 10)
+                            hours = '0' + hours;
+                        if (minutes < 10)
+                            minutes = '0' + minutes;
+
+                        return [year, month, day].join('-') + " " + [hours, minutes].join(':');
+                    }
+
+                    function _Date(cellvalue, options, rowObject) {
+
+                        if (cellvalue == null)
+                            return "";
+                        var reg = /(\d{4})(\d{2})(\d{2})/;
+                    if (reg.test(cellvalue))
+                        return cellvalue.replace(reg, "$1-$2-$3");
+                    else {
+                        reg = /(\d{4})(\d{2})\-(\d{2})/;
+                        if (reg.test(cellvalue))
+                            return cellvalue.replace(reg, "$1-$2-$3");
+                        else {
+                            reg = /(\d{4})\-(\d{2})(\d{2})/;
+                            if (reg.test(cellvalue))
+                                return cellvalue.replace(reg, "$1-$2-$3");
+                            else {
+                                reg = /(\d{4})\-(\d{2})\-(\d{2})/;
+                                if (reg.test(cellvalue))
+                                    return cellvalue.replace(reg, "$1-$2-$3");
+                                else {
+                                    reg = /(\d{4})(\d{2}).(\d{2})/;
+                                    if (reg.test(cellvalue))
+                                        return cellvalue.replace(reg, "$1-$2-$3");
+                                    else {
+                                        reg = /(\d{4}).(\d{2}).(\d{2})/;
+                                        if (reg.test(cellvalue))
+                                            return cellvalue.replace(reg, "$1-$2-$3");
+
+                                        else {
+                                            reg = /(\d{4})(\d{2})\\(\d{2})/;
+                                            if (reg.test(cellvalue))
+                                                return cellvalue.replace(reg, "$1-$2-$3");
+                                            else {
+                                                reg = /(\d{4})\\(\d{2})\\(\d{2})/;
+                                                if (reg.test(cellvalue))
+                                                    return cellvalue.replace(reg, "$1-$2-$3");
+                                                else {
+                                                    reg = /(\d{4})\\(\d{2})\.(\d{2})/;
+                                                    if (reg.test(cellvalue))
+                                                        return cellvalue.replace(reg, "$1-$2-$3");
+                                                    else {
+                                                        reg = /(\d{4})\.(\d{2})\\(\d{2})/;
+                                                        if (reg.test(cellvalue))
+                                                            return cellvalue.replace(reg, "$1-$2-$3");
+                                                        else
+                                                            return cellvalue;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+    }
+
+    $(function () {
+                        var code = "@ViewBag.ExportCode";
+
+        $('#barcode_PartialView_EX_Info_Popup').append(code);
+        $('#barcode_PartialView_EX_Info_Popup').barcode(code, "code128", { barWidth: 1, barHeight: 30 });
+
+        $('.popup-dialog-close').click(function () {
+            $(".popup-dialog").dialog('close');
+                        });
+                    })
+</script>
+    <script src="~/Scripts/rowsGroup_datatable/dataTables.rowsGroup.js"></script>

@@ -1,0 +1,144 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <link href="~/Content/SSMMS/animations.css" rel="stylesheet" />
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            _gettime();
+        });
+        function _gettime() {
+            $.ajax({
+                url: "/system/doing_time",
+                type: "get",
+                dataType: "json",
+                success: function (data) {
+                    console.log(data)
+                    var count = data[0].doing_time;
+                    $("#isue").val(count);
+                    var x = 'http://192.168.100.54/images/';
+                    var html = '<img src="' + x + data[0].pt1 + '">';
+                    var html1 = '<img src="' + x + data[0].pt2 + '">';
+                    var html2 = '<img src="' + x + data[0].pt3 + '">';
+                    $(".tab_c1").html(html);
+                    $(".tab_c2").html(html1);
+                    $(".tab_c3").html(html2);
+
+                    countDown(count);
+                }
+            });
+        }
+        var so_lan_chuyen = 0;
+
+        function countDown(count) {
+            var timer = document.getElementById("timer");
+            if (count > 0) {
+                count--;
+                //timer.innerHTML = "Trang web bạn muốn đến sẽ tự động chuyển tới trong <b>" + count + "</b> giây.";
+                setTimeout("countDown(" + count + ")", 1000);
+            } else {
+                if (so_lan_chuyen == 0) {
+                    //hour_tab_c2
+                    $(".tab_c3").removeClass("pt-page-current pt-page-rotateCubeRightOut pt-page-ontop");
+                    $(".tab_c1").removeClass("pt-page-current pt-page-rotateCubeRightIn");
+
+                    $(".tab_c1").addClass("pt-page-current pt-page-flipOutLeft");
+                    $(".tab_c2").addClass("pt-page-current pt-page-flipInRight pt-page-delay500");
+                    var count = $("#isue").val();
+                    countDown(count);
+
+                } if (so_lan_chuyen == 1) {
+                    //isue_tab_c2
+                    $(".tab_c1").removeClass("pt-page-current pt-page-flipOutLeft");
+                    $(".tab_c2").removeClass("pt-page-current pt-page-flipInRight pt-page-delay500");
+
+                    $(".tab_c2").addClass("pt-page-current pt-page-rotateRoomLeftOut pt-page-ontop");
+                    $(".tab_c3").addClass("pt-page-current pt-page-rotateRoomLeftIn");
+                    var count = $("#isue").val();
+                    so_cong = 2;
+                    countDown(count);
+
+                }
+                if (so_lan_chuyen == 2) {
+                    //daily_tab_c2
+                    $(".tab_c2").removeClass("pt-page-current pt-page-rotateRoomLeftOut pt-page-ontop");
+                    $(".tab_c3").removeClass("pt-page-current pt-page-rotateRoomLeftIn");
+
+                    $(".tab_c3").addClass("pt-page-current pt-page-rotateCubeRightOut pt-page-ontop");
+                    $(".tab_c1").addClass("pt-page-current pt-page-rotateCubeRightIn");
+                    var count = $("#isue").val();
+                    so_lan_chuyen = -1;
+                    countDown(count);
+                }
+                so_lan_chuyen++;
+            }
+        }
+    </script>
+    <style>
+        /*img {
+            width: 878px;
+            height: 600px;
+        }*/
+
+        html {
+            width: 878px;
+            height: 600px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .active {
+            display: block;
+        }
+
+        .pt-page {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            visibility: hidden;
+            overflow: hidden;
+            -webkit-backface-visibility: hidden;
+            -moz-backface-visibility: hidden;
+            backface-visibility: hidden;
+            -webkit-transform: translate3d(0, 0, 0);
+            -moz-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+            -webkit-transform-style: preserve-3d;
+            -moz-transform-style: preserve-3d;
+            transform-style: preserve-3d;
+        }
+
+        .pt-page-current, .no-js .pt-page {
+            visibility: visible;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <input type="hidden" name="name" value=" " id="isue" />
+    <div class="wrap">
+        @*       <p id="timer"><script type="text/javascript">countDown(count);</script></p>*@
+    </div>
+    <div class="pt-page tab_c1 pt-page-current">
+        @*<img src="https://holcim.com.vn/wp-content/uploads/2018/11/7-1.jpg" />*@
+    </div>
+    <div class="pt-page tab_c2">
+      @*  <img src="http://123anhdep.net/wp-content/uploads/2016/03/bst-hinh-anh-phong-canh-thien-nhien-tuyet-dep-lang-man-tho-mong-hung-vi-nhat-the-gioi-1.jpeg" />*@</div>
+    <div class="pt-page tab_c3">
+      @*  <img src="https://hoa7ngay.com/photos/view/photos/larges//x5c2883db819a4eb12065eba1.hoa-7-ngay.jpg.pagespeed.ic.EkAeUYodfd.webp" />*@</div>
+
+</body>
+</html>
+

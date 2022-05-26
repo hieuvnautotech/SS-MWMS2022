@@ -1,0 +1,85 @@
+﻿<table id="data">
+    <tr>
+        @if (ViewBag.check == 0) {<th colspan="34">@ViewBag.month</th> }else{<th colspan="35">@ViewBag.month</th>}
+        
+    </tr>
+
+
+    <tr> @if (ViewBag.check == 1) { 
+        <td></td>
+    }
+        
+        <td class="text-left" style="width: 7%;"> @if (ViewBag.check == 0) {@ViewBag.name } Name</td>
+        <td class="text-left"  style="width: 7%;"> @if (ViewBag.check == 0) {@ViewBag.name } Code</td>
+        @foreach (var item in @ViewBag.List)
+        {
+            <td id="td_@item" >@item</td>
+        }
+    </tr>
+
+
+    @foreach (var item in @Model)
+    {
+        
+        <tr>
+               @if (ViewBag.check == 1) { 
+               <td >@item.kind</td>
+               }   
+            <td class="text-left">@item.mc_nm</td>
+            <td class="text-left">
+                <a href="#" data-toggle="modal"   style="color: dodgerblue;" data-target="#modifyModal" data-backdrop="static" data-keyboard="false" onclick="machine_pp(this);" data-id="@item.id" data-mc_no="@item.mc_no" >@item.mc_no</a>
+            </td>
+            <td class="@item.day_1">@item.po1</td>
+            <td class="@item.day_2">@item.po2</td>
+            <td class="@item.day_3">@item.po3</td>
+            <td class="@item.day_4">@item.po4</td>
+            <td class="@item.day_5">@item.po5</td>
+            <td class="@item.day_6">@item.po6</td>
+            <td class="@item.day_7">@item.po7</td>
+            <td class="@item.day_8">@item.po8</td>
+            <td class="@item.day_9">@item.po9</td>
+            <td class="@item.day_10">@item.po10</td>
+
+            <td class="@item.day_11">@item.po11</td>
+            <td class="@item.day_12">@item.po12</td>
+            <td class="@item.day_13">@item.po13</td>
+            <td class="@item.day_14">@item.po14</td>
+            <td class="@item.day_15">@item.po15</td>
+            <td class="@item.day_16">@item.po16</td>
+            <td class="@item.day_17">@item.po17</td>
+            <td class="@item.day_18">@item.po18</td>
+            <td class="@item.day_19">@item.po19</td>
+            <td class="@item.day_20">@item.po20</td>
+
+            <td class="@item.day_21">@item.po21</td>
+            <td class="@item.day_22">@item.po22</td>
+            <td class="@item.day_23">@item.po23</td>
+            <td class="@item.day_24">@item.po24</td>
+            <td class="@item.day_25">@item.po25</td>
+            <td class="@item.day_26">@item.po26</td>
+            <td class="@item.day_27">@item.po27</td>
+            <td class="@item.day_28">@item.po28</td>
+            <td class="@item.day_29">@item.po29</td>
+            <td class="@item.day_30">@item.po30</td>
+
+            <td class="@item.day_31">@item.po31</td>
+
+        </tr>
+    }
+
+</table>
+
+<style>
+    table#data, table#data th, table#data td {
+        border: 0.5px solid #CCC;
+        text-align: center;
+    }
+
+    #data {
+        font-size: 15px;
+        width: 100%;
+        text-align: center;
+    }
+
+</style>
+

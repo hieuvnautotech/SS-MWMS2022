@@ -1,0 +1,89 @@
+﻿@model IEnumerable<Mvc_VD.Models.WIP.MaterialShippingMemo>
+
+    @{
+        ViewBag.Title = "PoMgt";
+        Layout = "~/Views/Shared/_LayoutSI.cshtml";
+    }
+
+    @section Tilte {
+        @*<div class="col-xs-12" id="current_menu" data-level_1="WMS" data-level_2="Shipping Management" data-level_3="Picking Scan"></div>*@
+        <div class="col-xs-12" id="current_menu" data-level_1="@Html.Raw(ViewData["WMS"])" data-level_2="@Html.Raw(ViewData["Shipping Management"])" data-level_3="@Html.Raw(ViewData["Show Material Shipping"])"></div>
+    }
+
+    @*---------------------------------------------------------------------------------------------------------------------------*@
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <div class="col-md-1 py-1 text-right">
+                    <label>Product</label>
+                </div>
+                <div class="col-md-1 py-1">
+                    <div class="input-group mt_plus">
+                        <input type="text" name="style_no" id="s_style_no" class="input-text form-control" placeholder="Product" required>
+
+                    </div>
+                </div>
+                <div class="col-md-1  py-1 text-right">
+                    <label>Material</label>
+                </div>
+                <div class="col-md-1 py-1">
+                    <input type="text" name="mt_no" id="s_mt_no" class="input-text form-control">
+                </div>
+                <div class="col-md-1  py-1 text-right">
+                    <label>Month</label>
+                </div>
+                <div class="col-md-1 py-1">
+                    <input type="text" name="month" id="s_month" class="input-text form-control">
+                </div>
+                <div class="col-md-1  py-1 text-right">
+                    <label>Date</label>
+                </div>
+                <div class="col-md-1 py-1">
+                    <input type="text" name="date" id="s_date" class="input-text form-control">
+                </div>
+                <div class="col-md-1 p-1 d-flex">
+                    <button id="searchBtn" class="btn btn-sm btn-success button-srh ml-5"><i class="fa fa-save">&nbsp;Search</i></button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    @*---------------------------------------------------------------------------------------------------------------------------*@
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white" style="overflow: hidden">
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li class="active" id="tab_1"><a href="#tab_1" data-toggle="tab">Material</a></li>
+                    <li id="tab_2"><a href="#tab_2" data-toggle="tab">Memo</a></li>
+                </ul>
+            </div>
+            <div class="tab-content active" id="tab_c1">
+                <div class="container-fluid">
+                    <div class="box-body my-2 bg-white">
+                        <div class="p-0 m-0">
+                            <table id="list"></table>
+                            <div id="listPager"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-content hidden" id="tab_c2">
+                <div class="container-fluid">
+                    <div class="box-body my-2 bg-white">
+                        <div class="p-0 m-0">
+                            <table id="listMeno"></table>
+                            <div id="listPagerMemo"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+
+
+    @section scripts{
+        <script src="~/Scripts/Shippingmgt/_ShowMaterialShipping.js"></script>
+
+
+    }

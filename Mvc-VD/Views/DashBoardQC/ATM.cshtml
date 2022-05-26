@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.Title = "ATM";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+<link href="~/CSS/Display/ATM/ATM.css" rel="stylesheet" />
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="MMS" data-level_2="Dash Board" data-level_3="ATM"></div>
+}
+
+<div class="container-fluid">
+    <div class="box-body all_cg">
+        <div class="width_luoi bg-white">
+         <table id="list" class="table table-bordered table-hover"></table>
+        <div id="listPager"></div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/Display/ATM/ATM.js"></script>
+}  

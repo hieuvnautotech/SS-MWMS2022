@@ -1,0 +1,176 @@
+﻿@{
+    ViewBag.Title = "menuMgt";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+
+
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="STANDARD" data-level_2="System Management" data-level_3="Menu Management"></div>
+    @*<div class="col-xs-12">
+            <h4 class="m-0 text-dark"><b>Menu Management</b></h4>
+            <small style="font-size:14px;"><i class="fa fa-dashboard"></i>
+                    HOME > System Management > Menu Management
+            </small>
+        </div> *@
+}
+<div class="container-fluid">
+    <div class="row text-right">
+        <div class="col-md-12 px-3">
+            <button type="submit" id="excelBtn" class="btn btn-sm btn-warning button-top"><i class="fa fa-file-excel-o">&nbsp;Excel</i></button>
+            <button type="submit" id="htmlBtn" class="btn btn-sm btn-warning form-control-text"><i class="fa fa-print">&nbsp;HTML</i></button>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-3 p-1 ">
+                <label><b>Menu Code</b></label>
+                <input type="text" name="mn_cd" id="mn_cd" class="form-control form-control-text ">
+            </div>
+            <div class="col-md-3 p-1 ">
+                <label><b>Menu Name</b></label>
+                <input type="text" name="mn_nm" id="mn_nm" class="form-control form-control-text ">
+            </div>
+            <div class="col-md-3 p-1 ">
+                <label><b>Full Name</b></label>
+                <input type="text" name="full_nm" id="full_nm" class="form-control form-control-text ">
+            </div>
+            <div class="col-md-1 p-2 ">
+                <label style="width:100%"><b>&nbsp;&nbsp;</b></label>
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <table id="jqGrid"></table>
+            <div id="jqGridPager"></div>
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active" id="tab_1"><a href="#tab_1" data-toggle="tab">Create</a></li>
+                <li id="tab_2"><a href="#tab_2" data-toggle="tab">Modify</a></li>
+            </ul>
+        </div>
+        <div class="tab-content active" id="tab_c1">
+            <form id="form1">
+                <div class="row p-2">
+                    <div class="col-lg-1 py-1">
+                        <input type="text" name="c_mn_cd" id="c_mn_cd" class="form-control form-control-text" placeholder="Menu Code" readonly="readonly">
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="row justify-content-md-end px-2">
+                            <div class="col-sm-12 py-1">
+                                <input type="text" name="c_mn_nm_1" id="c_mn_nm_1" class="form-control form-control-text" placeholder="Menu Name Level 1">
+                            </div>
+                            <div class="col-sm-11 py-1">
+                                <input type="text" name="c_mn_nm_2" id="c_mn_nm_2" class="form-control form-control-text" placeholder="Menu Name Level 2">
+                            </div>
+                            <div class="col-sm-10 py-1">
+                                <input type="text" name="c_mn_nm_3" id="c_mn_nm_3" class="form-control form-control-text" placeholder="Menu Name Level 3">
+                            </div>
+                            <div class="col-sm-9 py-1">
+                                <input type="text" name="c_mn_nm_4" id="c_mn_nm_4" class="form-control form-control-text" placeholder="Menu Name Level 4">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-3 py-1">
+                        <input type="text" name="c_url_link" id="c_url_link" class="form-control form-control-text" placeholder="URL (Ex: /Controller/Action)">
+                    </div>
+                    <div class="col-lg-1 py-1">
+                        <input type="number" name="c_order_no" id="c_order_no" class="input-text form-control form-control-text" placeholder="Detail Order" maxlength="3">
+                    </div>
+                    <div class="col-lg-1 py-1">
+                        <select name="use_yn" id="c_use_yn" class="form-control form-control-text select2">
+                            <option value="Y" selected="selected">Use</option>
+                            <option value="N">UnUse</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-2 py-2">
+                        <button type="reset" class="btn btn-sm btn-primary mr-2 pull-left"><i class="fa fa-refresh">&nbsp;Reset</i></button>
+                        <button type="button" id="c_save_but" class="btn btn-success btn-sm pull-left"><i class="fa fa-save">&nbsp;Create</i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="tab-content hidden" id="tab_c2">
+            <form id="form2">
+                <div class="row p-2">
+                    <div class="col-lg-1 py-1">
+                        <input type="text" name="m_mn_cd" id="m_mn_cd" class="form-control form-control-text" placeholder="Menu Code" readonly="readonly">
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="row justify-content-md-end px-2">
+                            <div class="col-sm-12 py-1">
+                                <input type="text" name="m_mn_nm_1" id="m_mn_nm_1" class="form-control form-control-text" placeholder="Menu Name Level 1">
+                            </div>
+                            <div class="col-sm-11 py-1">
+                                <input type="text" name="m_mn_nm_2" id="m_mn_nm_2" class="form-control form-control-text" placeholder="Menu Name Level 2">
+                            </div>
+                            <div class="col-sm-10 py-1">
+                                <input type="text" name="m_mn_nm_3" id="m_mn_nm_3" class="form-control form-control-text" placeholder="Menu Name Level 3">
+                            </div>
+                            <div class="col-sm-9 py-1">
+                                <input type="text" name="m_mn_nm_4" id="m_mn_nm_4" class="form-control form-control-text" placeholder="Menu Name Level 4">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-3 py-1">
+                        <input type="text" name="m_url_link" id="m_url_link" class="form-control form-control-text" placeholder="URL (Ex: /Controller/Action)">
+                    </div>
+                    <div class="col-lg-1 py-1">
+                        <input type="number" name="m_order_no" id="m_order_no" class="input-text form-control form-control-text" placeholder="Detail Order" maxlength="3">
+                    </div>
+                    <div class="col-lg-1 py-1">
+                        <select name="use_yn" id="m_use_yn" class="form-control form-control-text select2">
+                            <option value="Y" selected="selected">Use</option>
+                            <option value="N">UnUse</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-2 py-2">
+                        <button type="button" id="m_save_but" class="btn btn-sm btn-success btn-sm mr-5 pull-left"><i class="fa fa-save">&nbsp;Modify</i></button>
+                        <button type="button" id="del_save_but" class="btn btn-danger btn-sm pull-left"><i class="fa fa-scissors">&nbsp;Delete</i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--Popup -->
+<div id="dialogDangerous" title="Are you make sure DELETE ?">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-success button-srh mr-3" id="closestyle">No</button>
+                    <button type="button" class="btn btn-sm btn-danger button-srh" id="deletestyle">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ./ Popup -->
+@*---------------------------------------------------------------------------------------------------------------------------*@
+
+@section scripts{
+    <script src="~/Scripts/system/menuMgt/_MenuMgt.js"></script>
+    <script src="~/Scripts/system/menuMgt/_MenuMgt_Poup.js"></script>
+
+}
+
+

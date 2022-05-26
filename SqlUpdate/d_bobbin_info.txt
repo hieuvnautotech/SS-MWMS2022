@@ -1,0 +1,1 @@
+Select bno, mc_type, bb_no, mt_cd, bb_nm, purpose, barcode, re_mark, use_yn, count_number, del_yn, reg_id, reg_dt, chg_id, chg_dt from d_bobbin_info;

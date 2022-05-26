@@ -1,0 +1,269 @@
+﻿@{
+    ViewBag.Title = "Shipping Directions Generation(F)";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="FG-WMS" data-level_2="Shipping Management" data-level_3="Shipping Directions Generation(F)"></div>
+}
+<style>
+    /*.flex-container {
+        width: 100%;
+        min-height: 300px;
+        margin: 0 auto;
+        display: -webkit-flex; 
+        display: flexbox; 
+    }
+
+        .flex-container .column {
+            padding: 10px;
+            background: #dbdfe5;
+            -webkit-flex: 1; 
+            -ms-flex: 1;
+            flex: 1; 
+        }
+
+            .flex-container .column.bg-alt {
+                background: #b4bac0;
+            }*/
+</style>
+<div class="container-fluid">
+    <div class="box-body my-2">
+        <div class="row p-0 m-0 text-right">
+            <div class="col-md-12">
+                @*<button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>*@
+                @*<button id="Request" class="btn btn-sm btn-info button-srh"><i class="fa fa-arrow-circle-left">Direction</i></button>*@
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Search function -->
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-0 p-1  text-right">
+                <label style="margin-left: 20px"><b>SM</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <div class="input-group mt_plus">
+                    <input type="text" name="" id="sm" class="input-text form-control">
+                    @*<span class="input-group-addon ">
+                        <button type="button" class="btn btn-outline-warning button-sm  poupdialogsm"><i class="fa fa-search text-navy"></i></button>
+                    </span>*@
+                </div>
+            </div>
+            <div class="col-md-1 p-1  text-right">
+                <label><b>SO</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <div class="input-group mt_plus">
+                    <input type="text" name="so" id="so" class="input-text form-control">
+                    @*<span class="input-group-addon ">
+                        <button type="button" class="btn btn-outline-warning button-sm  poupdialogso"><i class="fa fa-search text-navy"></i></button>
+                    </span>*@
+                </div>
+            </div>
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Destination</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <div class="input-group" style="width: 100%;">
+                    <select name="lct_cd" id="lct_cd" class="form-control selectMf select2"></select>
+                </div>
+            </div>
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Product Code </b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <input type="text" name="style_no" id="style_no" class="form-control">
+            </div>
+            <div class="col-md-1 p-1 text-right">
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<!-- ./Search function -->
+@*---------------------------------------------------------------------------------------------------------------------------*@
+
+<div class="container-fluid">
+    <div class="col-md-9">
+        <div class="box-body my-2 bg-white column bg-alt" style="height: 447px">
+            <div class="p-0 m-0">
+                <table id="list"></table>
+                <div id="listPager"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="box-body my-2 bg-white">
+            <div class="row">
+                <div class="col-md-2 text-right p-4">
+                    <label>Destination</label>
+                </div>
+                <div class="col-md-9 p-4">
+                    <div class="input-group" style="width: 100%;">
+                        <select name="whouse" id="whouse" class="form-control selectMf select2"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="row ">
+                <div class="col-md-2 text-right p-4">
+                    <label>Worker</label>
+                </div>
+                <div class="col-md-9 p-4">
+                    <input type="text" name="userid" id="userid" class="input-text form-control">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 p-4 text-right"></div>
+                <div class="col-md-9 p-4" id="new">
+                    <input type="text" name="uname" id="uname" class="input-text form-control" placeholder="Name" readonly="readonly">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 text-right p-4">
+                    <label>Manager</label>
+                </div>
+                <div class="col-md-9 p-4">
+                    <input type="text" name="userid" id="userid2" class="input-text form-control">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 text-right p-4"></div>
+                <div class="col-md-9 p-4" id="new1">
+                    <input type="text" name="uname" id="uname2" class="input-text form-control" placeholder="Name" readonly="readonly">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 text-right p-2">
+                    <label>Work Date</label>
+                </div>
+                <div class="col-md-9 p-4">
+                    <input type="text" name="req_rec_dt" id="req_rec_dt" class="form-control">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 text-right p-4">
+                    <label>Remark</label>
+                </div>
+                <div class="col-md-9 p-4">
+                    <input type="text" name="remark" id="remark" class="form-control">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-11 p-4 text-right">
+                    <button id="Request" class="btn btn-sm btn-info button-srh"><i class="fa fa-arrow-circle-left">Direction</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class=" p-0 m-0">
+            <table id="list2"></table>
+            <div id="list2Page"></div>
+        </div>
+    </div>
+</div>
+
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="so" title="SO">
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <div class="col-md-3">
+                    <div class="row">
+                        <label class="col-xs-3 control-label text-right">
+                            <h6 class="control-label-text"><b>Code</b></h6>
+                        </label>
+                        <div class="col-xs-9">
+                            <input type="text" name="pp_so" id="pp_so" class="form-control" style="width: 100%;">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9 text-right">
+                    <button id="searchBtn_pp_so" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button type="button" class="btn btn-success button-srh2" id="selected_so"><i class="fa fa-check">Selected</i></button>
+                    <button type="button" class="btn btn-sm btn-primary button-srh" id="closeso"><i class="fa fa-close">&nbsp;Close</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <table id="popupso"></table>
+                <div id="pageso"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="sm" title="SM">
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <div class="col-md-3">
+                    <div class="row">
+                        <label class="col-xs-3 control-label text-right">
+                            <h6 class="control-label-text"><b>Code</b></h6>
+                        </label>
+                        <div class="col-xs-9">
+                            <input type="text" name="pp_so" id="pp_sm" class="form-control" style="width: 100%;">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9 text-right">
+                    <button id="searchBtn_pp_sm" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button type="button" class="btn btn-success button-srh2" id="selected_sm"><i class="fa fa-check">Selected</i></button>
+                    <button type="button" class="btn btn-sm btn-primary button-srh" id="closesm"><i class="fa fa-close">&nbsp;Close</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <table id="popupsm"></table>
+                <div id="pagesm"></div>
+            </div>
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+
+<style>
+    .col-h {
+        width: 2%;
+        text-align: center;
+        float: left;
+        padding-top: 7%;
+        display: inline-block;
+    }
+
+        .col-h button {
+            display: inline-block;
+            background: #588fb7;
+            color: #fff;
+        }
+
+    span.input-group-addon {
+        padding: 0;
+        border: 0.1px solid;
+    }
+</style>
+
+@section scripts{
+    <script src="~/Scripts/fgwms/Shippping_direction_gr_F/Shippping_direction_gr_F.js"></script>
+    <script src="~/Scripts/fgwms/Shippping_direction_gr_F/SO_PP.js"></script>
+    <script src="~/Scripts/fgwms/Shippping_direction_gr_F/Sm_PP.js"></script>
+}
+

@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Mvc_VD.Models.s_order_factory_info>
+@{ ViewBag.Title = "Index";
+   Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="MMS" data-level_2="Standard Management(WO)" data-level_3="Notice Management App"></div>
+}
+
+<div class="container-fluid">
+    <div class="row text-right">
+        <div class="col-md-12 px-3 py-3">
+              <button type="button" id="c_create" class="btn btn-sm btn-success button-srh"><i class="fa fa-save">&nbsp;Create</i></button>
+        </div>
+    </div>
+</div>
+
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <table id="noticeMgtGrid"></table>
+            <div id="noticeMgtGridPager"></div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Scripts/StandardMgtWO/_NoticeMgt.js"></script>
+    @*<script src="~/Scripts/jszip.min.js"></script>
+    <script src="~/Scripts/pdfmake.min.js"></script>
+    <script src="~/Scripts/vfs_fonts.js"></script>*@
+
+}

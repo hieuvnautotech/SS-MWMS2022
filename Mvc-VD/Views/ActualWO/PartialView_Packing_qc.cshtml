@@ -1,0 +1,186 @@
+﻿@{
+}
+
+@*MT NO : @ViewBag.info.mt_no
+<input type="hidden" name="name" id="mt_no" value="@ViewBag.info.mt_no " />
+<input type="hidden" name="name" id="sdid" value="@ViewBag.sdid " />
+<input type="hidden" name="name" id="sd_no" value="@ViewBag.info.sd_no " />
+<input type="hidden" name="name" id="send_bundle_qty" value="@ViewBag.send_bundle_qty " />
+<input type="hidden" name="name" id="send_qty" value="@ViewBag.send_qty " />*@
+<!--Popup Add-->
+<input type="hidden" name="pno" id="pno" value="@ViewBag.pno " />
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-12 p-2" style="text-align: right">
+                <button id="save_packing_qr" class="btn btn-success button-srh2 m-2">Save</button>
+                <button type="button" class="btn btn-sm btn-primary button-srh" id="close_packing_qr"><i class="fa fa-close">&nbsp;Close</i></button>
+            </div>
+        </div>
+        <div class="row p-0 m-0">
+            <div class="col-md-1 p-1  text-right">
+                <label><b>PL NO </b></label>
+            </div>
+            <div class="col-md-4 p-1">
+                <div class="input-group mt_plus">
+                    <input type="text" name="pl_no" id="pl_no" value="@ViewBag.info.prd_lcd" class="input-text form-control">
+                </div>
+            </div>
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Packing Unit</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <div class="input-group mt_plus">
+                    <input type="text" name="packing_unit" id="packing_unit" value="@ViewBag.packing_unit" style="text-align:right" class="input-text form-control">
+                </div>
+            </div>
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Group Qty</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <input type="text" name="gr_qty" id="gr_qty" class="form-control" value="@ViewBag.info.gr_qty" style="text-align:right">
+            </div>
+        </div>
+                <div class="row p-0 m-0">
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Send PL NO </b></label>
+            </div>
+            <div class="col-md-4 p-1">
+                <div class="input-group mt_plus">
+                    <input type="text" name="send_mt_cd" id="send_mt_cd" value="@ViewBag.info.prd_lcd" class="input-text form-control">
+                </div>
+            </div>
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Group Qty</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <div class="input-group mt_plus">
+                    <input type="text" name="send_gr_qty" id="send_gr_qty" class="input-text form-control" style="text-align:right">
+                </div>
+            </div>
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Send Qty</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <input type="text" name="send_qty" id="send_qty" class="form-control" style="text-align:right">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container-fluid">
+    <input type="hidden" name="sdmid" value=" " id="sdmid" />
+    <div class="box-body my-2 bg-white">
+        <div class=" p-0 m-0">
+            <table id="list_packing"></table>
+            <div id="list_packing_Pager"></div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+   
+ 
+    $(document).ready(function () {
+        $(function () {
+            $grid = $("#list_packing").jqGrid({
+                url: "/ActualWO/Get_list_packingQR?pno=@ViewBag.pno",
+                mtype: 'GET',
+                datatype: 'json',
+                colModel: [
+                     { key: true, label: 'pno', name: 'pno', width: 50, hidden: true },
+                     { key: false, label: 'PL NO', name: 'prd_lcd', width: 400, align: 'left' },
+                     { label: 'Group Qty', name: 'gr_qty', width: 80, align: 'right', formatter: 'integer' },
+                     { label: 'Product Code', name: 'style_no', width: 200, align: 'left' },
+                     { label: 'Product Name', name: 'style_nm', width: 200, align: 'left' },
+                     { label: 'Status', name: 'sts_cd', width: 110, align: 'left' },
+                     { label: 'Location', name: 'lct_cd', width: 110, align: 'left' },
+                     { label: 'Location Status', name: 'lct_sts_cd', width: 110, align: 'left' },
+                     { label: 'WO', name: 'fo_no', width: 110, align: 'center' },
+                     { label: 'PO', name: 'po_no', width: 110, align: 'center' },
+                ],
+                loadonce: true,
+                shrinkToFit: false,
+                pager: '#list_packing_Pager',
+                rowNum: 50,
+                rownumbers: true,
+                rowList: [50, 100, 200, 500, 1000],
+                viewrecords: true,
+                caption: "Packing QR",
+                height: 270,
+                multiselect: false,
+                jsonReader:
+              {
+                  root: "rows",
+                  page: "page",
+                  total: "total",
+                  records: "records",
+                  repeatitems: false,
+                  Id: "0"
+              },
+                width: null,
+
+                onSelectRow: function (row_id, status, e) {
+                    var selectedRowId = $("#list_edit").jqGrid("getGridParam", 'selrow');
+                    row_id = $("#list_edit").getRowData(selectedRowId);
+                    $('#sdmid').val(row_id.sdmid);
+                },
+            });
+        });
+
+    });
+    $("#close_packing_qr").click(function () {
+
+        $('.popup-dialog.dialog_pp_packing').dialog('close');
+
+    })
+    $("#save_packing_qr").click(function () {
+        if ($("#packing_unit").val().trim() == "") {
+            alert("Please enter your Group Qty");
+            $("#packing_unit").val("");
+            $("#packing_unit").focus();
+            return false;
+        } else {
+
+            var models = [];
+            var item = ({
+             
+                pno: $("#pno").val(),
+                pl_no: $("#pl_no").val(),
+                packing_unit: $("#packing_unit").val(),
+                gr_qty: $("#gr_qty").val(),
+                mt_cd: $("#send_mt_cd").val(),
+                send_gr_qty: $("#send_gr_qty").val(),
+                send_qty: $("#send_qty").val(),
+            });
+            models.push(item);
+            $.ajax({
+
+                type: 'POST',
+                url: "/ActualWO/insert_update_packing",
+                async: true,
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(models),
+                cache: false,
+                processData: false,
+                success: function (response) {
+                    if (response.result) {
+                        jQuery("#list_packing").setGridParam({ rowNum: 50, datatype: "json" }).trigger('reloadGrid');
+                    }
+                    else {
+
+                    }
+                },
+            });
+        }
+    });
+    
+
+</script>
+
+

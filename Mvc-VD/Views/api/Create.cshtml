@@ -1,0 +1,108 @@
+﻿@model Mvc_VD.Models.author_info
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Create</title>
+</head>
+<body>
+    <script src="~/Scripts/jquery-1.8.2.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+    
+        <fieldset>
+            <legend>author_info</legend>
+    
+            <div class="editor-label">
+                @Html.LabelFor(model => model.atno)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.atno)
+                @Html.ValidationMessageFor(model => model.atno)
+            </div>
+    
+            <div class="editor-label">
+                @Html.LabelFor(model => model.at_cd)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.at_cd)
+                @Html.ValidationMessageFor(model => model.at_cd)
+            </div>
+    
+            <div class="editor-label">
+                @Html.LabelFor(model => model.at_nm)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.at_nm)
+                @Html.ValidationMessageFor(model => model.at_nm)
+            </div>
+    
+            <div class="editor-label">
+                @Html.LabelFor(model => model.use_yn)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.use_yn)
+                @Html.ValidationMessageFor(model => model.use_yn)
+            </div>
+    
+            <div class="editor-label">
+                @Html.LabelFor(model => model.reg_id)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.reg_id)
+                @Html.ValidationMessageFor(model => model.reg_id)
+            </div>
+    
+            <div class="editor-label">
+                @Html.LabelFor(model => model.reg_dt)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.reg_dt)
+                @Html.ValidationMessageFor(model => model.reg_dt)
+            </div>
+    
+            <div class="editor-label">
+                @Html.LabelFor(model => model.chg_id)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.chg_id)
+                @Html.ValidationMessageFor(model => model.chg_id)
+            </div>
+    
+            <div class="editor-label">
+                @Html.LabelFor(model => model.chg_dt)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.chg_dt)
+                @Html.ValidationMessageFor(model => model.chg_dt)
+            </div>
+    
+            <div class="editor-label">
+                @Html.LabelFor(model => model.re_mark)
+            </div>
+            <div class="editor-field">
+                @Html.EditorFor(model => model.re_mark)
+                @Html.ValidationMessageFor(model => model.re_mark)
+            </div>
+    
+            <p>
+                <input type="submit" value="Create" />
+            </p>
+        </fieldset>
+    }
+    
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+</body>
+</html>

@@ -1,0 +1,232 @@
+﻿@{
+    ViewBag.Title = "Product_qc_info";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="QMS" data-level_2="QC Information" data-level_3="OQC Information"></div>
+}
+<div class="container-fluid">
+    <div class="row text-right">
+        <div class="col-md-12 px-3">
+            <button type="submit" id="excelBtn" class="btn btn-sm btn-warning button-top"><i class="fa fa-file-excel-o">&nbsp;Excel</i></button>
+            <button type="submit" id="htmlBtn" class="btn btn-sm btn-warning button-top"><i class="fa fa-print">&nbsp;HTML</i></button>
+        </div>
+    </div>
+</div>
+
+<!-- Search function -->
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+
+        <div class="row p-0 m-0">
+
+
+            <div class="col-md-1 p-1  text-right">
+                <label><b>PQ No </b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <input type="text" name="pq_no" id="pq_no" class="input-text form-control">
+            </div>
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Material Lot Code </b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <input type="text" name="ml_no" id="ml_no" class="input-text form-control">
+            </div>
+            <div class="col-md-1 px-1 py-2  text-right">
+                <label><b>Work Date</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <input type="text" name="start" id="start" class="form-control hasDatepicker">
+            </div>
+            <div class="col-md-0 px-1 py-2 text-right">
+                <label><b>~</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <input type="text" name="end" id="end" class="form-control hasDatepicker">
+            </div>
+            <div class="col-md-1 p-2">
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ./Search function -->
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="p-0 m-0">
+            <table id="OQCListGrid"></table>
+            <div id="OQCListpager"></div>
+        </div>
+    </div>
+</div>
+<!--./detail-->
+
+<div class="row">
+    <input type="hidden" name="name" value=" " id="item_vcd" />
+
+    @* --- Grid detail --- *@
+    <div class="col-md-3">
+        <div class="container-fluid">
+            <div class="box-body my-2 bg-white">
+                <div class="row p-0 m-0">
+                    <table id="list2"></table>
+                    <div id="grid2pager"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* --- Chart --- *@
+    <div class="col-md-9">
+        <div class="container-fluid">
+            <div class="box-body my-2 bg-white" style="height: 360px;" id="_PartialView_OQC_Chart">
+                <div class="nav-tabs-custom">
+                    <ul class="nav nav-tabs">
+                        <li class="active" id="tab_1"><a href="#tab_1" data-toggle="tab">Bar chart</a></li>
+                        <li id="tab_2"><a href="#tab_2" data-toggle="tab">Pie Chart</a></li>
+                    </ul>
+                </div>
+                @*<div class="tab-content active" id="tab_c1">
+                        <form name="form1" id="form1" enctype="multipart/form-data" role="form" method="post" target="zeroFrame">
+                            <div class="box-body box-body-input-move">
+                                <div id="container-bar">
+                                    <div class="box-body my-2 bg-white">
+                                        <div class="row p-0 m-0">
+                                            <div id="table_prounit">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.box-body -->
+                        </form>
+                    </div>*@
+
+                @*<div class="tab-content active" id="tab_c2">
+                        <form name="form2" id="form2" enctype="multipart/form-data" role="form" method="post" target="zeroFrame">
+                            <div class="box-body box-body-input-move">
+                                <div id="container-pie">
+                                    <div class="box-body my-2 bg-white">
+                                        <div class="row p-0 m-0">
+                                            <div id="table_pie">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.box-body -->
+                        </form>
+                    </div>*@
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Dialog WO-->
+<div class="dialogActual" title="WO NO">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-success button-srh disabled" id="SelectWO"><i class="fa fa-check">&nbsp;Selected</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <table id="popupsActual"></table>
+                <div id="popupspagerActual"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Dialog -->
+<!--Dialog Product-->
+<div class="dialog_PRODUCT" title="Product Information">
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body well text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="style_no_popup" placeholder="Product Code" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="style_nm_popup" placeholder="Product Name" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="md_cd" id="md_cd_popup" placeholder="Model Code" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2 d-flex">
+                    <button id="searchBtn_product_popup" class="btn btn-sm mr-5 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button type="button" class="btn btn-sm btn-success button-srh disabled" id="savestyle_product"><i class="fa fa-save">&nbsp;Selected</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid  p-0 m-0">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0 boxProduct">
+                <table id="popupProduct"></table>
+                <div id="pagerProduct"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ./ Dialog -->
+<!--Dialog BOM-->
+<div class="dialog_BOM" title="BOM Information">
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body well text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-3 p-2">
+                    <input type="text" name="bom_no" id="s_bom_no_popup" placeholder="BOM no" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="s_style_no_popup" placeholder="Product Code" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="md_cd" id="s_model_no_popup" placeholder="Model Code" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2 d-flex">
+                    <button id="searchBtn_BOM_popup" class="btn btn-sm mr-5 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button type="button" class="btn btn-sm btn-success button-srh disabled" id="savestyle_BOM"><i class="fa fa-save">&nbsp;Selected</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid  p-0 m-0">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0 boxBOM">
+                <table id="popupBOM"></table>
+                <div id="pagerBOM"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    span.input-group-addon {
+        padding: 0;
+        border: 0.1px solid;
+    }
+</style>
+
+@section scripts {
+    @*    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>*@
+    <script src="~/Content/charts/moment.min.js"></script>
+    <script src="~/Content/charts/Chart.min.js"></script>
+    <script src="~/Content/charts/chartjs-plugin-datalabels.js"></script>
+    <script src="~/Scripts/QCInformation/OQC_Infomation/Bom_Poup.js"></script>
+    <script src="~/Scripts/QCInformation/OQC_Infomation/Product_Poup.js"></script>
+    <script src="~/Scripts/QCInformation/OQC_Infomation/Wo_popup.js"></script>
+    <script src="~/Scripts/QCInformation/OQC_Infomation/Product_qc_info.js"></script>
+}
+

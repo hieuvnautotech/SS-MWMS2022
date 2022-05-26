@@ -1,0 +1,339 @@
+﻿@model IEnumerable<Mvc_VD.Models.notice_board>
+    @{
+        ViewBag.Title = "Manual";
+        Layout = "~/Views/Shared/_LayoutSI.cshtml";
+    }
+
+    <link href="~/Content/themes/base/resources/summernote/summernote-lite.css" rel="stylesheet" />
+
+    <style>
+        div#info {
+            width: 100%;
+        }
+
+        .title_name {
+            border: 1px solid #ccc;
+            padding: 5px;
+        }
+
+        span.input-group-addon {
+            padding: 0;
+            border: 0.1px solid;
+        }
+
+        h4.title_c {
+            font-size: 14px;
+            font-weight: 500;
+            color: #000;
+            transition: 1s;
+            text-align: left;
+            font-family: sans-serif;
+            color: red;
+        }
+    </style>
+
+    @section Tilte {
+        <div class="col-xs-12" id="current_menu" data-level_1="@Html.Raw(ViewData["STANDARD"])" data-level_2="@Html.Raw(ViewData["System Management"])" data-level_3="@Html.Raw(ViewData["Manual Management"])"></div>
+    }
+
+    @*<div class="container-fluid">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 text-center m-0">
+                    <button type="button" class="btn btn-outline-info mr-5 disabled"><i class="fa fa-reply-all fa-3x"></i></button>
+                    <a href="/system/ManualCreate"><button type="button" class="btn btn-outline-info"><i class=" fa fa-reply-all fa-3x fa-flip-horizontal"></i></button></a>
+                </div>
+            </div>
+        </div>*@
+
+    <!-- Search function -->
+
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <div class="col-md-auto p-1">
+                    <label><b>Language</b></label>
+                </div>
+                <div class="col-md-1 p-1 mr-5">
+                    <select id="lng_cd" class="form-control" name="lng_cd">
+                        <option value="All">All</option>
+                        <option value="VN">Vietnamese</option>
+                        <option value="EN">English</option>
+                    </select>
+                </div>
+                <div class="col-md-auto p-1">
+                    <label><b>Code</b></label>
+                </div>
+                <div class="col-md-2 p-1 mr-5">
+                    <input type="text" name="mn_cd" id="s_mn_cd" maxlength="20" class="input-text form-control">
+                </div>
+                <div class="col-md-auto p-1">
+                    <label><b>Name</b></label>
+                </div>
+                <div class="col-md-2 p-1 mr-5">
+                    <input type="text" name="title" id="title" maxlength="20" class="input-text form-control">
+                </div>
+                <div class="col-md-2 p-2">
+                    <button id="searchBtn1" class="btn btn-sm btn-primary mr-5"><i class="fa fa-search">&nbsp;Search</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ./Search function -->
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-0 mt-5 mb-2 text-right">
+                    <input type="hidden" name="s_bno" id="s_bno" class="input-text form-control">
+                    @*                <a href="/system/ManualCreate"><button id="registerBtn" class="btn btn-sm btn-success button-srh mr-5" onclick="fun_check1();"><i class="fa fa-reply-all fa-flip-horizontal"></i>&nbsp;Create</button></a>*@
+                    <button type="button" id="registerBtn" class="btn btn-sm btn-success button-srh mr-5"><i class="fa fa-reply-all fa-flip-horizontal"></i>&nbsp;Create</button>
+                    <button type="button" id="del_save_but" class="btn btn-danger button-sm disabled"><i class="fa fa-scissors">&nbsp;Delete</i></button>
+                </div>
+            </div>
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-0 m-0 boxA">
+                    <table id="noticeMgt"></table>
+                    <div id="jqGridPager2"></div>
+                    <div id="result"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!--Dialog -->
+    <div class="dialog_CREATE" title="Create">
+        <div class="container-fluid">
+            <form id='c_notice' class="form2" name="form2" action="/system/insertnotice_manu" method="post" enctype="multipart/form-data ">
+                <div class="box-body my-2 bg-white">
+                    <div class="row p-0 m-0">
+                        <div class="col-md-12">
+                            <label><b>Language</b></label>
+                        </div>
+                        <div class="col-md-3 pb-3">
+                            <select id="c_lng_cd" class="form-control" name="lng_cd">
+                                <option value="EN">English</option>
+                                <option value="VN">Vietnamese</option>
+                            </select>
+                        </div>
+                        <div class="col-md-12">
+                            <label>Title</label>
+                        </div>
+                        <div class="col-md-6 pb-5">
+                            <input type="hidden" name="mn_cd" id="c_mn_cd" class="input-text form-control">
+                            <div class="input-group mt_plus">
+                                <input type="text" name="title" id="c_title" class="input-text form-control" placeholder="Menu" readonly="readonly">
+                                <span class="input-group-addon p-2 psbom"><a href="#" id="poupdialogmenu" class="poupdialogmenu"><i class="fa fa-search text-navy"></i></a></span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row p-0 m-0">
+                                <div class="col-md-6">
+                                    <label>Content</label>
+                                </div>
+                                <div class="col-md-6 mb-4 text-right">
+                                    <button type="button" id="c_saveBtn" class="btn btn-sm btn-primary"><i class="fa fa-save">&nbsp; SAVE</i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 pb-5">
+                            <textarea id="c_content" name="content"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- ./ Dialog -->
+
+    <div class="dialog_MODIFY" title="Modify">
+        <div class="container-fluid">
+            <form id='m_notice' class="form3" name="form3" action="/system/updatemanu" method="post" enctype="multipart/form-data ">
+                <div class="box-body my-2 bg-white">
+                    <div class="row p-0 m-0">
+                        <div class="col-md-12">
+                            <label><b>Language</b></label>
+                        </div>
+                        <div class="col-md-3 pb-3">
+                            <select id="m_lng_cd" class="form-control" name="lng_cd">
+                                <option value="EN">English</option>
+                                <option value="VN">Vietnamese</option>
+                            </select>
+                        </div>
+                        <div class="col-md-12">
+                            <label>Title</label>
+                        </div>
+                        <div class="col-md-6 pb-5">
+                            <input type="hidden" name="mn_cd" id="m_mn_cd" class="input-text form-control">
+                            <div class="input-group mt_plus">
+                                <input type="text" name="title" id="m_title" class="input-text form-control" placeholder="Menu" readonly="readonly">
+                                <span class="input-group-addon p-2 psbom"><a href="#" id="m_poupdialogmenu" class="poupdialogmenu"><i class="fa fa-search text-navy"></i></a></span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row p-0 m-0">
+                                <div class="col-md-6">
+                                    <label>Content</label>
+                                </div>
+                                <div class="col-md-6 mb-4 text-right">
+                                    <button type="button" id="m_saveBtn" class="btn btn-sm btn-primary"><i class="fa fa-save">&nbsp; MODIFY</i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 pb-5">
+                            <textarea id="m_content" name="content"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
+
+
+
+    <!--Dialog -->
+    @*<div class="dialog_MODIFY" title="Modify">
+            <div class="container-fluid">
+                <form id='m_notice' name="form3" class="form3" action="/system/updatemanu" method="post" enctype="multipart/form-data ">
+                    <div class="box-body my-2 bg-white">
+                        <div class="row p-0 m-0">
+                            <div class="col-md-12">
+                                <label><b>Language</b></label>
+                            </div>
+                            <div class="col-md-3 pb-3">
+                                <input type="text" name="lng_cd" id="m_lng_cd" class="input-text form-control" placeholder="Language" readonly="readonly">
+                            </div>
+                            <div class="col-md-12">
+                                <label>Title</label>
+                            </div>
+                            <div class="col-md-6 pb-5">
+                                <input type="hidden" name="mn_cd" id="m_mn_cd" class="input-text form-control">
+                                <div class="input-group mt_plus">
+                                    <input type="text" name="title" id="m_title" class="input-text form-control" placeholder="Menu" readonly="readonly">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row p-0 m-0">
+                                    <div class="col-md-6">
+                                        <label>Content</label>
+                                    </div>
+                                    <div class="col-md-6 mb-4 text-right">
+                                        <button type="button" id="m_saveBtn" class="btn btn-sm btn-primary"><i class="fa fa-save">&nbsp; MODIFY</i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 pb-5">
+                                <textarea id="m_content" name="m_content"></textarea>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>*@
+
+    <!-- ./ Dialog -->
+    <div class="dialog3" title="Manual Detail">
+        <div class="container-fluid p-0 m-0">
+            <div class="box-body bg-white text-right p-0 m-0">
+                <div class="row p-0 m-0">
+                    <div class="col-md-10 p-2 p-0 m-0">
+                        <select id="dt_lng_cd" class="form-control" name="lng_cd">
+                            <option>*Language</option>
+                            <option value="VN">*Vietnamese</option>
+                            <option value="EN">*English*</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2 p-2">
+                        <button type="button" class="btn btn-sm btn-primary button-srh" id="close3"><i class="fa fa-close">&nbsp;Close</i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="info2" class="table-responsive-md">
+            <div class="to">
+                <h4 class="title_w"></h4>
+                <input class="title_name form-control" id="reg1">
+            </div>
+            <div class="to">
+                <h4 class="title_s"></h4>
+                <input class="title_name form-control" id="tieu_de1">
+            </div>
+            <div class="to">
+                <h4 class="title_c"></h4>
+                <div id="content1" class="title_name">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Popup -->
+    <div id="dialogDangerous" title="Are you make sure DELETE ?">
+        <div class="container-fluid">
+            <div class="box-body bg-white text-right">
+                <div class="row p-0 m-0">
+                    <div class="col-md-12 p-2">
+                        <button type="button" class="btn btn-sm btn-success button-srh mr-3" id="closestyle">No</button>
+                        <button type="button" class="btn btn-sm btn-danger button-srh" id="deletestyle">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ./ Popup -->
+    <!--Dialog -->
+    <div class="dialog_menu" title="Menu Information">
+        <div class="container-fluid">
+            <div class="box-body bg-white text-right">
+                <div class="row p-0 m-0">
+                    <div class="col-md-12 p-2">
+                        <button type="button" class="btn btn-sm btn-success button-srh" id="selectmenu"><i class="fa fa-close">&nbsp;Select</i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+            <div class="box-body my-2 bg-white">
+                <div class="row p-0 m-0 boxMenu">
+                    <table id="popupmenu"></table>
+                    <div id="pagermenu"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ./ Dialog -->
+
+
+    @section scripts{
+        @*<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js" type="text/javascript"></script>*@
+        <script src="~/Content/jquery.validate_V1.9/jquery.validate.min.js"></script>
+        <script src="~/Content/themes/base/resources/summernote/summernote-lite.js"></script>
+        <script src="~/Scripts/system/Manual/Manual_Popup.js"></script>
+        <script src="~/Scripts/system/Manual/Manual.js"></script>
+
+        <script>
+            $("#c_notice").validate({
+                rules: {
+                    "title": {
+                        required: true,
+                    },
+                },
+                rules: {
+                    "lng_cd": {
+                        required: true,
+                    },
+                },
+                rules: {
+                    "content": {
+                        required: true,
+                    },
+                },
+
+            });
+        </script>
+    }
+

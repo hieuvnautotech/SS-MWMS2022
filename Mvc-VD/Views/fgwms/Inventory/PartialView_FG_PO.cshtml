@@ -1,0 +1,167 @@
+﻿
+<style>
+    .custom-table-buyers {
+        font-family: Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+    .custom-title{
+        width: 75px;
+    }
+
+    .custom-table-buyers td, custom-table-buyers th {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    .custom-table-buyers tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+    tr.table-warning th {
+        vertical-align: middle !important;
+    }
+</style>
+
+<div class="container-fluid py-4 all_po">
+    <h4>List Material(PO)</h4>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0" style="display: flex; flex-wrap: nowrap;">
+
+                <table class="custom-table-buyers">
+                    <tr>
+                        <td>
+                            <div>
+                                <label class="custom-title">
+                                    <b>
+                                        PO NO:
+                                    </b>
+                                </label>
+                                <i>
+                                    @ViewBag.value
+                                </i>
+                            </div>
+
+                            <div>
+                                <label class="custom-title">
+                                    <b class="custom-title">
+                                        QUANTITY:
+                                    </b>
+                                </label>
+                                <i>
+                                    @ViewBag.quantity
+                                </i>
+                            </div>
+
+                            <div>
+                                <label class="custom-title">
+                                    <b>
+                                        PRODUCT:
+                                    </b>
+                                </label>
+                                <i> @ViewBag.product</i>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="3">
+                            <label><b>BUYER QR:</b></label>
+                            @Html.Raw(ViewBag.buyer)
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div>
+
+            </div>
+        </div>
+        <table id="dataTable_PO" class="table table-bordered table-striped" style="width: 100%">
+            <thead>
+                <tr class="table-warning">
+                    <th style="text-align: center !important">STT</th>
+                    <th style="text-align: center !important">Process</th>
+                    <th style="text-align: center !important">Công Nhân + Thời gian</th>
+                    <th style="text-align: center !important"> Máy + Thời Gian </th>
+                    <th style="text-align: center !important">Code</th>
+                    <th style="text-align: center !important">Material Name</th>
+                    <th style="text-align: center !important">Used Material Spec</th>
+                    <th style="text-align: center !important">Size</th>
+                    <th style="text-align: center !important">Quantity(M)</th>
+                    <th style="text-align: center !important">Lot No</th>
+                    <th style="text-align: center !important">Export Date</th>
+                    <th style="text-align: center !important">Date Of Receive</th>
+                    <th style="text-align: center !important">Expiry Date</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <input type="hidden" name="value" id="value_po" value="@ViewBag.value">
+    <script>
+        $(function () {
+            var value = $("#value_po").val();
+            $.get("/fgwms/GetFGProductLot_PO?po=" + value, function (data) {
+                if (data.data.length > 0) {
+                    var t3 = $('#dataTable_PO').DataTable({
+                        "processing": true,
+                        data: data.data,
+                        "searching": false,
+                        "paging": false,
+                        "bInfo": false,
+                        "columns": [
+                            {
+                                'className': 'details-control',
+                                'orderable': false,
+                                'data': null,
+                                'defaultContent': ''
+                            },
+
+                            { "data": "process" },
+                            { "data": "congnhan_time" },
+                            { "data": "machine" },
+                            { "data": "mt_no" },
+                            { "data": "mt_nm" },
+                            { "data": "mt_cd" },
+                            { "data": "size" },
+                            { "data": "SLLD" },
+                            { "data": "lot_no" },
+                             { "data": "expore_dt" },
+                            { "data": "dt_of_receipt" },
+                             { "data": "expiry_dt" },
+
+                        ],
+                        "orderFixed": {
+                            "pre": [1, 'asc']
+                        },
+                         'rowsGroup': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+                        'columnDefs': [
+                            {
+                                "targets": 0, // your case first column
+                                "className": "text-center",
+                                "width": "3%"
+                            },
+                            {
+                                "targets": 3, // your case first column
+                                "className": "text-center",
+                                "width": "10%"
+                            },
+                        ],
+                        "bDestroy": true,
+                    });//bảng 4
+                    t3.on('order.dt search.dt', function () {
+                        t3.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+                            cell.innerHTML = i + 1;
+                        });
+                    }).draw();
+                }
+            });
+
+
+        });
+        $.unblockUI();
+    </script>
+
+
+
+

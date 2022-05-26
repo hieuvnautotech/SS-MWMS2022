@@ -1,0 +1,255 @@
+﻿@model IEnumerable<Mvc_VD.Models.comm_mt>
+    @{
+        ViewBag.Title = "Index";
+        Layout = "~/Views/Shared/_LayoutSI.cshtml";
+    }
+
+    @section Tilte {
+        <div class="col-xs-12" id="current_menu" data-level_1="@Html.Raw(ViewData["DMS"])" data-level_2="@Html.Raw(ViewData["Development Management"])" data-level_3="@Html.Raw(ViewData["Model Management"])"></div>
+    }
+
+    <div class="container-fluid">
+        <div class="row text-right">
+            <div class="col-md-12 px-3">
+                <form method="post" id="exportData">
+                    <button type="submit" id="excelModelBtn" class="btn btn-sm btn-warning button-top"><i class="fa fa-file-excel-o">&nbsp;Excel</i></button>
+                    <button type="button" id="htmlBtn" class="btn btn-sm btn-warning button-top" hidden="hidden"><i class="fa fa-print">&nbsp;HTML</i></button>
+                </form>
+            </div>
+
+
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <div class="col-md-auto py-2">
+                    <label><b>Code </b></label>
+                </div>
+                <div class="col-md-1 p-1 mr-5">
+                    <input type="text" name="s_md_cd" id="s_md_cd" class="form-control form-control-text ">
+                </div>
+                <div class="col-md-auto py-2">
+                    <label><b>Name</b></label>
+                </div>
+                <div class="col-md-1 p-1 mr-5">
+                    <input type="text" name="s_md_nm" id="s_md_nm" class="form-control form-control-text">
+                </div>
+                <div class="col-md-1 p-2 d-flex">
+                    <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                </div>
+                <div class="col-md-2 py-1 ml-10">
+                    <input type="file" name="file" id="imgupload" accept=".xlsx,.xls,.csv,.tsv,.xml,.json" class="valid">
+                </div>
+                <div class="col-md-3 py-2 px-3">
+                    <button id="uploadBtn" class="btn btn-sm btn-primary button-srh mr-3"><i class="fa fa-upload">&nbsp;Upload</i></button>
+                    @*<a id="downloadBtn" class="btn btn-success btn-download btnDownload mr-3" href="ftp://anonymous:123@180.93.223.114/demo_model.xlsx" download="demo_model.xlsx"><i class="fa fa-download">&nbsp;Download Form Excel</i></a>*@
+                    <a id="downloadBtn" class="btn btn-success btn-download btnDownload mr-3" href="~/Excel/ExcelModel/demo_model.xlsx" download="demo_model.xlsx"><i class="fa fa-download">&nbsp;Download Form Excel</i></a>
+
+                    @*<a href="~/Excel/ModelExcel/demo_model.xlsx">~/Excel/ModelExcel/demo_model.xlsx</a>*@
+
+                </div>
+                <div class="col-md-2 p-0 m-0" id="result">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <table id="ModelMgtGrid"></table>
+                <div id="ModelMgtGridPager"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li class="active" id="tab_1"><a href="#tab_1" data-toggle="tab">Create</a></li>
+                    <li id="tab_2"><a href="#tab_2" data-toggle="tab">Modify</a></li>
+                </ul>
+            </div>
+            <div class="tab-content active" id="tab_c1">
+                <form id="form1">
+                    <div class="row p-0 m-0">
+                        <div class="col-md-7">
+                            <div class="row">
+                                <input type="hidden" name="name" value=" " id="remark_color" />
+                                <div class="col-md-5 py-1">
+                                    <input type="text" name="md_cd" id="c_md_cd" class="form-control form-control-text" placeholder="Code">
+                                </div>
+                                <div class="col-md-5 py-1">
+                                    <input type="text" name="md_nm" id="c_md_nm" class="form-control form-control-text" placeholder="Name">
+                                </div>
+                                <div class="col-md-2 py-1">
+                                    <select name="use_yn" id="c_use_yn" class="form-control form-control-text select2">
+                                        <option value="Y" selected="selected">Use</option>
+                                        <option value="N">UnUse</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="row p-0 m-0">
+                                <div class="col-md-12 py-1 ml-5 d-flex">
+                                    <button type="button" id="c_save_but" class="btn btn-success button-sm"><i class="fa fa-save">&nbsp;Create</i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="tab-content hidden" id="tab_c2">
+                <form id="form2">
+                    <input type="hidden" name="mdid" id="m_mdid">
+                    <div class="row p-0 m-0">
+                        <div class="col-md-7">
+                            <div class="row">
+                                <div class="col-md-5 py-1">
+                                    <input type="text" name="md_cd" id="m_md_cd" class="form-control form-control-text" placeholder="Code" readonly="true">
+                                </div>
+                                <div class="col-md-5 py-1">
+                                    <input type="text" name="md_nm" id="m_md_nm" class="form-control form-control-text" placeholder="Name">
+                                </div>
+                                <div class="col-md-2 py-1">
+                                    <select name="use_yn" id="m_use_yn" class="form-control form-control-text select2">
+                                        <option value="Y" selected="selected">Use</option>
+                                        <option value="N">UnUse</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="row p-0 m-0">
+                                <div class="col-md-12 py-1 ml-5 d-flex">
+                                    <button type="button" id="m_save_but" class="btn btn-success button-srh2 mr-5"><i class="fa fa-save">&nbsp;Modify</i></button>
+                                    <button type="button" id="del_save_but" class="btn btn-danger button-srh2"><i class="fa fa-scissors">&nbsp;Delete</i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--Popup -->
+    <div id="dialogDangerous" title="Are you make sure DELETE ?">
+        <div class="container-fluid">
+            <div class="box-body bg-white text-right">
+                <div class="row p-0 m-0">
+                    <div class="col-md-12 p-2">
+                        <button type="button" class="btn btn-sm btn-success button-srh mr-3" id="closestyle">No</button>
+                        <button type="button" class="btn btn-sm btn-danger button-srh" id="deletestyle">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="col-12" hidden="hidden">
+        <div class="bg-white p-3">
+            <table id="list_html" style="width: 100%"></table>
+            <div id="gridpager_list_html"></div>
+        </div>
+    </div>
+
+    <script>
+        //$(document).ready(function (e) {
+        //    $('#htmlBtn').click(function (e) {
+        //        $("#list_html").jqGrid('exportToHtml',
+        //            options = {
+        //                title: '',
+        //                onBeforeExport: null,
+        //                includeLabels: true,
+        //                includeGroupHeader: true,
+        //                includeFooter: true,
+        //                tableClass: 'jqgridprint',
+        //                autoPrint: false,
+        //                topText: '',
+        //                bottomText: '',
+        //                fileName: "Model Management",
+        //                returnAsString: false
+        //            }
+        //        );
+        //    });
+
+        //});
+
+        //$("#list_html").jqGrid({
+
+        //    url: "/DevManagement/get_Model_html",
+        //    datatype: 'json',
+        //    mtype: 'Get',
+        //    colModel: [
+        //        { label: 'Model Code', name: 'Model_Code', width: 350, align: 'left' },
+        //        { label: 'Name', name: 'Model_Name', width: 500, align: 'left' },
+        //        { label: 'Use Y/N', name: 'Use_Y/N', width: 100, align: 'center' },
+        //        { label: 'Create User', name: 'Create_User', width: 90, align: 'center', formatter: need_qty },
+        //        { label: 'Create Date', name: 'Create_Date', align: 'center', width: 150, formatter: 'date', formatoptions: { srcformat: "ISO8601Long", newformat: "Y-m-d H:i:s" } },
+        //        { label: 'Change User', name: 'Change_User', width: 90, align: 'center', formatter: need_qty },
+        //        { label: 'Change Date', name: 'Change_Date', align: 'center', width: 150, formatter: 'date', formatoptions: { srcformat: "ISO8601Long", newformat: "Y-m-d H:i:s" } }
+        //    ],
+        //    formatter: {
+        //        integer: { thousandsSeparator: ",", defaultValue: '0' },
+        //        currency: {
+        //            decimalSeparator: ".",
+        //            defaultValue: '0.00',
+        //            prefix: "",
+        //            suffix: "",
+        //            thousandsSeparator: ',',
+        //            decimalPlaces: 2
+        //        },
+        //        number: { decimalSeparator: ".", thousandsSeparator: " ", decimalPlaces: 2, defaultValue: '0.00' },
+        //    },
+
+        //    pager: jQuery('#gridpager_list_html'),
+        //    rowNum: 50,
+        //    rowList: [50, 100, 200, 500, 1000],
+        //    rownumbers: true,
+        //    shrinkToFit: false,
+        //    autoResizing: true,
+        //    viewrecords: true,
+        //    height: '200',
+        //    loadonce: true,
+        //    multiselect: false,
+        //    width: null,
+        //    autoWidth: true,
+
+        //    jsonReader:
+        //    {
+        //        root: "rows",
+        //        page: "page",
+        //        total: "total",
+        //        records: "records",
+        //        repeatitems: false,
+        //        Id: "0"
+        //    },
+        //});
+
+
+        function need_qty(cellvalue, options, rowobject) {
+
+            if (cellvalue == null || cellvalue == '' || cellvalue == 0 || cellvalue == 'undefined' || cellvalue.length == 0) {
+                return '';
+            }
+            return cellvalue;
+        };
+
+
+
+    </script>
+    <!-- ./ Popup -->
+
+    @section scripts{
+        <script src="~/Content/jquery.validate_V1.9/jquery.validate.min.js"></script>
+        <script src="~/Scripts/DevManagement/ModelManagement/_ModelMgt.js"></script>
+        <script src="~/Scripts/DevManagement/ModelManagement/_ModelMgt_poup.js"></script>
+    }

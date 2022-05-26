@@ -1,0 +1,610 @@
+﻿@model Mvc_VD.Models.Response.ProductActivitionFailedResponse
+@using System.Linq;
+
+@{
+    Layout = null;
+    //int daysInMonth = DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month);
+    int daysInMonth = 31;
+    var totalColumns = daysInMonth * 2 + 9;
+    var colspan = totalColumns - 4;
+    var monthReport = @ViewBag.MonthReport as string;
+
+    var total = Model.ProductActivitionFaileds == null ? 0 : Model.ProductActivitionFaileds.Sum(m => m.Total);
+    var totalCN = Model.ProductActivitionFaileds == null ? 0 : Model.ProductActivitionFaileds.Where(m => m.Shift == "CN").Sum(m => m.Total);
+    var totalCD = Model.ProductActivitionFaileds == null ? 0 : Model.ProductActivitionFaileds.Where(m => m.Shift == "CD").Sum(m => m.Total);
+
+    var totalOK = Model.ProductActivitionFaileds == null ? 0 : Model.ProductActivitionFaileds.Sum(m => m.OK);
+    var totalOKCN = Model.ProductActivitionFaileds == null ? 0 : Model.ProductActivitionFaileds.Where(m => m.Shift == "CN").Sum(m => m.OK);
+    var totalOKCD = Model.ProductActivitionFaileds == null ? 0 : Model.ProductActivitionFaileds.Where(m => m.Shift == "CD").Sum(m => m.OK);
+
+    var totalNG = Model.ProductActivitionFaileds == null ? 0 : Model.ProductActivitionFaileds.Sum(m => m.NG);
+    var totalNGCN = Model.ProductActivitionFaileds == null ? 0 : Model.ProductActivitionFaileds.Where(m => m.Shift == "CN").Sum(m => m.NG);
+    var totalNGCD = Model.ProductActivitionFaileds == null ? 0 : Model.ProductActivitionFaileds.Where(m => m.Shift == "CD").Sum(m => m.NG);
+
+    var totalError = Model.ProductActivitionFailedDetails == null ? 0 : Model.ProductActivitionFailedDetails.Sum(m => m.CDQty) + Model.ProductActivitionFailedDetails.Sum(m => m.CNQty);
+    var totalErrorCN = Model.ProductActivitionFailedDetails == null ? 0 : Model.ProductActivitionFailedDetails.Sum(m => m.CNQty);
+    var totalErrorCD = Model.ProductActivitionFailedDetails == null ? 0 : Model.ProductActivitionFailedDetails.Sum(m => m.CDQty);
+
+    var rowsRepeated = Model.ProductActivitionFailedDetails == null ? null : Model.ProductActivitionFailedDetails.GroupBy(x => x.CheckName).Select(y => y.First());
+    var rowsRepeatedSpan = rowsRepeated == null ? 0 : rowsRepeated.Count() + 5;
+
+}
+
+<style>
+    .table-bordered > thead > tr > th, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > tbody > tr > td, .table-bordered > tfoot > tr > td {
+        border: 1px solid #c3bebe;
+    }
+
+    .table-scroll {
+        position: relative;
+        max-width: 100%;
+        margin: auto;
+        overflow: hidden;
+        /*border: 1px solid #000;*/
+    }
+
+    .table-wrap {
+        width: 100%;
+        overflow: auto;
+    }
+
+    .table-scroll table {
+        width: 100%;
+        margin: auto;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+    .table-scroll th, .table-scroll td {
+        padding: 5px 10px;
+        border: 0px solid #000;
+        background: #fff;
+        white-space: nowrap;
+        vertical-align: top;
+    }
+
+    .table-scroll thead, .table-scroll tfoot {
+        background: #f9f9f9;
+    }
+
+    .clone {
+        position: absolute;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+    }
+
+        .clone th, .clone td {
+            visibility: hidden
+        }
+
+        .clone td, .clone th {
+            border-color: transparent
+        }
+
+        .clone tbody th {
+            visibility: visible;
+            color: red;
+        }
+
+        .clone .fixed-side {
+            border: 1px solid #000;
+            background: #eee;
+            visibility: visible;
+        }
+
+        .clone thead, .clone tfoot {
+            background: transparent;
+        }
+</style>
+<h4>Product Activition Failed</h4>
+<div class="box-body my-2 bg-white">
+    @if (Model.ProductActivitionFailedDetails == null || Model.ProductActivitionFaileds == null)
+    {
+        <p>No data</p>
+    }
+    else if(Model.ProductActivitionFaileds.Count() > 0)
+    {
+        <div id="table-scroll" class="table-scroll">
+            <div class="table-wrap">
+                <table class="main-table table table-bordered">
+                    <tr>
+                        <td colspan="2" class="fixed-side">Model</td>
+                        <td class="fixed-side">@Model.ProductActivitionFaileds.FirstOrDefault().ModelName</td>
+                        <td rowspan="3" colspan="@colspan" class="text-center">
+                            후가공 완제품 검사 현황
+                            BẢNG THỐNG KÊ LỖI SẢN XUẤT HÀNG NGÀY
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="fixed-side">Item</td>
+                        <td class="fixed-side">@Model.ProductActivitionFaileds.FirstOrDefault().ItemName</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="fixed-side">Code</td>
+                        <td class="fixed-side">@Model.ProductActivitionFaileds.FirstOrDefault().ProductCode</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" class="fixed-side"></td>
+                        <td colspan="@colspan">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" class="fixed-side text-center">Lotno</td>
+                        <td colspan="5"></td>
+                        @{
+                            for (int i = 1; i <= daysInMonth; i++)
+                            {
+                                <td colspan="2">@i</td>
+                            }
+                        }
+                    </tr>
+                    <tr>
+                        <td colspan="3" rowspan="3" class="fixed-side text-center">구분</td>
+
+                    </tr>
+                    <tr>
+                        <td colspan="5">TOTAL</td>
+                        @{
+                            for (int i = 1; i <= daysInMonth; i++)
+                            {
+                                <td colspan="2">@i</td>
+                            }
+                        }
+                    </tr>
+                    <tr>
+                        <td colspan="3">계</td>
+                        <td>주간</td>
+                        <td>야간</td>
+                        @{
+                            for (int i = 1; i <= daysInMonth * 2; i++)
+                            {
+                                if (i % 2 == 0)
+                                {
+                                    <td>D</td>
+                                }
+                                else
+                                {
+                                    <td>N</td>
+                                }
+                            }
+                        }
+                    </tr>
+                    <tr>
+                        <td colspan="3" class="fixed-side text-center">검사수량(Tổng hàng kiểm tra)</td>
+                        <td colspan="3">@total.ToString("#,##")</td>
+                        <td>@totalCN.ToString("#,##")</td>
+                        <td>@totalCD.ToString("#,##")</td>
+                        @for (int i = 1; i <= daysInMonth; i++)
+                        {
+                            var flag = false;
+                            string day = (i < 10 ? "0" : "") + i;
+                            var currDate = monthReport + "-" + day;
+                            var resultChecks = Model.ProductActivitionFaileds.Where(m => m.CreateOn == currDate).ToList();
+                            if (resultChecks != null && resultChecks.Any())
+                            {
+                                int j = resultChecks.Count();
+                                if (j == 1)
+                                {
+                                    if (resultChecks[0].Shift == "CN")
+                                    {
+                                        <td>@resultChecks[0].Total.ToString("#,##")</td>
+                                        <td></td>
+                                    }
+                                    if (resultChecks[0].Shift == "CD")
+                                    {
+                                        <td></td>
+                                        <td>@resultChecks[0].Total.ToString("#,##")</td>
+                                    }
+                                }
+                                else
+                                {
+                                    var CN = resultChecks.Where(x => x.Shift == "CN").ToList();
+                                    var CD = resultChecks.Where(x => x.Shift == "CD").ToList();
+                                    if (CN.Count() > 0 )
+                                    {
+                                        int totalresultChecks = 0;
+                                        for (int b = 0; b < CN.Count(); b++)
+                                        {
+                                            totalresultChecks += CN[b].Total;
+                                        }
+                                        <td>@totalresultChecks.ToString("#,##")</td>
+                                    }
+                                    if (CD.Count() >= 0)
+                                    {
+                                        int totalresultChecks = 0;
+                                        for (int b = 0; b < CD.Count(); b++)
+                                        {
+                                            totalresultChecks += CD[b].Total;
+                                        }
+                                        <td>@totalresultChecks.ToString("#,##")</td>
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                <td></td>
+                                <td></td>
+                            }
+
+                        }
+                    </tr>
+                    <tr>
+                        <td colspan="3" class="fixed-side text-center">양품수량(Tổng hàng OK)</td>
+                        <td colspan="3">@totalOK.ToString("#,##")</td>
+                        <td>@totalOKCN.ToString("#,##")</td>
+                        <td>@totalOKCD.ToString("#,##")</td>
+                        @for (int i = 1; i <= daysInMonth; i++)
+                        {
+                            var flag = false;
+                            string day = (i < 10 ? "0" : "") + i;
+                            var currDate = monthReport + "-" + day;
+                            var resultChecks = Model.ProductActivitionFaileds.Where(m => m.CreateOn == currDate).ToList();
+                            if (resultChecks != null && resultChecks.Any())
+                            {
+                                int j = resultChecks.Count();
+                                if (j == 1)
+                                {
+                                    if (resultChecks[0].Shift == "CN")
+                                    {
+                                        <td>@resultChecks[0].OK.ToString("#,##")</td>
+                                        <td></td>
+                                    }
+                                    if (resultChecks[0].Shift == "CD")
+                                    {
+                                        <td></td>
+                                        <td>@resultChecks[0].OK.ToString("#,##")</td>
+                                    }
+                                }
+                                else
+                                {
+                                    var CN = resultChecks.Where(x => x.Shift == "CN").ToList();
+                                    var CD = resultChecks.Where(x => x.Shift == "CD").ToList();
+                                    if (CN.Count() > 0)
+                                    {
+                                        int totalresultChecks = 0;
+                                        for (int b = 0; b < CN.Count(); b++)
+                                        {
+                                            totalresultChecks += CN[b].OK;
+                                        }
+                                        <td>@totalresultChecks.ToString("#,##")</td>
+                                    }
+                                    if (CD.Count() >= 0)
+                                    {
+                                        int totalresultChecks = 0;
+                                        for (int b = 0; b < CD.Count(); b++)
+                                        {
+                                            totalresultChecks += CD[b].OK;
+                                        }
+                                        <td>@totalresultChecks.ToString("#,##")</td>
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                <td></td>
+                                <td></td>
+                            }
+
+                        }
+                    </tr>
+                    <tr>
+                        <td colspan="3" class="fixed-side text-center">불량수량(Tổng hàng NG)</td>
+                        <td colspan="3">@totalNG.ToString("#,##")</td>
+                        <td>@totalNGCN.ToString("#,##")</td>
+                        <td>@totalNGCD.ToString("#,##")</td>
+                        @for (int i = 1; i <= daysInMonth; i++)
+                        {
+                            var flag = false;
+                            string day = (i < 10 ? "0" : "") + i;
+                            var currDate = monthReport + "-" + day;
+                            var resultChecks = Model.ProductActivitionFaileds.Where(m => m.CreateOn == currDate).ToList();
+                            if (resultChecks != null && resultChecks.Any())
+                            {
+                                int j = resultChecks.Count();
+                                if (j == 1)
+                                {
+                                    if (resultChecks[0].Shift == "CN")
+                                    {
+                                        <td>@resultChecks[0].NG.ToString("#,##")</td>
+                                        <td></td>
+                                    }
+                                    if (resultChecks[0].Shift == "CD")
+                                    {
+                                        <td></td>
+                                        <td>@resultChecks[0].NG.ToString("#,##")</td>
+                                    }
+                                }
+                                else
+                                {
+                                    var CN = resultChecks.Where(x => x.Shift == "CN").ToList();
+                                    var CD = resultChecks.Where(x => x.Shift == "CD").ToList();
+                                    if (CN.Count() > 0)
+                                    {
+                                        int totalresultChecks = 0;
+                                        for (int b = 0; b < CN.Count(); b++)
+                                        {
+                                            totalresultChecks += CN[b].NG;
+                                        }
+                                        <td>@totalresultChecks.ToString("#,##")</td>
+                                    }
+                                    if (CD.Count() >= 0)
+                                    {
+                                        int totalresultChecks = 0;
+                                        for (int b = 0; b < CD.Count(); b++)
+                                        {
+                                            totalresultChecks += CD[b].NG;
+                                        }
+                                        <td>@totalresultChecks.ToString("#,##")</td>
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                <td></td>
+                                <td></td>
+                            }
+
+                        }
+                    </tr>
+                    <tr>
+                        <td colspan="3" class="fixed-side text-red text-center">불량률(Tỷ lệ NG %)</td>
+                        <td colspan="3" class="text-red">@Math.Round(((double)totalNG / total) * 100, 2) %</td>
+                        <td class="text-red">@Math.Round(((double)totalNGCN / totalCN) * 100, 2) %</td>
+                        <td class="text-red">@Math.Round(((double)totalNGCD / totalCD) * 100, 2) %</td>
+                        @for (int i = 1; i <= daysInMonth; i++)
+                        {
+                            var flag = false;
+                            string day = (i < 10 ? "0" : "") + i;
+                            var currDate = monthReport + "-" + day;
+                            var resultChecks = Model.ProductActivitionFaileds.Where(m => m.CreateOn == currDate).ToList();
+                            if (resultChecks != null && resultChecks.Any())
+                            {
+                                int j = resultChecks.Count();
+                                if (j == 1)
+                                {
+                                    if (resultChecks[0].Shift == "CN")
+                                    {
+                                        <td class="text-red">@Math.Round(((double)resultChecks[0].NG / resultChecks[0].Total) * 100, 2) %</td>
+                                        <td></td>
+                                    }
+                                    if (resultChecks[0].Shift == "CD")
+                                    {
+                                        <td></td>
+                                        <td class="text-red">@Math.Round(((double)resultChecks[0].NG / resultChecks[0].Total) * 100, 2) %</td>
+                                    }
+                                }
+                                else
+                                {
+                                    @*if (resultChecks[0].Shift == "CN")
+                    {
+                        <td class="text-red">@Math.Round(((double)resultChecks[0].NG / resultChecks[0].Total) * 100, 2) %</td>
+                        <td class="text-red">@Math.Round(((double)resultChecks[1].NG / resultChecks[1].Total) * 100, 2) %</td>
+                    }
+                    if (resultChecks[0].Shift == "CD")
+                    {
+                        <td class="text-red">@Math.Round(((double)resultChecks[1].NG / resultChecks[1].Total) * 100, 2) %</td>
+                        <td class="text-red">@Math.Round(((double)resultChecks[0].NG / resultChecks[0].Total) * 100, 2) %</td>
+                    }*@
+
+                                    var CN = resultChecks.Where(x => x.Shift == "CN").ToList();
+                                    var CD = resultChecks.Where(x => x.Shift == "CD").ToList();
+                                    if (CN.Count() > 0)
+                                    {
+                                        int totalresultChecks = 0;
+                                        int totalresultChecksNG = 0;
+                                        for (int b = 0; b < CN.Count(); b++)
+                                        {
+                                            totalresultChecksNG += CN[b].NG;
+                                            totalresultChecks += CN[b].Total;
+                                        }
+                                        <td class="text-red">@Math.Round(((double)totalresultChecksNG / totalresultChecks) * 100, 2) %</td>
+                                    }
+                                    if (CD.Count() > 0)
+                                    {
+                                        int totalresultChecks = 0;
+                                        int totalresultChecksNG = 0;
+                                        for (int b = 0; b < CD.Count(); b++)
+                                        {
+                                            totalresultChecksNG += CD[b].NG;
+                                            totalresultChecks += CD[b].Total;
+                                        }
+                                        <td class="text-red">@Math.Round(((double)totalresultChecksNG / totalresultChecks) * 100, 2) %</td>
+                                    }
+                                    else
+                                    {
+                                        <td class="text-red"></td>
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                <td></td>
+                                <td></td>
+                            }
+
+                        }
+                    </tr>
+                    <tr>
+
+                        <td rowspan="@rowsRepeatedSpan" style="writing-mode: vertical-lr;" class="fixed-side">공정 불량유형shinsung</td>
+                        <td colspan="2" class="fixed-side">Total 공정 불량유형shinsung</td>
+                        <td colspan="3">@totalError.ToString("#,##")</td>
+                        <td>@totalErrorCN.ToString("#,##")</td>
+                        <td>@totalErrorCD.ToString("#,##")</td>
+                        @for (int i = 1; i <= daysInMonth; i++)
+                        {
+                            string day = (i < 10 ? "0" : "") + i;
+                            var currDate = monthReport + "-" + day;
+                            var resultChecks = Model.ProductActivitionFailedDetails.Where(m => m.CheckDate == currDate);
+                            if (resultChecks != null && resultChecks.Any())
+                            {
+                                <td>@resultChecks.Sum(mbox => mbox.CNQty).ToString("#,##")</td>
+                                <td>@resultChecks.Sum(mbox => mbox.CDQty).ToString("#,##")</td>
+                            }
+                            else
+                            {
+                                <td></td>
+                                <td></td>
+                            }
+
+                        }
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="fixed-side text-red">불량률(Tỷ lệ NG %)</td>
+                        <td colspan="3" class="text-red">@Math.Round(((double)totalError / total) * 100, 2) %</td>
+                        <td class="text-red">@Math.Round(((double)totalErrorCN / totalCN) * 100, 2) %</td>
+                        <td class="text-red">@Math.Round(((double)totalErrorCD / totalCD) * 100, 2) %</td>
+                        @for (int i = 1; i <= daysInMonth; i++)
+                        {
+                            var flag = false;
+                            string day = (i < 10 ? "0" : "") + i;
+                            var currDate = monthReport + "-" + day;
+                            var resultChecks = Model.ProductActivitionFaileds.Where(m => m.CreateOn == currDate).ToList();
+                            var resultChecksDetail = Model.ProductActivitionFailedDetails.Where(m => m.CheckDate == currDate);
+                            if (resultChecksDetail != null && resultChecksDetail.Any())
+                            {
+                                if (resultChecks != null && resultChecks.Any())
+                                {
+                                    int j = resultChecks.Count();
+                                    if (j == 1)
+                                    {
+                                        if (resultChecks[0].Shift == "CN")
+                                        {
+                                            <td class="text-red">@Math.Round(((double)resultChecksDetail.Sum(mbox => mbox.CNQty) / resultChecks[0].Total) * 100, 2) %</td>
+                                            <td></td>
+                                        }
+                                        if (resultChecks[0].Shift == "CD")
+                                        {
+                                            <td></td>
+                                            <td class="text-red">@Math.Round(((double)resultChecksDetail.Sum(mbox => mbox.CDQty) / resultChecks[0].Total) * 100, 2) %</td>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (resultChecks[0].Shift == "CN")
+                                        {
+                                            <td class="text-red">@Math.Round(((double)resultChecksDetail.Sum(mbox => mbox.CNQty) / resultChecks[0].Total) * 100, 2) %</td>
+                                            <td class="text-red">@Math.Round(((double)resultChecksDetail.Sum(mbox => mbox.CDQty) / resultChecks[1].Total) * 100, 2) %</td>
+                                        }
+                                        if (resultChecks[0].Shift == "CD")
+                                        {
+                                            <td class="text-red">@Math.Round(((double)resultChecksDetail.Sum(mbox => mbox.CNQty) / resultChecks[1].Total) * 100, 2) %</td>
+                                            <td class="text-red">@Math.Round(((double)resultChecksDetail.Sum(mbox => mbox.CDQty) / resultChecks[0].Total) * 100, 2) %</td>
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    <td></td>
+                                    <td></td>
+                                }
+                            }
+                            else
+                            {
+                                <td></td>
+                                <td></td>
+                            }
+
+                        }
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="fixed-side">Total 원자재 불량</td>
+                        <td colspan="3">-</td>
+                        <td>-</td>
+                        <td>-</td>
+                        @for (int i = 1; i <= daysInMonth; i++)
+                        {
+                            <td>-</td>
+                            <td>-</td>
+                        }
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="fixed-side text-red">불량률(Tỷ lệ NG %)</td>
+                        <td colspan="3">0.00%</td>
+                        <td>0.00%</td>
+                        <td>0.00%</td>
+                        @for (int i = 1; i <= daysInMonth; i++)
+                        {
+                            <td>0.00%</td>
+                            <td>0.00%</td>
+                        }
+                    </tr>
+                    <tr>
+                        <td colspan="2" class="fixed-side text-center">불량유형</td>
+                        <td>불량수량</td>
+                        <td>불량률</td>
+                        <td>불량점유율</td>
+                        <td>불량수량</td>
+                        <td>불량수량</td>
+                        @for (int i = 1; i <= daysInMonth; i++)
+                        {
+                            <td></td>
+                            <td></td>
+                        }
+                    </tr>
+                    @foreach (var item in rowsRepeated)
+                    {
+                        <tr>
+                            @{
+                                var detailCN = @Model.ProductActivitionFailedDetails.Where(m => m.CheckName == item.CheckName).Sum(mbox => mbox.CNQty);
+                                var detailCD = @Model.ProductActivitionFailedDetails.Where(m => m.CheckName == item.CheckName).Sum(mbox => mbox.CDQty);
+                                var detailTotal = detailCN + detailCD;
+                                var ratioTotalDetailOK = Math.Round(((double)detailTotal / total) * 100, 2);
+                                var ratioTotalDetailNG = Math.Round(((double)detailTotal / totalNG) * 100, 2);
+                            }
+                            <td class="fixed-side">@item.CheckName</td>
+                            <td class="fixed-side">@item.CheckName</td>
+                            <td>@detailTotal.ToString("#,##")</td>
+                            <td>@ratioTotalDetailOK %</td>
+                            <td>@ratioTotalDetailNG %</td>
+                            <td>@detailCN.ToString("#,##")</td>
+                            <td>@detailCD.ToString("#,##")</td>
+                            @for (int i = 1; i <= daysInMonth; i++)
+                            {
+                                string day = (i < 10 ? "0" : "") + i;
+                                var currDate = monthReport + "-" + day;
+                                var resultChecks = Model.ProductActivitionFailedDetails.Where(m => m.CheckDate == currDate && m.CheckName == item.CheckName).ToList();
+                                if (resultChecks != null && resultChecks.Any())
+                                {
+                                    int j = resultChecks.Count();
+                                    if (j == 1)
+                                    {
+                                        if (resultChecks[0].CNQty > 0)
+                                        {
+                                            <td>@resultChecks[0].CNQty.ToString("#,##")</td>
+                                            <td></td>
+                                        }
+                                        if (resultChecks[0].CDQty > 0)
+                                        {
+                                            <td></td>
+                                            <td>@resultChecks[0].CDQty.ToString("#,##")</td>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <td>@resultChecks[1].CNQty.ToString("#,##")</td>
+                                        <td>@resultChecks[0].CDQty.ToString("#,##")</td>
+                                    }
+                                }
+                                else
+                                {
+                                    <td></td>
+                                    <td></td>
+                                }
+                            }
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+    }
+
+</div>
+<script>
+    // requires jquery library
+    jQuery(document).ready(function () {
+        jQuery(".main-table").clone(true).appendTo('#table-scroll').addClass('clone');
+    });
+
+</script>

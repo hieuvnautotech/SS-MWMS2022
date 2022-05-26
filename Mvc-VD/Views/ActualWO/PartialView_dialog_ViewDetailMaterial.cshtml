@@ -1,0 +1,260 @@
+﻿    <!-- Date Picker -->
+<link rel="stylesheet" href="/Content/themes/base/resources/plugins/datepicker/datepicker3.css">
+<div class="container-fluid p-0 m-0">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-left">
+            <div class="row p-0 m-0">
+                <div class="col-md-4 p-2">
+                    <label><b>Date</b></label>
+                    <div class="input-group mt_plus">
+                        <input type="text" data-date-format='yyyy-mm-dd' name="" id="SeachDate" class="input-text form-control">
+                    </div>
+                </div>
+                <div class="col-md-2 p-2">
+                    <label><b>Ca Làm việc</b></label>
+                    <div class="input-group mt_plus">
+                        <select id="seachShift" class="form-control">
+                            <option value="">Ca Làm việc</option>
+                            <option value="Ca ngay">Ca ngày</option>
+                            <option value="Ca dem">Ca đêm</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-4 p-2">
+                    <label><b>Material No</b></label>
+                    <div class="input-group mt_plus">
+                        <input type="text"  name="mt_no" id="SeachMaterialNo" class="input-text form-control">
+                    </div>
+                </div>
+                <div class="col-lg-2 mt-5">
+                    <button type="button" class="btn btn-sm btn-warning button-srh" id="searchBtnPP" style="float: right;margin-right: 14px;">Seach</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class=" p-0 m-0">
+            <table id="tableDatetimeProcess"></table>
+            <div id="tableDatetimeProcessPage"></div>
+        </div>
+    </div>
+</div>
+
+<script src="/Content/themes/base/resources/plugins/datepicker/bootstrap-datepicker.js"></script>
+
+<script>
+
+    $(document).ready(function () {
+        $("#SeachDate").datepicker({
+            dateFormat: 'yy-mm-dd',
+
+        });
+        var date = $('#SeachDate').val().trim();
+        var seachShift = $('#seachShift').val().trim();
+        var mt_no = $('#SeachMaterialNo').val().trim();
+        $("#tableDatetimeProcess").jqGrid({
+           url: "/ActualWO/getBomdsMaterialDetail?product=" + '@ViewBag.product' + "&at_no=" + '@ViewBag.at_no' + "&mt_no=" + mt_no + "&shift_dt=" + date + "&shift_name=" + seachShift ,
+            mtype: "GET",
+            datatype: "json",
+            async: false,
+            page: 1,
+            colModel: [
+                { key: true, label: 'stt', name: 'stt', width: 100, align: 'center', hidden: true },
+                { key: false, label: 'Code', name: 'at_no', width: 150, align: 'center', hidden: true },
+                { key: false, label: 'Code', name: 'ProductCode', width: 150, align: 'center', hidden: true },
+                { label: 'MT Code', name: 'MaterialNo', width: 130 },
+
+                { label: 'MT Name', name: 'MaterialName', sortable: true, width: 400 },
+                { label: 'need_m', name: 'need_m', sortable: true, width: 100, hidden: true },
+                { label: 'lieuthaythe', name: 'lieuthaythe', sortable: true, width: 100, hidden: true },
+                { label: 'mLieu', name: 'mLieu', sortable: true, width: 100, hidden: true },
+                //{ label: 'Tổng số mét đã sử dụng', name: 'mLieu', width: 150, align: 'right' },
+                {
+                    label: 'Tổng số mét đã sử dụng', name: 'mLieu', width: 100, align: 'right',
+                    formatter: 'integer',
+                    summaryTpl: "Total: {0}", // set the summary template to show the group summary
+                    summaryType: "sum",
+                    align: 'right',
+                },
+                { label: 'Actulalythuyet', name: 'Actulalythuyet', width: 150, align: 'right', hidden: true, formatter: 'integer' },
+                { label: 'actual', name: 'Actual', width: 150, align: 'right', hidden: true },
+                //{ label: 'Hiệu suất(%)', name: 'hieusuat', sortable: true, width: '100', align: 'right', formatter: hieusuat },
+
+                {
+                    label: 'NVL đã scan', name: 'SoCuonNVL', width: 100, align: 'right',
+                    formatter: 'integer',
+                    summaryTpl: "Total: {0}", // set the summary template to show the group summary
+                    summaryType: "sum",
+                    align: 'right',
+                },
+                { label: 'Date', name: 'shift_dt', sortable: true, width: '100', align: 'right' },
+                { label: 'Shift', name: 'shift_name', sortable: true, width: '100', align: 'right' },
+            ],
+            shrinkToFit: false,
+            width: null,
+            height: '600',
+            subGrid: false, // set the subGrid property to true to show expand buttons for each row
+            rownumbers: true,
+            loadonce: false,
+            multiPageSelection: true,
+            rowList: [100, 200, 500, 1000],
+            viewrecords: true,
+            rowNum: 100,
+            pager: "#tableDatetimeProcessPage",
+            jsonReader:
+            {
+                root: "rows",
+                page: "page",
+                total: "total",
+                records: "records",
+                repeatitems: false,
+                Id: "0"
+            },
+            gridComplete: function () {
+                // debugger
+                prevCellVal = { cellId: undefined, value: undefined };
+                var ids = $("#tableDatetimeProcess").jqGrid('getDataIDs');
+
+
+                var sum_Quantity1 = 0;
+                var sum_Quantity2 = 0;
+
+
+                for (var i = 0; i < ids.length; i++) {
+                    sum_Quantity1 += parseInt($("#tableDatetimeProcess").getCell(ids[i], "SoCuonNVL"));
+                    sum_Quantity2 += parseInt($("#tableDatetimeProcess").getCell(ids[i], "mLieu"));
+
+                }
+
+                $("#tableDatetimeProcess").jqGrid("footerData", "set", {
+                    MaterialName: "Total:",
+                    SoCuonNVL: sum_Quantity1,
+                    mLieu: sum_Quantity2
+                });
+
+            },
+            subGrid: false,
+            subGridRowExpanded: showChildGrid,
+            footerrow: true,
+            grouping: true,
+            groupingView:
+            {
+                groupField: ["shift_dt", "shift_name"],
+                groupColumnShow: [true, true],
+                groupText: ["<b>{0}</b>", "<b>{0}</b>"],
+                groupOrder: ["asc"],
+                groupSummary: [true, true], // will use the "summaryTpl" property of the respective column
+                groupSummaryPos: ['footer', 'footer'],
+                groupCollapse: false,
+                groupDataSorted: true,
+                showSummaryOnHide: true,
+                loadonce: false,
+            }
+        });
+    });
+    function showChildGrid(parentRowID, parentRowKey) {
+        //debugger;
+        var childGridID = parentRowID + "_table";
+        var childGridPagerID = parentRowID + "_pager";
+
+        $('#' + parentRowID).append('<table id=' + childGridID + '></table><div id=' + childGridPagerID + ' class=scroll></div>');
+        //get staff_id
+
+        var rowData = $("#tableDatetimeProcess").jqGrid('getRowData', parentRowKey);
+        var product = '@ViewBag.product';
+        var at_no ='@ViewBag.at_no';
+        var mt_no = rowData.MaterialNo;
+        var shift_dt = rowData.shift_dt;
+        var shift_name = rowData.shift_name;
+
+
+        $("#" + childGridID).jqGrid({
+
+            url: `/ActualWO/getBomdsMaterialDetailReplace?mt_no=${mt_no}&shift_dt=${shift_dt}&shift_name=${shift_name}&product=${product}&at_no=${at_no}`,
+            mtype: "GET",
+            datatype: "json",
+            page: 1,
+            colModel: [
+                { key: true, label: 'stt', name: 'stt', width: 100, align: 'center', hidden: true },
+                { key: false, label: 'Code', name: 'at_no', width: 150, align: 'center', hidden: true },
+                { key: false, label: 'Code', name: 'ProductCode', width: 150, align: 'center', hidden: true },
+                { label: 'MT Code', name: 'MaterialNo', width: 130 },
+
+                { label: 'MT Name', name: 'MaterialName', sortable: true, width: 400 },
+                { label: 'need_m', name: 'need_m', sortable: true, width: 100, hidden: true },
+                { label: 'lieuthaythe', name: 'lieuthaythe', sortable: true, width: 100, hidden: true },
+                { label: 'mLieu', name: 'mLieu', sortable: true, width: 100, hidden: true },
+                //{ label: 'Tổng số mét đã sử dụng', name: 'mLieu', width: 150, align: 'right' },
+                {
+                    label: 'Tổng số mét đã sử dụng', name: 'mLieu', width: 100, align: 'right',
+                    formatter: 'integer',
+                    summaryTpl: "Total: {0}", // set the summary template to show the group summary
+                    summaryType: "sum",
+                    align: 'right',
+                },
+                { label: 'Actulalythuyet', name: 'Actulalythuyet', width: 150, align: 'right', hidden: true, formatter: 'integer' },
+                { label: 'actual', name: 'Actual', width: 150, align: 'right', hidden: true },
+                //{ label: 'Hiệu suất(%)', name: 'hieusuat', sortable: true, width: '100', align: 'right', formatter: hieusuat },
+
+                {
+                    label: 'NVL đã scan', name: 'SoCuonNVL', width: 100, align: 'right',
+                    formatter: 'integer',
+                    summaryTpl: "Total: {0}", // set the summary template to show the group summary
+                    summaryType: "sum",
+                    align: 'right',
+                },
+                { label: 'Date', name: 'shift_dt', sortable: true, width: '100', align: 'right' },
+                { label: 'Shift', name: 'shift_name', sortable: true, width: '100', align: 'right' },
+     
+            ],
+            shrinkToFit: false,
+            loadonce: false,
+            rowNum: 50,
+            rowList: [50, 100, 200, 500, 1000],
+            width: null,
+            height: '100%',
+            subGrid: false, // set the subGrid property to true to show expand buttons for each row
+            rownumbers: true,
+            loadonce: true,
+            multiPageSelection: true,
+            viewrecords: true,
+            rowNum: 50,
+            pager: "#" + childGridPagerID,
+            jsonReader:
+            {
+                root: "data",
+                page: "page",
+                total: "total",
+                records: "records",
+                repeatitems: false,
+                Id: "0"
+            },
+            onSelectRow: function (id, rowid, status, e) {
+
+            },
+        });
+    }
+
+    function MetLieuSuDung(cellValue, options, rowdata, action) {
+        return rowdata.lieuthaythe + rowdata.mLieu;
+    }
+    $('#searchBtnPP').click(function () {
+        var date = $('#SeachDate').val().trim();
+        var seachShift = $('#seachShift').val().trim();
+        var mt_no = $('#SeachMaterialNo').val().trim();
+      //  debugger
+        $.ajax({
+            url: "/ActualWO/getBomdsMaterialDetail?product=" + '@ViewBag.product' + "&at_no=" + '@ViewBag.at_no' + "&mt_no=" + mt_no + "&shift_dt=" + date + "&shift_name=" + seachShift ,
+            type: "get",
+            dataType: "json",
+
+            success: function (result) {
+                $("#tableDatetimeProcess").jqGrid('clearGridData').jqGrid('setGridParam', { datatype: 'local', data: result }).trigger('reloadGrid');
+            }
+        });
+    });
+</script>
+

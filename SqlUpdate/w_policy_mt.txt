@@ -1,0 +1,5 @@
+ Select policy_code, policy_name,DATE_FORMAT(policy_start_dt,'%Y-%m-%d %H:%i:%s') ,Date_FORMAT(policy_end_dt, '%Y-%m-%d %H:%i:%s'), 
+TIME_FORMAT(work_starttime,'%H:%i:%s'), TIME_FORMAT(work_endtime,'%H:%i:%s'), TIME_FORMAT(lunch_start_time,'%H:%i:%s'), TIME_FORMAT(lunch_end_time, '%H:%i:%s'), 
+TIME_FORMAT(dinner_start_time,'%H:%i:%s'),  TIME_FORMAT(dinner_end_time,'%H:%i:%s'), TIME_FORMAT(work_hour,'%H:%i:%s'), 
+ work_hour, use_yn, last_yn, re_mark, reg_id, reg_dt,chg_id, chg_dt
+From w_policy_mt

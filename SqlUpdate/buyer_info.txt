@@ -1,0 +1,3 @@
+Select byno, buyer_cd, buyer_nm, ceo_nm, manager_nm, brd_nm, logo, phone_nb, cell_nb, fax_nb, e_mail, 
+address, web_site, re_mark, use_yn, del_yn, stampid, reg_id, reg_dt, chg_id, chg_dt
+From buyer_info

@@ -1,0 +1,197 @@
+﻿    <!-- Date Picker -->
+<link rel="stylesheet" href="/Content/themes/base/resources/plugins/datepicker/datepicker3.css">
+<div class="container-fluid p-0 m-0">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-left">
+            <div class="row p-0 m-0">
+                <div class="col-md-4 p-2">
+                    <label><b>Date</b></label>
+                    <div class="input-group mt_plus">
+                        <input type="text"  data-date-format='yyyy-mm-dd'  name="" id="SeachDate" class="input-text form-control">
+                    </div>
+                </div>
+                <div class="col-md-2 p-2">
+                    <label><b>Ca Làm việc</b></label>
+                    <div class="input-group mt_plus">
+                        <select id="seachShift" class="form-control">
+                            <option value="">Ca Làm việc</option>
+                            <option value="Ca ngày">Ca ngày</option>
+                            <option value="Ca đêm">Ca đêm</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-lg-2 mt-5">
+                    <button type="button" class="btn btn-sm btn-warning button-srh" id="searchBtnPP" style="float: right;margin-right: 14px;">Seach</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class=" p-0 m-0">
+            <table id="tableDatetimeProcess"></table>
+            <div id="tableDatetimeProcessPage"></div>
+        </div>
+    </div>
+</div>
+<script src="/Content/themes/base/resources/plugins/datepicker/bootstrap-datepicker.js"></script>
+<script>
+    $(document).ready(function () {
+        debugger;
+        $("#SeachDate").datepicker({
+            dateFormat: 'yyyy-mm-dd',
+            changeYear: true
+        });
+      
+        $("#tableDatetimeProcess").jqGrid({
+            url: "/ActualWO/GetDetailActual?id=" + @ViewBag.id_actual,
+            mtype: "GET",
+            datatype: "json",
+            async: false,
+            page: 1,
+            colModel: [
+                { key: true, label: 'wmtid', name: 'wmtid', align: 'center', hidden: true },
+
+                { label: 'Reg Date', name: 'reg_date1', width: 150 },
+                { label: 'Shift', name: 'ca', width: 81, align: 'right' },
+                { label: 'Container', name: 'bb_no', width: 250, },
+                { label: 'ML No', name: 'mt_cd', width: 280, sortable: true, },
+                {
+                    label: 'Quantity', name: 'sl_tru_ng', width: 100, align: 'right', formatter: sl_tru_ng,
+                    formatter: 'integer',
+                    summaryTpl: "Total: {0}", // set the summary template to show the group summary
+                    summaryType: "sum",
+                    align: 'right',
+                },
+                {
+                    label: 'Quantity real', name: 'gr_qty', width: 100, align: 'right',
+                    formatter: 'integer',
+                    summaryTpl: "Total: {0}", // set the summary template to show the group summary
+                    summaryType: "sum"
+                },
+
+                //{ label: 'Reg Date', name: 'reg_date', width: 100, formatter: "date", formatoptions: { srcformat: "ISO8601Long", newformat: "Y-m-d" } },
+
+                { name: 'reg_dt', width: 100, hidden: true },
+            ],
+            shrinkToFit: false,
+            width: null,
+            height: '600',
+            subGrid: false, // set the subGrid property to true to show expand buttons for each row
+            rownumbers: true,
+            loadonce: false,
+            multiPageSelection: true,
+            rowList: [100, 200, 500, 1000],
+            viewrecords: true,
+            rowNum: 100,
+            pager: "#tableDatetimeProcessPage",
+            jsonReader:
+            {
+                root: "rows",
+                page: "page",
+                total: "total",
+                records: "records",
+                repeatitems: false,
+                Id: "0"
+            },
+            footerrow: true,
+          
+
+            gridComplete: function () {
+                prevCellVal = { cellId: undefined, value: undefined };
+                var ids = $("#tableDatetimeProcess").jqGrid('getDataIDs');
+                
+              
+                var sum_Quantity1 = 0;
+                var sum_Quantity2 = 0;
+
+                for (var i = 0; i < ids.length; i++) {
+                    sum_Quantity1 += parseInt($("#tableDatetimeProcess").getCell(ids[i], "sl_tru_ng"));
+                    sum_Quantity2 += parseInt($("#tableDatetimeProcess").getCell(ids[i], "gr_qty"));
+                }
+
+                  $("#tableDatetimeProcess").jqGrid("footerData", "set", {
+                    mt_cd: "Total:",
+                    sl_tru_ng: sum_Quantity1,
+                    gr_qty: sum_Quantity2
+                });
+               
+            },
+            grouping: true,
+            groupingView:
+            {
+                groupField: ["reg_dt", "ca"],
+                groupColumnShow: [true, true],
+                groupText: ["<b>{0}</b>", "<b>{0}</b>"],
+                groupOrder: ["asc"],
+                groupSummary: [true, true], // will use the "summaryTpl" property of the respective column
+                groupSummaryPos: ['footer', 'footer'],
+                groupCollapse: false,
+                groupDataSorted: true,
+                showSummaryOnHide: true,
+                loadonce: false,
+            }
+        });
+    });
+
+    function convertDate(cellValue, options, rowdata, action) {
+
+        if (cellValue != null) {
+
+            a = cellValue.substr(0, 4);
+            b = cellValue.substr(4, 2);
+            c = cellValue.substr(6, 2);
+            var html = a + "-" + b + "-" + c;
+            return html;
+        }
+        else {
+            var html = "";
+            return html;
+        }
+
+
+
+    };
+
+    $('#searchBtnPP').click(function () {
+        var date = $('#SeachDate').val().trim();
+        var seachShift = $('#seachShift').val().trim();
+        debugger
+        $.ajax({
+            url: "/ActualWO/GetDetailActual?id=" + @ViewBag.id_actual + "&date=" + date + "&shift=" + seachShift ,
+            type: "Get",
+            dataType: "json",
+            data: {
+                date: date
+            },
+            success: function (result) {
+                $("#tableDatetimeProcess").jqGrid('clearGridData').jqGrid('setGridParam', { datatype: 'local', data: result }).trigger('reloadGrid');
+
+                //dataResult = result;
+
+                ////sum Quantity
+                //var ids = result;
+                //var sum_Quantity1 = 0;
+                //var sum_Quantity2 = 0;
+                //var $self = $("#tableDatetimeProcess").jqGrid('clearGridData').jqGrid('setGridParam', { datatype: 'local', data: result }).trigger('reloadGrid');
+                //for (var i = 0; i < ids.length; i++) {
+                //    sum_Quantity1 += parseInt($("#tableDatetimeProcess").getCell(ids[i], "sl_tru_ng"));
+                //    sum_Quantity2 += parseInt($("#tableDatetimeProcess").getCell(ids[i], "gr_qty"));
+                //}
+
+                //$self.jqGrid("footerData", "set", { mt_cd: "Total" });
+                //$self.jqGrid("footerData", "set", { sl_tru_ng: 3 });
+                //$self.jqGrid("footerData", "set", { gr_qty: 4 });
+
+
+                //$("#tableDatetimeProcess").jqGrid('clearGridData').jqGrid('setGridParam', { datatype: 'local', data: result }).trigger('reloadGrid');
+
+               
+            }
+        });
+    });
+
+
+</script>

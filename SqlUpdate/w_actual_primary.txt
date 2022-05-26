@@ -1,0 +1,1 @@
+	Select id_actualpr, at_no, type, target, product, remark, finish_yn, IsApply,reg_id, reg_dt, chg_id, chg_dt From   w_actual_primary 

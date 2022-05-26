@@ -1,0 +1,274 @@
+﻿@{
+    ViewBag.Title = "Process_Unit";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="DEVELOPMENT" data-level_2="Development Management" data-level_3="Process Unit"></div>
+} 
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-auto pt-2">
+                <label><b>Process Unit Code</b></label>
+            </div>
+            <div class="col-md-1 p-1 mr-5">
+                <input type="text" name="s_prounit_cd" id="s_prounit_cd" class="form-control form-control-text ">
+            </div>
+            <div class="col-md-auto pt-2">
+                <label><b>Process Unit Name</b></label>
+            </div>
+            <div class="col-md-2 p-1 mr-5">
+                <input type="text" name="s_prounit_nm" id="s_prounit_nm" class="form-control form-control-text ">             
+            </div>
+            <div class="col-md-auto pt-2">
+                <label><b>Machine Or Bobin Code</b></label>
+            </div>
+            <div class="col-md-1 p-1 mr-5">
+                <input type="text" name="s_prounit_nm" id="s_mc_no" class="form-control form-control-text ">             
+            </div>
+            <div class="col-md-1 p-1 mr-5">
+                <div class="input-group">
+                    <select id="s_mc_type" class="form-control">
+                        <option value="">*Process Type*</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-1 p-2 d-flex">
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6 pl-0 pr-1">
+            <div class="row p-0 m-0">
+                <div class="col-md-12">
+                    <div class="box-body m-2 bg-white boxlist">
+                        <table id="list"></table>
+                        <div id="listPager"></div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="box-body m-2 bg-white boxlist">
+                        <div class="nav-tabs-custom">
+                            <ul class="nav nav-tabs">
+                                <li class="active" id="tab_1"><a href="#tab_1" data-toggle="tab">Create</a></li>
+                                <li class="" id="tab_2"><a href="#tab_2" data-toggle="tab">Modify</a></li>
+                            </ul>
+                        </div>
+                        <div class="tab-content active" id="tab_c1">
+                            <form name="form1" id="form1" enctype="multipart/form-data" role="form" method="post" target="zeroFrame">
+                                <div class="row m-1">
+                                    <div class="col-md-2 p-1">
+                                        <select id="c_mc_type" class="form-control">
+                                            <option value="">*Process Type*</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2 p-1">
+                                        <input type="text" name="Code" id="c_prounit_cd" class="input-text form-control" placeholder="Code" readonly="readonly">
+                                    </div>
+                                    <div class="col-md-2 p-1">
+                                        <input type="text" name="Name" id="c_prounit_nm" class="input-text form-control" placeholder="Name">
+                                    </div>
+                                    <div class="col-md-2 p-1">
+                                        <select name="use_yn" id="c_use_yn" class="form-control select2">
+                                            <option value="Y" selected="selected">Use</option>
+                                            <option value="N">UnUse</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2 p-1">
+                                        <div class="input-group my-colorpicker2 colorpicker-element">
+			                                <input type="text" name="c_color" id="c_color" class="form-control" placeholder="RGB Code" maxlength="10">
+			                                <div class="input-group-addon">
+			                                    <i style="background-color: rgb(0, 0, 0);"></i>
+			                                </div>
+			                            </div>
+                                    </div>
+                                    <div class="col-md-2 py-2 d-flex">
+                                        <button type="button" id="c_save_but" class="btn btn-success button-srh2 active"><i class="fa fa-save">&nbsp;Create</i></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-content hidden" id="tab_c2">
+                            <form name="form2" id="form2" enctype="multipart/form-data" role="form" method="post" target="zeroFrame">
+                                <input type="hidden" name="name" value=" " id="puid"/>
+                                <div class="row m-1">
+                                    <div class="col-md-2 p-1">
+                                        <select id="m_mc_type" class="form-control">
+                                            <option value="">*Process Type*</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2 p-1">
+                                        <input type="text" name="Code" id="m_prounit_cd" class="input-text form-control" placeholder="Code" readonly="readonly">
+                                    </div>
+                                    <div class="col-md-2 p-1">
+                                        <input type="text" name="Name" id="m_prounit_nm" class="input-text form-control" placeholder="Name">
+                                    </div>
+                                    <div class="col-md-2 p-1">
+                                        <select name="use_yn" id="m_use_yn" class="form-control select2">
+                                            <option value="Y" selected="selected">Use</option>
+                                            <option value="N">UnUse</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2 p-1">
+                                        <div class="input-group my-colorpicker2 colorpicker-element">
+			                                <input type="text" name="m_color" id="m_color" class="form-control" placeholder="RGB Code" maxlength="10">
+			                                <div class="input-group-addon">
+			                                    <i style="background-color: rgb(0, 0, 0);"></i>
+			                                </div>
+			                            </div>
+                                    </div>
+                                    <div class="col-md-2 py-2 d-flex">
+                                        <button type="button" id="m_save_but" class="btn btn-success button-srh2 active"><i class="fa fa-save">&nbsp;Modify</i></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>       
+        </div>
+
+        <div class="col-md-6  pl-1 pr-0">
+            <div class="row p-0 m-0">
+                <div class="col-md-12">
+                    <div class="box-body m-2 bg-white boxlist2">
+                        <table id="list2"></table>
+                        <div id="list2Pager"></div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="box-body m-2 bg-white">
+                        <div class="nav-tabs-custom">
+                            <ul class="nav nav-tabs">
+                                <li class="active" id="tab_3"><a href="#tab_3" data-toggle="tab">Create</a></li>
+                                <li class="" id="tab_4"><a href="#tab_4" data-toggle="tab">Modify</a></li>
+                            </ul>
+                        </div>
+                        <div class="tab-content active" id="tab_c3">
+                            <form name="form3" id="form3" enctype="multipart/form-data" role="form" method="post" target="zeroFrame">
+                                <div class="row m-1">
+                                    <div class="col-md-4 p-1">
+                                        <input type="text" name="Code" id="c2_prounit_cd" class="input-text form-control" placeholder="Code" readonly="readonly">
+                                    </div>
+                                    <div class="col-md-4 p-1">
+                                        <div class="input-group mt_plus">
+                                            <input type="text" name="mc_no" id="c_mc_no" class="input-text form-control" placeholder="Machine Or BoBin">
+                                            <span class="input-group-addon psbom">
+                                                <button type="button" id="" class="btn button-sm form-control poupdialogmachine"><i class="fa fa-search text-navy"></i></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 p-1">
+                                        <select name="use_yn" id="c2_use_yn" class="form-control select2">
+                                            <option value="Y" selected="selected">Use</option>
+                                            <option value="N">UnUse</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-1 py-2 d-flex">
+                                        <button type="button" id="c2_save_but" class="btn btn-success button-srh2 active"><i class="fa fa-save">&nbsp;Create</i></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-content hidden" id="tab_c4">
+                            <form name="form4" id="form4" enctype="multipart/form-data" role="form" method="post" target="zeroFrame">
+                                <input type="hidden" name="name" value=" " id="pmid" />
+                                <div class="row m-1">
+                                    <div class="col-md-4 p-1">
+                                        <input type="text" name="Code" id="m2_prounit_cd" class="input-text form-control" placeholder="Code" readonly="readonly">
+                                    </div>
+                                    <div class="col-md-4 p-1">
+                                        <div class="input-group mt_plus">
+                                            <input type="text" name="mc_no" id="m_mc_no" class="input-text form-control" placeholder="Machine Or BoBin">
+                                            <span class="input-group-addon psbom">
+                                                <button type="button" id="" class="btn button-sm form-control poupdialogmachine"><i class="fa fa-search text-navy"></i></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 p-1">
+                                        <select name="use_yn" id="m2_use_yn" class="form-control select2">
+                                            <option value="Y" selected="selected">Use</option>
+                                            <option value="N">UnUse</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-1 py-2 d-flex">
+                                        <button type="button" id="m2_save_but" class="btn btn-success button-srh2 active"><i class="fa fa-save">&nbsp;Modify</i></button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>       
+        </div>
+    </div>
+</div>
+
+<!-- popup -->
+<div class="modal" id="myModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+<!-- end popup -->
+
+<!--Dialog -->
+<div class="dialog" title="Machine Or BoBin">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-primary button-srh" id="closemachine"><i class="fa fa-close">&nbsp;Close</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+     <div class="nav-tabs-custom">
+        <ul class="nav nav-tabs">
+            <li class="active" id="tab_pp1"><a href="#tab_pp1" data-toggle="tab">Machine</a></li>
+            <li class="" id="tab_pp2"><a href="#tab_pp2" data-toggle="tab">Bobin</a></li>
+        </ul>
+    </div>
+    <div class="container-fluid">
+        <div class="tab-content active" id="tab_c_pp1">
+            <form name="formpp1" id="formpp1" enctype="multipart/form-data" role="form" method="post" target="zeroFrame">
+                <div class="box-body my-2 bg-white">
+                    <div class="row p-0 m-0">
+                        <table id="popupmachine"></table>
+                        <div id="pagermachine"></div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="tab-content hidden" id="tab_c_pp2">
+            <form name="formpp2" id="formpp2" enctype="multipart/form-data" role="form" method="post" target="zeroFrame">
+                <div class="box-body my-2 bg-white">
+                    <div class="row p-0 m-0">
+                        <table id="popupbobin"></table>
+                        <div id="pagerbobin"></div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- ./ Dialog -->
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<style>
+        span.input-group-addon {
+        padding: 0;
+            border: 0.1px solid;
+    }
+</style>
+@section scripts{
+    <script src="~/Scripts/DevManagement/Process_Unit/process_unit.js"></script>
+    <script src="~/Scripts/DevManagement/Process_Unit/machine_pp_bobin_pp.js"></script>
+
+}

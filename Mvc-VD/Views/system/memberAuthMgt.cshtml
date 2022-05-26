@@ -1,0 +1,69 @@
+﻿@model IEnumerable<Mvc_VD.Models.mb_info>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="STANDARD" data-level_2="System Management" data-level_3="User Authority Location (M)"></div>
+    @*<div class="col-xs-12">
+        <h4 class="m-0 text-dark"><b>User Authority Location (M)</b></h4>
+        <small style="font-size:14px;"><i class="fa fa-dashboard"></i>
+                HOME > System Management > User Authority Location (M)
+        </small>
+    </div> *@
+}
+
+@*---------------------------------------------------------------------------------------------------------------------------*@
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <table id="list"></table>
+                <div id="gridpager"></div>
+            </div>
+        </div>
+    </div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+
+   
+@*---------------------------------------------------------------------------------------------------------------------------*@
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <div class="col-lg-6 pt-2">
+                        <h5 class="box-title">Member & Location Authority Connection</h5>
+                    </div>
+                    <div class="col-lg-6 pb-2 pt-4 text-right">
+                        <button type="submit" id="excepSave"  class="btn btn-sm btn-success button-srh"><i class='fa fa-save'>&nbsp;Save</i></button>
+                    </div>
+                    <div class="col-xs-12 p-0">
+                        <table id="list2"></table>
+                        <div id="gridpager2"></div>
+                    </div>
+            </div>
+        </div>
+    </div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+
+
+ 
+
+  @section scripts {
+      <script src="~/Scripts/system/memberAuthMgt/_User-authority.js"></script>
+      <script>
+          $(document).ready(function () {
+              $('.nav-link > p').addClass('text-white');
+              $('.UserAuthority').addClass('text-warning');
+
+              $('.System-menu').addClass('menu-open');
+          });
+      </script>
+}
+
+     
+  
+
+  
+
+

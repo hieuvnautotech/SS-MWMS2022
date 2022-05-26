@@ -1,0 +1,2 @@
+Select bid, bom_no, style_no, mt_no, need_time, cav, need_m, buocdap, del_yn, isapply, IsActive, reg_id, reg_dt, chg_id, chg_dt
+From d_bom_info

@@ -1,0 +1,132 @@
+﻿
+@{
+    ViewBag.Title = "noticeRegister";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+<style>
+    span.input-group-addon {
+        padding: 0;
+        border: 0.1px solid;
+    }
+    a {
+        color:white;
+    }
+    div#info {
+        width: 100%;
+    }
+
+    .title_name {
+        border: 1px solid #ccc;
+        padding: 5px;
+    }
+
+    span.input-group-addon {
+        padding: 0;
+        border: 0.1px solid;
+    }
+
+    h4.title_c {
+        font-size: 14px;
+        font-weight: 500;
+        color: #000;
+        transition: 1s;
+        text-align: left;
+        font-family: sans-serif;
+        color: red;
+    }
+</style>
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="STANDARD" data-level_2="System Management" data-level_3="Manual Management"></div>
+}
+
+<div class="container-fluid">
+    <div class="row p-0 m-0">
+        <div class="col-md-12 text-center m-0">
+            <a href="/system/Manual"><button type="button" class="btn btn-outline-info mr-5"><i class="fa fa-reply-all fa-3x"></i></button></a>
+            <button type="button" class="btn btn-outline-info disabled"><i class=" fa fa-reply-all fa-3x fa-flip-horizontal"></i></button>
+        </div>       
+    </div>
+</div>
+
+<!--Dialog -->
+<div class="dialog_menu" title="Menu Information">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-success button-srh" id="selectmenu"><i class="fa fa-close">&nbsp;Select</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0 boxMenu">
+                <table id="popupmenu"></table>
+                <div id="pagermenu"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ./ Dialog -->
+@section scripts{
+    @*<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js" type="text/javascript"></script>*@
+    <script src="~/Content/jquery.validate_V1.9/jquery.validate.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#c_content').summernote({
+                placeholder: 'Please input content here....',
+                tabsize: 1,
+                height: 400,
+                minHeight: 100,
+                maxHeight: 800,
+                focus: true,
+                toolbar: [
+                  ['style', ['bold', 'italic', 'underline', 'clear']],
+                  ['font', ['strikethrough', 'superscript', 'subscript']],
+                  ['fontsize', ['fontsize']],
+                  ['color', ['color']],
+                  ['para', ['ul', 'ol', 'paragraph']],
+                  ['height', ['height']],
+                  ['table', ['table']],
+                  ['insert', ['link', 'picture', 'video']],
+                  ['view', ['fullscreen', 'codeview', 'help']],
+                ],
+                popover: {
+                    image: [
+                      ['image', ['resizeFull', 'resizeHalf', 'resizeQuarter', 'resizeNone']],
+                      ['float', ['floatLeft', 'floatRight', 'floatNone']],
+                      ['remove', ['removeMedia']]
+                    ],
+                    link: [
+                      ['link', ['linkDialogShow', 'unlink']]
+                    ],
+                    table: [
+                      ['add', ['addRowDown', 'addRowUp', 'addColLeft', 'addColRight']],
+                      ['delete', ['deleteRow', 'deleteCol', 'deleteTable']],
+                    ],
+                    air: [
+                      ['color', ['color']],
+                      ['font', ['bold', 'underline', 'clear']],
+                      ['para', ['ul', 'paragraph']],
+                      ['table', ['table']],
+                      ['insert', ['link', 'picture']]
+                    ]
+                },
+                codemirror: {
+                    theme: 'paper'
+                }
+            });
+
+        });
+
+        //function TreeFilterChanged2() {
+        //    $('#validate').submit();
+        //}
+        
+    </script>
+    <script src="~/Scripts/system/Manual/Manual_Popup.js"></script>
+
+}

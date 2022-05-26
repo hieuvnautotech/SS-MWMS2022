@@ -1,0 +1,157 @@
+﻿@{
+    ViewBag.Title = "Receving_Scan";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="TIMS" data-level_2="Receiving Management" data-level_3="Receiving Scan"></div>
+}
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+
+            <div class="col-md-1 text-right">
+                <label>RD No</label>
+            </div>
+            <div class="col-md-1">
+                <input type="text" name="rd_no" id="s_rd_no" class="input-text form-control">
+            </div>
+            <div class="col-md-1 text-right">
+                <label>RD Name</label>
+            </div>
+            <div class="col-md-1">
+
+                <input type="text" name="rd_nm" id="s_rd_nm" class="input-text form-control">
+            </div>
+
+            <div class="col-md-1 p-1 d-flex">
+                <button id="searchBtn" class="btn btn-sm btn-success button-srh ml-5"><i class="fa fa-save">&nbsp;Search</i></button>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="p-0 m-0">
+            <table id="list"></table>
+            <div id="listPager"></div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li id="tab_1" class="active"><a href="#tab_c1" data-toggle="tab">Create</a></li>
+                <li id="tab_2"><a href="#tab_c2" data-toggle="tab">Modify</a></li>
+            </ul>
+        </div>
+        <div class="tab-content">
+            <div class="tab-pane active" id="tab_c1">
+                <form id="form1">
+                    <div class="box-body box-body-input-move">
+                        <div class="col-md-12 pull-right" style="margin-top:-39px">
+                            <button type="button" id="c_save_but" class="btn btn-success button-sm"><i class="fa fa-save">&nbsp;Create</i></button>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-2 py-1">
+                                    <label>RD Name</label>
+                                    <input type="text" name='rd_nm' id='c_rd_nm' class="input-text form-control" placeholder="RD Name" required>
+                                </div>
+                                <div class="col-md-2 py-1">
+                                    <label>Remark</label>
+                                    <input type="text" name="remark" id="c_remark" class="form-control form-control-text" placeholder="remark">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+
+            <div class="tab-pane" id="tab_c2">
+                <form id="form2">
+                    <input type="hidden" name="name" id="m_rid" value="" />
+                    <input type="hidden" name="name" id="m_rd_no" value="" />
+
+                    <div class="box-body box-body-input-move">
+                        <div class="col-md-12 pull-right" style="margin-top:-39px">
+
+                            <button type="button" id="m_delete_but" class="btn btn-danger button-sm"><i class="fa fa-trash">&nbsp;Delete</i></button>
+                            <button type="button" id="m_save_but" class="btn btn-success button-sm"><i class="fa fa-save">&nbsp;Modify</i></button>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-2 py-1">
+                                    <label>RD Name</label>
+                                    <input type="text" name='rd_nm' id='m_rd_nm' class="input-text form-control" placeholder="RD Name" required>
+                                </div>
+                                <div class="col-md-2 py-1">
+                                    <label>Remark</label>
+                                    <input type="text" name="remark" id="m_remark" class="form-control form-control-text" placeholder="remark">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="row box-body my-2">
+        <div class="col-md-4 py-1">
+            <label>Bobbin No</label>
+            <input type="text" name='bb_no' id='bb_no' class="input-text form-control" placeholder="Bobbin No" required>
+            <button type="button" id="Clear_all" class="btn btn-danger button-sm"><i class="fa fa-trash">&nbsp;Clear All</i></button>
+        </div>
+        <div class="col-md-6 py-1">
+
+            <button type="button" id="Save_completed" class="btn btn-success button-sm"><i class="fa fa-save">&nbsp;Scan Completed</i></button>
+            <button type="button" id="Select_completed" class="btn btn-success button-sm"><i class="fa fa-check">&nbsp;Receiving (M)</i></button>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="">
+            <table id="list1"></table>
+            <div id="listPage1"></div>
+        </div>
+    </div>
+</div>
+<div class="popup-dialog RD_Info_Popup" title="RD Infomation">
+    <div id="PartialView_RD_Info_Popup"></div>
+</div>
+@*-------------------------------------------------------------List ML NO-------------------------------------------------------------*@
+
+<div class="popup-dialog List_ML_NO_Info_Popup" title="Receving (M)">
+    <div id="PartialView_List_ML_NO_Info_Popup"></div>
+</div>
+
+@section scripts{
+
+
+    <script src="~/Scripts/TIMS/RecevingScan/RecevingScan.js"></script>
+
+    <script>
+        $(function () {
+
+            var tab = $('.nav-tabs-custom .nav.nav-tabs li a');
+            $(tab).click(function (e) {
+
+                var ul = $(e.target).closest('ul');
+                $(ul).find('li').removeClass('active');
+                $(e.target).closest('li').addClass('active');
+
+            })
+        })
+    </script>
+}

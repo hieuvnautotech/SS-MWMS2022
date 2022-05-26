@@ -1,0 +1,140 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+
+}
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="MMS" data-level_2="Standard Management(WO)" data-level_3="Process Work Time Information"></div>
+}
+
+<div class="container-fluid">
+    <section class="content">
+        <div class="row">
+
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-body">
+                        <!-- THE CALENDAR -->
+                        <div>
+                            <div class="col-md-2 py-4">
+                                <select id="hour1" class="form-control">
+                                    <option value="">*Hour*</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 py-4">
+                                <input type="text" id="thang" name="name" value=" " class="input-text form-control"/>
+                            </div>
+                             <div class="col-md-2 py-4">
+                                <button id="modifi" class="btn btn-sm btn-warning">Modify All Line</button>
+                            </div>
+                            <div class="col-md-12  py-4">
+                                <div class="col-md-2">
+                                    <select id="month" class="form-control">
+                                        <option>*FROM MONTH*</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
+                                    <select id="many" class="form-control">
+                                        <option value="">NUMBER OF MONTHS CREATE</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="6">5</option>
+                                        <option value="6">6</option>
+                                    </select>
+                                </div>
+
+                                <button id="insert_thang" class="btn btn-sm btn-warning">ADD LINE</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="calendar"></div>
+
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /. box -->
+        </div>
+        <!-- /.col -->
+</div>
+<!-- /.row -->
+</section><!-- /.content -->
+</div>
+@section scripts{
+    <script src="~/Scripts/StandardMgtWO/work_time_right.js"></script>
+}
+
+
+<style>
+    .removebtn {
+        color: black;
+        position: absolute;
+        top: 0;
+        /* display: -webkit-inline-box; */
+        left: 0;
+        margin-right: 39px;
+        width: 13px;
+        height: 13px;
+        text-align: center;
+        border-radius: 50%;
+        font-size: 10px;
+        cursor: pointer;
+        background-color: #FFF;
+    }
+
+    span.fc-title {
+        text-align: center;
+        display: inherit;
+    }
+
+    button.ui-dialog-titlebar-close {
+        color: transparent;
+    }
+</style>
+
+
+<div class="dialogDangerous" title="Are you make sure change hour Events?">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <select id="hour" class="form-control">
+                        <option value="">*Hour*</option>
+                    </select>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(".dialogDangerous").dialog({
+        width: 350,
+        height: 100,
+        maxWidth: 350,
+        maxHeight: 300,
+        minWidth: 300,
+        minHeight: 400,
+        resizable: false,
+        fluid: true,
+        modal: true,
+        autoOpen: false,
+        classes: {
+            "ui-dialog": "ui-dialog",
+            "ui-dialog-titlebar": "ui-dialog ui-dialog-titlebar-sm",
+        },
+        resize: function (event, ui) {
+            $('.ui-dialog-content').addClass('m-0 p-0');
+        },
+        open: function (event, ui) {
+
+        },
+    });
+    $("#thang").datepicker({
+        dateFormat: 'yy-mm-dd',
+        "autoclose": true
+    });
+</script>

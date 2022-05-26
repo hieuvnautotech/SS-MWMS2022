@@ -1,0 +1,240 @@
+﻿@*@model IEnumerable<Mvc_VD.Models.w_material_info>*@
+
+@{
+    ViewBag.Title = "PoMgt";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="@Html.Raw(ViewData["WMS"])" data-level_2="@Html.Raw(ViewData["Shipping Management"])" data-level_3="@Html.Raw(ViewData["Picking Scan"])"></div>
+}
+<input type="hidden" name="id_no" id="id_no" value="@ViewData["Message"]" class="input-text form-control">
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-2 py-1">
+                <label>SD No</label>
+                <input type="text" name="sd_no" id="s_sd_no" class="input-text form-control">
+            </div>
+            <div class="col-md-2 py-1">
+                <label>SD Name</label>
+                <input type="text" name="sd_nm" id="s_sd_nm" class="input-text form-control">
+            </div>
+            <div class="col-md-2 py-1">
+                <label>Remark</label>
+                <input type="text" name="sd_nm" id="remark" class="input-text form-control">
+            </div>
+            <div class="col-md-2 py-1">
+                <label>Product</label>
+                <div class="input-group mt_plus">
+                    <input type="text" name="style_no" id="s_style_no" class="input-text form-control" placeholder="Product" required>
+                    <span class="input-group-addon psbom"><a href="#" class="poupdialogStyle"><i class="fa fa-search text-navy"></i></a></span>
+                </div>
+            </div>
+            <div class="col-md-1 py-2 mt-4">
+                <label></label>
+                <button id="searchBtn" class="btn btn-sm btn-success button-srh ml-5"><i class="fa fa-save">&nbsp;Search</i></button>
+            </div>
+            <div class="col-md-1 py-2 mt-4">
+                <input type="file" name="file" id="excelupload_input" accept=".xlsx,.xls,.csv,.tsv,.xml,.json" class="valid" />
+            </div>
+            <div class="col-md-1 py-2 mt-4">
+                <button type="button" id="ExcelUpload" style="margin-top: 0px !important" class="btn btn-primary"><i class="fa fa-upload">&nbsp;Upload</i></button>
+            </div>
+            <div class="col-md-1 py-2 mt-4">
+                <a id="downloadBtn" href="/Excel/ExcelShippngMaterial/uploadshippingmaterial.xlsx" class="btn btn-success btn-download btnDownload mr-3" download=""><i class="fa fa-download"> &nbsp;Download Form Excel</i></a>
+            </div>
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="p-0 m-0">
+            <table id="list"></table>
+            <div id="listPager"></div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li id="tab_1" class="active"><a href="#tab_c1" data-toggle="tab">Create</a></li>
+                <li id="tab_2"><a href="#tab_c2" data-toggle="tab">Modify</a></li>
+            </ul>
+        </div>
+        <div class="tab-content">
+            <div class="tab-pane active" id="tab_c1">
+                <form id="form1">
+                    <div class="box-body box-body-input-move">
+                        <div class="col-md-12 pull-right" style="margin-top:-39px">
+                            <button type="button" id="c_save_but" class="btn btn-success button-sm"><i class="fa fa-save">&nbsp;Create</i></button>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-2 py-1">
+                                    <label>SD Name</label>
+                                    <input type="text" name='sd_nm' id='c_sd_nm' class="input-text form-control" placeholder="SD Name" required>
+                                </div>
+                                <div class="col-md-2 py-1">
+                                    <label>Product</label>
+                                    <div class="input-group mt_plus">
+                                        <input type="text" name="style_no" id="c_style_no" class="input-text form-control" placeholder="Product" required readonly>
+                                        <span class="input-group-addon psbom"><a href="#" class="poupdialogStyle"><i class="fa fa-search text-navy"></i></a></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 py-1">
+                                    <label>Remark</label>
+                                    <input type="text" name="remark" id="c_remark" class="form-control form-control-text" placeholder="remark">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+
+            <div class="tab-pane" id="tab_c2">
+                <form id="form2">
+                    <input type="hidden" name="name" id="m_sid" value="" />
+                    <input type="hidden" name="name" id="m_sd_no" value="" />
+
+                    <div class="box-body box-body-input-move">
+                        <div class="col-md-12 pull-right" style="margin-top:-39px">
+
+                            <button type="button" id="m_delete_but" class="btn btn-danger button-sm"><i class="fa fa-trash">&nbsp;Delete</i></button>
+                            <button type="button" id="m_save_but" class="btn btn-success button-sm"><i class="fa fa-save">&nbsp;Modify</i></button>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-2 py-1">
+                                    <label>SD Name</label>
+                                    <input type="text" name='sd_nm' id='m_sd_nm' class="input-text form-control" placeholder="SD Name" required>
+                                </div>
+                                <div class="col-md-2 py-1">
+                                    <label>Product</label>
+                                    <div class="input-group mt_plus">
+                                        <input type="text" name="style_no" id="m_style_no" class="input-text form-control" placeholder="Product" required readonly>
+                                        <span class="input-group-addon psbom"><a href="#" class="poupdialogStyle"><i class="fa fa-search text-navy"></i></a></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 py-1">
+                                    <label>Remark</label>
+                                    <input type="text" name="remark" id="m_remark" class="form-control form-control-text" placeholder="remark">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="row box-body my-2">
+        <div class="col-md-6 py-1" style="display:none">
+            <label>ML No</label>
+            <input type="text" name='ml_cd' id='ml_cd' class="input-text form-control" placeholder="ML No" required>
+            <button type="button" id="Clear_all" class="btn btn-danger button-sm"><i class="fa fa-trash">&nbsp;Clear All</i></button>
+        </div>
+        <div class="col-md-6 py-1">
+
+            <button type="button" id="Save_completed" class="btn btn-success hidden button-sm"><i class="fa fa-save">&nbsp;Scan Completed</i></button>
+            <button type="button" id="Select_completed" class="btn btn-success button-sm hidden"><i class="fa fa-check">&nbsp;Picking (M)</i></button>
+            <button type="button" id="PickingClick" class="buttonDMS btn btn-success button-sm "><i class="fa fa-check">&nbsp;Picking (M)</i></button>
+            <button type="button" id="Create_NVL" class="  btn btn-success button-sm"><i class="fa fa-plus">&nbsp;Create(M)</i></button>
+        </div>
+    </div>
+</div>
+
+@*-------------------------------------------------------------list 1--------------------------------------------------------------*@
+<div class="container-fluid" style="display:none">
+    <div class="box-body my-2 bg-white">
+        <div class="p-0 m-0">
+            <table id="list1"></table>
+            <div id="listPager1"></div>
+        </div>
+    </div>
+</div>
+@*-------------------------------------------------------------list 1--------------------------------------------------------------*@
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="p-0 m-0">
+            <table id="list2"></table>
+            <div id="listPager2"></div>
+        </div>
+    </div>
+</div>
+
+<div class="popup-dialog SD_Info_Popup" title="SD Infomation">
+    <div id="PartialView_SD_Info_Popup"></div>
+</div>
+
+@*-------------------------------------------------------------List ML NO-------------------------------------------------------------*@
+
+<div class="popup-dialog List_ML_NO_Info_Popup" title="Picking (M)">
+    <div id="PartialView_List_ML_NO_Info_Popup"></div>
+</div>
+@*-------------------------------------------------------------List ML NO MAnual-------------------------------------------------------------*@
+
+<div class="popup-dialog Create_List_ML_NO_Info_Popup" title="Create Memory">
+    <div id="PartialView_Create_List_ML_NO_Info_Popup"></div>
+</div>
+<div class="popup-dialog ListMaterialNo" title="Picking (M)">
+    <div id="PartialView_ListMaterialNoPopup"></div>
+</div>
+<!--Dialog Product-->
+<div class="dialog_PRODUCT" title="Product Information">
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body well text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="style_no_popup" placeholder="Product Code" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="style_nm_popup" placeholder="Product Name" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="md_cd" id="md_cd_popup" placeholder="Model Code" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2 d-flex">
+                    <button id="searchBtn_product_popup" class="btn btn-sm mr-1 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button type="button" class="btn btn-sm btn-success button-srh disabled" id="savestyle_product"><i class="fa fa-save">&nbsp;Selected</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid  p-0 m-0">
+        <div class="box-body my-2 bg-white">
+            <div class="p-0 m-0 ">
+                <table id="popupProduct"></table>
+                <div id="pagerProduct"></div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+
+    <script src="~/Scripts/Shippingmgt/ShippingPickingScan/Product_Poup.js"></script>
+    <script src="~/Scripts/ShippingMgt/ShippingPickingScan/_PickingScan.js"></script>
+    <script>
+        $(function () {
+
+            var tab = $('.nav-tabs-custom .nav.nav-tabs li a');
+            $(tab).click(function (e) {
+
+                var ul = $(e.target).closest('ul');
+                $(ul).find('li').removeClass('active');
+                $(e.target).closest('li').addClass('active');
+
+            })
+        })
+    </script>
+}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.8/css/jquery.dataTables.min.css">
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.8/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.rawgit.com/ashl1/datatables-rowsgroup/fbd569b8768155c7a9a62568e66a64115887d7d0/dataTables.rowsGroup.js"></script>
+

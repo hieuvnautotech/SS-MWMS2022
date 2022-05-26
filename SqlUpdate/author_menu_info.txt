@@ -1,0 +1,32 @@
+truncate table [ShinsungMirgaNew].[dbo].[author_menu_info];
+INSERT INTO [ShinsungMirgaNew].[dbo].[author_menu_info]
+           ([at_cd]
+           ,[mn_cd]
+           ,[mn_nm]
+           ,[url_link]
+           ,[re_mark]
+           ,[use_yn]
+           ,[st_yn]
+           ,[ct_yn]
+           ,[mt_yn]
+           ,[del_yn]
+           ,[reg_id]
+           ,[reg_dt]
+           ,[chg_id]
+           ,[chg_dt])
+Select 
+	 at_cd
+      ,mn_cd
+      ,mn_nm
+      ,url_link
+      ,re_mark
+      ,use_yn
+      ,st_yn
+      ,ct_yn
+      ,mt_yn
+      ,del_yn
+      ,reg_id
+      ,reg_dt
+      ,chg_id
+      ,chg_dt
+From [ShinSungNewMirga].[autodb0314].[author_menu_info];

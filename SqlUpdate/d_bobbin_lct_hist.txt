@@ -1,0 +1,1 @@
+Select blno, mc_type, bb_no, mt_cd, bb_nm, start_dt, end_dt, use_yn, del_yn, reg_id, reg_dt, chg_id, chg_dt from d_bobbin_lct_hist

@@ -1,0 +1,321 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Print.cshtml";
+}
+
+
+
+<div class="container-fluid my-5 detailbox">
+    <input type="hidden" id="mdli" value="@ViewData["Message"]"/>
+    <div class="row p-0 m-0">
+        <div class="container-fluid">
+            <div class="row p-0 m-0">
+                <div class="col-md-3 all_cg">
+                    <img src="/Content/themes/Logo-suplier_in.jpg" style="width: 100%" />
+                </div>
+
+                <div class="col-md-5 p-2 text-center " id="title">
+                    <h1 style="font-size: 43px;">ISSUE</h1>
+                    <h2 style="font-size: 20px;" id="title1"></h2>
+                </div>
+
+                <div class="col-md-4 all_cg">
+                    <div class="row p-0 m-0" style="border-top: 1px solid; border-bottom: 1px solid">
+                        <div class="col-md-3 text-center p-3">
+                            <p>Document Code</p>
+                            <p style="padding: 5px 0px 0px 0px">Serial</p>
+                            <p>Date</p>
+                        </div>
+                        <div class="col-md-9 p-3">
+                            <div id="barcode" style="margin: 0 auto"></div>
+                            <div id="datetime" style="text-align: center; margin-top: 20px;">
+
+                                <script>
+                                    function startTime() {
+                                        var d = new Date(),
+                                        month = '' + (d.getMonth() + 1),
+                                        day = '' + d.getDate(),
+                                        year = d.getFullYear(),
+                                        hours = d.getHours(),
+
+                                        minutes = d.getMinutes();
+                                        console.log(minutes);
+                                        console.log(hours);
+                                        if (month.length < 2) month = '0' + month;
+                                        if (day.length < 2) day = '0' + day;
+                                        if (hours < 10) hours = '0' + hours;
+                                        if (minutes < 10) minutes = '0' + minutes;
+                                        var full = year + "-" + month + "-" + day, time = hours + ":" + minutes;
+                                        //var date = d.toLocaleDateString();
+                                        //var time = d.toLocaleTimeString({ hour12: false });
+                                        var html = '';
+                                        $("#datetime").html(full + " " + time);
+                                    }
+                                    startTime()
+                                    setInterval(startTime, 500);
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="container-fluid">
+            <div class="box-body my-2 bg-white">
+
+                <h4>Standard</h4>
+                <table id="dataTable" class="table table-bordered table-striped" style="width: 100%">
+                    <thead>
+                        <tr class="table-warning">
+                            <th>WO NO</th>
+                            <th>LINE</th>
+                            <th>PROCESS</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>ISSUE</th>
+                            <th>CONTENT</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+            <div class="box-body my-2 bg-white">
+                <div class="row p-0 m-0">
+                    <div id="photo" style="width: 100%; text-align: center;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+            <div class="box-body my-2 bg-white">
+                <div class="row">
+                    <label style="padding: 10px 0px 0px 0px"><b>FILE: </b></label>
+                    <div id="file1"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<script>
+    $(document).ready(function () {
+        $(document).ready(function () {
+            var mdli = $('#mdli').val();
+            print2(mdli);
+        });
+    });
+
+
+    function print2(mdli) {
+
+
+
+        $.ajax({
+            url: "/ActualWO/getBarcodePrint?mdli=" + mdli,
+            type: "get",
+            dataType: "json",
+            success: function (rtnData) {
+                $.each(rtnData, function (dataType, data) {
+                    {
+                        console.log(data);
+                        var title = data.title, fo_no = data.fo_no, process_nm = data.process_nm,
+                            html1 = "IS-" + fo_no + "-" + process_nm;
+
+                        $('#barcode').append(html1);
+                        $('#barcode').barcode(html1, "code128", { barWidth: 1, barHeight: 30 });
+
+
+                    }
+                });
+
+
+
+            }
+        });
+
+
+        $.ajax({
+            url: "/ActualWO/getTitlePrint?mdli=" + mdli,
+            type: "get",
+            dataType: "json",
+            success: function (rtnData) {
+                $.each(rtnData, function (dataType, data) {
+                    {
+                        $("#title1").html(data.style_no + " " + '[ ' + data.style_nm + ' ]');
+
+
+                    }
+                });
+
+
+
+            }
+        });
+
+
+        $(document).ready(function () {
+
+            $('#dataTable').DataTable({
+                "bServerSide": true,
+                "ajax": {
+                    "url": "/ActualWO/getIssue2?mdii=" + mdli,
+                    "type": "GET",
+                    "datatype": "json"
+                },
+                "searching": false,
+                "paging": false,
+                "bInfo": false,
+
+
+
+                "columns": [
+
+
+
+                    { "data": "fo" },
+                    { "data": "line_no" },
+                    { "data": "process_nm" },
+                    { "data": "start_dt" },
+                    { "data": "end_dt" },
+                    { "data": "issue" },
+                    { "data": "content" }
+                ],
+                'columnDefs': [
+{
+    "targets": 0, // your case first column
+    "className": "text-center",
+    "width": "5%"
+},
+{
+    "targets": 1, // your case first column
+    "className": "text-center",
+    "width": "5%"
+},
+{
+    "targets": 2, // your case first column
+    "className": "text-left",
+    "width": "10%"
+},
+{
+    "targets": 3, // your case first column
+    "className": "text-center",
+    "width": "5%"
+},
+{
+    "targets": 4, // your case first column
+    "className": "text-center",
+    "width": "5%"
+},
+{
+    "targets": 5, // your case first column
+    "className": "text-left",
+    "width": "15%"
+},
+{
+    "targets": 6, // your case first column
+    "className": "text-left",
+    "width": "25%"
+},
+
+                ],
+                "bDestroy": true
+            });
+
+        });
+
+        //$(document).ready(function () {
+        $.ajax({
+            url: "/ActualWO/getIMG2?mdii=" + mdli,
+            type: "get",
+            dataType: "json",
+            success: function (data) {
+                console.log(data.length);
+
+                if (data != null && data != undefined) {
+                    if (data.length == 2) {
+                        var html = '<div class="row">';
+                        $.each(data, function (key, item) {
+                            html += '<div class="col-md-6"> <img src="../images/Issue/' + item.photo_file + '" style="height:350px;max-height: 350px" /> </div>'
+                            //html += '<img src="../images/Issue/' + item.photo_file + '" style="height:350px;max-height: 350px" />'
+                            console.clear;
+
+
+                        });
+                        html += '</div>';
+                        //html += '</div>';
+                        $("#photo").html(html);
+
+
+                    }
+
+                    if (data.length == 3) {
+                        var html = '<div class="row">';
+                        $.each(data, function (key, item) {
+                            html += '<div class="col-md-4"> <img src="../images/Issue/' + item.photo_file + '" style="height:350px;max-height: 350px" /> </div>'
+                            //html += '<img src="../images/Issue/' + item.photo_file + '" style="height:350px;max-height: 350px" />'
+                            console.clear;
+
+
+                        });
+                        html += '</div>';
+                        //html += '</div>';
+                        $("#photo").html(html);
+                    }
+
+                    if (data.length == 1) {
+                        var html = '';
+                        $.each(data, function (key, item) {
+                            html += '<div class="text-center"> <img src="../images/Issue/' + item.photo_file + '" style="height:350px;max-height: 350px" /> </div>'
+                            //html += '<img src="../images/Issue/' + item.photo_file + '" style="height:350px;max-height: 350px" />'
+                            console.clear;
+
+
+                        });
+
+                        //html += '</div>';
+                        $("#photo").html(html);
+                    }
+                }
+
+
+                //var width = $("#photo2").width();
+                //var height = $("#photo2").height();
+                //console.log(width);
+            }
+        });
+        $.ajax({
+            url: "/ActualWO/getFilePrint?mdli=" + mdli,
+            type: "get",
+            dataType: "json",
+            success: function (rtnData) {
+                var html = '', html1 = '';
+                $.each(rtnData, function (dataType, data) {
+                    {
+                        html1 += data.attach_file + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp';
+                        html += '<a href="../files/Issue/' + data.attach_file + '" target="_blank" download=' + data.attach_file + ' >' + data.attach_file + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp </a>';
+                    }
+                });
+                //$("#file1").html("<h4>" + '&nbsp;&nbsp;&nbsp;&nbsp' + html + "</h4>");
+                $("#file1").html("<h4>" + '&nbsp;&nbsp;&nbsp;&nbsp' + html1 + "</h4>");
+            }
+        });
+        //$("#file").html("<h4 class='red'>" + fi1 + " " + fi1 + " " + f3 + "</h4>");
+
+
+    }
+    $("#c_print").on("click", function () {
+        window.print();
+    });
+
+</script>
+<style>
+    .all_cg {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>

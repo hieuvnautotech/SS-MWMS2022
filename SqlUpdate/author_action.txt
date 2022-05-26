@@ -1,0 +1,25 @@
+truncate table [ShinsungMirgaNew].[dbo].[author_action];
+INSERT INTO [ShinsungMirgaNew].[dbo].[author_action]([mn_cd]
+           ,[url_link]
+           ,[id_button]
+           ,[type]
+           ,[name_table]
+           ,[sts_action]
+           ,[re_mark]
+           ,[create_id]
+           ,[create_date]
+           ,[change_id]
+           ,[change_date])
+Select 
+	mn_cd,
+        url_link,
+        id_button,
+        type,
+        name_table,
+        sts_action,
+        re_mark,
+        'admin',
+        getdate(),
+        'admin',
+        getdate()
+From [ShinSungNewMirga].[autodb0314].[author_action]

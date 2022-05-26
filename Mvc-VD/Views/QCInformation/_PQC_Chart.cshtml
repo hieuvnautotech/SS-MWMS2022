@@ -1,0 +1,254 @@
+﻿<div class="nav-tabs-custom">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#barTab" data-toggle="tab">Bar chart</a></li>
+        <li><a href="#pieTab" data-toggle="tab">Pie Chart</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="barTab">
+            <div class="row">
+                <div class="col-md-6" style="margin-bottom: 1em;">
+                    <div style="border: 1px solid #333">
+                        <canvas id="overviewChart" width="400" height="300"></canvas>
+                    </div>
+                </div>
+
+                @{
+                    int stt = 0;    
+                }
+                @foreach (var item in Model)
+                {
+
+                    stt++;
+                    
+                    <div class="col-md-6" style="margin-bottom: 1em;">
+                        <div style="border: 1px solid #333">
+                            <canvas id="myChart_error_@stt" width="400" height="300"></canvas>
+                        </div>
+                    </div>
+                    <script>
+                        $(function () {
+
+                            var data = {
+                                labels: [@Html.Raw(item.labels)],
+                                datasets: [{
+                                    //label: 'Overview',
+                                    data: [@Html.Raw(item.datasets)],
+                                    backgroundColor: [
+                                        'rgba(255, 99, 132, 0.2)',
+                                        'rgba(54, 162, 235, 0.2)',
+                                        'rgba(255, 206, 86, 0.2)',
+                                        'rgba(75, 192, 192, 0.2)',
+                                        'rgba(153, 102, 255, 0.2)',
+                                         'rgba(54, 162, 235, 0.2)',
+                                          'rgba(255, 99, 132, 0.2)',
+                                          'rgba(54, 162, 235, 0.2)',
+                                            'rgba(75, 192, 192, 0.2)',
+                                           'rgba(54, 162, 235, 0.2)',
+                                    ],
+                                }]
+                            }
+
+                            var options = {
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true
+                                        }
+                                    }]
+                                },
+                                title: {
+                                    display: true,
+                                    label: true,
+                                    position: 'top',
+                                    text: "@item.check_subject",
+                                },
+                                legend: {
+                                    display: false,
+                                    labels: {
+                                        boxWidth: 0
+                                    }
+                                },
+                            }
+
+                            var myBarChart = new Chart(document.getElementById('myChart_error_@stt').getContext('2d'), {
+                                type: 'bar',
+                                data: data,
+                                options: options
+                            });
+                        })
+                    </script>
+                }
+            </div>
+        </div>
+        <div class="tab-pane" id="pieTab">
+            <div class="row">
+                <div class="col-md-6" style="margin-bottom: 1em;">
+                    <div style="border: 1px solid #333">
+                        <canvas id="pieChartTab" width="400" height="300"></canvas>
+                    </div>
+                </div>
+
+                @{
+                    int stt1 = 0;    
+                }
+                @foreach (var item in Model)
+                {
+
+                    stt1++;
+                    <div class="col-md-6" style="margin-bottom: 1em;">
+                        <div style="border: 1px solid #333">
+                            <canvas id="myChart_error_pie_@stt1" width="400" height="300"></canvas>
+                        </div>
+                    </div>
+                    <script>
+                        $(function () {
+                            var data_pie2 = {
+                                labels: [@Html.Raw(item.labels)],
+
+                                datasets: [{
+                                    data: [@Html.Raw(item.datasets_pie)],
+                                    backgroundColor: [
+                                       'rgba(255, 99, 132, 0.2)',
+                                        'rgba(54, 162, 235, 0.2)',
+                                        'rgba(255, 206, 86, 0.2)',
+                                        'rgba(75, 192, 192, 0.2)',
+                                        'rgba(153, 102, 255, 0.2)',
+                                         'rgba(54, 162, 235, 0.2)',
+                                          'rgba(255, 99, 132, 0.2)',
+                                          'rgba(54, 162, 235, 0.2)',
+                                            'rgba(75, 192, 192, 0.2)',
+                                           'rgba(54, 162, 235, 0.2)',
+                                    ],
+                                }],
+                            }
+
+                            var options_pie2 = {
+                                title: {
+                                    position: 'top',
+                                    display: true,
+                                    text: "@item.check_subject",
+                                },
+                            }
+
+                            var myBarChart2 = new Chart(document.getElementById('myChart_error_pie_@stt1').getContext('2d'), {
+                                type: 'pie',
+                                data: data_pie2,
+                                options: options_pie2
+                            });
+                        })
+                    </script>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        var selectedRowId = $("#processQcDtGrid").jqGrid("getGridParam", 'selrow');
+        var row_id = $("#processQcDtGrid").getRowData(selectedRowId);
+
+        $.ajax({
+            url: "/QCInformation/getOverviewInfoChart?fo_no=" + row_id.fo_no + "&line_no=" + row_id.line_no + "&process_no=" + row_id.process_no + "&prounit_cd=" + row_id.prounit_cd,
+            type: "get",
+            success: function (response) {
+
+                if (!response.result) {
+                    $('.tab-content .tab-pane .row').remove();
+                } else {
+                    //bar chart overview
+                    var data = {
+                        labels: ['CHECK', 'OK', 'DEFECTIVE'],
+                        datasets: [{
+                            data: [
+                                response.data.check_qty,
+                                response.data.ok_qty,
+                                response.data.defective_qty
+                            ],
+                            backgroundColor: [
+                                '#00FFFF',
+                                '#33FF99',
+                                '#FF99FF',
+                            ],
+                            borderColor: [
+                                'rgba(255,99,132,1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                            ],
+                            borderWidth: 1
+                        }]
+                    }
+
+                    var options = {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        },
+                        title: {
+                            display: true,
+                            label: false,
+                            position: 'top',
+                            text: response.data.fq_no + "[" + response.data.fo_no + "]",
+                        },
+                        legend: {
+                            display: false,
+                            labels: {
+                                boxWidth: 0
+                            }
+                        }
+                        
+                    }
+                    //pie chart overview
+                    var myBarChart = new Chart(document.getElementById('overviewChart').getContext('2d'), {
+                        type: 'bar',
+                        data: data,
+                        options: options
+                    });
+
+                    var data_pie = {
+                        labels: ['CHECK', 'OK', 'DEFECTIVE'],
+
+                        datasets: [{
+                            data: [
+                                 response.data.check_qty,
+                                 response.data.ok_qty,
+                                 response.data.defective_qty,
+                            ],
+                            backgroundColor: [
+                                '#00FFFF',
+                                '#33FF99',
+                                '#FF99FF',
+                            ],
+
+                        }],
+                    }
+
+                    var options_pie = {
+                        title: {
+                            position: 'top',
+                            display: true,
+                            text: response.data.fq_no + "[" + response.data.fo_no + "]",
+                        },
+                    }
+                    var myBarChart_pie = new Chart(document.getElementById('pieChartTab').getContext('2d'), {
+                        type: 'pie',
+                        data: data_pie,
+                        options: options_pie
+                    });
+                }
+            }
+        });
+    })
+
+    $(function () {
+        var tab = $('.nav-tabs-custom .nav.nav-tabs li a');
+        $(tab).click(function (e) {
+            var ul = $(e.target).closest('ul');
+            $(ul).find('li').removeClass('active');
+            $(e.target).closest('li').addClass('active');
+        })
+    })
+</script>

@@ -1,0 +1,3 @@
+Select lct_cd, lct_nm, up_lct_cd, level_cd, index_cd, shelf_cd, order_no, real_use_yn, re_mark, use_yn, lct_rfid, lct_bar_cd, 
+ sf_yn, is_yn, mt_yn, mv_yn, ti_yn, fg_yn, rt_yn, ft_yn, wp_yn, nt_yn, pk_yn, manager_id, reg_id, reg_dt, chg_id, chg_dt, mn_full, sap_lct_cd, userid, selected
+ from lct_info

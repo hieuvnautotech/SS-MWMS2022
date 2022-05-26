@@ -1,0 +1,135 @@
+﻿
+
+ @{
+    ViewBag.Title = "Directions";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+<link href="~/Content/themes/important.css" rel="stylesheet" />
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="WMS" data-level_2="Shipping Management" data-level_3="Directionst (S)"></div>
+}
+
+<div class="container-fluid">
+    <div class="row text-right">
+        <div class="col-md-12 px-3">
+            <button type="submit" id="excelBtn" class="btn btn-sm btn-warning button-top"><i class="fa fa-file-excel-o">&nbsp;Excel</i></button>
+            <button type="submit" id="htmlBtn" class="btn btn-sm btn-warning button-top"><i class="fa fa-print">&nbsp;HTML</i></button>
+              </div>
+    </div>
+</div>
+      
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-1 p-1  text-right">
+                <label><b>SD No </b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <input type="text" name="sd_no" id="sd_no" class="form-control form-control-text " maxlength="20">
+            </div>
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Location</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <input type="text" name="lct_cd" id="lct_cd" class="form-control form-control-text" maxlength="20">
+            </div>
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Work Date</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <input type="text" name="start_dt" id="start" class="form-control">
+            </div>
+            <div class="col-md-1 p-1  text-center">
+                <label><b>~</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <input type="text" name="end_dt" id="end" class="form-control">
+            </div>
+            <div class="col-md-1 p-2">
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+        </div>
+        <div class="row p-0 m-0">
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Worker </b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <input type="text" name="worker_id" id="worker_id" class="form-control form-control-text " maxlength="20">
+            </div>
+            <div class="col-md-1 p-1  text-right">
+                <label><b>MT No</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <input type="text" name="mt_no" id="mt_no" class="form-control form-control-text" maxlength="20">
+            </div>
+           
+        </div>
+     
+    </div>
+
+</div>
+
+
+<div class="container-fluid">
+    <div class="row p-0 m-0">
+        <div class="col-xs-6 pl-0">
+            <div class="box-body my-2 bg-white" id="two">
+                <div class="row p-0 m-0">
+                    
+                   
+                    <div class="col-xs-12 p-0">
+                        <table id="list1"></table>
+                        <div id="PagegridAu_Mem"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6 pr-0">
+            <div class="box-body my-2 bg-white" id="three">
+                <div class="row p-0 m-0">
+                
+                
+                <div class="col-xs-12 p-0">
+                    <table id="list2"></table>
+                    <div id="PageGetJqAuMn"></div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+              
+            <table id="list3"></table>
+            <div id="list1Pager"></div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="dialog3">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    âsasasas
+                    <button type="button" class="btn btn-sm btn-primary button-srh" id="closebom1"><i class="fa fa-close">&nbsp;Close</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+</div>
+
+
+<script src="~/Scripts/Shipping.js"></script>
+
+

@@ -1,0 +1,155 @@
+﻿@{
+    ViewBag.Title = "WO";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="MMS" data-level_2="Dash Board" data-level_3="Now Production"></div>
+} 
+
+  
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+           
+                <div class="col-md-1 p-1  text-right">
+                    <label><b> Date</b></label>
+                </div>
+            
+                <div class="col-md-1 p-1">
+                    <input type="text" name="end_dt" id="end" class="form-control">
+                </div>
+                <div class="col-md-1 p-2">
+                    <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                </div>
+        </div>
+     </div>
+ </div>
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div id="table_line"></div>
+        </div>
+    </div>
+</div>
+
+  
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            gettable();
+            gettable1();
+        });
+        function gettable1() {
+            $.get("/Dashboard/gettable", function (data) {
+                if (data != null && data != undefined && data.length) {
+                    $.each(data, function (key, item) {
+                        var ajax = $.ajax({
+                            url: "/Dashboard/getcolum?line=" + item.line_cd,
+                            type: "get",
+                            dataType: "json",
+                            success: function (rtnData) {
+
+                                var list1 = "";
+                                list2 = "",
+                                list3 = "";
+                                $.each(rtnData, function (dataType, data) {
+                                    if (dataType == "bar") { list1 = data[0] }
+                                    if (dataType == "product") { list2 = data[0] }
+                                });
+                                var ctx = document.getElementById("bar-chart-grouped-" + key + "").getContext("2d"),
+                                    config = {
+                                        type: "bar",
+
+                                        data: {
+
+                                            labels: [item.line_cd],
+                                            datasets: [{
+                                                label: ' Target',
+                                                data: [list1],
+                                                backgroundColor: ' #3399ff',
+                                                borderWidth: 1,
+                                                fill: false,
+                                            },
+                                            {
+                                                label: ' Product',
+                                                data: [list2],
+                                                backgroundColor: '#66FF00',
+                                                borderWidth: 1,
+                                                fill: false,
+                                            },
+                                            {
+                                                label: ' Refer',
+                                                data: [(list1 / list2) * 100],
+                                                backgroundColor: '	#FF0000 ',
+                                                borderWidth: 1,
+                                                fill: false,
+                                            }],
+                                        },
+                                        options: {
+                                            title: {
+                                                display: true,
+                                                width: 200,
+                                                text: item.line_cd
+                                            }
+                                        }
+                                    };
+                                window.myBar = new Chart(ctx, config);
+                            }
+
+                        });
+                    });
+                }
+            });
+        }
+
+        function gettable() {
+            $.get("/Dashboard/gettable", function (data) {
+                if (data != null && data != undefined && data.length) {
+                    var html = '<table width="10%" align = "right" bordercolor = "black" border = "1" cellspacing = "10px">';
+                    var giu_lieu = data.length;
+                    var cars = [];
+                    var reg = 0;
+                    cars.push(reg);
+                    $.each(data, function (key, item) {
+                        var reg_moi = 0;
+
+                        if (reg < giu_lieu) {
+                            if (cars == 0) {
+                                var reg_moi = 0;
+                                cars.push(reg_moi);
+                            }
+                            else {
+                                var ds = cars.length - 1;
+                                var reg_moi = cars[ds] + 4;
+                                if (reg_moi < giu_lieu && key == reg_moi) {
+                                    cars.push(reg_moi);
+                                }
+                            }
+
+                            if (reg_moi == key) {
+                                html += '<tr>';
+                            }
+                            html += '<td ><canvas id="bar-chart-grouped-' + key + '" style="width : 300px" height="150"></canvas> </td>';
+
+                        }
+                    });
+                    html += '</table>';
+                    $("#table_line").html(html);
+                }
+            });
+        }
+    </script>
+    <script>
+        $("#end").datepicker({
+            format: 'yyyy-mm-dd',
+            "autoclose": true
+        });
+    </script>
+   
+
+
+
+}

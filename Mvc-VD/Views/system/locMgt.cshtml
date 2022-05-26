@@ -1,0 +1,167 @@
+﻿@{
+    ViewBag.Title = "locMgt";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="STANDARD" data-level_2="System Management" data-level_3="Location Management"></div>
+}
+
+<div class="container-fluid">
+    <div class="row text-right">
+        <div class="col-md-12 px-3">
+            <button type="submit" id="excelBtn" class="btn btn-sm btn-warning button-top"><i class="fa fa-file-excel-o">&nbsp;Excel</i></button> 
+            <button type="submit" id="htmlBtn" class="btn btn-sm btn-warning form-control-text" hidden="hidden"><i class="fa fa-print">&nbsp;HTML</i></button>
+        </div>
+    </div>       
+</div>
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-1 p-2  text-right">
+                <label><b>Location Code</b></label>
+            </div>
+            <div class="col-md-2 p-2">
+                <div class="input-group">
+                   <input type="text" name="lct_cd" id="lct_cd" class="form-control form-control-text">
+                </div>
+            </div>
+              <div class="col-md-1 p-2  text-right">
+                <label><b>Location Name</b></label>
+            </div>
+              <div class="col-md-2 p-2">
+                <div class="input-group">
+                   <input type="text" name="lct_nm" id="lct_nm" class="form-control form-control-text">
+                </div>
+            </div>
+            <div class="col-md-1 p-2">
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <table id="locMgt"></table>
+            <div id="jqGridPager1"></div>
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+
+<div class="container-fluid">
+    <form id="form1">
+        <input type="hidden" name="lctno" id="m_lctno" value="">
+        <input type="hidden" name="lct_cd" id="m_lct_cd" value="">
+        <input type="hidden" name="up_lct_cd" id="m_up_lct_cd" value="">
+        <input type="hidden" name="level_cd" id="m_level_cd" value="">
+        <input type="hidden" name="remark_color" id="remark_color" value="">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <div class="col-md-8">
+                    <h4 class="box-title">Update Location</h4>
+                </div>
+                <div class="col-md-4 text-right">
+                    <button type="button" id="del_save_but" class="btn btn-danger button-sm mr-5 disabled"><i class="fa fa-scissors">&nbsp;Delete</i></button>
+                    <button type="button" id="m_save_but" class="btn btn-sm btn-success button-srh"><i class="fa fa-save">&nbsp;Modify</i></button>
+                </div>
+            </div>
+        
+            <div class="row p-0 m-0">
+                <div class="col-md-3">
+                    <input type="text" name="lct_nm" id="m_lct_nm" class="form-control form-control-text" placeholder="Location Name" >
+                </div>
+                <div class="col-md-2 text-center">
+                    <div class="input-group">
+                        <label>
+					        <input type="checkbox" name="mv_yn" id="m_mv_yn" value="Y">
+                            Movement
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <select name="use_yn" id="m_use_yn" class="form-control select2">
+                        <option value="Y" selected="selected">Use</option>
+                        <option value="N">UnUse</option>
+                    </select>
+                </div>
+                <div class="col-md-5">
+                    <div class="col-xs-12">
+                        <input type="text" name="re_mark" id="m_re_mark" class="form-control form-control-text" placeholder="Description">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="container-fluid">
+    <form id='form2'>
+        <input type="hidden" name="lctno" id="c_lctno" value="">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <div class="col-md-8">
+                    <h4 class="box-title">
+                        Create subLocation
+                        <label><input type="checkbox" name="root_yn" id="c_root_yn" value="" class="minimal ml-5">&nbsp;Root </label>
+                    </h4>                
+                </div>
+                <div class="col-md-4 text-right">
+                    <button type="button" id="c_reset_but" class="btn btn-sm btn-success form-control-text button-srh2 mr-5" onclick="fun_reset();"><i class='fa fa-refresh'>&nbsp;Reset</i></button>
+                    <button type="button" id="c_save_but" class="btn btn-sm btn-success button-srh"><i class='fa fa-save'>&nbsp;Create</i></button>
+                </div>
+            </div>
+            <div class="row p-0 m-0">
+                <div class="col-md-3">
+                    <input type="text" name='lct_nm' id='c_lct_nm' class="form-control form-control-text" placeholder="Location Name" >
+                </div>
+                <div class="col-md-2 text-center">
+                    <div class="input-group">
+                        <label>
+					        <input type="checkbox" name="mv_yn" id="c_mv_yn" value="Y">
+                            Movement
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="input-group">
+                        <select name='use_yn' id='c_use_yn' class="form-control select2" disabled="disabled">
+                            <option value="Y" selected="selected">Use</option>
+                            <option value="N">UnUse</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <input type="text" name='re_mark' id='c_re_mark' class="form-control form-control-text" placeholder="Description" >
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<!--Popup -->
+<div id="dialogDangerous" title="Are you make sure DELETE ?">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-success button-srh mr-3" id="closestyle">No</button>
+                    <button type="button" class="btn btn-sm btn-danger button-srh" id="deletestyle">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ./ Popup -->
+@section scripts{
+    @*<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js" type="text/javascript"></script>*@
+    <script src="~/Content/jquery.validate_V1.9/jquery.validate.min.js"></script>
+    <script src="~/Scripts/system/locMgt/locMgt.js"></script>
+    <script src="~/Scripts/system/locMgt/locMgt_Poup.js"></script>
+
+}
+
+
+
+

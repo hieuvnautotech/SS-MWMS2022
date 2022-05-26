@@ -1,0 +1,671 @@
+﻿
+<div class="container-fluid">
+    <div class="box-body bg-white text-right">
+        <div class="row p-0 m-0">
+            <div class="col-md-12 p-2">
+                <button type="submit" id="PrintDetail_PartialView_SD_Info_Popup" class="btn btn-sm btn-warning button-top"><i class="fa fa-print mr-2"></i>PRINT</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row p-0 m-0">
+        <div class="col-md-3 all_cg ">
+            <img src="~/Content/themes/Logo-suplier_in.jpg" style="width: 97%" />
+        </div>
+        <div class="col-md-5 p-2 text-center">
+            <h2 style="margin: 0">Shipping Direction List</h2>
+            <h4 class='red'>@ViewBag.sd_no </h4>
+        </div>
+        <div class="col-md-4 p-2">
+            <div class="row" style="border-top: 1px solid; border-bottom: 1px solid">
+                <div class="col-md-4 p-3 text-center">
+                    <p>Document Code</p>
+                    <p>Serial</p>
+                    <p style="margin: 0">Date</p>
+                </div>
+                <div class="col-md-8" style="padding-top: 12px !important">
+                    <p id="barcode_PartialView_SD_Info_Popup" style="margin: 0 auto;"></p>
+                    <p id="datetime_PartialView_SD_Info_Popup" style="text-align: center; margin-top: 10px;">
+                        <script>
+                            function formatDate() {
+                                var d = new Date(),
+                                    month = '' + (d.getMonth() + 1),
+                                    day = '' + d.getDate(),
+                                    year = d.getFullYear(),
+                                    Hours = d.getHours(),
+                                    Minutes = d.getMinutes();
+
+                                if (month.length < 2) { month = '0' + month; }
+                                if (day.length < 2) { day = '0' + day; }
+                                if (Hours < 10) { Hours = '0' + Hours; }
+                                if (Minutes < 10) Minutes = '0' + Minutes;
+                                time = Hours + ":" + Minutes;
+                                var full = year + "-" + month + "-" + day + " " + time;
+                                $("#datetime_PartialView_SD_Info_Popup").html(full);
+                            }
+                            formatDate()
+                            setInterval(formatDate, 500);
+                        </script>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-md-7">
+            <h4>Standard</h4>
+            <table id="dataTable1_PartialView_SD_Info_Popup" class="table table-bordered table-striped" style="width: 100%">
+                <thead>
+
+                    <tr class="table-warning">
+                        <th>SD NO</th>
+                        <th>SD Name</th>
+                        <th>Status</th>
+                        <th>Location</th>
+                        <th>Remark</th>
+
+                    </tr>
+                </thead>
+            </table> 
+        </div>
+        <div class="col-md-5">
+            <h4>Count ML NO</h4>
+            <table id="dataTable4_PartialView_SD_Info_Popup" class="table table-bordered table-striped" style="width: 100%">
+                <thead>
+                    <tr class="table-warning">
+                        <th>MT NO</th>
+                        <th>Cấp</th>
+                        <th>Đã nhận</th>
+                        <th>Đã sử dụng hết</th>
+                        <th>Đang sử dụng</th>
+                        <th>Trả về</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>
+                            total
+                        </th>
+                        <th>
+
+                        </th>
+                        <th>
+                        </th>
+                        <th>
+                        </th>
+                        <th>
+                        </th>
+                        <th>
+                        </th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+   
+</div>
+
+<div class="container-fluid py-4">
+    <h4>List</h4>
+    <table id="dataTable2_PartialView_SD_Info_Popup" class="table table-bordered table-striped" style="width: 100%">
+        <thead>
+
+            <tr class="table-warning">
+
+                <th style="text-align: center !important">STT</th>
+                @*<th style="text-align: center !important">Picking Time</th>*@
+                <th style="text-align: center !important">PO NO</th>
+                <th style="text-align: center !important">ML NO</th>
+                <th style="text-align: center !important">Location</th>
+                <th style="text-align: center !important">Group Qty</th>
+                <th style="text-align: center !important">Status</th>
+                <th style="text-align: center !important">Lot No</th>
+                <th style="text-align: center !important">Expiry Date</th>
+                <th style="text-align: center !important">Date Of Receipt</th>
+                <th style="text-align: center !important">Expore Date</th>
+                @*<th style="text-align: center !important">Delete</th>*@
+            </tr>
+        </thead>
+       
+    </table>
+    <input type="hidden" name="name" value=" " id="value_html" />
+
+</div>
+
+<div class="container-fluid py-4">
+    <h4>List Memory</h4>
+    <table id="dataTable3_PartialView_SD_Info_Popup" class="table table-bordered table-striped" style="width: 100%">
+        <thead>
+
+            <tr class="table-warning">
+
+                <th style="text-align: center !important">STT</th>
+                <th style="text-align: center !important">Model</th>
+                <th style="text-align: center !important">Tên</th>
+                <th style="text-align: center !important">Code</th>
+                <th style="text-align: center !important">Tên Sản Phẩm</th>
+                <th style="text-align: center !important">Size</th>
+                <th style="text-align: center !important">Date Income</th>
+                <th style="text-align: center !important">Lot</th>
+                <th style="text-align: center !important">Thực Xuất(Roll)</th>
+                <th style="text-align: center !important">Total(M)</th>
+                <th style="text-align: center !important">Total(M2)</th>
+                <th style="text-align: center !important">Total(EA)</th>
+                <th style="text-align: center !important">Memory</th>
+
+            </tr>
+        </thead>
+
+    </table>
+</div>
+
+<script>
+    $(function () {
+        $('#dataTable1_PartialView_SD_Info_Popup').DataTable({
+            "ajax": {
+
+                "url": "/ShippingMgt/GetPickingScanPP?sd_no=@ViewBag.sd_no",
+                "type": "GET",
+                "datatype": "json"
+            },
+            "searching": false,
+            "paging": false,
+            "bInfo": false,
+            "destroy": true,
+            "columns": [
+                { "data": "sd_no" },
+                { "data": "sd_nm" },
+                { "data": "sts_nm" },
+                { "data": "lct_nm" },
+                { "data": "remark" },
+
+            ],
+
+            'columnDefs': [
+                {
+                    "targets": 0, // your case first column
+                    "className": "text-center",
+
+                },
+                {
+                    "targets": 1, // your case first column
+                    "className": "text-center",
+
+                },
+                {
+                    "targets": 2, // your case first column
+                    "className": "text-center",
+
+                },
+                {
+                    "targets": 3, // your case first column
+                    "className": "text-center",
+
+                },
+                {
+                    "targets": 4, // your case first column
+                    "className": "text-center",
+
+                },
+
+            ],
+            "bDestroy": true,
+
+        });
+        $('#dataTable4_PartialView_SD_Info_Popup').DataTable({
+            "ajax": {
+
+                "url": "/ShippingMgt/GetPickingScanPP_Count_MT_no?sd_no=@ViewBag.sd_no",
+                "type": "GET",
+                "datatype": "json"
+            },
+
+
+            "searching": false,
+            "paging": false,
+            "bInfo": false,
+            "destroy": true,
+            "columns": [
+                { "data": "mt_no" },
+                { "data": "cap" },
+                { "data": "nhan" },
+                { "data": "dasd" },
+                { "data": "dangsd" },
+                { "data": "trave" },
+
+
+            ],
+            "footerCallback": function (row, data, start, end, display) {
+                var api = this.api(), data;
+
+                // converting to interger to find total
+                var intVal = function (i) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '') * 1 :
+                        typeof i === 'number' ?
+                            i : 0;
+                };
+
+                // computing column Total of the complete result
+                var monTotal = api
+                    .column(1)
+                    .data()
+                    .reduce(function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+
+                var tueTotal = api
+                    .column(2)
+                    .data()
+                    .reduce(function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+
+                var wedTotal = api
+                    .column(3)
+                    .data()
+                    .reduce(function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+
+                var thuTotal = api
+                    .column(4)
+                    .data()
+                    .reduce(function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+
+                var friTotal = api
+                    .column(5)
+                    .data()
+                    .reduce(function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+
+                // Update footer by showing the total with the reference of the column index
+                $(api.column(0).footer()).html('Total');
+                $(api.column(1).footer()).html(monTotal);
+                $(api.column(2).footer()).html(tueTotal);
+                $(api.column(3).footer()).html(wedTotal);
+                $(api.column(4).footer()).html(thuTotal);
+                $(api.column(5).footer()).html(friTotal);
+            },
+            "processing": true,
+
+            'columnDefs': [
+                {
+                    "targets": 0, // your case first column
+                    "className": "text-left",
+                    "width:": "15%",
+
+                },
+                {
+                    "targets": 1, // your case first column
+                    "className": "text-center",
+
+                },
+                {
+                    "targets": 2, // your case first column
+                    "className": "text-center",
+
+                },
+
+            ],
+            "bDestroy": true,
+
+        });
+        var t = $('#dataTable2_PartialView_SD_Info_Popup').DataTable({
+            "ajax": {
+                "url": "/ShippingMgt/GetPickingScanListPP?sd_no=@ViewBag.sd_no",
+                "type": "GET",
+                "datatype": "json",
+            },
+            "searching": true,
+            "paging": true,
+            "bInfo": false,
+            "destroy": true,
+            "columns": [
+                { "data": "id" },
+                //{ "data": "picking_dt" },
+                { "data": "po" },
+                { "data": "mt_cd" },
+                { "data": "lct_nm" },
+                { "data": "gr_qty", render: $.fn.dataTable.render.number(',', '.', 0, '') },
+                { "data": "sts_nm" },
+                { "data": "lot_no" },
+                {
+                    "data": "expiry_dt"//, formatter: 'date', formatoptions: { srcformat: "ISO8601Long", newformat: "Y-m-d H:m:s" }
+                    //render: function (data) {
+                    //    debugger;
+                    //    if(data != null) 
+                    //    {
+                    //        var from = data.split("/");
+                    //        var year = from[2].split(" ");
+                    //        var date = year[0] + '-' + from[0] + '-' + from[1];
+                    //        return date;
+                    //    }
+                    //    else {
+                    //        return "";
+                    //    }
+                    //} 
+                },
+                {
+                    "data": "dt_of_receipt"//, formatter: 'date', formatoptions: { srcformat: "ISO8601Long", newformat: "Y-m-d H:m:s" }
+                    //render: function (data) {
+                    //    debugger;
+                    //    if(data != null) 
+                    //    {
+                    //        var from = data.split("/");
+                    //        var year = from[2].split(" ");
+                    //        var date = year[0] + '-' + from[0] + '-' + from[1];
+                    //        return date;
+                    //    }
+                    //    else {
+                    //        return "";
+                    //    }
+                    //}
+                },
+
+                {
+                    "data": "expore_dt", formatter: 'date', formatoptions: { srcformat: "ISO8601Long", newformat: "Y-m-d H:m:s" }
+                    //render: function (data) {
+                    //    debugger;
+                    //    if(data != null) 
+                    //    {
+                    //        var from = data.split("/");
+                    //        var year = from[2].split(" ");
+                    //        var date = year[0] + '-' + from[0] + '-' + from[1];
+                    //        return date;
+                    //    }
+                    //    else {
+                    //        return "";
+                    //    }
+                    //}
+                },
+
+
+                //{
+
+
+                //    data: null,
+                //    className: "text-center",
+                //    render: function (data, type, row) {
+                //        var html = "";
+                //        if (data.mt_sts_cd == "000") {
+                //            html += '<a data-mt_cd= "' + data.mt_cd + '" class="editor_remove btn btn-sm btn-danger">X</a>'
+                //            //html += '<button class="editor_remove btn btn-sm btn-danger button-srh  text-center" dat-mt_cd="' + data.mt_cd + '" > X</button>'
+                //        }
+                //        return html;
+                //    }
+
+
+                //}
+
+            ],
+            'columnDefs': [
+                {
+                    "targets": 0, // your case first column
+                    "className": "text-center",
+                    "width:": "5%",
+                },
+                {
+                    "targets": 1, // your case first column
+                    "className": "text-center",
+                    "width:": "15%",
+
+                },
+                {
+                    "targets": 2, // your case first column
+                    "className": "text-center",
+                    "width:": "20%",
+
+                },
+                {
+                    "targets": 3, // your case first column
+                    "className": "text-left",
+                    "width:": "10%",
+
+                },
+                {
+                    "targets": 4, // your case first column
+                    "className": "text-center",
+                    "width:": "10%",
+
+                },
+                {
+                    "targets": 5, // your case first column
+                    "className": "text-center",
+                    "width:": "10%",
+
+                },
+                {
+                    "targets": 6, // your case first column
+                    "className": "text-center",
+                    "width:": "10%",
+
+                },
+                {
+                    "targets": 7, // your case first column
+                    "className": "text-center",
+                    "width:": "10%",
+
+                },
+                {
+                    "targets": 8, // your case first column
+                    "className": "text-center",
+                    "width:": "5%",
+
+                },
+
+
+            ],
+            "lengthMenu": [[20, 50, 100, 200, 500, -1], [20, 50, 100, 200, 500, "All"]],
+            "order": [[1, 'asc']],
+             //'rowsGroup': [1],
+            "bDestroy": true,
+
+
+        });
+        t.on('order.dt search.dt', function () {
+            t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+                cell.innerHTML = i + 1;
+            });
+        }).draw();
+        $('#dataTable3_PartialView_SD_Info_Popup').DataTable({
+            "ajax": {
+
+                "url": "/ShippingMgt/GetPickingScanPP_Memo?sd_no=@ViewBag.sd_no",
+                "type": "GET",
+                "datatype": "json"
+            },
+            "searching": true,
+            "paging": true,
+            "bInfo": false,
+            "destroy": true,
+            "columns": [
+                { "data": "id" },
+                { "data": "md_cd" },
+                { "data": "style_no" },
+                { "data": "style_nm" },
+                { "data": "mt_cd" },
+                { "data": "size" },
+                { "data": "month_excel" },
+                { "data": "lot_no" },
+                { "data": "TX" },
+                { "data": "total_m" },
+                { "data": "total_m2" },
+                { "data": "total_ea" },
+                { "data": "memo" },
+            ],
+
+            'columnDefs': [
+                {
+                    "targets": 0, // your case first column
+                    "className": "text-center",
+
+                },
+                {
+                    "targets": 1, // your case first column
+                    "className": "text-center",
+
+                },
+                {
+                    "targets": 2, // your case first column
+                    "className": "text-center",
+
+                },
+                {
+                    "targets": 3, // your case first column
+                    "className": "text-center",
+
+                },
+                {
+                    "targets": 4, // your case first column
+                    "className": "text-center",
+
+                },
+
+            ],
+            "bDestroy": true,
+
+        });
+
+         // Delete a record
+        $('#dataTable2_PartialView_SD_Info_Popup tbody').on('click', '.editor_remove', function () {
+
+            var r = confirm("Bạn có chắc muốn Xóa không!!!");
+            if (r == true) {
+                var mt_cd = $(this).data('mt_cd');
+
+                var flag = false;
+                $.ajax({
+                    url: "/ShippingMgt/DeleteRecortSd",
+                    type: "get",
+                    dataType: "json",
+                    data: {
+                        mt_cd: mt_cd,
+                    },
+                    async:false,
+                    success: function (response) {
+                        if (response.result) {
+                            flag = true;
+                            SuccessAlert(response.message);
+
+                        } else {
+                            ErrorAlert(response.message);
+                        }
+                    },
+
+                });
+                if (flag) {
+
+                    t.row($(this).parents('tr'))
+                        .remove()
+                        .draw();
+                }
+            } else {
+               return false
+            }
+        });
+
+
+        $("#PrintDetail_PartialView_SD_Info_Popup").on("click", function (w, h) {
+            var left = ($(window).width() / 2) - (900 / 2)
+
+            window.open(
+                "/ShippingMgt/PrintSD_LIST?sd_no=@ViewBag.sd_no",
+                "PRINT",
+                "width=1100, height=800, top=100, left=" + left + " location=no,resizable=no, status=no,");
+
+        });
+
+    });
+
+    function popupwindow(url, title, w, h) {
+        var left = (screen.width / 2) - (w / 2);
+        var top = (screen.height / 2) - (h / 2);
+        return window.open(url, title, 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, copyhistory=no, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
+    }
+
+
+    function _Date(cellvalue, options, rowObject) {
+
+        if (cellvalue == null)
+            return "";
+        var reg = /(\d{4})(\d{2})(\d{2})/;
+        if (reg.test(cellvalue))
+            return cellvalue.replace(reg, "$1-$2-$3");
+        else {
+            reg = /(\d{4})(\d{2})\-(\d{2})/;
+            if (reg.test(cellvalue))
+                return cellvalue.replace(reg, "$1-$2-$3");
+            else {
+                reg = /(\d{4})\-(\d{2})(\d{2})/;
+                if (reg.test(cellvalue))
+                    return cellvalue.replace(reg, "$1-$2-$3");
+                else {
+                    reg = /(\d{4})\-(\d{2})\-(\d{2})/;
+                    if (reg.test(cellvalue))
+                        return cellvalue.replace(reg, "$1-$2-$3");
+                    else {
+                        reg = /(\d{4})(\d{2}).(\d{2})/;
+                        if (reg.test(cellvalue))
+                            return cellvalue.replace(reg, "$1-$2-$3");
+                        else {
+                            reg = /(\d{4}).(\d{2}).(\d{2})/;
+                            if (reg.test(cellvalue))
+                                return cellvalue.replace(reg, "$1-$2-$3");
+
+                            else {
+                                reg = /(\d{4})(\d{2})\\(\d{2})/;
+                                if (reg.test(cellvalue))
+                                    return cellvalue.replace(reg, "$1-$2-$3");
+                                else {
+                                    reg = /(\d{4})\\(\d{2})\\(\d{2})/;
+                                    if (reg.test(cellvalue))
+                                        return cellvalue.replace(reg, "$1-$2-$3");
+                                    else {
+                                        reg = /(\d{4})\\(\d{2})\.(\d{2})/;
+                                        if (reg.test(cellvalue))
+                                            return cellvalue.replace(reg, "$1-$2-$3");
+                                        else {
+                                            reg = /(\d{4})\.(\d{2})\\(\d{2})/;
+                                            if (reg.test(cellvalue))
+                                                return cellvalue.replace(reg, "$1-$2-$3");
+                                            else
+                                                return cellvalue;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    $(function () {
+        var code = "@ViewBag.sd_no";
+
+        $('#barcode_PartialView_SD_Info_Popup').append(code);
+        $('#barcode_PartialView_SD_Info_Popup').barcode(code, "code128", { barWidth: 1, barHeight: 30 });
+
+        $('.popup-dialog-close').click(function () {
+            $(".popup-dialog").dialog('close');
+        });
+    })
+</script>
+<style>
+    a.editor_remove {
+        color: #fff !important;
+        cursor: pointer;
+        text-align:center !important
+    }
+</style>

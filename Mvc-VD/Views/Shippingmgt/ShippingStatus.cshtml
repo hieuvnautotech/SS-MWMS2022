@@ -1,0 +1,118 @@
+﻿@model IEnumerable<Mvc_VD.Models.p_mpo_detail>
+
+@{
+    ViewBag.Title = "Status  info";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="WMS" data-level_2="Shipping Management" data-level_3="Status"></div>
+}
+
+<div class="container-fluid">
+    <div class="row text-right">
+        <div class="col-md-12 px-3">
+            <button type="submit" id="excelBtn" class="btn btn-sm btn-warning button-top"><i class="fa fa-file-excel-o">&nbsp;Excel</i></button>
+            <button type="submit" id="htmlBtn" class="btn btn-sm btn-warning button-top"><i class="fa fa-print">&nbsp;HTML</i></button>
+        </div>
+    </div>
+</div>
+      
+<!-- Search function -->
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-1 p-1  text-right">
+                <label><b>MSR NO </b></label>
+            </div>
+              <div class="col-md-2 p-1">
+                 <div class="input-group mt_plus">
+                    <input type="text" name="mr_no" id="mr_no" class="input-text form-control">
+                    <span class="input-group-addon"><a href="#" class="poupdialog"><i class="fa fa-search text-navy"></i></a></span>
+                </div>
+            </div>
+            <div class="col-md-1 p-1  text-right">
+                <label><b>MT NO </b></label>
+            </div>
+               <div class="col-md-2 p-1">
+                 <div class="input-group mt_plus">
+                    <input type="text" name="mt_no" id="mt_no" class="input-text form-control">
+                    <span class="input-group-addon"><a href="#" class="poupdialogMT"><i class="fa fa-search text-navy"></i></a></span>
+                </div>
+            </div>
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Status </b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <select name="dt_nm" id="dt_nm" class="form-control ">
+                    <option value=""> </option>
+                </select>
+            </div>
+            <div class="col-md-2  p-2">
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- ./Search function -->
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+              
+            <table id="list"></table>
+            <div id="listPager"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ./Bang table -->
+<div class="dialogMR" >
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-primary button-srh" id="closeMR"><i class="fa fa-close">&nbsp;Close</i></button>
+                    <button type="button" class="btn btn-sm btn-success button-srh" id="savestyleMR"><i class="fa fa-save">&nbsp;Selected</i></button>       
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <table id="popupsMR"></table>
+                <div id="popupspagerMR"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="dialogMT" >
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-primary button-srh" id="closeMT"><i class="fa fa-close">&nbsp;Close</i></button>
+                    <button type="button" class="btn btn-sm btn-success button-srh" id="savestyleMT"><i class="fa fa-save">&nbsp;Selected</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <table id="popupsMT"></table>
+                <div id="popupspagerMT"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="~/Scripts/Shippingmgt/ShippingStatus/Statusshipping.js"></script>
+    <script src="~/Scripts/Shippingmgt/ShippingStatus/popupMRNO.js"></script>
+    <script src="~/Scripts/Shippingmgt/ShippingStatus/popupMTNO.js"></script>
+}
+

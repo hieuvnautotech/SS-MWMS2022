@@ -1,0 +1,54 @@
+﻿@{
+    ViewBag.Title = "Picking_Scan_F";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="FG-WMS" data-level_2="Shipping Management" data-level_3="Picking Scan (F)"></div>
+
+}
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Location</b></label>   
+            </div>
+            <div class="col-md-2 p-1">
+                <input type="text" name="lct_cd" id="lct_cd" maxlength="200" class="input-text form-control">
+            </div>
+            <div class="col-md-1 p-1 text-center">
+                <input type="checkbox" id="myCheck">Keep this location<br></div>
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Buyer QR</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <input type="text" name="mt_barcode" id="mt_barcode" class="form-control" maxlength="50" ">      
+            </div>
+              <div class="col-md-1 p-1">
+                    <button id="saveBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-save">&nbsp;Save</i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ./Search function -->
+
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <table id="list"></table>
+            <div id="gridpager"></div> 
+        </div>
+    </div>
+</div>
+<div id="loading"><img id="loading-image" src="/Images/loding.gif" alt="Loading..." /></div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+@section scripts{
+    <script src="~/Scripts/fgwms/Picking_Scan_F/Picking_Scan_F.js"></script>
+    <script>
+        $(document).ready(function () {
+            setTimeout(function () { $("#lct_cd").focus(); }, 1);
+        });
+    </script>
+}

@@ -1,0 +1,3 @@
+Select fqno, fq_no, ml_no, ml_tims, product_cd, shift, at_no, DATE_FORMAT(work_dt,'%Y-%m-%d %H:%i:%s'), item_vcd, item_nm, item_exp
+check_qty, ok_qty, reg_id, reg_dt, chg_id, chg_dt
+ from m_facline_qc

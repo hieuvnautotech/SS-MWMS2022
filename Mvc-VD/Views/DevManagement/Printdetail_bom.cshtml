@@ -1,0 +1,302 @@
+﻿@{
+    ViewBag.Title = "Printdetail_bom";
+    Layout = "~/Views/Shared/_Print.cshtml";
+}
+
+<div id="all_in1">
+    <input type="hidden" id="bid" value="@ViewData["Message"]"/>
+    <div class="container-fluid">
+        <div class="row p-0 mt-5">
+            <div class="col-md-3 all_cg">
+                <img src="/Content/themes/Logo-suplier_in.jpg" style="width: 100%" />
+            </div>
+            <div class="col-md-6 p-2 text-center" id="title">
+            </div>
+            <div class="col-md-3 p-2 all_cg" style="border-top: 1px solid; border-bottom: 1px solid">
+                <div class="row p-2">
+                    <div class="col-md-5 text-center">
+                        <p>Document Code</p>
+                        <p>Serial</p>
+                        <p style="margin: 0;">Date</p>
+                    </div>
+                    <div class="col-md-7 text-left p-0 m-0">
+                        <div id="barcode"></div>
+                        <div id="datetime" style="text-align: center; margin-top: 10px;">
+                            <script>
+                                function formatDate() {
+                                    var d = new Date(),
+                                        month = '' + (d.getMonth() + 1),
+                                        day = '' + d.getDate(),
+                                        year = d.getFullYear(),
+                                        Hours = d.getHours(),
+                                        Minutes = d.getMinutes();
+
+                                    if (month.length < 2) { month = '0' + month; }
+                                    if (day.length < 2) { day = '0' + day; }
+                                    if (Hours < 10) { Hours = '0' + Hours; }
+                                    if (Minutes < 10) Minutes = '0' + Minutes;
+                                    time = Hours + ":" + Minutes;
+                                    var full = year + "-" + month + "-" + day + " " + time;
+                                    $("#datetime").html(full);
+                                }
+                                formatDate()
+                                setInterval(formatDate, 500);
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <h4>Standard</h4>
+                <table class="table table-hover table-bordered">
+                    <thead>
+                        <tr class="table-warning">
+                            <th scope="col">Code </th>
+                            <th scope="col">Product Code </th>
+                            <th scope="col">Product Name</th>
+                            <th scope="col">Model </th>
+                            <th scope="col">Project Name</th>
+                            <th scope="col">CAV</th>
+                            <th scope="col">Packing Unit</th>
+                            <th scope="col">Packing Qty</th>
+                            <th scope="col">SS Version</th>
+                            <th scope="col">Part Name</th>
+                            <th scope="col">Standard</th>
+                            <th scope="col">Customer Rev</th>
+                            <th scope="col">Order Number</th>
+                            @*<th scope="col">Need Time</th>*@
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="info"></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <h4>Detail</h4>
+            <div class="row p-0 m-0">
+
+                <table id="popupbom" class="table table-striped table-bordered">
+                    <thead>
+                        <tr class="table-warning">
+
+                            <th scope="col" style="text-align: center !important">STT</th>
+                            <th scope="col" style="text-align: center !important">Part</th>
+                            <th scope="col" style="text-align: left !important">Lead Time(EA/h)</th>
+                            <th scope="col" style="text-align: center !important">Material</th>
+                            <th scope="col" style="text-align: center !important">Material Name</th>
+                            <th scope="col" style="text-align: center !important">Width</th>
+                            <th scope="col" style="text-align: center !important">Need Qty</th>
+                            <th scope="col" style="text-align: center !important">Feeding</th>
+                            <th scope="col" style="text-align: center !important">Unit</th>
+                            <th scope="col" style="text-align: center !important">Division</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    div#popupbom_wrapper {
+        width: 100%;
+    }
+
+    td.details-control {
+        /*background: url('https://cdn.rawgit.com/DataTables/DataTables/6c7ada53ebc228ea9bc28b1b216e793b1825d188/examples/resources/details_open.png') no-repeat center center;*/
+        background: url('/Content/DataTables/details_open.png') no-repeat center center;
+        cursor: pointer;
+    }
+
+    tr.shown td.details-control {
+        /*background: url('https://cdn.rawgit.com/DataTables/DataTables/6c7ada53ebc228ea9bc28b1b216e793b1825d188/examples/resources/details_close.png') no-repeat center center;*/
+        background: url('/Content/DataTables/details_close.png') no-repeat center center;
+    }
+</style>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<script>
+    $(document).ready(function () {
+        var bid = $('#bid').val();
+        print(bid);
+        _getinfo(bid);
+    });
+    function print(bid) {
+        var table1 = $('#popupbom').DataTable({
+            "processing": true,
+            //"bServerSide": true,
+            "ajax": {
+                "url": '/DevManagement/Getpp_bom2?bid=' + bid,
+                //"url": '/DevManagement/GetDetail_bomdetail?bom_no=' + bom_no,
+                "type": "Post",
+                "datatype": "json"
+            },
+
+            "searching": false,
+            "paging": false,
+            "bInfo": false,
+            "lengthMenu": [50, 100, 200, 500, 1000],
+            "columns": [
+                     {
+                         'className': 'details-control',
+                         'orderable': false,
+                         'data': null,
+                         'defaultContent': ''
+                     },
+
+                { "data": "process_part" },
+                { "data": "need_time", render: $.fn.dataTable.render.number(',', '.', 0, '') },
+                { "data": "mt_no" },
+                { "data": "mt_nm" },
+                { "data": "width" },
+                { "data": "need_qty", render: $.fn.dataTable.render.number(',', '.', 0, '') },
+                { "data": "feed_size" },
+                { "data": "feed_unit" },
+                { "data": "div_cd" },
+            ],
+            'columnDefs': [
+                  {
+                      "searchable": false,
+                      "orderable": false,
+                      "targets": 0, // your case first column
+                      "className": "text-center",
+                  },
+             {
+                 "targets": 1, // your case first column
+                 "className": "text-left",
+                 "width": "15%"
+             },
+              {
+                  "targets": 2, // your case first column
+                  "className": "text-right",
+                  "width": "10%"
+              },
+            {
+                "targets": 4, // your case first column
+                "className": "text-left",
+                "width": "10%"
+            },
+             {
+                 "targets": 5, // your case first column
+                 "className": "text-right",
+                 "width": "10%"
+             },
+              {
+                  "targets": 6, // your case first column
+                  "className": "text-right",
+                  "width": "7%"
+              },
+
+            ],
+            "order": [[1, 'asc']],
+            //'rowsGroup': [0, 1, 2, 3],
+            "bDestroy": true,
+            "initComplete": function (settings, json) {
+                table1.rows(':not(.parent)').nodes().to$().find('td:first-child').trigger('click');
+            }
+
+        });
+      
+
+        $('#popupbom tbody').on('click', 'td.details-control', function () {
+            var tr = $(this).parents('tr');
+            var row = table1.row(tr);
+            if (tr.hasClass("shown")) {
+                row.child.hide();
+                tr.removeClass('shown');
+            } else {
+                var x = row.data();
+                var bdid = x.bdid;
+
+
+                $.ajax({
+                    url: "/DevManagement/Getplace_ttpp_bom?bdid=" + bdid,
+                    type: "get",
+                    dataType: "json",
+                    success: function (data) {
+                        var html = "";
+                        if (data.length > 0) {
+                            html += ' <table><thead><tr class="table-warning"> ' +
+                               '<th class="text-center">Bom No</th>' +
+                               '<th class="text-center">Part No</th>' +
+                               '<th class="text-center">MT No Replacement</th></tr></thead><tbody>';
+                            for (var i = 0; i < data.length; i++) {
+                                html += ' <tr>';
+                                html += '<td>' + data[i].bom_no + '</td>';
+                                html += '<td>' + data[i].part_no + '</td>';
+                                html += '<td>' + data[i].mt_no_r + '</td>';
+                                html += '</tr>';
+                            }
+                            html += "</tbody></table>";
+                        }
+
+                        row.child(html).show();
+                        tr.addClass('shown');
+
+                    }
+                });
+
+            }
+        });
+
+
+        table1.on('order.dt search.dt', function () {
+            table1.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+                cell.innerHTML = i + 1;
+            });
+        }).draw();
+
+       
+        $('#btn-show-all-children').on('click', function () {
+            table1.rows(':not(.parent)').nodes().to$().find('td:first-child').trigger('click');
+        });
+    }
+
+    function numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    };
+    function _getinfo(bid) {
+        $.get("/DevManagement/pp_bom" + "?id=" + bid, function (data) {
+            var html = '';
+            a = data.bom_no.substr(0, 1);
+            b = data.bom_no.substr(1, 12);
+            d = data.bom_no.substr(data.bom_no.length - 1, 1);
+            c = parseInt(b);
+            var cav = numberWithCommas(data.cav);
+            var packing_unit = numberWithCommas(data.packing_unit);
+            var packing_qty = numberWithCommas(data.packing_qty);
+
+            html += '<td class="text-center">' + a + c + d + '</td>';
+            html += '<td class="text-center">' + data.style_no + '</td>';
+            html += '<td>' + data.style_nm + '</td>';
+            html += '<td>' + data.md_cd + '</td>';
+            html += '<td>' + data.prj_nm + '</td>';
+            html += '<td style="text-align: right;">' + cav + '</td>';
+            html += '<td style="text-align: right;">' + packing_unit + '</td>';
+            html += '<td style="text-align: right;">' + packing_qty + '</td>';
+            html += '<td>' + data.ssver + '</td>';
+            html += '<td>' + data.part_nm + '</td>';
+            html += '<td>' + data.standard + '</td>';
+            html += '<td>' + data.cust_rev + '</td>';
+            html += '<td>' + data.order_num + '</td>';
+            //html += '<td class="text-right">' + data.need_time + '</td>';
+
+            var html1 = "BM-" + data.bom_no;
+
+            $('#barcode').append(html1);
+            $('#barcode').barcode(html1, "code128", { barWidth: 1, barHeight: 30 });
+
+            $("#title").html("<h1 style='font-size: 43px;'>BOM</h1><h2 style='font-size: 20px;'>" + data.style_no + " " + '[' + data.style_nm + " " + ']' + "</h2>");
+            $("#info").html(html);
+
+
+        });
+    }
+</script>

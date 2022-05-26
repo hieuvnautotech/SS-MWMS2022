@@ -1,0 +1,3 @@
+Select bmno, bx_no, buyer_cd, mt_cd, gr_qty, product, type, mapping_dt, sts As Status, 
+use_yn,del_yn, reg_id, reg_dt, chg_id, chg_dt 
+From w_box_mapping;

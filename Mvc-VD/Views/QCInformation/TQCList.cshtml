@@ -1,0 +1,240 @@
+﻿@{ ViewBag.Title = "TQCList";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml"; }
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="@Html.Raw(ViewData["TIMS"])" data-level_2="@Html.Raw(ViewData["Actual"])" data-level_3="@Html.Raw(ViewData["Classification NG"])"></div>
+}
+<style>
+    .ui-jqgrid .ui-jqgrid-bdiv {
+        overflow: auto;
+    }
+</style>
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-2 py-1">
+                <label>Product</label>
+                <div class="input-group mt_plus">
+                    <input type="text" name="productCode" id="productCode" class="input-text form-control" placeholder="Product">
+                    <span class="input-group-addon psbom"><a href="#" class="poupdialogStyle"><i class="fa fa-search text-navy"></i></a></span>
+                </div>
+            </div>
+            <div class="col-md-2 p-1">
+                <label><b>PO</b></label>
+                <div class="input-group mt_plus">
+                    <input type="text" name="s_at_no" id="at_no" class="input-text form-control">
+                    <span class="input-group-addon pp_at_no"><a href="#"><i class="fa fa-search text-navy"></i></a></span>
+                </div>
+            </div>
+            <div class="col-md-2 py-1">
+                <label>Start Date</label>
+                <div class="input-group mt_plus">
+                    <input type="text" name="date_ymd" id="start_date_ymd" class="input-text form-control">
+                </div>
+            </div>
+            <div class="col-md-2 py-1">
+                <label>End Date</label>
+                <div class="input-group mt_plus">
+                    <input type="text" name="date_ymd" id="end_date_ymd" class="input-text form-control">
+                </div>
+            </div>
+            <div class="col-md-2 py-1">
+                <label></label>
+                <div class="input-group mt_plus">
+                    <button id="searchBtn" class="btn btn-sm btn-success button-srh ml-5"><i class="fa fa-save">&nbsp;Search</i></button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+@*<div id="tableNG"></div>*@
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="p-2 m-2 col-md-8">
+            <table id="list"></table>
+            <div id="list_gridpager"></div>
+        </div>
+        <div class="col-md-3 p-2 m-2">
+            <table id="list_facline_qc_value"></table>
+            <div id="list_gridpager_value"></div>
+        </div>
+    </div>
+</div>
+<div class="dialogpo" title="PO Information">
+    <div class="container-fluid">
+        <div class="box-body well text-right">
+            <div class="row p-0 m-0" style="display: flex; flex-wrap: nowrap;">
+
+                <div class="col-md-2 p-1  text-right">
+                    <div class="input-group mt_plus">
+                        <input type="text" name="" id="at_nos" placeholder="PO NO" class="input-text form-control">
+                    </div>
+                </div>
+                <div class="col-md-2 p-1">
+                    <div class="input-group mt_plus">
+                        <input type="text" name="" id="sProductCode" placeholder="Product Code" class="input-text form-control">
+                    </div>
+                </div>
+                <div class="col-md-2 p-1">
+                    <div class="input-group mt_plus">
+                        <input type="text" name="" id="sDate" placeholder="Create Date" class="input-text form-control">
+                    </div>
+                </div>
+
+                <div class="col-md-4 p-2">
+                    <button id="searchBtn_po" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button type="button" class="btn btn-sm btn-success button-srh" id="Selected_po"><i class="fa fa-save">&nbsp;Selected</i></button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="p-0 m-0">
+                <table id="list_primary"></table>
+                <div id="jqGrid_primaryPager"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ./ Dialog -->
+<!--Dialog Product-->
+<div class="dialog_PRODUCT" title="Product Information">
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body well text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="style_no_popup" placeholder="Product Code" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="style_nm_popup" placeholder="Product Name" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="md_cd" id="md_cd_popup" placeholder="Model Code" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2 d-flex">
+                    <button id="searchBtn_product_popup" class="btn btn-sm mr-5 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button type="button" class="btn btn-sm btn-success button-srh disabled" id="savestyle_product"><i class="fa fa-save">&nbsp;Selected</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid  p-0 m-0">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0 boxProduct">
+                <table id="popupProduct"></table>
+                <div id="pagerProduct"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Dialog qc code-->
+<div class="dialog_qc_code_pp" title="QC Web">
+
+    <input type="hidden" name="name" value="" id="product_code" />
+    <input type="hidden" name="name" value="" id="shift" />
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button id="save_qc_code" class="btn btn-success button-srh2">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <div class="col-md-4 p-1">
+                    <label><b>PO</b></label>
+                    <input type="text" name="qc_po" id="qc_po" class="input-text form-control" readonly="readonly" value="">
+                </div>
+                <div class="col-md-4 p-1">
+                    <label><b>QC</b></label>
+                    <input type="text" name="qc_item_vcd" id="qc_item_vcd" class="input-text form-control" readonly="readonly" value="">
+                </div>
+                <div class="col-md-2 p-1">
+                    <label><b>Date</b></label>
+                    <input type="text" name="qc_date" id="qc_date" readonly="readonly" class="input-text form-control" value="">
+                </div>
+                <div class="col-md-2 p-1">
+                    <label><b>Check Qty</b></label>
+                    <input type="number" name="qc_gr_qty" id="qc_gr_qty" class="input-text form-control" value="0" min="0" style="text-align: right">
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="row p-0 m-0">
+        <div class="col-md-5" id="view_qc">
+        </div>
+        <div class=" col-md-7  table_m_facline_qc" id="tab2">
+            <div class="row">
+                <div class="col-md-12 pl-0 list_qc">
+                    <div class="box-body my-2 " style="color: #ff6a00">
+                        <div class="box-header">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    @* <h3 class="box-title">QC Main</h3>*@
+                                </div>
+                                <div class="col-xs-6 text-right">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-0 m-0">
+                            <table id="list_facline_qc" width="100%"></table>
+                            <div id="gridpager_facline_qc"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 pl-0 list_qc">
+                    <div class="box-body my-2 " style="color: #ff6a00">
+                        <div class="box-header">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <h3 class="box-title">QC Detail</h3>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="p-0 m-0">
+                            <table id="list_facline_qcvalue" width="100%"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @*<script src="~/Scripts/QCInformation/TQCList.js"></script>*@
+    <script src="~/Scripts/DevManagement/BomMgt/Product_Poup.js"></script>
+    <script src="/Scripts/fgwms/Inventory/pp_po.js"></script>
+    <script>
+        var model =@Html.Raw(Json.Encode(Model));
+    </script>
+    <script src="~/Scripts/DashBoardQC/TQCList/TqcList.js"></script>
+}
+
+<style>
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+        margin: 0 auto;
+        width: 100%;
+    }
+
+        table th,
+        table td {
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+
+        table th {
+            background-color: #f3f3f3;
+        }
+</style>

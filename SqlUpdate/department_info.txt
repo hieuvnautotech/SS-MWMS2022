@@ -1,0 +1,2 @@
+Select dpno, depart_cd, depart_nm, up_depart_cd, level_cd, re_mark, use_yn, order_no, del_yn, reg_id, reg_dt, chg_id, chg_dt, mn_full
+ From department_info

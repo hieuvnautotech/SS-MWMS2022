@@ -1,0 +1,230 @@
+﻿
+@{
+    ViewBag.Title = "Check inventory";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="WIP-WMS" data-level_2="Inventory" data-level_3="Inventory Check"></div>
+}
+<!-- Search function -->
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-auto p-1">
+                <label><b>Name</b></label>
+            </div>
+            <div class="col-md-2 p-1 mr-5">
+                <div class="input-group mt_plus">
+                    <input type="text" name="vn_nm" id="vn_nm" class="input-text form-control">
+                </div>
+            </div>
+            <div class="col-auto p-1">
+                <label><b>Start Date</b></label>
+            </div>
+            <div class="col-md-2 p-1 mr-5">
+                <input type="text" name="start_dt" id="start" class="form-control">
+            </div>
+            <div class="col-auto p-1">
+                <label><b>~</b></label>
+            </div>
+            <div class="col-md-2 p-1 mr-5">
+                <input type="text" name="start_dt" id="end" class="form-control">
+            </div>
+            <div class="col-md-1 p-2 mr-5">
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ./Search function -->
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <table id="list"></table>
+            <div id="listPage"></div>
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <!--BuyerInfo start -->
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active" id="tab_1"><a href="#tab_1" data-toggle="tab">Create</a></li>
+                <li id="tab_2"><a href="#tab_2" data-toggle="tab">Modify</a></li>
+            </ul>
+        </div>
+        <div class="tab-content active" id="tab_c1">
+            <form id="form1">
+                <div class="box-body box-body-input-move">
+                    <input type="hidden" name="vno" id="c_vno">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="row">
+                                <div class="col-md-12 py-1">
+                                    <input type="text" name='vn_cd' id='c_vn_cd' class="input-text form-control" placeholder="Code" readonly="readonly">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 py-1">
+                                    <span>
+                                        <input type="text" name="re_mark" id="c_re_mark" class="input-text form-control autocomplete" placeholder="Remark">
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="row">
+                                <div class="col-md-12 py-1">
+                                    <span>
+                                        <input type="text" name="vn_nm" id="c_vn_nm" class="input-text form-control autocomplete" placeholder="Inventory Name">
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="row">
+                                <div class="col-md-12 py-1">
+                                    <span>
+                                        <input type="text" name="start_dt" id="c_start_dt" class="input-text form-control autocomplete" placeholder="Start date">
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="row">
+                                <div class="col-md-12 py-1">
+                                    <span>
+                                        <input type="text" name="end_dt" id="c_end_dt" class="input-text form-control autocomplete" placeholder="End date">
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="row">
+                                <div class="col-md-12 py-1">
+                                    <select name="use_yn" id="c_use_yn" class="form-control form-control-text select2">
+                                        <option value="Y" selected="selected">Use</option>
+                                        <option value="N">UnUse</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-1">
+                            <div class="row">
+                                <div class="clearfix py-1">
+                                    <button type="button" id="c_save_but" class="btn btn-success button-sm"><i class="fa fa-save">&nbsp;Create</i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box-body -->
+            </form>
+        </div>
+
+        <div class="tab-content hidden" id="tab_c2">
+            <form id="form2">
+                <div class="box-body box-body-input-move">
+                    <input type="hidden" name="vno" id="m_vno">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="row">
+                                <div class="col-md-12 py-1">
+                                    <input type="text" name='vn_cd' id='m_vn_cd' class="input-text form-control" placeholder="Code" readonly="readonly">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 py-1">
+                                    <span>
+                                        <input type="text" name="re_mark" id="m_re_mark" class="input-text form-control autocomplete" placeholder="Remark">
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="row">
+                                <div class="col-md-12 py-1">
+                                    <span>
+                                        <input type="text" name="vn_nm" id="m_vn_nm" class="input-text form-control autocomplete" placeholder="Inventory Name">
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="row">
+                                <div class="col-md-12 py-1">
+                                    <span>
+                                        <input type="text" name="start_dt" id="m_start_dt" class="input-text form-control autocomplete" placeholder="Start date">
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="row">
+                                <div class="col-md-12 py-1">
+                                    <span>
+                                        <input type="text" name="end_dt" id="m_end_dt" class="input-text form-control autocomplete" placeholder="End date">
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="row">
+                                <div class="col-md-12 py-1">
+                                    <select name="use_yn" id="m_use_yn" class="form-control form-control-text select2">
+                                        <option value="Y" selected="selected">Use</option>
+                                        <option value="N">UnUse</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-1">
+                            <div class="row">
+                                <div class="clearfix py-1">
+                                    <button type="button" id="m_save_but" class="btn btn-success button-sm disabled=" disabled""><i class="fa fa-save">&nbsp;Modify</i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row box-body my-2">
+        <div class="col-md-6 py-1">
+            <label>ML No</label>
+            <input type="text" name='ml_cd' id='ml_cd' class="input-text form-control" placeholder="ML No" required>
+        </div>
+        <div class="col-md-6 py-1">
+            <button type="button" id="Save_completed" class="btn btn-success button-sm"><i class="fa fa-save">&nbsp;Scan Completed</i></button>
+            <button type="button" id="Clear_all" class="btn btn-danger button-sm"><i class="fa fa-trash">&nbsp;Clear All</i></button>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row box-body my-2">
+        <div class="col-md-6 py-1">
+            <table id="list2"></table>
+            <div id="listPager2"></div>
+        </div>
+        <div class="col-md-6 py-1">
+
+            <table id="list1"></table>
+            <div id="listPager1"></div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Scripts/WIP/Check_Inventory/checkInvertory.js"></script>
+}
+

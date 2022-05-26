@@ -1,0 +1,93 @@
+﻿<style>
+    table#data, table#data th, table#data td {
+        border: 0.5px solid #CCC;
+        text-align: center;
+    }
+
+    #data {
+        font-size: 15px;
+        width: 100%;
+        text-align: center;
+    }
+
+    a.NutDetail {
+        color: red !important;
+        font-size: 19px;
+        padding: 10px;
+        cursor: pointer;
+    }
+</style>
+
+@model Mvc_VD.Controllers.DevManagementController.ProductActivition
+@using System.Linq;
+@{
+    Layout = null;
+    int daysInMonth = 31;
+    var totalColumns = daysInMonth * 2 + 9;
+    var monthReport= ViewBag.MonthReport;
+   
+}
+<div class="box-body my-2 bg-white">
+    <div id="table-scroll" class="table-scroll">
+        <div class="table-wrap">
+            <table class="main-table table table-bordered">
+
+                <tr>
+
+                    @{
+                        for (int i = 1; i <= daysInMonth; i++)
+                        {
+
+                            <td colspan="1">@i</td>
+
+
+                        }
+                    }
+                </tr>
+
+                <tr>
+                    @{
+                        for (int i = 1; i <= daysInMonth; i++)
+                        {
+                            var flag = false;
+                            string day = (i < 10 ? "0" : "") + i;
+                            var currDate = monthReport + "-" + day;
+                            var resultChecks = Model.ProductActivitionFaile.Where(m => m.date == currDate).ToList();
+                            if (resultChecks != null && resultChecks.Any())
+                            {
+                                <td>
+                                    <a class="NutDetail" data-mc_no=@resultChecks[0].mc_no data-at_no=@resultChecks[0].at_no onclick="ClickViewDetail(this);">
+                                        <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                    </a>
+                                    <p><b>@resultChecks[0].at_no</b> <br /><b> @resultChecks[0].mc_no </b><br /><b>Start:</b> @resultChecks[0].start_dt <br /> <b>End:</b> @resultChecks[0].end_dt</p>
+                                </td>
+                            }
+                            else
+                            {
+                                <td></td>
+                            }
+                        }
+                    }
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function ClickViewDetail(e) {
+        var at_no = $(e).data("at_no")
+        var mc_no = $(e).data("mc_no")
+
+        $('.popup-dialog.dialog_ViewDetail').dialog('open');
+        $.get("/DevManagement/PartialView_dialog_Viewdetail?mc_no=" + mc_no +
+            "&at_no=" + at_no + ""
+            , function (html) {
+                $("#PartialView_dialog_ViewDetail").html(html);
+            });
+
+    }
+   
+   
+</script>

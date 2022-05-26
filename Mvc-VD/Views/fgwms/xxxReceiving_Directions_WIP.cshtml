@@ -1,0 +1,91 @@
+﻿@{
+    ViewBag.Title = "Receiving_Directions_WIP";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="WIP-WMS" data-level_2="Receiving Management" data-level_3="Receiving-Directions(WIP)"></div>
+
+}
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-1 p-1  text-right">
+                <label><b>RD No </b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <input type="text" name="rd_no" id="rd_no" class="form-control form-control-text " maxlength="20">
+            </div>
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Location</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                 <div class="input-group" style="width: 100%;">
+                        <select name="lct_cd" id="lct_cd" class="form-control selectMf select2"></select>
+                    </div>
+            </div>
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Work Date</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <input type="text" name="start_dt" id="start" class="form-control">
+            </div>  
+            <div class="col-md-1 p-1  text-center">
+                <label><b>~</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <input type="text" name="end_dt" id="end" class="form-control">
+            </div>
+            <div class="col-md-1 p-2">
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="container-fluid">
+    <div class="row p-0 m-0">
+        <div class="col-xs-6 pl-0">
+            <div class="box-body my-2 bg-white boxA">
+                <div class="row p-0 m-0">
+
+
+                    <div class="col-xs-12 p-0">
+                        <table id="list1"></table>
+                        <div id="PagegridAu_Mem"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6 pr-0">
+            <div class="box-body my-2 bg-white boxB">
+                <div class="row p-0 m-0">
+
+
+                    <div class="col-xs-12 p-0">
+                        <table id="list2"></table>
+                        <div id="PageGetJqAuMn"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white boxC">
+        <div class="col-xs-12 ">
+
+            <table id="list3"></table>
+            <div id="list3Pager"></div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/fgwms/Receiving_Directions_WIP/Receiving_Directions_WIP.js"></script>
+
+

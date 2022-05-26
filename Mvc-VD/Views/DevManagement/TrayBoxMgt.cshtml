@@ -1,0 +1,114 @@
+﻿
+@{
+    ViewBag.Title = "Dept";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    @*<div class="col-xs-12" id="current_menu" data-level_1="MMS" data-level_2="Tools" data-level_3="Tray Box Management"></div>*@
+    <div class="col-xs-12" id="current_menu" data-level_1="@Html.Raw(ViewData["MMS"])" data-level_2="@Html.Raw(ViewData["Tools"])" data-level_3="@Html.Raw(ViewData["Tray Box Management"])"></div>
+
+}
+
+<div class="container-fluid">
+    <div class="row text-right">
+        <div class="col-md-12 px-3">
+            <form method="post" id="exportData">
+                <button type="submit" id="excelBtn" class="btn btn-sm btn-warning button-top"><i class="fa fa-file-excel-o">&nbsp;Excel</i></button>
+                <button type="submit" id="htmlBtn" class="btn btn-sm btn-warning button-top" hidden="hidden"><i class="fa fa-print">&nbsp;HTML</i></button>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Search function -->
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-1 p-2">
+                <label><b>Box Code</b></label>
+            </div>
+            <div class="col-md-2 p-1 mr-5">
+                <input type="text" name="s_bx_no" id="s_bb_no" class="input-text form-control">
+            </div>
+            <div class="col-md-1 p-2">
+                <label><b>Box Name</b></label>
+            </div>
+            <div class="col-md-2 p-1  mr-5">
+                <input type="text" name="s_bx_nm" id="s_bb_nm" class="input-text form-control">
+            </div>
+            <div class="col-md-3 p-2">
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                <button type="button" id="c_print" class="btn btn-success button-sm"><i class="fa fa-print">&nbsp;BarCode</i></button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- ./Search function -->
+<div class="container-fluid">
+
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-auto p-2">
+
+                <label><b>Type</b></label>
+
+            </div>
+            <div class="col-md-1 p-1">
+                <select name="mc_type" id="mc_type" class="form-control form-control-text select2 ">
+                    <option value="" selected="selected">*</option>
+                    <option value="BOB">BOBBIN</option>
+                    <option value="TRB">TRAYBOX</option>
+                </select>
+            </div>
+
+
+            <div class="col-md-auto p-2">
+                <label><b> QTY Generate </b></label>
+            </div>
+            <div class="col-md-1 p-1">
+
+                <input type="text" name="qty_ge" id="qty_ge" class="form-control  hasDatepicker" maxlength="2">
+            </div>
+            <div class="col-md-1 px-1 py-2 text-right">
+                <button id="autogeBtn" class="btn btn-success button-sm active"><i class="fa fa-save">&nbsp;Create</i></button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <table id="TrayBoxGrid"></table>
+            <div id="TrayBoxGridPager"></div>
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+
+<input type="hidden" id="bobin" name="name" value="" />
+<input type="hidden" id="mt_cd" name="name" value="" />
+<input type="hidden" id="sts" name="name" value="" />
+<input type="hidden" id="id_xa" name="name" value="" />
+
+<!--Popup -->
+<div id="dialogDangerous" title="Are you make sure ?">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-success button-srh mr-3" id="closestyle">No</button>
+                    <button type="button" class="btn btn-sm btn-danger button-srh" id="deletestyle">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ./ Popup -->
+
+@section scripts{
+    <script src="~/Scripts/DevManagement/TrayBox/_TrayBox.js"></script>
+}

@@ -1,0 +1,556 @@
+﻿@{
+    //ViewBag.Title = "ProcessMgt";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="MMS" data-level_2="WR (Work Request)" data-level_3="Routing Status"></div>
+}
+
+<link href="~/CSS/DevManagement/LineMgt/LineMgt.css" rel="stylesheet" />
+<!-- Search function -->
+<div class="container-fluid">
+    <div class="row text-right">
+        <div class="col-md-12 px-3">
+            <button type="submit" id="excelBtn" class="btn btn-sm btn-warning button-top"><i class="fa fa-file-excel-o">&nbsp;Excel</i></button>
+            <button type="submit" id="htmlBtn" class="btn btn-sm btn-warning button-top"><i class="fa fa-print">&nbsp;HTML</i></button>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-auto p-1">
+                <label><b>Routing Code</b></label>
+            </div>
+            <div class="col-md-1 p-1 mr-5">
+                <input type="text" name="process_no" id="process_no" maxlength="20" class="input-text form-control">
+            </div>
+            <div class="col-md-auto p-1">
+                <label><b>Name</b></label>
+            </div>
+            <div class="col-md-1 p-1 mr-5">
+                <input type="text" name="process_nm" id="process_nm" class="form-control" maxlength="50">
+            </div>
+            <div class="col-md-auto p-1">
+                <label><b>Bom</b></label>
+            </div>
+            <div class="col-md-1 p-1 mr-5">
+                <div class="input-group mt_plus">
+                    <input type="hidden" name="name" value=" " id="state_BOM" />
+                    <input type="text" name="bom_no" id="s_bom_no" class="input-text form-control" placeholder="Bom">
+                    <span class="input-group-addon dcmaterial">
+                        <button type="button" id="s_poupdialog_BOM" class="btn button-sm form-control poupdialog_BOM"><i class="fa fa-search text-navy"></i></button>
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-auto p-1">
+                <label><b>Model</b></label>
+            </div>
+            <div class="col-md-1 p-1 mr-5">
+                <input type="text" name="md_cd" id="md_cd" class="form-control " maxlength="100">
+            </div>
+            <div class="col-md-auto p-1">
+                <label><b>Create Date</b></label>
+            </div>
+            <div class="col-md-1 p-1 mr-5">
+                <input type="text" name="start_dt" id="start" class="form-control">
+            </div>
+            <div class="col-md-auto p-1">
+                <label><b>~</b></label>
+            </div>
+            <div class="col-md-1 p-1 mr-5">
+                <input type="text" name="end_dt" id="end" class="form-control">
+            </div>
+            <div class="col-md-1 p-1">
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- ./Search function -->
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white boxA">
+        <div class="row p-0 m-0">
+            <table id="list"></table>
+            <div id="jqGridPager"></div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-7 pl-0 pr-1">
+            <div class="row p-0 m-0">
+                <div class="col-md-12">
+                    <div class="box-body m-2 bg-white boxlist">
+                        <table id="list2"></table>
+                        <div id="partpager"></div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="box-body m-2 boxlist">
+
+                        <div class="tab-content active" id="tab_c3">
+                            <form name="form4" id="form4" enctype="multipart/form-data" role="form" method="post" target="zeroFrame">
+                                <input type="hidden" name="ppid" id="m_ppid" value="">
+                                <input type="hidden" name="process_no" value=" " id="m2_process_no" />
+                                <input type="hidden" name="name" value=" " id="remark_color_process" />
+                                <input type="hidden" name="process_no" value=" " id="status_pid" />
+                                <input type="hidden" name="process_no" value=" " id="status_style_no" />
+                                <input type="hidden" name="process_no" value=" " id="status_md_cd" />
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-5  pl-1 pr-0">
+            <div class="row p-0 m-0">
+                <div class="col-md-12">
+                    <div class="box-body m-2 boxlist2">
+                        <table id="list4"></table>
+                        <div id="seguencepager"></div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="box-body m-2 ">
+
+                        <div class="tab-content active" id="tab_c7">
+                            <form name='form7' id='form7' enctype="multipart/form-data" role="form" method="post" target="zeroFrame">
+                                <input type="hidden" name="name" value=" " id="remark_color_seguence_process_no" />
+                                <input type="hidden" name="name" value=" " id="remark_color_seguence_next_process_no" />
+                            </form>
+                        </div>
+                        <div class="tab-content hidden" id="tab_c8">
+                            <form name='form8' id='form8' enctype="multipart/form-data" role="form" method="post" target="zeroFrame">
+                                <input type="hidden" name="m_pbid" id="m_pbid" value=''>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div id="list5"></div>
+        </div>
+    </div>
+</div>
+
+<!--Dialog BOM-->
+<div class="dialog_BOM" title="BOM Information">
+    <div class="container-fluid  p-0 m-0">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-warning button-srh" id="closestyle_BOM"><i class="fa fa-close">&nbsp;Close</i></button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body well text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-3 p-2">
+                    <input type="text" name="bom_no" id="s_bom_no_popup" placeholder="BOM no" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="s_style_no_popup" placeholder="Product Code" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="md_cd" id="s_model_no_popup" placeholder="Model Code" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2 d-flex">
+                    <button id="searchBtn_BOM_popup" class="btn btn-sm mr-5 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button type="button" class="btn btn-sm btn-success button-srh disabled" id="savestyle_BOM"><i class="fa fa-save">&nbsp;Selected</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid  p-0 m-0">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0 boxBOM">
+                <table id="popupBOM"></table>
+                <div id="pagerBOM"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ./ Dialog -->
+
+<div class="dialog" title="Machine">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-primary button-srh" id="closemachine"><i class="fa fa-close">&nbsp;Close</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <table id="popupmachine"></table>
+                <div id="pagermachine"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="dialog3">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="submit" id="Print" class="btn btn-sm btn-warning button-top"><i class="fa fa-print">&nbsp;PRINT</i></button>
+                    <button type="button" class="btn btn-sm btn-primary button-srh" id="closebom1"><i class="fa fa-close">&nbsp;Close</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" name="name" value=" " id="pp_lid1" />
+    <div id="all_in1">
+        <div class="container-fluid">
+            <div class="row p-0 m-0">
+                <div class="col-md-3 all_cg">
+                    <img src="/Content/themes/Logo-suplier_in.jpg" style="width: 100%" />
+                </div>
+                <div class="col-md-6 p-2 text-center" id="title">
+                </div>
+                <div class="col-md-3 p-2 all_cg" style="border-top: 1px solid; border-bottom: 1px solid">
+                    <div class="row">
+                        <div class="col-md-5 text-center">
+                            <p>Document Code</p>
+                            <p>Serial</p>
+                            <p style="margin: 0;">Date</p>
+                        </div>
+                        <div class="col-md-7 text-left">
+                            <div id="barcode1"></div>
+                            <div id="datetime1" style="text-align: center; margin-top: 10px;">
+                                <script>
+                                    function formatDate() {
+                                        var d = new Date(),
+                                        month = '' + (d.getMonth() + 1),
+                                        day = '' + d.getDate(),
+                                        year = d.getFullYear(),
+                                        Hours = d.getHours(),
+                                        Minutes = d.getMinutes();
+
+                                        if (month.length < 2) { month = '0' + month; }
+                                        if (day.length < 2) { day = '0' + day; }
+                                        if (Hours.length < 2) { Hours = '0' + Hours; }
+                                        if (Minutes.length < 2) { Minutes = '0' + Minutes; }
+
+                                        time = Hours + ":" + Minutes;
+                                        var full = year + "-" + month + "-" + day + " " + time;
+                                        $("#datetime").html(full);
+                                        $("#datetime1").html(full);
+                                    }
+                                    formatDate()
+                                    setInterval(formatDate, 500);
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="box-body my-2 bg-white">
+                <h4>Standard</h4>
+                <div class="row p-0 m-0">
+                    <table class="table table-hover table-bordered">
+                        <thead>
+
+                            <tr class="table-warning">
+                                <th scope="col">Routing Code </th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Bom</th>
+                                <th scope="col">Product Code</th>
+                                <th scope="col">Product Name</th>
+                                <th scope="col">Model</th>
+                                <th scope="col">Project Name</th>
+                                <th scope="col">SS Version</th>
+                                <th scope="col">Part Name</th>
+                                <th scope="col">Standard</th>
+                                <th scope="col">Customer Rev</th>
+                                <th scope="col">Order Number</th>
+                                <th scope="col">Lead Time(EA/h)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr id="info"></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="box-body my-2 bg-white">
+                <h4>Process</h4>
+                <div class="row p-0 m-0">
+                    <table id="popupbom1" class="table table-striped table-bordered" style="width: 100%">
+                        <thead>
+                            <tr class="table-warning">
+                                 <th scope="col">No.</th>
+                                <th scope="col">Routing Code</th>
+                                <th scope="col">Level</th>
+                                <th scope="col">Part</th>
+                                <th scope="col">Process Type</th>
+                                <th scope="col">Lead Time(EA/h)</th>
+                                <th scope="col">Staff</th>
+                                <th scope="col">Feeding</th>
+                                <th scope="col">Unit</th>
+                                <th scope="col">Division</th>
+                                <th scope="col">Material</th>
+                                <th scope="col">Material Name</th>
+                                <th scope="col">Width</th>
+                                <th scope="col">Need Qty</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- //view so_do popup -->
+
+<div class="dialog4">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <input type="hidden" name="name" value=" " id="pp_lid" />
+                <input type="hidden" name="name" value=" " id="pp_sid" />
+                <div class="col-md-12 p-2">
+                    <button type="submit" id="PrintDetail" class="btn btn-sm btn-warning button-top"><i class="fa fa-print">&nbsp;PRINT</i></button>
+                    <button type="button" class="btn btn-sm btn-warning button-srh" id="closepro"><i class="fa fa-close">&nbsp;Close</i></button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="all_in">
+        <div class="container-fluid">
+            <div class="row p-0 m-0">
+                <div class="col-md-3 all_cg">
+                    <img src="/Content/themes/Logo-suplier_in.jpg" style="width: 100%" />
+                </div>
+                <input type="hidden" name="name" id="fno" value=" " />
+                <div class="col-md-6 p-2 text-center" id="title1">
+                </div>
+                <div class="col-md-3 p-2 all_cg" style="border-top: 1px solid; border-bottom: 1px solid">
+                    <div class="row">
+                        <div class="col-md-5 text-center">
+                            <p>Document Code</p>
+                            <p>Serial</p>
+                            <p style="margin: 0;">Date</p>
+                        </div>
+                        <div class="col-md-7 text-left">
+                            <div id="barcode"></div>
+                            <div id="datetime" style="text-align: center; margin-top: 10px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="box-body my-2 bg-white">
+                <h4>Standard</h4>
+                <div class="row p-0 m-0">
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                            <tr class="table-warning">
+                                <th scope="col">Routing No</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Bom</th>
+                                <th scope="col">Product Code</th>
+                                <th scope="col">Product Name</th>
+                                <th scope="col">Model</th>
+                                <th scope="col">Project Name</th>
+                                <th scope="col">SS Version</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr id="popup_line"></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="box-body my-2 bg-white">
+                <div class="row p-0 m-0">
+                    <div id="popuppro"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="editor"></div>
+</div>
+
+<div class="dialog5" title="Process Unit ">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-primary button-srh" id="closeproes_unit"><i class="fa fa-close">&nbsp;Close</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <table id="popupproes_unit"></table>
+                <div id="proes_unitpager"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="dialog6" title="Item Information">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-success button-srh disabled mr-3" id="saveitem_mt"><i class="fa fa-save">&nbsp;Selected</i></button>
+                    <button type="button" class="btn btn-sm btn-warning button-srh" id="closeitem_mt"><i class="fa fa-close">&nbsp;Close</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <table id="popupitem_mt"></table>
+                <div id="page_item_mt"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="hidden">
+    <table id="list_ex"></table>
+</div>
+
+
+
+@section scripts{
+    <script src="~/Scripts/DevManagement/LineMgt/Bom_Poup.js"></script>
+    <script src="~/Scripts/DevManagement/LineMgt/machine_popup.js"></script>
+    <script src="~/Scripts/DevManagement/LineMgt/popup_process_unit.js"></script>
+    <script src="~/Scripts/DevManagement/LineMgt/Line.js"></script>
+    <script src="~/Scripts/DevManagement/LineMgt/popup_item_mt.js"></script>
+
+
+    <script>
+        $('#excelBtn').click(function (e) {
+            $("#list_ex").jqGrid('exportToExcel',
+                    options = {
+                        includeLabels: true,
+                        includeGroupHeader: true,
+                        includeFooter: true,
+                        fileName: "Routing Status.xlsx",
+                        mimetype: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        maxlength: 40,
+                        onBeforeExport: null,
+                        replaceStr: null
+                    }
+                );
+        });
+
+        $('#htmlBtn').click(function (e) {
+            $("#list_ex").jqGrid('exportToHtml',
+                options = {
+                    title: '',
+                    onBeforeExport: null,
+                    includeLabels: true,
+                    includeGroupHeader: true,
+                    includeFooter: true,
+                    tableClass: 'jqgridprint',
+                    autoPrint: false,
+                    topText: '',
+                    bottomText: '',
+                    fileName: "Routing Status  ",
+                    returnAsString: false
+                }
+                );
+        });
+        $("#list_ex").jqGrid
+({
+    url: "/DevManagement/GetProcess",
+    datatype: 'json',
+    mtype: 'Get',
+    colModel: [
+        { key: true, label: 'lid', name: 'lid', width: 100, align: 'center', hidden: true, },
+        { key: false, label: 'Line No', name: 'line_no', width: 100, align: 'center', hidden: true, },
+        { key: false, label: 'Routing Code', name: 'line_no1', width: 100, align: 'center', },
+        { key: false, label: 'Name', name: 'line_nm', width: 250, align: 'left', },
+        { key: false, label: 'sid', name: 'sid', sortable: true, width: '100px', align: 'center', hidden: true },
+        { key: false, label: 'Bom', name: 'bom_no', sortable: true, width: '100px', align: 'center', hidden: true },
+        { key: false, label: 'Bom', name: 'bom_no1', sortable: true, width: '100px', formatter: bom_no },
+        { key: false, label: 'Product Code', name: 'style_no', width: 150, align: 'left' },
+        { key: false, label: 'Product Name', name: 'style_nm', width: 300, align: 'left' },
+        { key: false, label: 'Model', name: 'md_cd', sortable: true, width: '300', align: 'left' },
+        { key: false, label: 'Project Name', name: 'prj_nm', sortable: true, width: '200' },
+        { key: false, label: 'SS Version', name: 'ssver', editable: true, width: '100px' },
+        { key: false, label: 'Part Name', name: 'part_nm', editable: true, width: '100px' },
+        { key: false, label: 'Standard', name: 'standard', editable: true, width: '100px', align: 'center' },
+        { key: false, label: 'Customer Rev', name: 'cust_rev', editable: true, width: '100px' },
+        { key: false, label: 'Order Number', name: 'order_num', editable: true, width: '180' },
+        { key: false, label: 'Remark', name: 'cav', editable: true, width: '100px' },
+        { key: false, label: 'Tack Time', name: 'need', editable: true, width: '100px', align: 'right', formatter: 'integer' },
+
+        {
+            label: 'Create date', name: 'reg_dt', width: 150, align: 'center', formatter: "date",
+            formatoptions: { srcformat: "ISO8601Long", newformat: "Y-m-d H:i:s" }
+        },
+    ],
+    formatter: {
+        integer: { thousandsSeparator: ",", defaultValue: '0' },
+        currency: { decimalSeparator: ".", defaultValue: '0.00', prefix: "", suffix: "", thousandsSeparator: ',', decimalPlaces: 2 },
+        number: { decimalSeparator: ".", thousandsSeparator: " ", decimalPlaces: 2, defaultValue: '0.00' },
+    },
+
+    pager: '#jqGridexPager',
+    rowNum: 50,
+    rowList: [50, 100, 200, 500, 1000],
+    sortable: true,
+    loadonce: true,
+    rownumbers: true,
+    autowidth: false,
+    shrinkToFit: false,
+    viewrecords: true,
+    height: 300,
+    width: $(".boxA").width(),
+    jsonReader:
+    {
+        root: "rows",
+        page: "page",
+        total: "total",
+        records: "records",
+        repeatitems: false,
+        Id: "0"
+    },
+    autowidth: true,
+    multiselect: false,
+});
+    </script>
+}
+
+

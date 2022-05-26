@@ -1,0 +1,159 @@
+﻿@{
+    ViewBag.Title = "Check Inventory";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="TIMS" data-level_2="Total Inspection Inventory" data-level_3="Check inventory"></div>
+}
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-0 ml-5 px-1 py-2 text-right">
+                <label><b>Product Code</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                @*  <div class="input-group">
+                    <input type="text" name="mt_no" id="c_mt_no" class="form-control form-control-text" placeholder="Material No">
+                    <span class="input-group-addon psbom"><a href="#" class="poupdialog_MT"><i class="fa fa-search text-navy"></i></a></span>
+                </div>*@
+                <div class="input-group mt_plus">
+                    <input type="text" name="s_style_no" id="s_style_no" placeholder="Product Code"  class="input-text form-control">
+                    <span class="input-group-addon psbom"><a href="#" id="poupdialogStyle" class="poupdialogStyle"><i class="fa fa-search text-navy"></i></a></span>
+                </div>
+            </div>
+              <div class="col-md-0 ml-5 px-1 py-2 text-right">
+                <label><b>ML NO</b></label>
+            </div>
+             <div class="col-md-3 p-1">
+                @*  <div class="input-group">
+                    <input type="text" name="mt_no" id="c_mt_no" class="form-control form-control-text" placeholder="Material No">
+                    <span class="input-group-addon psbom"><a href="#" class="poupdialog_MT"><i class="fa fa-search text-navy"></i></a></span>
+                </div>*@
+                <div class="input-group mt_plus">
+                    <input type="text" name="ml_no" id="s_ml_no" placeholder="ML NO"  class="input-text form-control">
+                   
+                </div>
+            </div>
+
+
+
+            <div class="col-md-1 px-1 py-2 text-right">
+                <label><b>Receive Date</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <input type="text" name="input_dt" id="input_dt" class="form-control form-control-text ">
+            </div>
+
+            <div class="col-md-1 mx-2 p-2 d-flex">
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                &nbsp;&nbsp;  &nbsp;&nbsp;
+            </div>
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <table id="list"></table>
+            <div id="listPage"></div>
+        </div>
+    </div>
+</div>
+<!--Dialog MT-->
+<div class="dialog_MT" title="Material">
+    <div class="container-fluid  p-0 m-0">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-warning button-srh" id="closeMT"><i class="fa fa-close">&nbsp;Close</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body well text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-3 p-2">
+                    <select name="mt_type" id="material_type_popup" class="form-control"></select>
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="mt_no" id="material_cd_popup" placeholder="Material Code" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="mt_nm" id="material_nm_popup" placeholder="Material Name" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2 d-flex">
+                    <button id="searchBtn_material_popup" class="btn btn-sm mr-5 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button type="button" class="btn btn-sm btn-success mr-5 button-srh" id="selectMT"><i class="fa fa-save">&nbsp;Selected</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0 boxMaterial">
+                <table id="popups_MT"></table>
+                <div id="popupspager_MT"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Dialog Product-->
+<div class="dialog_PRODUCT" title="Product Information">
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body well text-right">
+
+            <div class="row p-0 m-0">
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="style_no_popup" placeholder="Product Code" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="style_nm_popup" placeholder="Product Name" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="md_cd" id="md_cd_popup" placeholder="Model Code" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2 d-flex">
+                    <button id="searchBtn_product_popup" class="btn btn-sm mr-5 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button type="button" class="btn btn-sm btn-success button-srh disabled" id="savestyle_product"><i class="fa fa-save">&nbsp;Selected</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid  p-0 m-0">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0 boxProduct">
+                <table id="popupProduct"></table>
+                <div id="pagerProduct"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ./ Dialog -->
+
+@section scripts{
+    <script src="~/Scripts/TIMS/CheckInventory/Check_inventory.js"></script>
+    <script src="~/Scripts/TIMS/CheckInventory/Poup_mt.js"></script>
+    <script src="~/Scripts/TIMS/CheckInventory/Product_Poup.js"></script>
+
+    <script>
+        var GetType = "/TIMS/GetType";
+        $(document).ready(function () {
+            _GetType();
+
+        });
+        function _GetType() {
+            $.get(GetType, function (data) {
+                if (data != null && data != undefined && data.length) {
+                    var html = '';
+                    html += '<option value=' + data[0].dt_cd + '>' + data[0].dt_nm + '</option>';
+                    $("#material_type_popup").html(html);
+
+                }
+            });
+        }
+    </script>
+}

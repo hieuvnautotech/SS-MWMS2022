@@ -1,0 +1,1101 @@
+﻿@{
+    ViewBag.Title = "Web";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    @*<div class="col-xs-12" id="current_menu" data-level_1="TIMS" data-level_2="Actual" data-level_3="Web"></div>*@
+    <div class="col-xs-12" id="current_menu" data-level_1="@Html.Raw(ViewData["TIMS"])" data-level_2="@Html.Raw(ViewData["Actual"])" data-level_3="@Html.Raw(ViewData["Web"])"></div>
+}
+<style>
+    .pull-right button {
+        float: right;
+    }
+</style>
+<!--SEARCH FUNCTION-->
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0" style="display: flex; flex-wrap: nowrap;">
+            <div class="col-md-2 p-1  text-left">
+                <label><b>PO NO</b></label>
+                <div class="input-group mt_plus">
+                    <input type="text" name="" id="sPO" class="input-text form-control">
+                </div>
+            </div>
+            <div class="col-md-2 p-1">
+                <label><b>Product</b></label>
+                <div class="input-group mt_plus">
+                    <input type="text" name="" id="sProductCode" class="input-text form-control">
+                </div>
+            </div>
+            <div class="col-md-2 p-1">
+                <label><b>Product Name</b></label>
+                <div class="input-group mt_plus">
+                    <input type="text" name="" id="sProductName" class="input-text form-control">
+                </div>
+            </div>
+            <div class="col-md-1 p-1">
+                <label>Type(Roll/Sheet)</label>
+                <select id="s_bom_type" class="form-control">
+                    <option value="" selected="selected">*Type*</option>
+                    <option value="RollType">Roll Type</option>
+                    <option value="FOLDABLE">FOLDABLE</option>
+                    <option value="SAMPLE">SAMPLE</option>
+                    <option value="ZType">Z Type</option>
+                    <option value="SheetType">Sheet Type</option>
+                    <option value="METAL">METAL</option>
+                </select>
+
+            </div>
+            <div class="col-md-2 p-1">
+                <label><b>Model</b></label>
+                <div class="input-group mt_plus">
+                    <input type="text" name="" id="sModel" class="input-text form-control">
+                </div>
+            </div>
+            <div class="col-md-1 p-1">
+                <label><b>Reg Date</b></label>
+                <div class="input-group mt_plus">
+                    <input type="text" name="" id="sDate" class="input-text form-control">
+                </div>
+            </div>
+            <div class="col-md-1 p-1">
+                <label><b></b></label>
+                <div class="input-group mt_plus" style=" margin-top: 0.44rem !important; ">
+                    <input type="text" name="" id="eDate" class="input-text form-control">
+                </div>
+            </div>
+
+            <div class="col-md-1 p-2" style=" margin-top: 2rem !important;">
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--/.SEARCH FUNCTION-->
+<!--GRID FUNCTION-->
+<div class="container-fluid">
+    <input type="hidden" name="name" value="" id="id_actualpr" />
+    <input type="hidden" name="product" id="mProduct" class="form-control form-control-text" required readonly>
+    <input type="hidden" name="target" id="mTarget" class="form-control form-control-text" required />
+
+    <div class="box-body my-2 bg-white boxList">
+        <div class="row p-0 m-0">
+            <div class="col-md-12">
+                <div class="col-md-5 box-primary">
+
+                    <div class="nav-tabs-custom">
+                        <ul class="nav nav-tabs">
+                            <li class="active" id="tab_primary1"><a href="#tab_primary1" data-toggle="tab">Processing</a></li>
+                            <li id="tab_primary2"><a href="#tab_primary2" data-toggle="tab">Finished</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="tab-content active" id="tab_c_primary1">
+                        <div class="box-body box-body-input-move">
+                            <div class="row p-0 m-0">
+                                <table id="list_primary"></table>
+                                <div id="jqGrid_primaryPager"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-content active" id="tab_c_primary2">
+                        <div class="box-body1 box-body-input-move">
+                            <div class="row p-0 m-0">
+                                <table id="list_finish"></table>
+                                <div id="jqGrid_finishPager"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-7 box-sx">
+                    <table id="list_SX"></table>
+                    <div id="jqGrid_SXPager"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!--CREATE & MODIFY FUNCTION-->
+<!--/.CREATE & MODIFY FUNCTION-->
+<input type="hidden" name="name" value="" id="staff_id" />
+
+<div id="dialogCreate_actual" title="Create">
+    <input type="hidden" name="name" value="" id="at_no" />
+
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-success button-srh" id="saverecreate_actual"><i class="fa fa-save">&nbsp;Save</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box-body well">
+        <div class="row p-0 m-0">
+            <div class="col-md-6 py-1">
+                <label>Process Name</label>
+                <select name="process" id="cProcess" class="form-control"></select>
+            </div>
+            <div class="col-md-6 py-1">
+                <label>Roll</label>
+                <div class="input-group" style="width: 100%;">
+                    <select id="cRoll" class="form-control"></select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="box-body bg-white">
+        <div class="col-md-5">
+            <table id="list"></table>
+            <div id="listpage"></div>
+        </div>
+        <!--SEARCH FUNCTION-->
+
+        <div class="col-md-7">
+            <div class="container-fluid">
+                <div class="box-body my-2 bg-white">
+                    <div class="row p-0 m-0" style="display: flex; flex-wrap: nowrap;">
+                        <div class="col-md-1 p-1  text-right">
+                            <label><b>Worker ID</b></label>
+                        </div>
+                        <div class="col-md-2 p-1  text-right">
+                            <div class="input-group mt_plus">
+                                <input type="text" name="" id="staff_id_s" class="input-text form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-1 p-1  text-right">
+                            <label><b>Reg Date</b></label>
+                        </div>
+                        <div class="col-md-3 py-1">
+                            <input type="text" id="StartDate" class="input-text form-control" placeholder="Start Date">
+                        </div>
+                        <div class="col-md-3 py-1">
+                            <input type="text" id="EndDate" class="input-text form-control" placeholder="End Date">
+                        </div>
+                        <div class="col-md-1 p-2">
+                            <button id="searchBtn_Staff" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table id="list_staff"></table>
+            <div id="list_staffpage"></div>
+            <div class="col-md-12">
+                <div class="box-body m-2 bg-white">
+                    <input type="hidden" name="name" value="" id="psid" />
+                    <div class="nav-tabs-custom">
+                        <ul class="nav nav-tabs">
+                            <li class="active" id="dialogWorkerMapping_create_li"><a href="#dialogWorkerMapping_create_tab" data-toggle="tab">Create</a></li>
+                            <li id="dialogWorkerMapping_modify_li"><a href="#dialogWorkerMapping_modify_tab" data-toggle="tab">Modify</a></li>
+                        </ul>
+                    </div>
+
+
+                    <div class="tab-content active" id="dialogWorkerMapping_create_tab">
+                        <form id="dialogWorkerMapping_createForm" enctype="multipart/form-data">
+                            <div class="row p-0 m-0">
+                                <div class="col-md-12">
+                                    <div class="row p-0 m-0">
+                                        <div class="col-md-5 py-1">
+                                            <div class="input-group mt_plus">
+                                                <input type="hidden" id="dialogWorkerMapping_cWorkerId" />
+                                                <input type="text" id="dialogWorkerMapping_cWorkerName" name="worker" class="input-text form-control" placeholder="Worker Name" readonly="readonly">
+                                                <span class="input-group-addon dialogWorkerList"><a href="#" class=""><i class="fa fa-search text-navy"></i></a></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5 py-1">
+                                            <select name="use_yn" id="dialogWorkerMapping_cIsUsed" class="form-control">
+                                                <option value="Y" selected="selected">Use</option>
+                                                <option value="N">UnUse</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2 py-1">
+                                            <button id="dialogWorkerMapping_createBtn" type="button" class="btn btn-success button-srh2 active"><i class="fa fa-save">&nbsp;Create</i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="tab-content hidden" id="dialogWorkerMapping_modify_tab">
+                        <div class="row p-0 m-0">
+                            <div class="col-md-12">
+                                <div class="row p-0 m-0">
+                                    <div class="col-md-3 py-1">
+                                        <div class="input-group mt_plus">
+                                            <input type="hidden" id="dialogWorkerMapping_mWorkerId" />
+                                            <input type="text" id="dialogWorkerMapping_mWorkerName" class="input-text form-control" readonly="readonly">
+                                            <span class="input-group-addon dialogWorkerList"><a href="#" class=""><i class="fa fa-search text-navy"></i></a></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 py-1">
+                                        <input type="text" id="dialogWorkerMapping_mStartDate" class="input-text form-control" placeholder="Start Date">
+                                    </div>
+                                    <div class="col-md-3 py-1">
+                                        <input type="text" id="dialogWorkerMapping_mEndDate" class="input-text form-control" placeholder="End Date">
+                                    </div>
+                                    <div class="col-md-3 py-1">
+                                        <select name="use_yn" id="dialogWorkerMapping_mIsUsed" class="form-control select2">
+                                            <option value="Y" selected="selected">Use</option>
+                                            <option value="N">UnUse</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="row py-2 text-right">
+                                    <div class="col-md-12 px-4 m-0">
+                                        <button id="dialogWorkerMapping_modifyBtn" type="button" class="btn btn-success button-srh2 mr-3 active"><i class="fa fa-save">&nbsp;Modify</i></button>
+                                        <button id="dialogWorkerMapping_deleteBtn" class="btn btn-danger button-sm"><i class="fa fa-scissors">&nbsp;&nbsp;Delete</i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--/.GRID FUNCTION-->
+<!--DIALOG PRODUCT-->
+<div class="popupDialogProduct" title="Product Information" style="display:none">
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body well text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-3 p-2">
+                    <input type="text" name="dialogProductNo" id="dialogProductNo" placeholder="Product Code" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="dialogProductName" id="dialogProductName" placeholder="Product Name" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="dialogProductModel" id="dialogProductModel" placeholder="Model Code" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2 d-flex">
+                    <button id="dialogProductSearchBtn" class="btn btn-sm mr-5 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button id="dialogProductSelectBtn" class="btn btn-sm btn-success button-srh disabled"><i class="fa fa-save">&nbsp;Selected</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid  p-0 m-0">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0 boxProduct">
+                <table id="dialogProductGrid"></table>
+                <div id="dialogProductPage"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--/.DIALOG PRODUCT-->
+<!--DIALOG QC-->
+<div class="popupDialogQC" title="QC Master Information" style="display:none">
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body well text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-3 p-2">
+                    <div class="input-group" style="width: 100%;">
+                        <select id="dialogQCType" class="form-control">
+                            <option value="">*QC Type*</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-2 p-2">
+                    <input type="text" name="dialogQCCode" id="dialogQCCode" maxlength="20" class="input-text form-control" placeholder="QC Code">
+                </div>
+                <div class="col-md-2 p-2">
+                    <input type="text" name="dialogQCName" id="dialogQCName" maxlength="20" class="input-text form-control" placeholder="QC Name">
+                </div>
+                <div class="col-md-2 p-2">
+                    <input type="text" name="dialogQCExp" id="dialogQCExp" maxlength="20" class="input-text form-control" placeholder="QC Explain">
+                </div>
+                <div class="col-md-3 p-2 d-flex">
+                    <button id="dialogQCSearchBtn" class="btn btn-sm mr-5 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button id="dialogQCSelectBtn" class="btn btn-sm btn-success button-srh disabled"><i class="fa fa-save">&nbsp;Selected</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0 boxQC">
+                <table id="dialogQCGrid"></table>
+                <div id="dialogQCPage"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--/.DIALOG QC-->
+<!--DIALOG COMPOSITE-->
+<input type="hidden" name="name" value="" id="id_actual" />
+<input type="hidden" name="name" value="" id="type_roll" />
+<input type="hidden" name="name" value="" id="dialogCompositeProcess" />
+<div class="popupDialogComposite_RollNormal" title="Composite Material Mapping" style="display:none">
+    <input type="hidden" name="name" value="" id="check_qc" />
+    <div class="container-fluid">
+        <div class="box-body bg-white ">
+            <div class="row p-0 m-0">
+                <div class="col-md-5 p-1 ">
+                    <span style="font-size: 17px;font-weight: 600;color:#8a7948;">Mapping</span>
+                    <button id="dialogCompositeRollNormal_ContainerBtn" class="btn btn-success button-srh2 ">Container</button>
+                </div>
+                @*<div class="col-md-7 p-2  text-right">
+                        <div id="result"></div>
+                        <button id="change_gr" class="btn btn-success button-srh2 ">Save</button>
+                    </div>*@
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="box-body my-2 bg-white">
+            <div class=" p-0 m-0 boxBOM">
+                <table id="dialogCompositeRollNormal_MateritalCompositeGrid"></table>
+                <div id="dialogCompositeRollNormal_MateritalCompositePage"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="col-md-12 p-2  text-right">
+        </div>
+        <div class="box-body my-2 bg-white">
+            <input type="hidden" name="name" value="" id="wmmid" />
+            <div class=" p-0 m-0 boxBOM">
+                <table id="dialogCompositeRollNormal_MateritalGrid"></table>
+                <div id="dialogCompositeRollNormal_MateritalPage"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 ">
+        <div class="col-md-10"></div>
+        <div class="col-md-1 text-right"> <i class="fa fa-angle-double-right" aria-hidden="true" id="pp_sta"></i></div>
+    </div>
+</div>
+<div class="dialog_composite3" title="Composite Material Mapping">
+    <input type="hidden" name="name" value="" id="id_dv" />
+    <input type="hidden" name="name" value="" id="mt_cd_dv" />
+    <input type="hidden" name="name" value="" id="sts_change_bb" />
+    <div class="container-fluid">
+        <div class="box-body well">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <div class="col-md-5 p-2">
+                        <label>Container</label>
+                        <input type="text" name="mt_code" id="bb_no_dv" class="form-control form-control-text" readonly="readonly">
+                        <input type="hidden" name="mt_code" id="mt_code_bb2" class="form-control form-control-text" readonly="readonly">
+                    </div>
+                    <div class="col-md-3 p-2 text-right">
+                        <label class=" text-right">Quantity</label>
+                        <input type="text" name="so_lgr" id="so_lgr" class="form-control form-control-text" readonly="readonly">
+                    </div>
+                    <div class="col-md-3 p-2">
+                        <label>Quantity Divide</label>
+                        <input type="number" name="number_dv" id="number_dv" class="input-text form-control">
+                    </div>
+                    <div class="col-md-1 p-2">
+                        <label style="width:100%">&nbsp;&nbsp;&nbsp;</label>
+                        <button id="device" class="btn btn-success button-srh2 ">Divide</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*<div class="container-fluid">
+            <div class="box-body bg-white ">
+                <div class="row p-0 m-0">
+                    <div class="col-md-7 p-2  text-right">
+                        <button id="change_gr" class="btn btn-success button-srh2 hidden">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+    <div class="col-md-12">
+        <div class="box-body my-2 bg-white">
+            <div class=" p-0 m-0 boxBOM">
+                <table id="tb_mt_lot_sta"></table>
+                <div id="tb_mt_lot_sta_page"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="box-body my-2 bg-white">
+            <input type="hidden" name="name" value="" id="wmmid" />
+            <div class=" p-0 m-0 boxBOM">
+                <table id="tb_mt_cd_sta"></table>
+                <div id="tb_mt_cd_sta_page"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="col-md-12 ">
+        <div class="col-md-1"><i class="fa fa-angle-double-left" aria-hidden="true" id="back_sta"></i></div>
+    </div>
+</div>
+<div class="diologbobin2" title="Container Information">
+    <input type="hidden" name="bbin_dv" value="" id="bbin_dv" />
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body well">
+            <div class="row p-0 m-0">
+                <div class="col-md-5 p-2">
+                    <label>Container No</label>
+                    <input type="text" name="s_bb" id="s_bb_no2" class="form-control form-control-text" placeholder="Container no">
+                </div>
+                <div class="col-md-5 p-2">
+                    <label>Container Name</label>
+                    <input type="text" name="s_bb" id="s_bb_nm2" class="form-control form-control-text" placeholder="Container no">
+                </div>
+                <div class="col-md-2 p-2">
+                    <label style="width:100%">&nbsp;&nbsp;&nbsp;</label>
+                    <button id="searchBtn_popupbobbin2" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid  p-0 m-0">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0 boxMaterial">
+                <table id="popupbobin2"></table>
+                <div id="PageBobbin2"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="diologbobindv" title="Container Information">
+    <input type="hidden" name="id" value="" id="id_dv" />
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body well">
+            <div class="row p-0 m-0">
+                <div class="col-md-5 p-2">
+                    <label>Container No</label>
+                    <input type="text" name="s_bb" id="s_bb_nodv" class="form-control form-control-text" placeholder="Container no">
+                </div>
+                <div class="col-md-5 p-2">
+                    <label>Container Name</label>
+                    <input type="text" name="s_bb" id="s_bb_nmdv" class="form-control form-control-text" placeholder="Container no">
+                </div>
+                <div class="col-md-1 p-2">
+                    <label style="width:100%">&nbsp;&nbsp;&nbsp;</label>
+                    <button id="searchBtn_popupbobbindv" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                </div>
+                <div class="col-md-1 p-2">
+                    <label style="width:100%">&nbsp;&nbsp;&nbsp;</label>
+                    <button id="selected" class="btn btn-success button-srh2 ">Selected</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid  p-0 m-0">
+        <div class="box-body my-2 bg-white">
+            <div class=" p-0 m-0 ">
+                <table id="popupbobindv"></table>
+                <div id="PageBobbindv"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="dialog_composite4_OQC" title="Composite Material Mapping">
+    <input type="hidden" name="name" value="" id="id_dv" />
+    <div class="container-fluid">
+        <div class="box-body bg-white ">
+            <div class="row p-0 m-0">
+                <div class="col-md-10">
+                    <button id="container_OQC" class="btn btn-success button-srh2 ">Container</button>
+                    <button id="Pass_OQC" class="btn btn-success button-srh2 ">Pass</button>
+                    <button id="Return_OQC" class="btn btn-success button-srh2 ">Return</button>
+                </div>
+                @*<div class="col-md-2">
+                        <button id="change_groqc" class="btn btn-success button-srh2 ">Save</button>
+                    </div>
+                    <div id="result_oqc"></div>*@
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 p-2  text-right">
+        <div class="box-body my-2 bg-white">
+            <div class="p-0 m-0 ">
+                <table id="tb_mt_cd_oqc"></table>
+                <div id="tb_mt_cd_oqc_page"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="diologbobin3" title="Container Information">
+    <input type="hidden" name="bbin_dv" value="" id="bbin_dv3" />
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body well">
+            <div class="row p-0 m-0">
+                <div class="col-md-6 p-2">
+                    <label>Container No</label>
+                    <input type="text" name="s_bb" id="s_bb_no3" class="form-control form-control-text" placeholder="Container no">
+                </div>
+
+                <div class="col-md-6 p-2">
+                    <label style="width:100%">&nbsp;&nbsp;&nbsp;</label>
+                    <button id="searchBtn_popupbobbin3" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button id="scan_oqc" class="btn btn-sm btn-success button-srh"><i class="fa fa-qrcode" aria-hidden="true">&nbsp;Scan</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid  p-0 m-0">
+        <div class="box-body my-2 bg-white">
+            <div class=" p-0 m-0 ">
+                <table id="popupbobin3"></table>
+                <div id="PageBobbin3"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dialogReturn" title="Remain">
+    <input type="hidden" name="name" value="" id="mt_cd_rt" />
+    <input type="hidden" name="name" value="" id="mt_lot_rt" />
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-success button-srh" id="savereturn"><i class="fa fa-save">&nbsp;Save</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box-body well text-right">
+        <div class="row p-0 m-0">
+            <div class="col-md-12 p-2 d-flex">
+                <label>Length</label>
+                <input type="number" id="return_length" class="input-text form-control">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="popupDialogComposite_RollNormal_Container" title="Container Information">
+    <input type="hidden" name="name" value="" id="cp_bb_no" />
+    <input type="hidden" name="name" value="" id="cp_lot" />
+    <div class="container-fluid">
+        <div class="box-body bg-white">
+            <div class="row p-0 m-0">
+                <div class="col-md-12  text-right">
+                    <button id="dialogCompositeRollNormalContainer_SearchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button id="dialogCompositeRollNormalContainer_CreateBtn" class="btn btn-success button-srh2 ">Create ML NO</button>
+                    <button id="save_bb" class="btn btn-sm btn-success button-srh"><i class="fa fa-save">&nbsp;Mapping</i></button>
+                    <button id="scan_EA" class="btn btn-sm btn-success button-srh"><i class="fa fa-save">&nbsp;Scan</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body well">
+            <div class="row p-0 m-0">
+                <div class="col-md-4 p-2">
+                    <label>Container No</label>
+                    <input type="text" id="dialogCompositeRollNormalContainer_ContainerCode" class="form-control form-control-text" placeholder="Container No">
+                </div>
+                <div class="col-md-4 p-2">
+                    <label>Container Name</label>
+                    <input type="text" id="dialogCompositeRollNormalContainer_ContainerName" class="form-control form-control-text" placeholder="Container Name">
+                </div>
+                <div class="col-md-4 p-2">
+                    <label>Material Code</label>
+                    <input type="text" id="dialogCompositeRollNormalContainer_MaterialCode" class="form-control form-control-text" placeholder="MT CD">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid  p-0 m-0">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0 boxB">
+                <table id="dialogCompositeRollNormalContainer_Grid"></table>
+                <div id="dialogCompositeRollNormalContainer_Page"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--/.DIALOG COMPOSITE-->
+<!--DIALOG WORKER MAPPING-->
+<div class="PopupNG" title="NG">
+    <div class="box-body text-right">
+        <div class="row p-0 m-0">
+            <div class="col-md-2">
+                <label>Quantity NG</label>
+            </div>
+            <div class="col-md-4 p-2">
+                <input type="number" id="GR_OK_NG" class="input-text form-control">
+            </div>
+            <div class="col-md-2 p-2 d-flex">
+                <button id="Gop_NG_OK" class="btn btn-sm mr-5 btn-primary button-srh"><i class="fa fa-search">&nbsp;Save</i></button>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body well">
+            <div class="row p-0 m-0">
+                <div class="col-md-3 p-2">
+                    <label>PO NO</label>
+                    <input type="text" id="po_ng" placeholder="PO NO" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <label>MT LOT</label>
+                    <input type="text" id="mt_cd_ng" placeholder="MT LOT" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <label>MT NO</label>
+                    <input type="text" id="mt_no_ng" placeholder="MT NO" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2 ">
+                    <label style="width:100%">&nbsp;&nbsp;</label>
+                    <button id="PopupNG_Search" class="btn btn-sm mr-5 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid p-0 m-0">
+        <input type="hidden" name="name" value="" id="mt_cd_ok" />
+        <div class="box-body well text-right">
+            <div class="col-md-12 pl-0 pr-1">
+                <div class="row p-0 m-0">
+                    <div class="col-md-12">
+                        <div class="row p-0 m-0 boxStaff">
+                            <table id="dialogNG"></table>
+                            <div id="dialogNGPage"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="PopupOK">
+    <input type="hidden" name="name" value="" id="trang_thai" />
+    <div class="box-body text-right">
+        <div class="row p-0 m-0">
+            <div class="col-md-2">
+                <label>Quantity</label>
+            </div>
+            <div class="col-md-4 p-2">
+                <input type="number" id="GR_OK" class="input-text form-control">
+            </div>
+            <div class="col-md-2 p-2 d-flex">
+                <button id="Gop_OK" class="btn btn-sm mr-5 btn-primary button-srh"><i class="fa fa-search">&nbsp;Save</i></button>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body well">
+            <div class="row p-0 m-0">
+                <div class="col-md-3 p-2">
+                    <label>Container</label>
+                    <input type="text" id="bb_no_merge_s" placeholder="Container" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <label>MT LOT</label>
+                    <input type="text" id="mt_cd_merge_s" placeholder="MT LOT" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <label>MT NO</label>
+                    <input type="text" id="mt_no_ok" placeholder="MT NO" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2 ">
+                    <label style="width:100%">&nbsp;&nbsp;</label>
+                    <button id="PopupOK_Search" class="btn btn-sm mr-5 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid p-0 m-0">
+        <input type="hidden" name="name" value="" id="mt_cd_merge" />
+        <div class="box-body well text-right">
+            <div class="col-md-12 pl-0 pr-1">
+                <div class="row p-0 m-0">
+                    <div class="col-md-12">
+                        <div class="row p-0 m-0 boxStaff">
+                            <table id="dialogOK"></table>
+                            <div id="dialogOKPage"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--/.DIALOG WORKER MAPPING-->
+<!--DIALOG WORKER MAPPING-->
+<div class="popupDialogWorkerMapping" title="Worker">
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body well text-right">
+            <div class="col-md-12 pl-0 pr-1">
+                <div class="row p-0 m-0">
+                    <div class="col-md-12">
+                        <div class="row p-0 m-0 boxStaff">
+                            <table id="dialogWorkerMappingGrid"></table>
+                            <div id="dialogWorkerMappingPage"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--/.DIALOG WORKER MAPPING-->
+<!--DIALOG WORKER LIST-->
+<div class="popupDialogWorkerList" title="Worker List" style="display:none">
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body well text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-3 p-2">
+                    <input type="text" id="dialogWorkerList_WorkerId" placeholder="Worker Id" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" id="dialogWorkerList_WorkerName" placeholder="Worker Name" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <select id="dialogWorkerList_PositionCode" class="form-control">
+                    </select>
+                </div>
+                <div class="col-md-3 p-2 d-flex">
+                    <button id="dialogWorkerList_SearchBtn" class="btn btn-sm mr-5 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button id="dialogWorkerList_SelectBtn" class="btn btn-sm btn-success mr-5 button-srh"><i class="fa fa-save">&nbsp;Select</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid bg-white  p-0 m-0 boxStaff">
+        <div class="row p-0 m-0">
+            <div class="col-md-12 p-0 m-0">
+                <table id="dialogWorkerListGrid"></table>
+                <div id="dialogWorkerPage"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--/.DIALOG WORKER LIST-->
+<!--DIALOG MATERIAL-->
+<div class="popupDialogMaterial" title="Material Information" style="display:none">
+    <div class="container-fluid p-0 m-0">
+
+        <div class="box-body text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-3 p-2">
+                    <select id="dialogMaterial_MaterialType" class="form-control"></select>
+                </div>
+                <div class="col-md-2 p-2">
+                    <input type="text" id="dialogMaterial_BOM" placeholder="BOM" class="form-control form-control-text" readonly="readonly">
+                </div>
+                <div class="col-md-2 p-2">
+                    <select id="dialogMaterial_MaterialNo" class="form-control"></select>
+                </div>
+                <div class="col-md-2 p-2">
+                    <input type="text" id="dialogMaterial_MaterialName" placeholder="ML NO" class="form-control form-control-text">
+                </div>
+                <div class="col-md-2 p-2 d-flex">
+                    <button id="dialogMaterial_SearchBtn" class="btn btn-sm mr-5 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button class="btn btn-sm btn-success button-srh" id="dialogMaterial_SelectBtn"><i class="fa fa-save">&nbsp;Selected</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid  p-0 m-0">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0 boxMaterial">
+                <table id="dialogMaterial_Grid"></table>
+                <div id="dialogMaterial_Page"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--/.DIALOG MATERIAL-->
+<!--DIALOG CONFIRM DELETE-->
+<div id="dialogDangerous" title="Are you make sure DELETE ?">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-success button-srh mr-3" id="closestyle">No</button>
+                    <button type="button" class="btn btn-sm btn-danger button-srh" id="deletestyle">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dialogAccept" title="Are you make sure Accept?">
+    <input type="hidden" name="name" value="" id="sts_creat" />
+    <input type="hidden" name="name" value=" " id="id_update" />
+    <input type="hidden" name="name" value=" " id="start_accept" />
+    <input type="hidden" name="name" value=" " id="end_accept" />
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div id="thong_bao"></div>
+
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-success button-srh mr-3" id="close_create">No</button>
+                    <button type="button" class="btn btn-sm btn-warning button-srh" id="create_accept">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Dialog qc code-->
+<div class="dialog_qc_code_pp" title="QC Web">
+    <input type="hidden" name="name" value="" id="qc_mt_cd" />
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button id="save_qc_code" class="btn btn-success button-srh2">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <div class="col-md-4 p-1">
+                    <label><b>Process</b></label>
+                    <input type="text" name="qc_name" id="qc_name" class="input-text form-control" readonly="readonly" value="">
+                </div>
+                <div class="col-md-4 p-1">
+                    <label><b>QC</b></label>
+                    <input type="text" name="qc_item_vcd" id="qc_item_vcd" class="input-text form-control" readonly="readonly" value="">
+                </div>
+                <div class="col-md-4 p-1">
+                    <label><b>Date</b></label>
+                    <input type="text" name="qc_date" id="qc_date" class="input-text form-control" readonly="readonly" value="">
+                </div>
+
+                <div class="col-md-4 p-1">
+                    <label><b>Check Qty</b></label>
+                    <input type="number" name="qc_gr_qty" id="qc_gr_qty" class="input-text form-control" value="0" min="0" readonly style="text-align: right">
+                </div>
+                <div class="col-md-4 p-1">
+                    <label><b>Ok Qty</b></label>
+                    <input type="number" name="qc_ok_qty" id="qc_ok_qty" class="input-text form-control" value="0" min="0" style="text-align: right">
+                </div>
+                <div class="col-md-2 p-1">
+                    <label><b>NG Qty</b></label>
+                    <input type="number" name="qc_ng_qty" id="qc_ng_qty" class="input-text form-control" value="0" min="0" style="text-align: right">
+                </div>
+                <div class="col-md-2 p-1">
+                    <label><b>Remain</b></label>
+                    <input type="number" name="qc_remain" id="qc_remain" class="input-text form-control" value="0" min="0" readonly style="text-align: right">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row p-0 m-0">
+        @*<div class="col-md-5" id="view_qc">
+            </div>*@
+        <div class=" col-md-12  table_m_facline_qc" id="tab2">
+            <h5 class="box-title">QC Main</h5>
+            <div id="viewTableQc"></div>
+            <div class="row">
+                <div class="col-md-12 pl-0 list_qc">
+                    <div class="box-body my-2 " style="color: #ff6a00">
+                        <div class="box-header">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    @* <h3 class="box-title">QC Main</h3>*@
+                                </div>
+                                <div class="col-xs-6 text-right">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-0 m-0">
+                            <table id="list_facline_qc" width="100%"></table>
+                            <div id="gridpager_facline_qc"></div>
+                        </div>
+                    </div>
+                </div>
+                @*<div class="col-md-12 pl-0 list_qc">
+                        <div class="box-body my-2 " style="color: #ff6a00">
+                            <div class="box-header">
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        <h3 class="box-title">QC Detail</h3>
+                                    </div>
+                                    <div class="col-xs-6 text-right">
+                                        <button type="button" class="btn btn-sm btn-primary button-srh" id="p_SaveQcfacline" disabled="disabled"><i class="fa fa-check">&nbsp;Save</i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-0 m-0">
+                                <table id="list_facline_qc_value" width="100%"></table>
+                            </div>
+                        </div>
+                    </div>*@
+            </div>
+        </div>@*//table_m_facline_qc*@
+    </div>
+
+</div>
+
+<div id="dialog_Finsh" title="Confirm to finish PO ?">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-success button-srh mr-3" id="closefinish">No</button>
+                    <button type="button" class="btn btn-sm btn-danger button-srh" id="finish_po">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--/.DIALOG CONFIRM DELETE-->
+@*oqc*@
+<div class="dialog_oqc_code_pp" title="OQC Web">
+    <input type="hidden" name="name" value="" id="oqc_mt_cd" />
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button id="save_oqc_code" class="btn btn-success button-srh2">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <div class="col-md-4 p-1">
+                    <label><b>Process</b></label>
+                    <input type="text" name="oqc_name" id="oqc_name" class="input-text form-control" readonly="readonly" value="">
+                </div>
+                <div class="col-md-4 p-1">
+                    <label><b>QC</b></label>
+                    <input type="text" name="oqc_item_vcd" id="oqc_item_vcd" class="input-text form-control" readonly="readonly" value="">
+                </div>
+                <div class="col-md-4 p-1">
+                    <label><b>Date</b></label>
+                    <input type="text" name="oqc_date" id="oqc_date" class="input-text form-control" readonly="readonly" value="">
+                </div>
+                <div class="col-md-4 p-1">
+                    <label><b>Check Qty</b></label>
+                    <input type="number" name="oqc_gr_qty" id="oqc_gr_qty" class="input-text form-control" value="0" min="0" style="text-align: right">
+                </div>
+                <div class="col-md-4 p-1">
+                    <label><b>Ok Qty</b></label>
+                    <input type="number" name="oqc_ok_qty" id="oqc_ok_qty" class="input-text form-control" value="0" min="0" style="text-align: right">
+                </div>
+                <div class="col-md-4 p-1">
+                    <label><b>NG Qty</b></label>
+                    <input type="number" name="oqc_ng_qty" id="oqc_ng_qty" class="input-text form-control" value="0" min="0" style="text-align: right">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row p-0 m-0">
+        <div class="col-md-5" id="view_oqc">
+        </div>
+        <div class=" col-md-6  table_m_facline_qc" id="tab2">
+            <div class="row">
+                <div class="col-md-12 pl-0 list_oqc">
+                    <div class="box-body my-2 " style="color: #ff6a00">
+                        <div class="box-header">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <h3 class="box-title">QC Main</h3>
+                                </div>
+                                <div class="col-xs-6 text-right">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-0 m-0">
+                            <table id="list_facline_oqc" width="100%"></table>
+                            <div id="gridpager_facline_oqc"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 pl-0 list_oqc">
+                    <div class="box-body my-2 " style="color: #ff6a00">
+                        <div class="box-header">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <h3 class="box-title">QC Detail</h3>
+                                </div>
+                                <div class="col-xs-6 text-right">
+                                    <button type="button" class="btn btn-sm btn-primary button-srh" id="op_SaveQcfacline" disabled="disabled"><i class="fa fa-check">&nbsp;Save</i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-0 m-0">
+                            <table id="list_facline_oqc_value" width="100%"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>@*//table_m_facline_qc*@
+    </div>
+
+</div>
+
+<div class="popup-dialog dialog_Viewdetaildatetime" title="Detail">
+    <div id="PartialView_dialog_Viewdetaildatetime"></div>
+</div>
+<!--SCRIPT-->
+<style>
+
+    table.qc {
+        border: 1px solid #000;
+        width: 100%;
+        text-align: center;
+    }
+
+    th.con {
+        border: 1px solid #000;
+        text-align: left;
+        padding: 8px;
+        background-color: #dddddd;
+        text-align: center;
+    }
+
+    tr.con1 {
+        background-color: #fff;
+        color: #000;
+        text-align: center;
+    }
+
+    i#close_composite {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    i.fa.fa-eye {
+        font-size: 25px;
+    }
+
+    i#back_step1, i#back_sta, i#next_oqc, i#back_oqc, i#backbuyer_oqc {
+        font-size: 22px;
+        font-weight: bold;
+    }
+
+    i.fa.fa-times-circle {
+        color: red;
+        font-size: 19px;
+    }
+
+    i#pp_sta {
+        text-align: right;
+        font-size: 26px;
+        font-weight: bold;
+    }
+</style>
+@section scripts{
+    <script src="~/Scripts/TIMS/Actual/Web/Web.js"></script>
+    <script src="~/Scripts/TIMS/Actual/Web/popupbobin.js"></script>
+    <script src="~/Scripts/TIMS/Actual/Web/popupbobin_dv.js"></script>
+    <script src="~/Scripts/TIMS/Actual/Web/popupbobin_2.js"></script>
+    <script src="~/Scripts/TIMS/Actual/Web/popupbobin_oqc.js"></script>
+}
+<!--/.SCRIPT-->

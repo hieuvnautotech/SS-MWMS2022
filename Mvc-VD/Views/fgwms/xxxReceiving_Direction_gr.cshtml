@@ -1,0 +1,130 @@
+﻿@{
+    ViewBag.Title = "Receiving_Direction_gr";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="FG-WMS" data-level_2="Receiving Management" data-level_3="Receiving Directions Generation(F)"></div>
+
+}
+
+<!-- Search function -->
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-1 p-1  text-right">
+                <label><b>SD No </b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <input type="text" name="sd_no" id="sd_no" class="form-control form-control-text " maxlength="20">
+            </div>
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Destination</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                 <div class="input-group" style="width: 100%;">
+                        <select name="lct_cd" id="lct_cd" class="form-control selectMf select2"></select>
+                    </div>
+            </div>
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Work Date</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <input type="text" name="start_dt" id="start" class="form-control">
+            </div>
+            <div class="col-md-1 p-1  text-center">
+                <label><b>~</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <input type="text" name="end_dt" id="end" class="form-control">
+            </div>
+            <div class="col-md-1 p-2">
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<!-- ./Search function -->
+
+
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<form id="form3">
+<div class="container-fluid">
+    <div class="col-md-3">
+        <div class="box-body my-2 bg-white">
+            <div class="row">
+                <div class="col-md-2 text-right p-4">
+                    <label>Location</label>
+                </div>
+                <div class="col-md-9 p-4">
+                    <div class="input-group" style="width: 100%;">
+                        <select name="whouse" id="whouse" class="form-control selectMf select2"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="row ">
+                <div class="col-md-2 text-right p-4">
+                    <label>Worker</label>
+                </div>
+                <div class="col-md-9 p-4">
+                    <input type="text" name="userid" id="userid" class="input-text form-control">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 p-4 text-right"></div>
+                <div class="col-md-9 p-4" id="new">
+                    <input type="text" name="uname" id="uname" class="input-text form-control" placeholder="Name" readonly="readonly">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 text-right p-4">
+                    <label>Manager</label>
+                </div>
+                <div class="col-md-9 p-4">
+                    <input type="text" name="userid" id="userid2" class="input-text form-control">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 text-right p-4"></div>
+                <div class="col-md-9 p-4" id="new1" >
+                    <input type="text" name="uname" id="uname2" class="input-text form-control" placeholder="Name" readonly="readonly">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 text-right p-4">
+                    <label>Work date</label>
+                </div>
+                <div class="col-md-9 p-4">
+                    <input type="text" name="work_date" id="work_date" class="form-control">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <table id="Directions"></table>
+                <div id="DirectionsPage"></div>
+            </div>
+        </div>
+    </div>
+</div>
+    </form>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+@*---------------------------------------------------------------------------------------------------------------------------*@
+ <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <table id="State"></table>
+                <div id="StatePage"></div>
+            </div>
+</div>
+
+@*---------------------------------------------------------------------------------------------------------------------------*@
+
+@section scripts{
+<script src="~/Scripts/fgwms/Receiving_Direction_gr/Receiving_Direction_gr.js"></script>
+}
+

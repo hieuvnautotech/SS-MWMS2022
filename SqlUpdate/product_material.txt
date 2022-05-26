@@ -1,0 +1,2 @@
+Select id As Id, style_no, level, name As mt_nm, mt_no, need_time, cav, need_m, buocdap, isActive, reg_id, reg_dt, chg_id, chg_dt
+From product_material;

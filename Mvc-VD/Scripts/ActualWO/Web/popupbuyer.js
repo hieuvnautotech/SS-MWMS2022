@@ -1,0 +1,185 @@
+﻿$(function () {
+    $(".diologbuyer").dialog({
+        width: '50%',
+        height: 520,
+        maxWidth: 1000,
+        maxHeight: 450,
+        minWidth: '50%',
+        minHeight: 450,
+        zIndex: 1000,
+        resizable: false,
+        fluid: true,
+        modal: true,
+        autoOpen: false,
+        classes: {
+            "ui-dialog": "ui-dialog",
+            "ui-dialog-titlebar": "ui-dialog ui-dialog-titlebar-sm",
+            "ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only ui-dialog-titlebar-close": "display: none !important",
+        },
+        resize: function (event, ui) {
+            $('.ui-dialog-content').addClass('m-0 p-0');
+        },
+        open: function (event, ui) {
+            $("#popupbuyer").jqGrid
+     ({
+         url: "/ActualWO/GetBuyerInfo_popup",
+         datatype: 'json',
+         mtype: 'Get',
+         colModel: [
+                { key: true, label: 'byno', name: 'byno', width: 80, align: 'center', hidden: true }, 
+            { key: false, label: 'Buyer Code', name: 'buyer_cd', sortable: true, width: '80', align: 'center' },
+            { key: false, label: 'Buyer Name', name: 'buyer_nm', sortable: true, width: '200' },
+            { key: false, label: 'Brand Name', name: 'brd_nm', editable: true, sortable: true, width: '150' },
+            { key: false, label: 'Description', name: 're_mark', editable: true, width: '100px' },
+            { key: false, label: 'Logo', name: 'logo', editable: true, width: '100px', hidden: true },
+            { key: false, label: 'Website', name: 'web_site', editable: true, width: '180' },
+            { key: false, label: 'Phone Number', name: 'phone_nb', editable: true, width: '100px', align: 'center' },
+            { key: false, label: 'Cell Number', name: 'cell_nb', editable: true, width: '100px', align: 'center' },
+            { key: false, label: 'E-Mail', name: 'e_mail', editable: true, width: '200px' },
+            { key: false, label: 'Fax', name: 'fax_nb', editable: true, width: '100px', align: 'center' },
+            { key: false, label: 'Address', name: 'address', editable: true, width: '250' },
+            { key: false, label: 'Use YN', name: 'use_yn', editable: true, width: '50', align: 'center' },
+            { key: false, label: 'Create Name', name: 'reg_id', index: 'reg_id', width: '100px' },
+            { key: false, label: 'Create date', name: 'reg_dt', editable: true, align: 'center', formatter: 'date', formatoptions: { srcformat: "ISO8601Long", newformat: "Y-m-d H:i:s" }, width: '150' },
+            { key: false, label: 'Change Name', name: 'chg_id', editable: true, width: '100px' },
+            { key: false, label: 'Change date', name: 'chg_dt', editable: true, align: 'center', formatter: 'date', formatoptions: { srcformat: "ISO8601Long", newformat: "Y-m-d H:i:s" }, width: '150' }
+         ],
+         onSelectRow: function (rowid, selected, status, e) {
+             $('.ui-state-highlight').css({ 'border': '#AAAAAA' });
+             $("#save_buyer").removeClass("disabled");
+             var selectedRowId = $("#popupbuyer").jqGrid("getGridParam", 'selrow');
+             row_id = $("#popupbuyer").getRowData(selectedRowId);
+             if (row_id != null) {
+                 $('#close_buyer').click(function () {
+                     $('.popupbuyer').dialog('close');
+                 });
+                 $("#save_buyer").click(function () {
+                     $("#id_byno").val(row_id.byno),
+                     $('#cp_buyer_qr').val(row_id.buyer_cd);
+                     $('.diologbuyer').dialog('close');
+                 });
+             }
+         },
+         pager: "#Pagebuyer",
+         pager: jQuery('#Pagebuyer'),
+         viewrecords: true,
+         rowList: [50, 100, 200, 500, 1000],
+         height: 300,
+         width: $(".boxB").width(),
+         autowidth: false,
+         rowNum: 50,
+         caption: 'Buyer Information',
+         loadtext: "Loading...",
+         emptyrecords: "No data.",
+         rownumbers: true,
+         gridview: true,
+         loadonce: true,
+         shrinkToFit: false,
+         jsonReader:
+         {
+             root: "rows",
+             page: "page",
+             total: "total",
+             records: "records",
+             repeatitems: false,
+             Id: "0"
+         },
+     });
+        },
+    });
+
+
+    $('#close_buyer').click(function () {
+        $('.diologbuyer').dialog('close');
+        jQuery("#popupbuyer").setGridParam({ rowNum: 50, datatype: "json" }).trigger('reloadGrid');
+    });
+
+});
+
+$(".poupdialogbuyer").click(function () {
+    jQuery("#popupbuyer").setGridParam({ rowNum: 50, datatype: "json" }).trigger('reloadGrid');
+    $('.diologbuyer').dialog('open');
+});
+//$("#searchBtn_popupbuyer").click(function () {
+//    $.ajax({
+//        url: "/ActualWO/searchBuyer_popup",
+//        type: "get",
+//        dataType: "json",
+//        data: {
+//            buyer_cd: $('#cp_buyer_cd').val().trim(),
+//            buyer_nm: $('#cp_buyer_nm').val().trim(),
+//        },
+//        success: function (result) {
+//            $("#popupbuyer").jqGrid('clearGridData').jqGrid('setGridParam', { rowNum: 50, datatype: 'local', data: result }).trigger("reloadGrid");
+//        }
+//    });
+
+//});
+
+$("#cp_buyer_cd").keyup(function () {
+        $.ajax({
+            url: "/ActualWO/searchBuyer_popup",
+            type: "get",
+            dataType: "json",
+            data: {
+                buyer_cd: $('#cp_buyer_cd').val().trim(),
+                buyer_nm: $('#cp_buyer_nm').val().trim(),
+            },
+            success: function (result) {
+                $("#popupbuyer").jqGrid('clearGridData').jqGrid('setGridParam', { rowNum: 50, datatype: 'local', data: result }).trigger("reloadGrid");
+            }
+        });
+});
+$("#cp_buyer_nm").keyup(function () {
+    $.ajax({
+        url: "/ActualWO/searchBuyer_popup",
+        type: "get",
+        dataType: "json",
+        data: {
+            buyer_cd: $('#cp_buyer_cd').val().trim(),
+            buyer_nm: $('#cp_buyer_nm').val().trim(),
+        },
+        success: function (result) {
+            $("#popupbuyer").jqGrid('clearGridData').jqGrid('setGridParam', { rowNum: 50, datatype: 'local', data: result }).trigger("reloadGrid");
+        }
+    });
+});
+
+$("#save_bb_map_pr").click(function () {
+    if ($("#pp_lot_pr").val() == "") {
+        alert("Please enter your Product Lot");
+        $("#pp_lot_pr").val("");
+        $("#pp_lot_pr").focus();
+        return false;
+    }
+    if ($("#cp_buyer_qr").val() == "") {
+        alert("Please enter your Buyer QR");
+        $("#cp_buyer_qr").val("");
+        $("#cp_buyer_qr").focus();
+        return false;
+    } else {
+        $.ajax({
+            url: "/ActualWO/Mapping_bb_pr",
+            type: "get",
+            dataType: "json",
+            data: {
+                prd_lcd: $("#pp_lot_pr").val(),
+                buyer_qr: $("#cp_buyer_qr").val(),
+                pno: $("#id_mt_pr").val(),
+                //byno: $("#id_byno").val(),
+            },
+            success: function (response) {
+                if (response.result) {
+                    var id = response.data.pno;
+                    $("#tb_pr_lot").setRowData(id, response.data, { background: "#d0e9c6" });
+                }
+                else {
+                    alert('Buyer QR Has Already Exists .Please Check Again!');
+                }
+            },
+            error: function (data) {
+                alert('Bobbin or Product Lot Dont have .Please check again!');
+            }
+        });
+    }
+});

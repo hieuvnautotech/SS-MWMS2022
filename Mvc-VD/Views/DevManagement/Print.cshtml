@@ -1,0 +1,138 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Print.cshtml";
+}
+@*---------------------------------------------------------------------------------------------------------------------------*@
+
+<div class="container-fluid my-5 detailbox">
+    <input type="hidden" id="lid" value="@ViewData["Message"]"/>
+    <input type="hidden" id="sid" value="@ViewData["Message2"]"/>
+    <div class="row p-0 m-0">
+            <div class="container-fluid">
+        <div class="row p-0 m-0">
+            <div class="col-md-3 all_cg">
+              <img src="/Content/themes/Logo-suplier_in.jpg" style="width:100%" />
+            </div>  
+             <input type="hidden" name="name" id="fno" value=" "/>
+              <div class="col-md-5 p-2 text-center" id="title1" >
+            </div>
+<div class="col-md-4 p-2 all_cg" style="border-top:1px solid;border-bottom:1px solid">
+                          <div class="row">
+                              <div class="col-md-5 text-center" >
+                                   <p>Document Code</p>
+                                   <p>Serial</p>
+                                    <p style="margin: 0;">Date</p>
+                              </div>
+                              <div class="col-md-7 text-left"> 
+                                  <div id="barcode"></div>
+                              <div id="datetime"  style="text-align: center;margin-top: 10px;">
+                                     <script>
+                                         function formatDate() {
+                                             var d = new Date(),
+                                                 month = '' + (d.getMonth() + 1),
+                                                 day = '' + d.getDate(),
+                                                 year = d.getFullYear(),
+                                                 Hours = d.getHours(),
+                                                 Minutes = d.getMinutes();
+
+                                             if (month.length < 2) { month = '0' + month; }
+                                             if (day.length < 2) { day = '0' + day; }
+                                             if (Hours.length < 2) { Hours = '0' + Hours; }
+                                             if (Minutes.length < 2) { Minutes = '0' + Minutes; }
+
+                                             time = Hours + ":" + Minutes;
+                                             var full = year + "-" + month + "-" + day + " " + time;
+                                             $("#datetime").html(full);
+                                         }
+                                         formatDate()
+                                         setInterval(formatDate, 500);
+                                     </script>
+                                 </div>
+                              </div>
+                          </div>
+                        </div>  
+        </div>
+    </div>
+     <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <table class="table table-hover table-bordered">
+                     <thead>
+                    <tr class="table-warning">
+                      <th scope="col">Line No</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">Bom</th>
+                      <th scope="col">Product Code</th>
+                      <th scope="col">Product Name</th>
+                      <th scope="col">Model</th>
+                      <th scope="col">Project Name</th>
+                      <th scope="col">SS Version</th>
+                    </tr>
+                  </thead>
+                     <tbody>
+                  <tr id="popup_line">
+                   </tr>
+
+
+                </table>
+                <div id="popupspagerline"></div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <div id="popuppro"></div>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+    
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<link href="~/CSS/DevManagement/LineMgt/LineMgt.css" rel="stylesheet" />
+
+  
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<script>
+    $(document).ready(function () {
+        var lid = $('#lid').val();
+        var sid = $('#sid').val();
+        print2(lid, sid);
+    });
+    function print2(lid, sid) {
+        $.ajax({
+            url: "/DevManagement/getbieudo_songsong?" + "pid=" + lid + "&sid=" + sid + "&xoa=false",
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                $('#popuppro').html(result);
+            },
+            error: function (data) {
+                alert('No previous or subsequent process exists!');
+            }
+        });
+        $.ajax({
+            url: "/DevManagement/GetProcess1?lid=" + lid,
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                var html = '<td>' + result[0].line_no + '</td>';
+                html += '<td>' + result[0].line_nm + '</td>';
+                html += '<td>' + result[0].bom_no + '</td>';
+                html += '<td>' + result[0].style_no + '</td>';
+                html += '<td>' + result[0].style_nm + '</td>';
+                html += '<td>' + result[0].md_cd + '</td>';
+                html += '<td>' + result[0].prj_nm + '</td>';
+                html += '<td>' + result[0].ssver + '</td>';
+                $("#popup_line").html(html);
+                var line_no = result[0].line_no
+                var html1 = "PD-" + line_no;
+                $('#barcode').append(html1);
+                $('#barcode').barcode(html1, "code128", { barWidth: 1, barHeight: 30 });
+                $("#title1").html("<h2>Process Design</h2><h4 class='red'>" + result[0].style_no + " " + '[' + result[0].style_nm + " " + ']' + "</h4>");
+            },
+        });
+    }
+</script>
+ 

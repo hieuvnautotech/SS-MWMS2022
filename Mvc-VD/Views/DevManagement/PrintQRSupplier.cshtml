@@ -1,0 +1,204 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
+<head>
+    <title>::: Finished Goods Shipping Management :::</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+    @*<script type="text/javascript" src="http://fsm.autonsi.com/resources/plugins/grcodejs/jquery.min.js"></script>*@
+    <script src="~/Content/jquery.min_1.8.3/jquery.min_1.8.3.js"></script>
+
+    @*<script type="text/javascript" src="http://fsm.autonsi.com/resources/plugins/grcodejs/qrcode.js"></script>*@
+    <script src="~/Content/grcodejs/qrcode.js"></script>
+    @*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">*@
+    @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>*@
+    <script src="~/Content/jquery-3.4.1.min/jquery-3.4.1.min.js"></script>
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>*@
+    <script src="~/Content/popper_1.14.7/popper.min.js"></script>
+
+    <link href="~/Content/bootstrap_4.3.1/bootstrap.min.css" rel="stylesheet" />
+    <style type="text/css">
+        .all_cg {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        table.qrhead {
+            page-break-before: always;
+        }
+
+        body {
+            font-size: 10px;
+            margin: 0px;
+            padding: 0px;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .table-bordered td, .table-bordered th {
+            border: 1px solid #000 !important;
+        }
+
+        div#barcode {
+            margin-left: 4%;
+        }
+
+        .qrhead {
+            width: 50px;
+            height: 50px;
+        }
+
+        .table td, .table th {
+            padding: 0.2px !important;
+            vertical-align: top;
+        }
+
+        .table {
+            width: 415px;
+            height: 188px;
+        }
+
+        img {
+            margin-left: auto;
+            margin-right: auto;
+            padding-top: 23%;
+            width: 110px;
+            margin: 5PX;
+        }
+        .tenlieu {
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <input type="hidden" id="id" value="@ViewData["Message"]" />
+    <input type="hidden" id="mt_nm" value="@ViewData["mt_nm"]" />
+    <input type="hidden" id="barcode_data" value="@ViewData["barcode"]" />
+    <input type="hidden" id="width" value="@ViewData["width"]" />
+    <input type="hidden" id="spec" value="@ViewData["spec"]" />
+    <input type="hidden" id="bundle_qty" value="@ViewData["bundle_qty"]" />
+    <input type="hidden" id="bundle_unit" value="@ViewData["bundle_unit"]" />
+
+    <div id="barcode"></div>
+    <div id="sds"></div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            debugger;
+            var id = $('#id').val();
+            print(id);
+        });
+
+        function print(id) {
+            var models = JSON.stringify({
+                'wmtid': id,
+            });
+            $.ajax({
+                type: 'POST',
+                url: "/DevManagement/QRbarcodeSupplie",
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                data: models,
+                cache: false,
+                processData: false,
+                success: function (data) {
+                    debugger;
+                    var html = '';
+
+                    $.each(data, function (key, item) {
+                        debugger;
+                        var kq = item.gr_qty;
+                        var spec = $("#spec").val();
+                        var length = $("#spec").val();
+                        if ($("#bundle_unit").val() == "Roll") {
+
+                            var gr_qty = item.gr_qty;
+                            kq = (parseInt(item.gr_qty) / parseInt(spec));
+                            if (kq.toString().indexOf(".") > -1) {
+                                kq = kq.toFixed(2);
+                            }
+                            length = item.gr_qty;
+                        }
+
+                        var d = new Date();
+                        month = '' + (d.getMonth() + 1);
+                        day = '' + d.getDate();
+                        year = d.getFullYear();
+                        html += ' <table class="table  table-bordered qrhead">';
+                        html += ' <tbody> <tr><td rowspan="8" ><div id="code_' + item.wmtid + '"></div></td> ';
+
+
+
+                        html += ' <td style="width:80px">Code</td>';
+                        html += '<td class="tenlieu">' + item.mt_no + '</td>';
+                        html += '</tr>';
+
+                        html += '<tr>';
+                        html += ' <td style="width:80px">Material</td>';
+                        html += '  <td>' + $("#mt_nm").val() + '</td>';
+                        html += ' </tr>';
+
+                        html += '<tr>';
+                        html += ' <td style="width:80px">Size</td>';
+                        html += '  <td class="tenlieu">' + $("#width").val() + 'MM*' + spec + 'M</td>';
+                        html += ' </tr>';
+
+                        html += ' <tr>';
+                        html += '   <td style="width:80px">Lot No</td>';
+                        html += ' <td>' + item.lot_no + '</td>';
+                        html += ' </tr>';
+                        var length_real = "";
+                        if (length != spec) {
+                            length_real = " (" + length + "M)";
+                        }
+
+                        html += ' <tr>';
+                        html += '   <td style="width:80px">Quantity</td>';
+                        html += ' <td  class="tenlieu">' + kq + $("#bundle_unit").val() + length_real + '</td>';
+                        html += ' </tr>';
+
+
+                        //item.expore_dt = item.expore_dt.substr(0, 4) + "-" + item.expore_dt.substr(4, 2) + "-" + item.expore_dt.substr(6, 2);
+                        html += '<tr>';
+                        html += '<td style="width:80px">Export Date</td>';
+                        html += ' <td>' + item.expore_dt + '</td>';
+                        html += '</tr>';
+                        //item.dt_of_receipt = item.dt_of_receipt.substr(0, 4) + "-" + item.dt_of_receipt.substr(4, 2) + "-" + item.dt_of_receipt.substr(6, 2);
+                        html += '<tr>';
+                        html += '<td style="width:80px">Date of Receipt</td>';
+                        html += ' <td>' + item.dt_of_receipt + '</td>';
+                        html += '</tr>';
+                        //item.expiry_dt = item.expiry_dt.substr(0, 4) + "-" + item.expiry_dt.substr(4, 2) + "-" + item.expiry_dt.substr(6, 2);
+                        html += ' <tr>';
+                        html += ' <td style="width:80px">Expiration Date</td>';
+                        html += ' <td>' + item.expiry_dt + '</td>';
+                        html += ' </tr>';
+
+                        html += ' <tr>';
+                        html += ' <td  colspan="3" class="text-center">' + item.mt_cd + '</td>';
+                        html += ' </tr>';
+
+
+                        html += ' </tbody></table>';
+                    });
+                    $("#barcode").html(html);
+                    $.each(data, function (key, item) {
+                        var code = new QRCode(document.getElementById("code_" + item.wmtid + ""), {
+                            width: 100,
+                            height: 100,
+                            text: "",
+                        });
+                        if ($("#barcode_data").val().trim() == "Y") {
+                            code.makeCode(item.mt_cd);
+                        }
+                    });
+                }
+            });
+        };
+    </script>
+
+</body>
+</html>

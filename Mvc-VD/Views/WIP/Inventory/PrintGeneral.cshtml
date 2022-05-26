@@ -1,0 +1,214 @@
+﻿@{
+    /**/
+
+    /**/
+
+    Layout = null;
+}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
+    <head>
+        <title>::: QR Code Couting :::</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+        @*<script type="text/javascript" src="http://fsm.autonsi.com/resources/plugins/grcodejs/jquery.min.js"></script>*@
+        <script src="~/Content/jquery.min_1.8.3/jquery.min_1.8.3.js"></script>
+
+        @*<script type="text/javascript" src="http://fsm.autonsi.com/resources/plugins/grcodejs/qrcode.js"></script>*@
+        <script src="~/Content/grcodejs/qrcode.js"></script>
+        @*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">*@
+        @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>*@
+        <script src="~/Content/jquery-3.4.1.min/jquery-3.4.1.min.js"></script>
+        @*<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>*@
+        <script src="~/Content/popper_1.14.7/popper.min.js"></script>
+        <link href="~/Content/bootstrap_4.3.1/bootstrap.min.css" rel="stylesheet" />
+        <style type="text/css">
+            .all_cg {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            table.qrhead {
+                page-break-before: always;
+            }
+
+            body {
+                font-size: 10px;
+                margin: 0px;
+                padding: 0px;
+                font-weight: bold;
+                color: #000;
+            }
+
+            .table-bordered td, .table-bordered th {
+                border: 1px solid #000 !important;
+            }
+
+            div#barcode {
+                margin-left: 4%;
+            }
+
+            .qrhead {
+                width: 50px;
+                height: 50px;
+            }
+
+            .table td, .table th {
+                padding: 0.2px !important;
+                vertical-align: top;
+            }
+
+            .table {
+                width: 415px;
+                height: 188px;
+            }
+
+            img {
+                margin-left: auto;
+                margin-right: auto;
+                padding-top: 23%;
+                width: 110px;
+                margin: 5PX;
+            }
+            .tenlieu {
+                font-size: 14px;
+            }
+        </style>
+    </head>
+    <body>
+        <input type="hidden" id="id" value="@ViewData["Message"]" />
+        <div id="barcode"></div>
+        <div id="sds"></div>
+    </body>
+</html>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        debugger;
+        var id = $('#id').val();
+        print(id);
+    });
+
+
+    function print(id) {
+        $.get("/WIP/qrGeneral" + "?mt_no=" + id, function (data) {
+            var html = '';
+            $.each(data, function (key, item) {
+                debugger;
+                console.log('item :' + item);
+
+                var d = new Date();
+                month = '' + (d.getMonth() + 1);
+                day = '' + d.getDate();
+                year = d.getFullYear();
+
+                html += ' <table class="table  table-bordered qrhead">';
+                html += ' <tbody> <tr><td rowspan="8" ><div id="code_' + item.wmtid + '"></div></td> ';
+                html += ' <td style="width: 80px">Code</td>';
+                html += '<td class="tenlieu">' + item.mt_no + '</td>';
+                html += '</tr>';
+                html += '<tr>';
+                html += ' <td style="width: 80px;">Material</td>';
+                html += '  <td>' + checkNullString(item.mt_nm) + '</td>';
+                html += ' </tr>';
+
+                html += '<tr>';
+                html += ' <td style="width: 80px;">Size</td>';
+                html += '  <td class="tenlieu">' + item.size + '</td>';
+                html += ' </tr>';
+                html += ' <tr>';
+                html += '   <td style="width: 80px;">Lot No</td>';
+                html += ' <td>' + checkNullString(item.lot_no) + '</td>';
+                html += ' </tr>';
+                html += ' <tr>';
+                html += '   <td style="width: 80px">Quantity</td>';
+                var length_real = "";
+                if (item.lenght != item.spec) {
+                    length_real = " (" + item.lenght + ")";
+                }
+                html += ' <td  class="tenlieu">' + checkNullString(item.qty) + ' ' + checkNullString(item.bundle_unit) + length_real+'</td>';
+                html += ' </tr>';
+                if (item.expore_dt == null || item.expore_dt == '' || item.expore_dt == 'undefined' || item.expore_dt.length == 0) {
+
+                    item.expore_dt = ''
+
+                }
+                else {
+
+                    item.expore_dt = _Date(item.expore_dt);
+
+                }
+                html += '<tr>';
+                html += '<td style="width:80px;">Export Date</td>';
+                html += ' <td>' + checkNullString(item.expore_dt) + '</td>';
+                html += '</tr>';
+                if (item.dt_of_receipt == null || item.dt_of_receipt == '' || item.dt_of_receipt == 'undefined' || item.dt_of_receipt == 0) {
+
+                    item.dt_of_receipt = ''
+
+                }
+                else {
+
+                    item.dt_of_receipt = _Date(item.dt_of_receipt);
+                }
+                html += '<tr>';
+                html += '<td style="width:80px;">Date of Receipt</td>';
+                html += ' <td>' + checkNullString(item.dt_of_receipt) + '</td>';
+                html += '</tr>';
+                if (item.expiry_dt == null || item.expiry_dt == '' || item.expiry_dt == 'undefined' || item.expiry_dt == 0) {
+
+                    item.expiry_dt = ''
+
+                }
+                else {
+                    item.expiry_dt = _Date(item.expiry_dt);
+
+                }
+                html += ' <tr>';
+                html += ' <td style="width: 80px">Expiration Date</td>';
+                html += ' <td>' + item.expiry_dt + '</td>';
+                html += ' </tr>';
+
+                html += ' <tr>';
+                html += ' <td  colspan="3" class="text-center">' + item.mt_cd + '</td>';
+                html += ' </tr>';
+
+
+                html += ' </tbody></table>';
+            });
+            $("#barcode").html(html);
+            $.each(data, function (key, item) {
+                var code = new QRCode(document.getElementById("code_" + item.wmtid + ""), {
+                    width: 100,
+                    height: 100
+                });
+                code.makeCode(item.mt_cd);
+            });
+        });
+    };
+
+
+
+    function checkNullString(value) {
+
+        if (value == null || value == '' || value == 'undefined' || value.length == 0) {
+            return "";
+        }
+        return value;
+    }
+
+
+    function _Date(data) {
+        var from = data.split("/");
+        var year = from[2].split(" ");
+        var date = year[0] + '-' + from[0] + '-' + from[1];
+        return date;
+   }
+
+
+</script>

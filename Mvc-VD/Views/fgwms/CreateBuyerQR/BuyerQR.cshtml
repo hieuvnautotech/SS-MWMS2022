@@ -1,0 +1,162 @@
+﻿@{
+    ViewBag.Title = "BuyerQR";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="@Html.Raw(ViewData["TIMS"])" data-level_2="@Html.Raw(ViewData["Actual"])" data-level_3="@Html.Raw(ViewData["Create Buyer QR"])"></div>
+}
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <form name="form_create" id="form_create" enctype="multipart/form-data" role="form" method="post" target="zeroFrame">
+            <div class="box-body box-body-input-move">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-2"  style="float: left; margin:5px;">
+                            <div class="input-group mt_plus">
+                                <input type="text" name="buyer_qr" id="s_buyer_qr" class="input-text form-control" placeholder="Buyer">
+                            </div>
+                        </div>
+                        <button type="button" id="printQRBtn" class="btn btn-warning" style="float:right; margin:5px"><i class="fa fa-print">&nbsp;IN MÃ</i></button>
+                        <button type="button" id="createBtn" class="btn btn-success" style="float:right; margin:5px"><i class="fa fa-save">&nbsp;TẠO MÃ</i></button>
+                        <button type="button" id="searchQRBtn" class="btn btn-warning" style="float:right; margin:5px"><i class="fa fa-print">&nbsp;Search</i></button>
+                        <button type="button" id="clearQRBtn" class="btn btn-warning" style="float:right; margin:5px"><i class="fa fa-trash">&nbsp;Clear</i></button>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row">
+                         
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <label><b>Product</b></label>
+                                <div class="input-group mt_plus">
+                                    <input type="text" name="style_no" id="productCode" class="input-text form-control" placeholder="Product" required="" readonly="">
+                                    <span class="input-group-addon psbom"><a href="#" class="poupdialogStyle"><i class="fa fa-search text-navy"></i></a></span>
+                                </div>
+                            </div>
+                            <input type="hidden" name="stampCode" id="stampCode">
+                            <div class="col-md-2">
+                                <label><b>Vendor Code</b></label>
+                                <input type="text" name="vendorCode" id="vendorCode" class="input-text form-control" placeholder="Vendor" required readonly>
+                                @*<select id="vendorCode" class="form-control">
+            <option value="DZIH">DZIH</option>
+        </select>*@
+                            </div>
+
+                            <div class="col-md-2">
+                                <label><b>Vendor Line</b></label>
+                                <select id="vendorLine" class="form-control">
+                                    <option value="A">A</option>
+                                    <option value="B">B</option>
+                                    <option value="C">C</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-2">
+                                <label><b>Label Printer</b></label>
+                                <select id="labelPrinter" class="form-control">
+                                    <option value="1">1</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-2">
+                                <label><b>Type (Sample/Non Sample)</b></label>
+                                <select id="type" class="form-control">
+                                    <option value="N">N</option>
+                                    <option value="S">S</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label><b>Quy cách đóng gói (EA)</b></label>
+                                <input type="number" name="quantityPerTray" id="quantityPerTray" class="form-control form-control-text">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <label><b>PCN</b></label>
+                                <select id="pcn" class="form-control">
+                                    <option value="0">0</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-2">
+                                <label><b>Ngày in</b></label>
+                                <input type="text" name="printedDate" id="printedDate" class="form-control form-control-text">
+                            </div>
+
+                            <div class="col-md-2">
+                                <label><b>Machine Line</b></label>
+                                <select id="machineLine" class="form-control">
+                                    <option value="01">01</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label><b>Shift</b></label>
+                                <select id="shift" class="form-control">
+                                    <option value="0">Ca ngày</option>
+                                    <option value="1">Ca đêm</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label><b>Số lượng in</b></label>
+                                <input type="number" name="quantity" id="quantity" class="form-control form-control-text">
+                            </div>
+                            <div class="col-md-2 py-1">
+                                <label><b>Version</b></label>
+                                <input type="text" name="ssver" id="c_ssver" class="input-text form-control required" placeholder="Version">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="box-body bg-white">
+        <div class="p-0 m-0">
+            <table id="buyerQRGrid"></table>
+            <div id="buyerQRPager"></div>
+        </div>
+    </div>
+</div>
+<!--Dialog Product-->
+<div class="dialog_PRODUCT" title="Product Information">
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body well text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="style_no_popup" placeholder="Product Code" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="style_nm_popup" placeholder="Product Name" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="md_cd" id="md_cd_popup" placeholder="Model Code" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2 d-flex">
+                    <button id="searchBtn_product_popup" class="btn btn-sm mr-1 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button type="button" class="btn btn-sm btn-success button-srh disabled" id="savestyle_product"><i class="fa fa-save">&nbsp;Selected</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid  p-0 m-0">
+        <div class="box-body my-2 bg-white">
+            <div class="p-0 m-0 ">
+                <table id="popupProduct"></table>
+                <div id="pagerProduct"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--SCRIPT-->
+<script src="~/Scripts/fgwms/CreateBuyerQR/BuyerQR.js"></script>
+<script src="~/Scripts/fgwms/CreateBuyerQR/Product_Poup.js"></script>

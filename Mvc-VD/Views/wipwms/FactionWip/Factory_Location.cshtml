@@ -1,0 +1,57 @@
+﻿@{
+    ViewBag.Title = "Factory_Location";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+
+}
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="@Html.Raw(ViewData["WIP-WMS"])" data-level_2="@Html.Raw(ViewData["Export Material"])" data-level_3="@Html.Raw(ViewData["View Factory"])"></div>
+}
+<!-- Search function -->
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Factory Code </b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <input type="text" name="lct_cd" id="lct_cd" class="input-text form-control">
+            </div>
+            <div class="col-md-1 p-2">
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ./Search function -->
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <table id="list"></table>
+            <div id="jqGridPager1"></div>
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+
+<style>
+    .btnView {
+        margin: 6px 0;
+        width: 78%;
+        padding: 5%;
+        font-size: 13px;
+        margin: 6px;
+    }
+</style>
+
+
+@section scripts{
+
+    <script src="~/Scripts/wipwms/FactionWip/Factory_Location.js"></script>
+
+    <script src="~/Scripts/rowsGroup_datatable/dataTables.rowsGroup.js"></script>
+}
+

@@ -1,0 +1,95 @@
+﻿@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+<link href="~/Content/important.css" rel="stylesheet" />
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="@Html.Raw(ViewData["QMS"])" data-level_2="@Html.Raw(ViewData["Dash Board"])" data-level_3="@Html.Raw(ViewData["PQC Dash"])"></div>
+}
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Chart Type </b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <select name="barchart" id="barchart" class="form-control ">
+                    <option value="1">Bar Chart</option>
+                    <option value="2">Pie Chart</option>
+                </select>
+            </div>
+
+            <div class="col-md-1 px-1 py-2 text-right">
+                <label><b>ML No</b></label>
+            </div>
+            <div class="col-md-1">
+                <input type="text" name="s_ml_no" id="s_ml_no" class="input-text form-control">
+            </div>
+
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Date</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <input type="text" name="rec_input_dt" id="start" style="text-align: center" class="form-control">
+            </div>
+            <div class="col-md-0 p-1  text-right">
+                <label><b>~</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <input type="text" name="rec_input_dt" id="end" style="text-align: center" class="form-control">
+            </div>
+
+            <div class="col-md-1 p-2">
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+        </div>
+    </div>
+
+</div>
+@*--Popup--*@
+
+
+@*--Popup--*@
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white" style="height: 360px;" id="PartialView_PQCDash_Bar">
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#tab_1" data-toggle="tab">Bar chart</a></li>
+                <li><a href="#tab_2" data-toggle="tab">Pie Chart</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white hidden" style="height: 360px;" id="PartialView_PQCDash_Pie">
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#tab_3" data-toggle="tab">Bar chart</a></li>
+                <li><a href="#tab_4" data-toggle="tab">Pie Chart</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    @*<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>*@
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.1/moment.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>*@
+
+    <script src="~/Content/jquery-ui_v1.12.1/jquery-ui_v1.12.1.js"></script>
+    <script src="~/Content/charts/moment.min.js"></script>
+    <script src="~/Content/charts/Chart.min.js"></script>
+    <script src="~/Content/charts/chartjs-plugin-datalabels.js"></script>
+    <script src="~/Scripts/DashBoardQC/ProcessQC/ProcessQC.js"></script>
+}
+
+<style>
+    .nav-tabs-custom > .tab-content {
+        overflow: hidden;
+    }
+</style>

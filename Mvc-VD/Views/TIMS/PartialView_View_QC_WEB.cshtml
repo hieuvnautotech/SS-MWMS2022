@@ -1,0 +1,158 @@
+﻿@{
+    int stt = 0;
+    int tang = 0;
+}
+
+@foreach (var item in Model)
+{
+  
+    stt++;
+
+    <div data-icno="@item.qc_itemcheck_mt__icno">
+        <h4>@stt. @item.qc_itemcheck_mt__check_subject</h4>
+        <table class="table table-bordered" width="100%">
+            <thead>
+                <tr>
+                    <th style="width:30%">Qty</th>
+                    <th style="width:50%">Content</th>
+                   @* <th>Defective</th>*@
+                    <th style="width:10%">Up</th>
+                    <th style="width:10%">Down</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item1 in item.view_qc_Model)
+                {
+                    tang++;
+                    <tr data-icdno="@item1.qc_itemcheck_dt__icdno">
+                        <td><input class="testnumber" name="testnumber-@item1.qc_itemcheck_dt__icdno" id="testnumber-@item1.qc_itemcheck_dt__icdno" data-id="@item1.qc_itemcheck_dt__icdno" type="number" min="0" style="width: 50px"  value="0"/></td>
+                        <td>@item1.qc_itemcheck_dt__check_name</td>
+                      @*  <td>@item1.comm_dt__dt_nm</td>*@
+                        <td><button class="btn" onclick="number_up(this)"><i class="fa fa-arrow-up"></i></button></td>
+                        <td><button class="btn" onclick="number_down(this)"><i class="fa fa-arrow-down"></i></button></td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+    
+}
+
+@if (Model.Count == 0)
+{
+<script>
+    $(function () {
+        $(".list_qc").hide();
+    })
+</script>
+}
+else {
+<script>
+    $(function () {
+        $(".list_qc").show();
+    })
+</script>
+}  
+   
+
+<script>
+    function number_up(e) {
+        var view_qc = $("#view_qc");
+        var bien = 0;
+        var inputs = view_qc.find('input[type="number"]');
+        for (var i = 0; i < inputs.length; i++) {
+            var input = $(inputs[i]);
+            if (input.val() != null && input.val() != '') {
+                bien += parseInt(input.val());
+            }
+        }
+        var check_qty = (document.getElementById('qc_gr_qty').value == "") ? 0 : document.getElementById('qc_gr_qty').value;
+        var ok_qty = (document.getElementById('qc_ok_qty').value == "") ? 0 : document.getElementById('qc_ok_qty').value;
+        var max = parseInt(check_qty) - parseInt(ok_qty);
+        $("#qc_ng_qty").val(max);
+
+
+
+
+        var p_qc_qty = $("#qc_gr_qty");
+        var input = $(e).closest("tr").find("input");
+        var value = input.val();
+
+        if (parseInt(bien) < max) {
+            var num = parseInt(value) + 1;
+            input.val(num);
+        }
+        else {
+
+            var max_lengt = parseInt(max) - (parseInt(bien) - parseInt(value));
+            alert("max: " + max_lengt);
+
+        }
+
+    }
+
+    function number_down(e) {
+        var input = $(e).closest("tr").find("input");
+        var value = input.val();
+        if (parseInt(value) > 0) {
+            var num = parseInt(value) - 1;
+            input.val(num);
+        } else {
+            alert("Not less than 0");
+        }
+        var tbody = $(input).closest("tbody");
+        var arrInput = tbody.find("input");
+        var tot = 0;
+        for (var i = 0; i < arrInput.length; i++) {
+            if (parseInt(arrInput[i].value))
+                tot += parseInt(arrInput[i].value);
+        }
+
+    }
+
+    $(function () {
+        $(".testnumber").bind('keyup mouseup', function () {
+            var tbody = $(this).closest("tbody");
+            var arrInput = tbody.find("input");
+            var tot = 0;
+            for (var i = 0; i < arrInput.length; i++) {
+                if (parseInt(arrInput[i].value))
+                    tot += parseInt(arrInput[i].value);
+            }
+            var view_qc = $("#view_qc");
+            var check_qty = (document.getElementById('qc_gr_qty').value == "") ? 0 : document.getElementById('qc_gr_qty').value;
+            var ok_qty = (document.getElementById('qc_ok_qty').value == "") ? 0 : document.getElementById('qc_ok_qty').value;
+
+            var max = parseInt(check_qty) - parseInt(ok_qty);
+
+            var p_qc_qty = $("#p_qc_qty");
+            var bien = 0;
+            var inputs = view_qc.find('input[type="number"]');
+            for (var i = 0; i < inputs.length; i++) {
+                var input = $(inputs[i]);
+                if (input.val() != null && input.val() != '') {
+                    bien += parseInt(input.val());
+                    if (bien > max) {
+                        var id = $(this).context.name;
+                        var get_value = document.getElementById(id).value
+                        var so_conlai = parseInt(max) - (parseInt(bien) - parseInt(get_value));
+                        document.getElementById(id).value = so_conlai;
+                        break;
+                    }
+                }
+            }
+        });
+    })
+
+
+    //$("#qc_gr_qty").bind('keyup mouseup', function () {
+    //    var x = document.getElementById("qc_gr_qty").max;
+    //    var check_qty = (document.getElementById('qc_gr_qty').value == "") ? 0 : document.getElementById('qc_gr_qty').value;
+    //    if (check_qty > parseInt(x)) {
+    //        $("#qc_gr_qty").val(x);
+    //    }
+    //});
+
+
+</script>

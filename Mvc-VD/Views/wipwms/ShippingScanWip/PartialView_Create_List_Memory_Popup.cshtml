@@ -1,0 +1,287 @@
+﻿@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="p-0 m-0">
+            <table id="list_create"></table>
+            <div id="listPager_create"></div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li id="tab_11" class="active"><a href="#tab_c11" data-toggle="tab">Create</a></li>
+                <li id="tab_22"><a href="#tab_c22" data-toggle="tab">Modify</a></li>
+            </ul>
+        </div>
+        <div class="tab-content">
+            <div class="tab-pane active" id="tab_c11">
+                <form id="form11">
+                    <div class="box-body box-body-input-move">
+                        <div class="col-md-12 pull-right" style="margin-top:-39px">
+                            <button type="button" id="c_save_but_p" class="btn btn-success button-sm"><i class="fa fa-save">&nbsp;Create</i></button>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-4 py-1">
+                                    <label>MT CD</label>
+                                    <input type="text" name='mt_cd' id='c_mt_cd_p' class="input-text form-control" placeholder="MT CD" >
+                                </div>
+                                <div class="col-md-3 py-1">
+                                    <label>Lot No</label>
+                                    <input type="text" name='lot_no' id='c_lot_no_p' class="input-text form-control" placeholder="Lot No" >
+                                </div>
+                                <div class="col-md-2 py-1">
+                                    <label>Quantity</label>
+                                    <input type="number" name='qty' id='c_qty_p' class="input-text form-control" placeholder="Quantity" >
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-12 py-1">
+                                    <textarea name="c_memo" id="c_memo_p" rows="7" placeholder="Memory ..." maxlength="200" class="form-control form-control-text  mx-2"></textarea>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                </form>
+            </div>
+
+            <div class="tab-pane" id="tab_c22">
+                <form id="form22">
+                    <input type="hidden" name="name" id="m_id" value="" />
+                    <input type="hidden" name="name" id="m_sd_no" value="" />
+
+                    <div class="box-body box-body-input-move">
+                        <div class="col-md-12 pull-right" style="margin-top:-39px">
+                            <button type="button" id="m_delete_but_p" class="btn btn-danger button-sm "><i class="fa fa-trash">&nbsp;Delete</i></button>
+                            <button type="button" id="m_save_but_p" class="btn btn-success button-sm mr-3"><i class="fa fa-save">&nbsp;Modify</i></button>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-4 py-1">
+                                    <label>MT CD</label>
+                                    <input type="text" name='mt_cd' id='m_mt_cd_p' class="input-text form-control" placeholder="MT CD">
+                                </div>
+                                <div class="col-md-3 py-1">
+                                    <label>Lot No</label>
+                                    <input type="text" name='lot_no' id='m_lot_no_p' class="input-text form-control" placeholder="Lot No">
+                                </div>
+                                <div class="col-md-2 py-1">
+                                    <label>Quantity</label>
+                                    <input type="text" name='qty' id='m_qty_p' class="input-text form-control" placeholder="Quantity">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-12 py-1">
+                                    <textarea name="c_memo" id="m_memo_p" rows="7" placeholder="Memory ..." maxlength="200" class="form-control form-control-text  mx-2"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+   
+</div>
+
+<script>
+
+    $(function () {
+        $("#list_create").jqGrid
+            ({
+                url: "/wipwms/GetInfo_memo?ex_no=" +'@ViewBag.ex_no',
+                datatype: 'json',
+                mtype: 'Get',
+                colModel: [
+                    { key: true, label: 'id', name: 'id', width: 50, align: 'center', hidden: true },
+                    { label: 'ML NO', name: 'mt_cd', width: 300, align: 'left' },
+                    { label: 'Lot No', name: 'lot_no', width: 100, align: 'right' },
+                    { label: 'Quantity', name: 'qty', width: 100, align: 'right', fomatter: 'integer' },
+                    { label: 'Memory', name: 'memo', width: 500, align: 'left', fomatter: 'integer' },
+                ],
+                onSelectRow: function (rowid, selected, status, e) {
+                    var selectedRowId = $("#list_create").jqGrid("getGridParam", 'selrow');
+                    var rowData = $("#list_create").getRowData(selectedRowId);
+
+
+                    $("#m_id").val(rowData.id);
+                    $("#m_mt_cd_p").val(rowData.mt_cd);
+                    $("#m_lot_no_p").val(rowData.lot_no);
+                    $("#m_qty_p").val(rowData.qty);
+                    $("#m_memo_p").val(rowData.memo);
+
+                    $("#tab_11").removeClass("active");
+                    $("#tab_22").addClass("active");
+                    $("#tab_c11").removeClass("show");
+                    $("#tab_c11").removeClass("active");
+                    $("#tab_c22").addClass("active");
+
+                    $("#m_save_but").attr("disabled", false);
+                    $("#del_save_but").attr("disabled", false);
+
+
+                },
+
+                pager: jQuery('#listPager1'),
+                rowNum: 50,
+                rowList: [50, 100, 200, 500, 1000],
+                loadonce: true, //tải lại dữ liệu
+                viewrecords: true,
+                rownumbers: true,
+                hoverrows: false,
+                caption: '',
+                emptyrecords: "No data.",
+                height: 250,
+                width: null,
+                autowidth: false,
+                shrinkToFit: false,
+                jsonReader:
+                {
+                    root: "rows",
+                    page: "page",
+                    total: "total",
+                    records: "records",
+                    repeatitems: false,
+                    Id: "0"
+                },
+
+            });
+    });
+ 
+        $(function () {
+
+            var tab = $('.nav-tabs-custom .nav.nav-tabs li a');
+            $(tab).click(function (e) {
+
+                var ul = $(e.target).closest('ul');
+        $(ul).find('li').removeClass('active');
+        $(e.target).closest('li').addClass('active');
+
+    })
+})
+    //-------INSERT------------//
+    $("#c_save_but_p").click(function () {
+        var isValid = $('#form11').valid();
+        if (isValid == true) {
+            var ex_no = '@ViewBag.ex_no';
+            var mt_cd = $('#c_mt_cd_p').val();
+            var lot_no = $('#c_lot_no_p').val();
+            var qty = $('#c_qty_p').val();
+            var memo = $('#c_memo_p').val();
+
+            {
+                $.ajax({
+                    url: "/wipwms/InsertCreate_memo",
+                    type: "get",
+                    dataType: "json",
+                    data: {
+                        sd_no: ex_no,
+                        mt_cd: mt_cd,
+                        lot_no: lot_no,
+                        qty: qty,
+                        memo: memo,
+                    },
+
+                    success: function (response) {
+                      
+                        if (response.result) {
+
+                            var id = response.data.id;
+
+                            $("#list_create").jqGrid('addRowData', id, response.data, 'first');
+                            $("#list_create").setRowData(id, false, { background: "#28a745", color: "#fff" });
+
+                        } else {
+                            alert('Data already exists, Please check again!!!');
+                        }
+                    }
+                });
+            }
+        }
+    });
+    //-------UPDATE------------//
+    $("#m_save_but_p").click(function () {
+        var isValid = $('#form22').valid();
+        if (isValid == false) {
+            return false;
+        }
+
+        var id = $('#m_id').val();
+        var mt_cd = $('#m_mt_cd_p').val();
+        var lot_no = $('#m_lot_no_p').val();
+        var qty = $('#m_qty_p').val();
+        var memo = $('#m_memo_p').val();
+
+
+        $.ajax({
+            url: "/wipwms/UpdateCreate_memo",
+            type: "get",
+            dataType: "json",
+            data: {
+                id: id,
+                mt_cd: mt_cd,
+                lot_no: lot_no,
+                qty: qty,
+                memo: memo,
+
+            },
+            success: function (response) {
+                if (response.result) {
+                    
+                    var id = response.data.id;
+                    $("#list_create").setRowData(id, response.data, { background: "#28a745", color: "#fff" });
+
+
+                } else {
+                    alert(response.message);
+                }
+            },
+
+        });
+    });
+    $("#m_delete_but_p").click(function () {
+        var isValid = $('#form22').valid();
+        if (isValid == false) {
+            return false;
+        }
+        var r = confirm("Are you make sure DELETE Events?");
+        if (r === true) {
+            var id = $('#m_id').val();
+            $.ajax({
+                url: "/wipwms/DelCreate_memo?id=" + id,
+                type: "POST",
+                success: function (response) {
+                    if (response.result) {
+
+                        $('#list_create').jqGrid('delRowData', id);
+                        document.getElementById("form2").reset();
+                        document.getElementById("form1").reset();
+                        $("#tab_22").removeClass("active");
+                        $("#tab_11").addClass("active");
+                        $("#tab_c22").removeClass("show");
+                        $("#tab_c22").removeClass("active");
+                        $("#tab_c11").addClass("active");
+
+                        alert(response.message);
+
+                    } else {
+                        alert(response.message);
+                    }
+                }
+            });
+        }
+    });
+</script>
+
+<style>
+    button#m_save_but_p, button#c_save_but_p, button#m_delete_but_p {
+        float: right;
+        display: inline-block;
+    }
+</style>

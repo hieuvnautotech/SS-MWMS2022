@@ -1,0 +1,210 @@
+﻿@{
+    ViewBag.Title = "FininshWhlocation";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="FG-WMS" data-level_2="Standard Management(WH)" data-level_3="Finish Warehouse Location(M)"></div>
+
+}
+
+<!-- Search function -->
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Ware house</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <div class="input-group" style="width: 100%;">
+                    <select name="whouse" id="whouse" class="form-control selectMf select2"></select>
+                </div>
+            </div>
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Aisle</b></label>
+            </div>
+            <div class="col-md-3 p-1">
+                <div class="input-group" style="width: 100%;">
+                    <select name="aisle" id="aisle" class="form-control selectMf select2"></select>
+                </div>
+            </div>
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Bay</b></label>
+            </div>
+            <div class="col-md-3 p-1">
+                <div class="input-group" style="width: 100%;">
+                    <select name="bay" id="bay" class="form-control selectMf select2"></select>
+                </div>
+            </div>
+
+            <div class="col-md-1 p-2">
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ./Search function -->
+
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <table id="WHlocMgt"></table>
+            <div id="jqGridPager1"></div>
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+
+<div class="container-fluid">
+    <div class="box-body my-3 bg-white">
+        <form id="form2">
+            <div class="row p-0 m-0">
+            <div class="col-md-6">
+                <input type="hidden" name="lctno" id="m_lctno" value="">
+                <input type="hidden" name="lct_cd" id="m_lct_cd" value="">
+                <input type="hidden" name="up_lct_cd" id="m_up_lct_cd" value="">
+                <input type="hidden" name="level_cd" id="m_level_cd" value="">
+                <h4 class="box-title">Update </h4>
+            </div>
+            <div class="col-md-6 text-right pt-3">
+                <button type="button" id="del_save_but" class="btn btn-danger button-sm mr-5 disabled"><i class="fa fa-scissors">&nbsp;Delete</i></button>
+                <button type="button" id="m_save_but" class="btn btn-sm btn-success button-sm disabled"><i class="fa fa-save">&nbsp;Modify</i></button>               
+            </div>
+        </div>
+        <div class="row p-0 m-0">
+            <div class="col-md-2 py-1">
+                <input type="text" name="lct_nm" id="m_lct_nm" class="form-control form-control-text" placeholder="Location Name" maxlength="30">
+            </div>
+           <div class="col-md-1">
+                    <div class="input-group">
+                        <label class="checkcontainer">
+                            Shelf
+                <input type="radio" name="radio" id="m_sf_yn">
+                            <span class="radiobtn"></span>
+                        </label>
+                    </div>
+                </div>
+            <div class="col-md-1">
+                    <div class="input-group">
+                        <label class="checkcontainer">
+                            Movement
+                <input type="radio" name="radio" id="m_mv_yn">
+                            <span class="radiobtn"></span>
+                        </label>
+                    </div>
+                </div>
+          <div class="col-md-1">
+                    <div class="input-group">
+                        <label class="checkcontainer">
+                            Nothing
+                <input type="radio" name="radio" id="m_nt_yn">
+                            <span class="radiobtn"></span>
+                        </label>
+                    </div>
+                </div>
+            <div class="col-md-2 py-1">
+                <select name="real_use_yn" id="m_real_use_yn" class="form-control select2">
+                    <option value="Y" selected="selected">Real Use</option>
+                    <option value="N">Un Real Use</option>
+                </select>
+            </div>
+            <div class="col-md-2 py-1">
+                <select name="use_yn" id="m_use_yn" class="form-control select2">
+                    <option value="Y" selected="selected">Use</option>
+                    <option value="N">UnUse</option>
+                </select>
+            </div>
+            
+            <div class="col-md-2 py-1">
+                <input type="text" name="re_mark" id="m_re_mark" class="form-control form-control-text" placeholder="Remark" maxlength="30">
+            </div>
+        </div>
+        </form>
+    </div>
+    <div class="box-body my-3 bg-white">
+        <form id="form1">
+            <div class="row pt-5 m-0">
+                <div class="col-md-6">
+                    <input type="hidden" name="lctno" id="c_lctno" value="">
+                    <h4 class="box-title">Creat SubLocation &nbsp;&nbsp;&nbsp;&nbsp;<label><input type="checkbox" name="root_yn" id="c_root_yn" value="" class="minimal">&nbsp;&nbsp;Root </label></h4>
+                    
+                </div>
+                <div class="col-md-6 text-right pt-3">
+                    <button type="reset" id="c_reset_but" class="btn btn-sm btn-success form-control-text button-srh2 mr-5"><i class='fa fa-refresh'>&nbsp;Reset</i></button>
+                    <button type="button" id="c_save_but" class="btn btn-sm btn-success button-srh"><i class='fa fa-save'>&nbsp;Create</i></button>
+                </div>
+            </div>
+        <div class="row p-0 m-0">
+            <div class="col-md-2 py-1">
+                <input type="text" name="lct_nm" id="c_lct_nm" class="form-control form-control-text" placeholder="Location Name" maxlength="30">
+            </div>
+ <div class="col-md-1">
+                    <div class="input-group">
+                        <label class="checkcontainer">
+                            Shelf
+                <input type="radio" name="radio" id="c_sf_yn">
+                            <span class="radiobtn"></span>
+                        </label>
+                    </div>
+                </div>
+            <div class="col-md-1">
+                    <div class="input-group">
+                        <label class="checkcontainer">
+                            Movement
+                <input type="radio" name="radio" id="c_mv_yn">
+                            <span class="radiobtn"></span>
+                        </label>
+                    </div>
+                </div>
+          <div class="col-md-1">
+                    <div class="input-group">
+                        <label class="checkcontainer">
+                            Nothing
+                <input type="radio" name="radio" id="c_nt_yn">
+                            <span class="radiobtn"></span>
+                        </label>
+                    </div>
+                </div>
+            <div class="col-md-2 py-1">
+                <select name="real_use_yn" id="c_real_use_yn" class="form-control select2">
+                    <option value="Y" selected="selected">Real Use</option>
+                    <option value="N">Un Real Use</option>
+                </select>
+            </div>
+            <div class="col-md-2 py-1">
+                <select name="use_yn" id="c_use_yn" class="form-control select2">
+                    <option value="Y" selected="selected">Use</option>
+                    <option value="N">UnUse</option>
+                </select>
+            </div>
+            
+            <div class="col-md-2 py-1">
+                <input type="text" name="re_mark" id="c_re_mark" class="form-control form-control-text" placeholder="Remark" maxlength="30">
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+<input type="hidden" name="name" value=" " id="remark_color"/>
+<!--Popup -->
+<div id="dialogDangerous" title="Are you make sure DELETE ?">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-success button-srh mr-3" id="closestyle">No</button>
+                    <button type="button" class="btn btn-sm btn-danger button-srh" id="deletestyle">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ./ Popup -->
+
+@section scripts{
+    <script src="~/Scripts/fgwms/FinishWhLocation/FinishWhLocation.js"></script>
+    <script src="~/Scripts/fgwms/FinishWhLocation/FinishWhLocation_Poup.js"></script>
+}

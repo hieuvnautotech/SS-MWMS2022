@@ -1,0 +1,13 @@
+Select 
+    id,
+    ExportCode,
+    ProductCode,
+    ProductName,
+    MachineCode,
+    IsFinish,
+    Description,
+    CreateId,
+    CreateDate,
+    ChangeId,
+    ChangeDate
+ From ExportToMachine

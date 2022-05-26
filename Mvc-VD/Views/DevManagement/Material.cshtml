@@ -1,0 +1,612 @@
+﻿@model IEnumerable<Mvc_VD.Models.NewVersion.MaterialInfo>
+
+    @{
+        ViewBag.Title = "Material";
+        Layout = "~/Views/Shared/_LayoutSI.cshtml";
+    }
+
+    @section Tilte {
+        @*<div class="col-xs-12" id="current_menu" data-level_1="DMS" data-level_2="Development Management" data-level_3="Material Management"></div>*@
+        <div class="col-xs-12" id="current_menu" data-level_1="@Html.Raw(ViewData["DMS"])" data-level_2="@Html.Raw(ViewData["Development Management"])" data-level_3="@Html.Raw(ViewData["Material Management"])"></div>
+    }
+
+    <div class="container-fluid">
+        <div class="row text-right">
+            <div class="col-md-12 px-3">
+                <form method="post" id="exportData">
+                    <button type="submit" id="excelBtn" class="btn btn-sm btn-warning button-top"><i class="fa fa-file-excel-o">&nbsp;Excel</i></button>
+                    <button type="submit" id="htmlBtn" class="btn btn-sm btn-warning button-top" hidden="hidden"><i class="fa fa-print">&nbsp;HTML</i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- Search function -->
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <div class="col-md-2">
+                    <label><b>Type</b></label>
+                    <select id="s_mt_type" class="form-control gettype">
+                        <option value="">*Type*</option>
+                    </select>
+                </div>
+                <div class="col-lg-2">
+                    <label><b>MT NO</b></label>
+                    <input type="text" name="mt_no" id="mt_no" class="form-control form-control-text">
+                </div>
+                <div class="col-lg-2">
+                    <label><b>MT Name</b></label>
+                    <input type="text" name="mt_nm" id="mt_nm" class="form-control form-control-text">
+                </div>
+                <div class="col-lg-2">
+                    <label><b>Supllier</b></label>
+                    <input type="text" name="s_sp" id="s_sp" class="form-control form-control-text">
+                </div>
+                <div class="col-lg-3">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <label><b>Create Date</b></label>
+                            <input type="text" name="start_dt" id="start1" class="form-control form-control-text">
+                        </div>
+                        <div class="col-md-2 text-center">
+                            <label style="width:100%">&nbsp;&nbsp;</label>
+                            <label><b>~</b></label>
+                        </div>
+                        <div class="col-md-5">
+                            <label style="width:100%">&nbsp;&nbsp;</label>
+                            <input type="text" name="end_dt" id="end1" class="form-control form-control-text">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-1">
+                    <label style="width:100%">&nbsp;&nbsp;</label>
+                    <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ./Search function -->
+    @*---------------------------------------------------------------------------------------------------------------------------*@
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <div class="col-md-3 py-1 ml-10">
+                    <input type="file" name="file" id="imgupload" accept=".xlsx,.xls,.csv,.tsv,.xml,.json" class="valid">
+                </div>
+                <div class="col-md-4 py-2 px-3">
+                    <button type="submit" id="print_qr" class="btn btn-sm  btn-success button-top mr-3"><i class="fa fa-check-circle">&nbsp;Create QR</i></button>
+                    <button id="uploadBtn" class="btn btn-sm btn-primary button-srh mr-3"><i class="fa fa-upload">&nbsp;Upload</i></button>
+                    <a id="downloadBtn" href="~/Images/file_mau_uploadexcel_material/Material_Excel_Form_Shinsung.xlsx" class="btn btn-success btn-download btnDownload mr-3" download><i class="fa fa-download"> &nbsp;Download Form Excel</i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0 boxlist">
+                <div class="col-md-12 p-0 m-0" id="result">
+                </div>
+
+                <div class="col-md-12 p-0 m-0 ">
+                    <table id="list"></table>
+                    <div id="jqGridPager"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*---------------------------------------------------------------------------------------------------------------------------*@
+    <div class="container-fluid">
+        <div class="box-body bg-white">
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li class="active" id="tab_1"><a href="#tab_1" data-toggle="tab">Create</a></li>
+                    <li id="tab_2"><a href="#tab_2" data-toggle="tab">Modify</a></li>
+
+                </ul>
+            </div>
+            <div class="tab-content active" id="tab_c1">
+                <form name="form1" id="form1" enctype="multipart/form-data" role="form" method="post" target="zeroFrame">
+                    <input type="hidden" name="mtid" id="c_mtid" value='1'>
+                    <div class="box-body box-body-input-move">
+                        <input type="hidden" name="c_byno" id="c_byno" value="1">
+                        <input type="hidden" name="name" value=" " id="remark_color" />
+                        <div class="row">
+                            <div class="col-md-11">
+                                <div class="row p-0 m-0">
+                                    <div class="col-md-3 py-1">
+                                        <label><b>Type</b></label>
+                                        <select name="mt_type" id="c_mt_type" class="form-control gettype">
+                                            <option value="">*Type*</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 py-1">
+                                        <label><b>Mt No</b></label>
+                                        <input type="text" name='mt_no' id='c_mt_no' class="form-control form-control-text getspec" placeholder="Mt No">
+                                    </div>
+
+                                    <div class="col-md-3 py-1">
+                                        <label><b>MT Name</b></label>
+                                        <input type="text" name='mt_nm' id='c_mt_nm' class="form-control form-control-text" placeholder="Name">
+                                    </div>
+                                    <div class="col-md-2  py-1">
+                                        <label><b>Bundle Qty</b></label>
+                                        <input type="number" name="bundle_qty" id="c_bundle_qty" class="form-control form-control-text" value="1" min="1">
+                                    </div>
+                                    <div class="col-md-1  py-1">
+                                        <label><b>Bundle Unit</b></label>
+                                        <select name="bundle_unit" id="c_bundle_unit" class="md_cd form-control">
+                                            <option>*Bundle Unit *</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+                                <div class="row p-0 m-0">
+                                    <div class="col-md-2  py-1">
+                                        <label><b>Width</b></label>
+                                        <input type="text" name="width" id="c_width" class="form-control form-control-text" maxlength="4" placeholder="Width" onkeyup="hamtinhtoan();">
+                                    </div>
+                                    <div class="col-md-1  py-1">
+                                        <label style="width:100%">&nbsp;&nbsp;</label>
+                                        <select name="width_unit" id="c_width_unit" class="getwidth form-control">
+                                            <option>* Unit width *</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2  py-1">
+                                        <label><b>Length</b></label>
+                                        <input type="text" name='spec' id='c_spec' class="form-control form-control-text" placeholder="Length">
+                                    </div>
+                                    <div class="col-md-1  py-1">
+                                        <label style="width:100%">&nbsp;&nbsp;</label>
+                                        <select name='spec_unit' id="c_spec_unit" class="form-control getspec">
+                                            <option value="">*Spec Unit*</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 py-1">
+                                        <label><b>Barcode</b></label>
+                                        <select name="Barcode" id="c_barcode" class="form-control form-control-text select2">
+                                            <option value="">*Barcode*</option>
+                                            <option value="Y">Use</option>
+                                            <option value="N">UnUse</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 py-1">
+                                        <label><b>Supplier</b></label>
+                                        <div class="input-group mt_plus">
+                                            <input type="text" name="supllier" id="c_supllier" class="input-text form-control" placeholder="Supplier" readonly required>
+                                            <span class="input-group-addon pcsupllier"><a href="#" class="poupdialogsupli"><i class="fa fa-search text-navy"></i></a></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row p-0 m-0">
+                                    <div class="col-md-1  py-1">
+                                        <label style="width:100%">&nbsp;&nbsp;</label>
+                                        <select name="width_unit" id="c_unit_cd" class="md_cd form-control">
+                                            <option>* Unit *</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="col-xs-1 py-1 d-flex">
+                                    <button type="button" id="c_save_but" class="btn btn-success button-srh2"><i class='fa fa-save'>&nbsp;Create</i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+
+            <div class="tab-content hidden" id="tab_c2">
+                <form name="form2" id="form2" enctype="multipart/form-data" role="form" method="post" target="zeroFrame">
+                    <div class="box-body box-body-input-move">
+                        <input type="hidden" name="mtid" id="m_mtid" value=''>
+                        <div class="row">
+                            <div class="col-md-11">
+                                <div class="row p-0 m-0">
+                                    <div class="col-md-3 py-1">
+                                        <label><b>Type</b></label>
+                                        <select name="mt_type" id="m_mt_type" class="form-control gettype">
+                                            <option value="">*Type*</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 py-1">
+                                        <label><b>Mt No</b></label>
+                                        <input type="text" name='mt_no' id='m_mt_no' class="form-control form-control-text getspec" placeholder="Mt No" readonly="readonly">
+                                    </div>
+                                    <div class="col-md-3 py-1">
+                                        <label><b>MT Name</b></label>
+                                        <input type="text" name='mt_nm' id='m_mt_nm' class="form-control form-control-text" placeholder="Name">
+                                    </div>
+                                    <div class="col-md-2  py-1">
+                                        <label><b>Bundle Qty</b></label>
+                                        <input type="number" name="bundle_qty" id="m_bundle_qty" class="form-control form-control-text" value="1" min="1">
+                                    </div>
+                                    <div class="col-md-1  py-1">
+                                        <label><b>Bundle Unit</b></label>
+                                        <select name="bundle_unit" id="m_bundle_unit" class="md_cd form-control">
+                                            <option>*Bundle Unit *</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row p-0 m-0">
+                                    <div class="col-md-2  py-1">
+                                        <label><b>Width</b></label>
+                                        <input type="text" name="width" id="m_width" class="form-control form-control-text" maxlength="4" placeholder="Width" onkeyup="hamtinhtoan1();" readonly="readonly">
+                                    </div>
+                                    <div class="col-md-1  py-1">
+                                        <label style="width:100%">&nbsp;&nbsp;</label>
+                                        <select name="width_unit" id="m_width_unit" class="getwidth form-control">
+                                            <option>* Unit width *</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2  py-1">
+                                        <label><b>Length</b></label>
+                                        <input type="text" name='spec' id='m_spec' class="form-control form-control-text" placeholder="Length">
+                                    </div>
+                                    <div class="col-md-1  py-1">
+                                        <label style="width:100%">&nbsp;&nbsp;</label>
+                                        <select name='spec_unit' id="m_spec_unit" class="form-control getspec">
+                                            <option value="">*Spec Unit*</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-3 py-1">
+                                        <label><b>Barcode</b></label>
+                                        <select name="Barcode" id="m_barcode" class="form-control form-control-text select2">
+                                            <option value="">*Barcode*</option>
+                                            <option value="Y">Use</option>
+                                            <option value="N">UnUse</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 py-1">
+                                        <label><b>Supplier</b></label>
+                                        <div class="input-group mt_plus">
+                                            <input type="text" name="supllier" id="m_supllier" class="input-text form-control" placeholder="Supplier" readonly required>
+                                            <span class="input-group-addon pcsupllier"><a href="#" class="poupdialogsupli"><i class="fa fa-search text-navy"></i></a></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row p-0 m-0">
+                                    <div class="col-md-1  py-1">
+                                        <label style="width:100%">&nbsp;&nbsp;</label>
+                                        <select name="width_unit" id="m_unit_cd" class="md_cd form-control">
+                                            <option>* Unit *</option>
+                                        </select>
+                                    </div>
+                                    @* ------------------- *@
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label style="width:100%">&nbsp;&nbsp;</label>
+                                        <button type="button" id="m_save_but" class="btn btn-success button-srh2 " style="float: none; width: 75px;"><i class='fa fa-save'>&nbsp;Modify</i></button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label style="width:100%">&nbsp;&nbsp;</label>
+                                        <button type="button" id="del_save_but" class="btn btn-danger" style="width: 75px;"><i class="fa fa-scissors">&nbsp;Delete</i></button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label style="width:100%">&nbsp;&nbsp;</label>
+                                        <button type="button" id="m_copy" class="btn btn-success button-srh2" style="width: 75px;"><i class='fa fa-save'>&nbsp;Copy</i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <!--Popup -->
+    <div id="dialogDangerous" title="Are you make sure DELETE ?">
+        <div class="container-fluid">
+            <div class="box-body bg-white text-right">
+                <div class="row p-0 m-0">
+                    <div class="col-md-12 p-2">
+                        <button type="button" class="btn btn-sm btn-success button-srh mr-3" id="closestyle">No</button>
+                        <button type="button" class="btn btn-sm btn-danger button-srh" id="deletestyle">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ./ Popup -->
+    <!--Dialog -->
+    <div class="dialogSupli" title="Suplier Information">
+        <div class="container-fluid p-0 m-0">
+            <div class="box-body well text-right">
+                <div class="row p-0 m-0">
+                    <div class="col-md-3 p-2">
+                        <input type="text" name="buyer_no" id="suplier_no_popup" placeholder="Supplier Code" class="input-text form-control">
+                    </div>
+                    <div class="col-md-3 p-2">
+                        <input type="text" name="buyer_nm" id="suplier_nm_popup" placeholder="Supplier Name" class="input-text form-control">
+                    </div>
+
+                    <div class="col-md-3 p-2 d-flex">
+                        <button id="searchBtn_Buyer_popup" class="btn btn-sm mr-5 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                        <button type="button" class="btn btn-sm btn-success button-srh disabled" id="savestyle_Supli"><i class="fa fa-save">&nbsp;Selected</i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="box-body my-2 bg-white">
+                <div class="row p-0 m-0">
+                    <table id="popupsupllier"></table>
+                    <div id="pagersupllier"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ./ Dialog -->
+    <!-- ./ Dialog -->
+    <!--Dialog Material-->
+    <div class="dialog_MATERIAL" title="Material Information">
+
+        <div class="container-fluid p-0 m-0">
+            <div class="box-body well text-right">
+                <div class="row p-0 m-0">
+                    <div class="col-md-3 p-2">
+                        <select id="s_mt_type_popup" class="form-control gettype">
+                            <option value="">*Type*</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 p-2">
+                        <input type="text" name="mt_no" id="mt_no_popup" placeholder="Material Code" class="form-control form-control-text">
+                    </div>
+                    <div class="col-md-3 p-2">
+                        <input type="text" name="mt_nm" id="mt_nm_popup" placeholder="Material Name" class="form-control form-control-text">
+                    </div>
+                    <div class="col-md-3 p-2 d-flex">
+                        <button id="searchBtn_material_popup" class="btn btn-sm mr-3 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                        <button type="button" class="btn btn-sm btn-success button-srh disabled" id="savestyle_material"><i class="fa fa-save">&nbsp;Selected</i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid  p-0 m-0">
+            <div class="box-body my-2 bg-white">
+                <div class="p-0 m-0 boxMaterial">
+                    <table id="popupMaterial"></table>
+                    <div id="pagerMaterial"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ./ Dialog -->
+    <!-- ./ popup copy -->
+
+    <div class="Copy_material" title="Copy Material">
+        <form name="form3" id="form3" enctype="multipart/form-data" role="form" method="post" target="zeroFrame">
+            <div class="container-fluid p-0 m-0">
+                <div class="box-body well">
+                    <div class="row p-0 m-0">
+                        <div class="col-md-12">
+                            <div class="row p-0 m-0">
+                                <div class="col-md-3 py-1">
+                                    <label><b>Type</b></label>
+                                    <select name="mt_type" id="pp_mt_type" class="form-control gettype">
+                                        <option value="">*Type*</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3 py-1">
+                                    <label><b>Mt No</b></label>
+                                    <input type="text" name='mt_no' id='pp_mt_no' class="form-control form-control-text getspec" placeholder="Mt No">
+                                </div>
+                                <div class="col-md-3 py-1">
+                                    <label><b>MT Name</b></label>
+                                    <input type="text" name='mt_nm' id='pp_mt_nm' class="form-control form-control-text" placeholder="Name">
+                                </div>
+                                <div class="col-md-1">
+                                    <label><b>Bundle Qty</b></label>
+                                    <input type="number" name="bundle_qty" id="pp_bundle_qty" class="form-control form-control-text" value="1" min="1">
+                                </div>
+                                <div class="col-md-1">
+                                    <label><b>Bundle Unit</b></label>
+                                    <select name="bundle_unit" id="pp_bundle_unit" class="md_cd form-control">
+                                        <option>*Bundle Unit *</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-1 py-1">
+                                    <button type="button" id="pp_save_but" class="btn btn-success button-srh2 mr-3"><i class='fa fa-save'>&nbsp;Create</i></button>
+                                </div>
+                            </div>
+                            <div class="row p-0 m-0">
+                                <div class="col-md-2 py-1">
+                                    <label><b>Width</b></label>
+                                    <input type="text" name="width" id="pp_width" class="form-control form-control-text" maxlength="4" placeholder="Width" required>
+                                </div>
+                                <div class="col-md-1 py-1">
+                                    <label style="width:100%">&nbsp;&nbsp;</label>
+                                    <select name="width_unit" id="pp_width_unit" class="getwidth form-control">
+                                        <option>* Unit width *</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-2 py-1">
+                                    <label><b>Length</b></label>
+                                    <input type="text" name='spec' id='pp_spec' class="form-control form-control-text" placeholder="Length" required>
+                                </div>
+                                <div class="col-md-1 py-1">
+                                    <label style="width:100%">&nbsp;&nbsp;</label>
+                                    <select name='spec_unit' id="pp_spec_unit" class="form-control getspec">
+                                        <option value="">*Spec Unit*</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-3 py-1">
+                                    <label><b>Barcode</b></label>
+                                    <select name="Barcode" id="pp_barcode" class="form-control form-control-text select2" required>
+                                        <option value="">*Barcode*</option>
+                                        <option value="Y">Use</option>
+                                        <option value="N">UnUse</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 py-1">
+                                    <label><b>Supplier</b></label>
+                                    <div class="input-group mt_plus">
+                                        <input type="text" name="supllier" id="pp_supllier" class="input-text form-control" placeholder="Supplier" readonly required>
+                                        <span class="input-group-addon pcsupllier"><a href="#" class="poupdialogsupli"><i class="fa fa-search text-navy"></i></a></span>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row p-0 m-0">
+                                <div class="col-md-1 py-1">
+                                    <label style="width:100%">&nbsp;&nbsp;</label>
+                                    <select name="width_unit" id="pp_unit_cd" class="md_cd form-control">
+                                        <option>* Unit *</option>
+                                    </select>
+                                </div>
+                                @* ------------------- *@
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="Print_LOT" title="Print QR">
+        <form name="form_lot" id="form_lot" enctype="multipart/form-data" role="form" method="post" target="zeroFrame">
+            <div class="box-body box-body-input-move">
+                <div class="row">
+                    <div class="col-md-3 py-1">
+                        <label>MT NO</label>
+                        <input type="text" name="mt_no" id="lot_mt_no" class="form-control " readonly="readonly">
+                    </div>
+                    <div class="col-md-3 py-1">
+                        <label>Export Date</label>
+                        <input type="text" name="expore_dt" id="lot_expore_dt" class="form-control">
+                    </div>
+                    <div class="col-md-3 py-1">
+                        <label>Date of Receive</label>
+                        <input type="text" name="dt_of_receipt" id="lot_dt_of_receipt" class="form-control">
+                    </div>
+                    <div class="col-md-3 py-1">
+                        <label>Month</label>
+                        <input type="number" name="lot_month" id="lot_month" class="form-control">
+                    </div>
+                    <div class="col-md-3 py-1">
+                        <label>Expiry Date</label>
+                        <input type="text" name="exp_input_dt" id="c_exp_input_dt" class="form-control">
+                    </div>
+                    <div class="col-md-3 py-1">
+                        <label>Lot No</label>
+                        <input type="text" name="lot_no" id="lot_lot_no" class="input-text form-control  text-left" placeholder="Lot No">
+                    </div>
+                    <div class="col-md-3 py-1">
+                        <label>Send QR Qty</label>
+                        <input type="number" name="send_qty" id="c_send_qty" max="600" class="input-text form-control  text-right">
+                    </div>
+                    <div class="col-md-3 ">
+                        <label style="width:100%">&nbsp;&nbsp;</label>
+                        <button type="button" id="c2_save_but" class="btn btn-success button-srh2 active"><i class="fa fa-save">&nbsp;Create</i></button>
+                        <button type="button" id="Print_bar" class="btn btn-warning button-srh2" disabled="disabled"><b><i class="fa fa-check-circle">&nbsp;Print QR</i></b></button>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-3 py-1">
+                        <label>Length/EA</label>
+                        <input type="number" name="LEG_EA" id="LEG_EA" class="input-text form-control  text-left">
+                    </div>
+                    <div class="col-md-3 ">
+                        <label style="width:100%">&nbsp;&nbsp;</label>
+                        <button type="button" id="change_legth" class="btn btn-success button-srh2 active" disabled="disabled"><i class="fa fa-save">&nbsp;Update</i></button>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+        <div class="row p-0 m-0">
+            <div class="col-md-12 p-0 ">
+                <table id="list3"></table>
+                <div id="detailpager"></div>
+                <input type="hidden" name="name" value=" " id="gr_qty_update_pr" />
+            </div>
+        </div>
+    </div>
+    <style>
+        .ui-jqgrid .ui-state-highlight {
+            background: rgb(170, 170, 170) !important;
+            border-color: rgb(170, 170, 170) !important;
+            color: black;
+        }
+
+        .col-md-label {
+            width: 5%;
+            padding-left: 10px;
+        }
+
+        .alert {
+            margin: auto;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            z-index: 1001;
+            background-color: #ff9800;
+            color: white;
+            width: 30%;
+            height: 7%;
+            padding: 12px;
+            font-size: 21px;
+            text-align: center;
+        }
+
+        .thongbao {
+            padding: 20px;
+            color: white;
+            width: 100%;
+            height: 100%;
+            top: 0px;
+            left: 0px;
+            position: fixed;
+            opacity: 1;
+            background-color: #ffffff82;
+            z-index: 1002;
+            text-align: center;
+        }
+
+        .closebtn {
+            margin-left: 15px;
+            color: white;
+            font-weight: bold;
+            float: right;
+            font-size: 22px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+            .closebtn:hover {
+                color: black;
+            }
+    </style>
+    @*---------------------------------------------------------------------------------------------------------------------------*@
+    @section scripts{
+
+        <script src="~/Content/jquery.validate_V1.9/jquery.validate.min.js"></script>
+        <script src="~/Scripts/DevManagement/Material/_Marterial_Mgt.js"></script>
+        <script src="~/Scripts/DevManagement/Material/_Marterial_Mgt_Poup.js"></script>
+        @*<script src="~/Scripts/DevManagement/Material/popup_item_type_mt.js"></script>*@
+        <script src="~/Scripts/DevManagement/Material/Material_Poup.js"></script>
+        <script src="~/Scripts/DevManagement/Material/MarterialUpload.js"></script>
+        <script src="~/Scripts/DevManagement/Material/xlsx.full.min.js"></script>
+        <script src="~/Scripts/DevManagement/Material/Print_QR_LOT.js"></script>
+
+    }

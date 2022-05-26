@@ -1,0 +1,2 @@
+Select exid, ex_no, ex_nm, ex_sts_cd As status, work_dt, lct_cd, alert, remark, use_yn, reg_id, reg_dt, chg_id, chg_dt
+From w_ex_info;

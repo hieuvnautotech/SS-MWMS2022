@@ -1,0 +1,6 @@
+SELECT wmtid,at_no,product,id_actual,id_actual_oqc,ex_no,staff_id,staff_id_oqc,
+mt_cd,recevice_dt,buyer_qr,mt_type,gr_qty,output_dt,real_qty,0,mt_sts_cd,sts_update,lct_sts_cd,mt_sts_cd,
+mt_no,bb_no,dl_no,sd_no,return_date,input_dt,expiry_dt,expore_dt,dt_of_receipt,rd_no,lot_no,lct_cd,bbmp_sts_cd,
+null,from_lct_cd,orgin_mt_cd,to_lct_cd,use_yn,alert_NG,remark,recevice_dt,end_production_dt,reg_dt,'root',chg_dt,'root',ExportCode,true 
+FROM w_material_info
+ WHERE id_actual IN( select id_actual from w_actual WHERE type = 'TIMS') OR mt_cd LIKE '%TIMS-NG%' -- 209470  INFO TIMS

@@ -1,0 +1,137 @@
+﻿
+@{
+    ViewBag.Title = "ResourceMgt";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+    //Layout = null;
+
+}
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="MMS" data-level_2="Tools" data-level_3="Resource Management"></div>
+}
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-2 p-1">
+                <label><b>PO</b></label>
+                <input type="text" name="po_no" id="s_po_no" class="form-control form-control-text">
+            </div>
+            <div class="col-md-2 p-1">
+                <label><b>Product Code</b></label>
+                <div class="input-group mt_plus">
+                    <input type="text" name="s_style_no" id="s_style_no" class="form-control form-control-text">
+                    <span class="input-group-addon psbom"><a href="#" class="poupdialogStyle"><i class="fa fa-search text-navy"></i></a></span>
+                </div>
+            </div>
+            <div class="col-md-2 p-1">
+                <label><b>Machine Code</b></label>
+                <div class="input-group mt_plus">
+                    <input type="text" name="mc_no" id="c_mc_no" class="input-text form-control" placeholder="Machine">
+                    <span class="input-group-addon poupdialogmachine"><a href="#" class=""><i class="fa fa-search text-navy"></i></a></span>
+                </div>
+            </div>
+
+
+            <div class="col-md-1 ">
+                <label style="width:100%"><b>&nbsp;&nbsp;</b></label>
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="box-body my-2 bg-white">
+    <div class="fc-button-group">
+        <input type="hidden" name="name" value="0" id="prev_next" />
+        <button type="button" class="fc-prev-button fc-button fc-state-default fc-corner-left" onclick="prev()"><span class="fc-icon fc-icon-left-single-arrow"></span></button>
+        <button type="button" class="fc-next-button fc-button fc-state-default fc-corner-right" onclick="next()"><span class="fc-icon fc-icon-right-single-arrow"></span></button>
+        <button type="button" class="fc-today-button fc-button fc-state-default fc-corner-left fc-corner-right " onclick="today()">today</button>
+    </div>
+</div>
+<div class="box-body my-2 bg-white">
+    <input type="hidden" name="name" value="0" id="day" />
+    <div id="html"></div>
+</div>
+<div class="popup-dialog dialog_ViewDetail" title="Detail">
+    <div id="PartialView_dialog_ViewDetail"></div>
+</div>
+<!--Dialog Product-->
+<div class="dialog_PRODUCT" title="Product Information">
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body well text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="style_no_popup" placeholder="Product Code" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="style_nm_popup" placeholder="Product Name" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="md_cd" id="md_cd_popup" placeholder="Model Code" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2 d-flex">
+                    <button id="searchBtn_product_popup" class="btn btn-sm mr-5 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button type="button" class="btn btn-sm btn-success button-srh disabled" id="savestyle_product"><i class="fa fa-save">&nbsp;Selected</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid  p-0 m-0">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0 boxProduct">
+                <table id="popupProduct"></table>
+                <div id="pagerProduct"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Dialog -->
+<div class="dialog" title="Machine">
+    <div class="container-fluid">
+        <div class="tab-content active" id="tab_c_pp1">
+            <div class="container-fluid p-0 m-0">
+                <div class="box-body well text-right">
+                    <div class="row p-0 m-0">
+                        <div class="col-md-2 p-2">
+                            <select name="mc_type" id="mc_type_pp" class="form-control select2">
+                            </select>
+                        </div>
+                        <div class="col-md-3 p-2">
+                            <input type="text" name="mc_no" id="mc_no_pp" placeholder="Machine Code" maxlength="50" class="input-text form-control">
+                        </div>
+                        <div class="col-md-3 p-2">
+                            <input type="text" name="mc_nm" id="mc_nm_pp" placeholder="Machine Name" maxlength="50" class="input-text form-control">
+                        </div>
+                        <div class="col-md-2 p-2 d-flex">
+                            <button id="searchBtn_machine" class="btn btn-sm mr-5 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                        </div>
+                        <div class="col-md-2 p-2 d-flex">
+                            <button type="button" class="btn btn-sm btn-success button-srh disabled" id="savemachine"><i class="fa fa-save">&nbsp;Selected</i></button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <form name="formpp1" id="formpp1" enctype="multipart/form-data" role="form" method="post" target="zeroFrame">
+                <div class="box-body my-2 bg-white">
+                    <div class="row p-0 m-0">
+                        <table id="popupmachine"></table>
+                        <div id="pagermachine"></div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@section scripts {
+
+
+    <script src="~/Scripts/DevManagement/Resource/ResourceMgt.js"></script>
+    @*<script src="~/Content/themes/highchart/highchart_exporting.js"></script>*@
+    <script src="~/Content/themes/highchart/highstock.js"></script>
+    <script src="~/Scripts/DevManagement/Resource/Product_Poup.js"></script>
+    <script src="~/Scripts/ActualWO/Web/machine_pp.js"></script>
+
+            }
+

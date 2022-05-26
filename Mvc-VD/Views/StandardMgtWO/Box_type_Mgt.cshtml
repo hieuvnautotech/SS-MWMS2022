@@ -1,0 +1,267 @@
+﻿@{
+    ViewBag.Title = "Box Type Management";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="MMS" data-level_2="Standard Management(WO)" data-level_3="Box Type Management"></div>
+}
+
+<style>
+    .col-lg-3.change_kq {
+        padding: 0;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-1 p-1  text-right">
+                <label><b>LBox Code</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <input type="text" name="ltype_cd" id="s_ltype_cd" class="form-control form-control-text">
+            </div>
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Name</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <input type="text" name="ltype_nm" id="s_ltype_nm" class="form-control form-control-text">
+            </div>
+
+            <div class="col-md-1 p-2">
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class=" p-0 m-0">
+            <table id="list"></table>
+            <div id="listGridPager"></div>
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <input type="hidden" name="color_bg_line" value=" " id="color_bg_line" />
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active" id="tab_1"><a href="#tab_1" data-toggle="tab">Create</a></li>
+                <li id="tab_2"><a href="#tab_2" data-toggle="tab">Modify</a></li>
+            </ul>
+        </div>
+        <div class="tab-content active" id="tab_c1">
+            <form id="form1">
+                <div class="row p-2">
+                    <div class="col-lg-1 py-1">
+                        <label>
+                            LBox Code
+                        </label>
+                    </div>
+                    <div class="col-lg-2 py-1">
+                        <input type="text" name="ltype_cd" id="c_ltype_cd" class="form-control form-control-text" placeholder="LBox Code" readonly="readonly">
+                    </div>
+                    <div class="col-lg-1 py-1">
+                        <label>Name</label>
+                    </div>
+                    <div class="col-lg-2 py-1">
+                        <input type="text" name="ltype_nm" id="c_ltype_nm" class="form-control form-control-text" placeholder="Name" required>
+                    </div>
+                    <div class="col-lg-1 py-1">
+                        <label>Sbox Use</label>
+                    </div>
+                    <div class="col-lg-2 py-1">
+                        <select name="sbox_use_yn" id="c_sbox_use_yn" class="form-control form-control-text select2">
+                            <option value="Y" selected="selected">Sbox Use</option>
+                            <option value="N">UnUse</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-1 py-1">
+                        <label>Sbox Type</label>
+                    </div>
+                    <div class="col-lg-2 py-1">
+                        <select name="stype_cd" id="c_stype_cd" class="form-control form-control-text select2">
+                        </select>
+                    </div>
+                    <div class="col-lg-3 change_kq">
+                        <input type="hidden" name="name" value="1" class="phanbiet" />
+                        <div class="col-lg-4 py-1">
+                            <label>SBox Qty</label>
+                        </div>
+                        <div class="col-lg-8 py-1">
+                            <input type="text" name="sbox_qty" id="c_sbox_qty" class="form-control form-control-text text-right">
+                        </div>
+                    </div>
+                    <div class="col-lg-1 py-1">
+                        <label>Use Yn</label>
+                    </div>
+                    <div class="col-lg-2 py-1">
+                        <select name="use_yn" id="c_use_yn" class="form-control form-control-text select2">
+                            <option value="Y" selected="selected">Use</option>
+                            <option value="N">UnUse</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-1 py-1 d-flex">
+                        <button type="button" id="c_save_but" class="btn btn-success button-sm"><i class="fa fa-save">&nbsp;Create</i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="tab-content hidden" id="tab_c2">
+            <form id="form2">
+                <input type="hidden" name="name" value=" " id="ltno" />
+                <div class="row p-2">
+                    <div class="col-lg-1 py-1">
+                        <label>
+                            LBox Code
+                        </label>
+                    </div>
+                    <div class="col-lg-2 py-1">
+                        <input type="text" name="ltype_cd" id="m_ltype_cd" class="form-control form-control-text" placeholder="LBox Code" readonly="readonly">
+                    </div>
+                    <div class="col-lg-1 py-1">
+                        <label>Name</label>
+                    </div>
+                    <div class="col-lg-2 py-1">
+                        <input type="text" name="ltype_nm" id="m_ltype_nm" class="form-control form-control-text" placeholder="Name" required>
+                    </div>
+                    <div class="col-lg-1 py-1">
+                        <label>Sbox Use</label>
+                    </div>
+                    <div class="col-lg-2 py-1">
+                        <select name="sbox_use_yn" id="m_sbox_use_yn" class="form-control form-control-text select2">
+                            <option value="Y" selected="selected">Sbox Use</option>
+                            <option value="N">UnUse</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-1 py-1">
+                        <label>Sbox Type</label>
+                    </div>
+                    <div class="col-lg-2 py-1">
+                        <select name="stype_cd" id="m_stype_cd" class="form-control form-control-text select2">
+                        </select>
+                    </div>
+                      <div class="col-lg-3 change_kq1">
+                        <input type="hidden" name="name" value="1" class="phanbiet1" />
+                        <div class="col-lg-4 py-1">
+                            <label>SBox Qty</label>
+                        </div>
+                        <div class="col-lg-8 py-1">
+                            <input type="text" name="sbox_qty" id="m_sbox_qty" class="form-control form-control-text text-right">
+                        </div>
+                    </div>
+                    <div class="col-lg-1 py-1">
+                        <label>Use Yn</label>
+                    </div>
+                    <div class="col-lg-2 py-1">
+                        <select name="use_yn" id="m_use_yn" class="form-control form-control-text select2">
+                            <option value="Y" selected="selected">Use</option>
+                            <option value="N">UnUse</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-1 py-1 d-flex">
+                        <button type="button" id="m_save_but" class="btn btn-success button-sm"><i class="fa fa-save">&nbsp;Modify</i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class=" p-0 m-0">
+            <table id="list2"></table>
+            <div id="list2GridPager"></div>
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <input type="hidden" name="color_bg_line" value=" " id="color_bg_line2" />
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active" id="tab_d1"><a href="#tab_d1" data-toggle="tab">Create</a></li>
+                <li id="tab_d2" class=""><a href="#tab_d2" data-toggle="tab">Modify</a></li>
+            </ul>
+        </div>
+        <div class="tab-content active" id="tab_dc1">
+            <form id="form3">
+                <div class="box-body box-body-bottom-input">
+                    <div class="row p-2">
+                        <div class="col-lg-1 py-1">
+                            <label>SBox Code</label>
+                        </div>
+                        <div class="col-lg-2 py-1">
+                            <input type="text" name="stype_cd" id="c2_stype_cd" class="form-control form-control-text" placeholder="SBox Code" readonly="readonly">
+                        </div>
+
+                        <div class="col-lg-1 py-1">
+                            <label>Name</label>
+                        </div>
+                        <div class="col-lg-2 py-1">
+                            <input type="text" name="stype_nm" id="c_stype_nm" class="form-control form-control-text" placeholder="Name">
+                        </div>
+                        <div class="col-lg-1 py-1">
+                            <label>Product Qty</label>
+                        </div>
+                        <div class="col-lg-2 py-1">
+                            <input type="number" name="prd_qty" id="c_prd_qty" class="form-control form-control-text text-right">
+                        </div>
+
+                        <div class="col-lg-1 py-1 d-flex">
+                            <button type="button" id="dc_save_but" class="btn btn-success button-srh2"><i class="fa fa-save">&nbsp;Create</i></button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="tab-content hidden" id="tab_dc2">
+            <form id="form4">
+                <input type="hidden" name="name" value=" " id="stno" />
+                <div class="box-body box-body-bottom-input">
+                    <div class="row p-2">
+                        <div class="col-lg-1 py-1">
+                            <label>SBox Code</label>
+                        </div>
+                        <div class="col-lg-2 py-1">
+                            <input type="text" name="stype_cd" id="m2_stype_cd" class="form-control form-control-text" placeholder="SBox Code" readonly="readonly">
+                        </div>
+
+                        <div class="col-lg-1 py-1">
+                            <label>Name</label>
+                        </div>
+                        <div class="col-lg-2 py-1">
+                            <input type="text" name="stype_nm" id="m_stype_nm" class="form-control form-control-text" placeholder="Name">
+                        </div>
+                        <div class="col-lg-1 py-1">
+                            <label>Product Qty</label>
+                        </div>
+                        <div class="col-lg-2 py-1">
+                            <input type="number" name="prd_qty" id="m_prd_qty" class="form-control form-control-text text-right">
+                        </div>
+
+                        <div class="col-lg-1 py-1 d-flex">
+                            <button type="button" id="dm_save_but" class="btn btn-success button-srh2"><i class="fa fa-save">&nbsp;Modify</i></button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Content/jquery.validate_V1.9/jquery.validate.min.js"></script>
+    <script src="~/Scripts/StandardMgtWO/box_type.js"></script>
+}

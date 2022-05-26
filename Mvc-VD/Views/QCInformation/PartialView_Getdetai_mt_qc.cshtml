@@ -1,0 +1,90 @@
+﻿
+<table id="list2" style="width:100%"></table>
+<div id="gridpager2"></div>
+<script>
+    $(function() {
+
+    $grid = $("#list2").jqGrid
+    ({
+            url: "/QCInformation/Getdetai_mt_qc?item_vcd=@ViewBag.PartialView_Getdetai_mt_qc__item_vcd&mwro_no=@ViewBag.PartialView_Getdetai_mt_qc__mwro_no",
+        datatype: 'json',
+        mtype: 'post',
+        colModel: [
+                { key: true, label: 'mqhno', name: 'mqhno', width: 200, align: 'center', hidden: true },
+                { key: false, label: 'MWR No', name: 'mwro_no', width: 100, align: 'center' },
+                { key: false, label: 'Subject', name: 'check_subject', width: 200, align: 'left' },
+                { key: false, label: 'Value', name: 'check_value', sortable: true, width: '100px', align: 'left' },
+                { key: false, label: 'Qty', name: 'qc_qty', sortable: true, width: '50', align: 'right' },
+        ],
+        //gridComplete: function () {  // 그리드 생성 후 호출되는 이벤트
+        //    var grid = this;
+        //    $('td[rowspan="1"]', grid).each(function () {
+        //        var spans = $('td[rowspanid="' + this.id + '"]', grid).length + 1;
+        //        if (spans > 1) {
+        //            $(this).attr('rowspan', spans);
+        //        }
+        //    });
+        //},
+
+        pager: jQuery('#grid2pager'),
+        rowNum: 50,
+        rowList: [50, 100, 200, 500, 1000],
+        rownumbers: true,
+        autowidth: true,
+        shrinkToFit: false,
+        viewrecords: true,
+        loadonce: true,
+        height: '300',
+        //caption: 'Part',
+        jsonReader:
+        {
+            root: "rows",
+            page: "page",
+            total: "total",
+            records: "records",
+            repeatitems: false,
+            Id: "0"
+        },
+        autowidth: true,
+        multiselect: false,
+    }).navGrid('#grid2pager',
+    {
+        edit: false, add: false, del: false, search: false,
+        searchtext: "Search Student", refresh: true
+    },
+    {
+        zIndex: 100,
+        caption: "Search",
+        sopt: ['cn']
+    });
+        });//grid2
+        var prevCellVal = { cellId: undefined, value: undefined };
+        var chkcell_2 = { cellId2: undefined, chkval2: undefined };
+        var form = function (rowId, val, rawObject, cm, rdata) {
+
+            var result;
+            if (prevCellVal.value == val) {
+                result = ' style="display: none" rowspanid="' + prevCellVal.cellId + '"';
+            } else {
+                var cellId = this.id + '_row_' + rowId + '_' + cm.name;
+                result = ' rowspan="1" id="' + cellId + '"';
+                prevCellVal = { cellId: cellId, value: val };
+            }
+
+            return result;
+
+        };
+
+        function jsFormatterCell_2(rowid, val, rowObject, cm, rdata) {
+            var result2 = "";
+            //if (chkcell_2.chkval2 != val) { //check 값이랑 비교값이 다른 경우
+            var cellId2 = this.id + '_row_' + rowid + '-' + cm.name;
+            result2 = ' rowspan="1" id ="' + cellId2 + '" + name="cellRowspan"';
+            chkcell_2 = { cellId2: cellId2, chkval2: val };
+            //} else {
+            //    result2 = 'style="display:none"  rowspanid="' + chkcell_2.cellId2 + '"'; //같을 경우 display none 처리
+            //    //alert(result);
+            //}
+            return result2;
+        }
+</script>

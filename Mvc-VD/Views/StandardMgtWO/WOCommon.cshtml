@@ -1,0 +1,221 @@
+﻿@{
+    ViewBag.Title = "WOCommon";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="MMS" data-level_2="Standard Management(WO)" data-level_3="WO Common(M)"></div>
+}
+
+<div class="container-fluid">
+    <div class="row text-right">
+        <div class="col-md-12 px-3">
+            <button type="submit" id="excelBtn" class="btn btn-sm btn-warning button-top"><i class="fa fa-file-excel-o">&nbsp;Excel</i></button>
+            <button type="submit" id="htmlBtn" class="btn btn-sm btn-warning button-top" hidden="hidden"><i class="fa fa-print">&nbsp;HTML</i></button>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Code</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <input type="text" name="mt_cd" id="mt_cd" class="form-control form-control-text">
+            </div>
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Name</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <input type="text" name="mt_nm" id="mt_nm" class="form-control form-control-text">
+            </div>
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Explain</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <input type="text" name="mt_exp" id="mt_exp" class="form-control form-control-text">
+            </div>
+            <div class="col-md-1 p-2">
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <table id="WHSCommonGrid"></table>
+            <div id="WHSCommonGridPager"></div>
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <input type="hidden" name="color_bg_line" value=" " id="color_bg_line" />
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active" id="tab_1"><a href="#tab_1" data-toggle="tab">Create</a></li>
+                <li id="tab_2"><a href="#tab_2" data-toggle="tab">Modify</a></li>
+            </ul>
+        </div>
+        <div class="tab-content active" id="tab_c1">
+            <form id="form1">
+                <div class="row p-2">
+                    <div class="col-lg-1 py-1">
+                        <input type="text" name="mt_cd" id="c_mt_cd" class="form-control form-control-text" placeholder="Main Code" readonly="readonly">
+                    </div>
+                    <div class="col-lg-2 py-1">
+                        <input type="text" name="mt_nm" id="c_mt_nm" class="form-control form-control-text" placeholder="Main  Name">
+                    </div>
+                    <div class="col-lg-3 py-1">
+                        <input type="text" name="mt_exp" id="c_mt_exp" class="form-control form-control-text" placeholder="Main  Explain">
+                    </div>
+                    <div class="col-lg-1 py-1">
+                        <select name="use_yn" id="c_use_yn" class="form-control form-control-text select2">
+                            <option value="Y" selected="selected">Use</option>
+                            <option value="N">UnUse</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-1 py-1 d-flex">
+                        <button type="button" id="c_save_but" class="btn btn-success button-sm"><i class="fa fa-save">&nbsp;Create</i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="tab-content hidden" id="tab_c2">
+            <form id="form2">
+                <div class="row p-2">
+                    <div class="col-lg-1 py-1">
+                        <input type="hidden" name="mt_id" id="m_mt_id">
+                        <input type="text" name="mt_cd" id="m_mt_cd" class="form-control form-control-text" placeholder="Main Code" readonly="readonly">
+                    </div>
+                    <div class="col-lg-2 py-1">
+                        <input type="text" name="mt_nm" id="m_mt_nm" class="form-control form-control-text" placeholder="Main  Name">
+                    </div>
+                    <div class="col-lg-3 py-1">
+                        <input type="text" name="mt_exp" id="m_mt_exp" class="form-control form-control-text" placeholder="Main  Explain">
+                    </div>
+                    <div class="col-lg-1 py-1">
+                        <select name="use_yn" id="m_use_yn" class="form-control form-control-text select2">
+                            <option value="Y" selected="selected">Use</option>
+                            <option value="N">UnUse</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-1 py-1 d-flex">
+                        <button type="button" id="m_save_but" class="btn btn-success button-srh2"><i class="fa fa-save">&nbsp;Modify</i></button>
+                        @*                        <button type="button" id="del_save_but" class="btn btn-danger button-sm"><i class="fa fa-scissors">&nbsp;Delete</i></button>*@
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <table id="WHSCommonDtGrid"></table>
+            <div id="WHSCommonDtGridPager"></div>
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <input type="hidden" name="color_bg_line" value=" " id="color_bg_line2" />
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active" id="tab_d1"><a href="#tab_d1" data-toggle="tab">Create</a></li>
+                <li id="tab_d2" class=""><a href="#tab_d2" data-toggle="tab">Modify</a></li>
+            </ul>
+        </div>
+        <div class="tab-content active" id="tab_dc1">
+            <form id="form3">
+                <div class="box-body box-body-bottom-input">
+                    <div class="row p-2">
+                        <div class="col-lg-1 py-1">
+                            <input type="text" name="mt_cd" id="dc_mt_cd" class="form-control form-control-text" placeholder="Main Code" readonly="readonly">
+                        </div>
+                        <div class="col-lg-1 py-1">
+                            <input type="text" name="mt_nm" id="dc_mt_nm" class="form-control form-control-text" placeholder="Main Name" readonly="readonly">
+                        </div>
+
+                        <div class="col-lg-1 py-1">
+                            <input type="text" name="dt_cd" id="dc_dt_cd" class="form-control form-control-text" placeholder="Detail Code">
+                        </div>
+                        <div class="col-lg-2 py-1">
+                            <input type="text" name="dt_nm" id="dc_dt_nm" class="form-control form-control-text" placeholder="Detail Code Name">
+                        </div>
+                        <div class="col-lg-3 py-1">
+                            <input type="text" name="dt_exp" id="dc_dt_exp" class="form-control form-control-text" placeholder="Detail Code Explain">
+                        </div>
+                        <div class="col-lg-2 py-1">
+                            <input type="text" name="dt_order" id="dc_dt_order" onkeydown="return onlyNumber(event)"
+                                style="text-align: right" class="form-control form-control-text" placeholder="Detail Order">
+                        </div>
+                        <div class="col-lg-1 py-1">
+                            <select name="use_yn" id="dc_use_yn" class="form-control select2">
+                                <option value="Y" selected="selected">Use</option>
+                                <option value="N">UnUse</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-1 py-1 d-flex">
+                            <button type="button" id="dc_save_but" class="btn btn-success button-srh2"><i class="fa fa-save">&nbsp;Create</i></button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="tab-content hidden" id="tab_dc2">
+            <form id="form4">
+                <div class="box-body box-body-bottom-input">
+                    <div class="row p-2">
+                        <input type="hidden" name="cdid" id="dm_cdid">
+                        <div class="col-lg-1 py-1">
+                            <input type="text" name="mt_cd" id="dm_mt_cd" class="form-control form-control-text" placeholder="Main Code" readonly="readonly">
+                        </div>
+                        <div class="col-lg-1 py-1">
+                            <input type="text" name="mt_nm" id="dm_mt_nm" class="form-control form-control-text" placeholder="Main Name" readonly="readonly">
+                        </div>
+                        <div class="col-lg-1 py-1">
+                            <input type="text" name="dt_cd" id="dm_dt_cd" class="form-control form-control-text" placeholder="Detail Code" readonly="readonly">
+                        </div>
+                        <div class="col-lg-2 py-1">
+                            <input type="text" name="dt_nm" id="dm_dt_nm" class="form-control form-control-text" placeholder="Detail Code Name">
+                        </div>
+                        <div class="col-lg-3 py-1">
+                            <input type="text" name="dt_exp" id="dm_dt_exp" class="form-control form-control-text" placeholder="Detail Code Explain">
+                        </div>
+                        <div class="col-lg-2 py-1">
+                            <input type="text" name="dt_order" id="dm_dt_order" onkeydown="return onlyNumber(event)"
+                                style="text-align: right" class="form-control form-control-text" placeholder="Detail Order">
+                        </div>
+                        <div class="col-lg-1 py-1">
+                            <select name="use_yn" id="dm_use_yn" class="form-control select2">
+                                <option value="Y" selected="selected">Use</option>
+                                <option value="N">UnUse</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-1 py-1 d-flex">
+                            <button type="button" id="dm_save_but" class="btn btn-success button-srh2"><i class="fa fa-save">&nbsp;Modify</i></button>
+                            <button type="button" id="dm_remove_but" class="btn btn-danger button-srh2"><i class="fa fa-save">&nbsp;Delete</i></button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Scripts/StandardMgtWO/WOCommon.js"></script>
+}

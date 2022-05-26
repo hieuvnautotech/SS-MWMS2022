@@ -1,0 +1,148 @@
+﻿@{
+    ViewBag.Title = "ExportToMachineScan";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    @*<div class="col-xs-12" id="current_menu" data-level_1="WIP-WMS" data-level_2="Export Material" data-level_3="Export Material to Machine"></div>*@
+    <div class="col-xs-12" id="current_menu" data-level_1="@Html.Raw(ViewData["TIMS"])" data-level_2="@Html.Raw(ViewData["Sorting"])" data-level_3="@Html.Raw(ViewData["Receving Sorting FG"])"></div>
+}
+<style>
+    .ui-jqgrid, .ui-jqgrid-view, .ui-jqgrid-hdiv, .ui-jqgrid-hdiv, .ui-jqgrid-bdiv, .ui-jqgrid-pager {
+        width: -webkit-fill-available !important;
+        width: -moz-available !important;
+    }
+</style>
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-1 text-right">
+                <label>SF No</label>
+            </div>
+            <div class="col-md-1">
+                <input type="text" name="sf_no" id="s_sf_no" class="input-text form-control">
+            </div>
+            <div class="col-md-1 text-right">
+                <label>Product Code</label>
+            </div>
+            <div class="col-md-1">
+                <input type="text" name="ProductCode" id="s_ProductCode" class="input-text form-control">
+            </div>
+            <div class="col-md-1 text-right">
+                <label>Product Name</label>
+            </div>
+            <div class="col-md-1">
+                <input type="text" name="ep_nm" id="s_ProductName" class="input-text form-control">
+            </div>
+            <div class="col-md-1 text-right">
+                <label>Description</label>
+            </div>
+            <div class="col-md-1">
+                <input type="text" name="Description" id="s_Description" class="input-text form-control">
+            </div>
+            <div class="col-md-1 p-1 d-flex">
+                <button id="searchBtn" class="btn btn-sm btn-success button-srh ml-5"><i class="fa fa-save">&nbsp;Search</i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ./Search function -->
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                @*<li class="active">
+                        <a data-toggle="tab" href="#Processing"><b>Processing</b></a>
+                    </li>*@
+                @* <li><a data-toggle="tab" href="#Finish"><b>Finished</b></a></li>*@
+            </ul>
+        </div>
+
+        <div class="tab-content">
+            <div id="Processing" class="tab-pane fade in in active">
+                <div>
+                    <table id="list-processing"></table>
+                    <div id="gridpagerprocessing"></div>
+                </div>
+            </div>
+            <div id="Finish" class="tab-pane fade in">
+                <div>
+                    <table id="list-finish"></table>
+                    <div id="gridpagerfinish"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+
+    <div class="row box-body my-2">
+        <div class="col-md-8 py-1">
+            <label>Buyer QR</label>
+            <input type="hidden" name="sf_no" id="m_sf_no" class="input-text form-control">
+            <input type="text" name='buyer_qr' id='scan_buyer_qr' class="input-text form-control" placeholder="Buyer QR" required>
+        </div>
+
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+
+<div class="popup-dialog SF_Info_Popup" title="SF Infomation">
+    <div id="PartialViewShippingFGSortingPP"></div>
+</div>
+
+<!--Dialog Product-->
+<div class="dialog_PRODUCT" title="Product Information">
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body well text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="style_no_popup" placeholder="Product Code" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="style_nm_popup" placeholder="Product Name" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="md_cd" id="md_cd_popup" placeholder="Model Code" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2 d-flex">
+                    <button id="searchBtn_product_popup" class="btn btn-sm mr-1 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button type="button" class="btn btn-sm btn-success button-srh disabled" id="savestyle_product"><i class="fa fa-save">&nbsp;Selected</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid  p-0 m-0">
+        <div class="box-body my-2 bg-white">
+            <div class="p-0 m-0 ">
+                <table id="popupProduct"></table>
+                <div id="pagerProduct"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+
+    <script src="~/Scripts/TIMS/SortingTims/RecevingTims/Product_Poup.js"></script>
+    <script src="~/Scripts/TIMS/SortingTims/RecevingTims/RecevingSortingTimsScan.js"></script>
+
+    <script>
+        $(function () {
+
+            var tab = $('.nav-tabs-custom .nav.nav-tabs li a');
+            $(tab).click(function (e) {
+
+                var ul = $(e.target).closest('ul');
+                $(ul).find('li').removeClass('active');
+                $(e.target).closest('li').addClass('active');
+
+            })
+        })
+    </script>
+}

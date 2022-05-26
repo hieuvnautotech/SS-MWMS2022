@@ -1,0 +1,62 @@
+﻿@model Mvc_VD.Models.notice_board
+
+@{
+    ViewBag.Title = "noticeRegister";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="STANDARD" data-level_2="System Management" data-level_3="Notice Management" data-level_4="Modify"></div>
+    @*<div class="col-xs-12">
+        <h4 class="m-0 text-dark"><b>Notice Modify</b></h4>
+        <small style="font-size:14px;"><i class="fa fa-dashboard"></i>
+                HOME > System Management > Notice Management > Modify
+        </small>
+    </div>*@ 
+}
+
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <form id='notice' name="notice" action="insertnotice" role="form" method="post" target="zeroFrame" onsubmit="return fun_check();">	
+        <input type="hidden" name="bno" value="@Html.DisplayFor(model => model.bno) " />
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 pb-2 pt-4 text-right">
+                    <button type="submit" id="saveBtn" class="btn btn-sm btn-success button-srh"><i class="fa fa-save">&nbsp;Save</i></button>
+                </div>
+                <div class="col-md-12 pt-2">
+                    <label>Title</label>
+                    <div>@Html.TextAreaFor(model => model.title, new { @class = "ckeditor", @id = "sampleEditor" })</div>
+                </div>
+                <div class="col-md-12 pt-2">
+                    <label>Content</label>
+                    <div>@Html.TextAreaFor(model => model.content, new { @class = "ckeditor", @id = "sampleEditor1" })</div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+
+@section scripts{
+    <script src="~/ckeditor/ckeditor.js"></script>
+    <script>       
+        $("#saveBtn").click(function () {
+            if (CKEDITOR.instances.editor.getData() == '') {
+                window.alert('Vui lòng nhập một tiêu đề.');
+                CKEDITOR.instances.editor.focus();
+                return false;
+            }
+            if (CKEDITOR.instances.editor1.getData() == '') {
+                window.alert('Vui lòng nhập nội dung của bạn.');
+                CKEDITOR.instances.editor1.focus();
+                return false;
+            }
+
+            $("#notice").submit();
+        })
+
+
+
+    </script>
+}

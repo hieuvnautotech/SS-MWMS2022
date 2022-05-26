@@ -1,0 +1,430 @@
+﻿@model IEnumerable<Mvc_VD.Models.mb_info>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    <h4 class="m-0 text-dark">Dashboard 
+        <small style="font-size:14px;"><i class="fa fa-dashboard"></i>
+            HOME > Dashboard 
+        </small>
+    </h4>  
+}
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-aqua">
+                    <div class="inner">
+                        <h3 id="m_actual_efficiency"></h3>
+                        <p>Production Actual Efficiency</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-bag"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-green">
+                    <div class="inner">
+
+                        <h3 id="m_actual_amount"><sup style="font-size: 20px"></sup></h3>
+                        <p>Production Actual Amount</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-stats-bars"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-yellow">
+                    <div class="inner">
+                        <h3>3856</h3>
+                        <p>Receiving Material</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-person-add"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+            <div class="col-lg-3 col-xs-6">
+                <!-- small box -->
+                <div class="small-box bg-red">
+                    <div class="inner">
+                        <h3>65</h3>
+                        <p>Shipping Goods</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-pie-graph"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                </div>
+            </div>
+            <!-- ./col -->
+
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-lg-6">
+                <!-- small box -->
+                <div class="col-lg-12">
+                    <div class="form-control" style="position: relative; background-color: white; width: auto; height: 410px; padding: 2px">
+                        <canvas id="myChart" style="display: block; width: auto; height: 410px;"></canvas>
+                    </div>
+                </div>
+                <div class="col-lg-12 p-1 m-1">
+                    <div class="row p-0 m-0">
+                        <div class="col-md-4" style="margin: 1px">
+
+                            <canvas id="myChart3" class="chartjs" height="200" width="250" style="width: 250px; height: 200px;"></canvas>
+                        </div>
+
+                        <div class="col-md-4" style="margin: 1px">
+
+                            <canvas id="myChart4" class="chartjs" height="200" width="250" style="width: 250px; height: 200px;"></canvas>
+
+                        </div>
+                           <div class="col-md-3" style="margin: 1px">
+
+                            <canvas id="myChart5" class="chartjs" height="200" width="250" style="width: 250px; height: 200px;"></canvas>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="row p-0 m-0">
+                    <table id="noticeGrid"></table>
+                    <div id="noticeGridPager"></div>
+                </div>
+            </div>
+
+            <!-- ./col -->
+
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-6">
+                <div class="row p-0 m-0">
+                    <table id="dashBoardGrid"></table>
+                    <div id="dashBoardGridPager"></div>
+                </div>
+            </div>
+            <div class="col-md-6">
+
+                <div class="box box-danger direct-chat direct-chat-danger">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Direct Chat</h3>
+                        <div class="box-tools pull-right">
+                            <span data-toggle="tooltip" title="3 New Messages" class="badge bg-red">3</span>
+                            <button class="btn btn-box-tool" data-widget="collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                            <button class="btn btn-box-tool" data-toggle="tooltip" title="Contacts" data-widget="chat-pane-toggle">
+                                <i class="fa fa-comments"></i>
+                            </button>
+                            <button class="btn btn-box-tool" data-widget="remove">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="box-body" style="width: 790px; height: 250px;">
+                        <div class="direct-chat-messages">
+                            <div class="direct-chat-msg">
+                                <div class="direct-chat-info clearfix">
+                                    <span class="direct-chat-name pull-left">Alexander Pierce</span>  <span class="direct-chat-timestamp pull-right">23 Jan 2:00 pm</span>
+                                </div>
+                                <img class="direct-chat-img" src="~/Images/user1-128x128.jpg" alt="message user image">@*
+				<img src="~/Images/user1-128x128.jpg" />*@
+                                <div class="direct-chat-text">Is this template really for free? That's unbelievable!</div>
+                            </div>
+                            <div class="direct-chat-msg right">
+                                <div class="direct-chat-info clearfix">
+                                    <span class="direct-chat-name pull-right">Sarah Bullock</span>  <span class="direct-chat-timestamp pull-left">23 Jan 2:05 pm</span>
+                                </div>
+                                <img class="direct-chat-img" src="~/Images/user3-128x128.jpg" alt="message user image">
+                                <div class="direct-chat-text">You better believe it!</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <div class="row">
+                            <div class="col-md-11">
+                                <input type="text" name="message" id="c_message" placeholder="Type Message ..." class="input-text form-control">
+                            </div>
+                            <div class="col-md-1 py-1 px-1 pull-right text-right">
+                                <button type="button" id="c_save_but" class="btn btn-success btn-flat"><i class="fa fa-plus">&nbsp;Send</i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ./col -->
+
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script src="~/Scripts/system/_DashBoard.js"></script>
+    <script src="~/Scripts/system/JSCharting.js"></script>
+    <script src="~/Scripts/system/toolbar.js"></script>
+    <script src="~/Scripts/system/types.js"></script>
+
+    <script>
+
+
+        $.ajax({
+            url: "/system/getLineChart",
+            type: "get",
+            dataType: "json",
+            success: function (rtnData) {
+
+                var list1 = "", list2 = "", list3 = "", list4 = "";
+                $.each(rtnData, function (dataType, data) {
+                    if (dataType == "rows") { list1 = data[0] }
+                    if (dataType == "list2") { list2 = data[0] }
+                    if (dataType == "list3") { list3 = data[0] }
+                    if (dataType == "list4") { list4 = data[0] }
+                });
+                console.log(rtnData);
+                console.log(list1);
+                console.log(list2);
+                console.log(list3);
+                console.log(list4);
+                var ctx = document.getElementById("myChart").getContext("2d"),
+                    config = {
+                        type: "line",
+                        data: {
+
+                            labels: list4,
+
+                            datasets: [{
+                                label: 'Target',
+                                //backgroundColor: 'green',
+                                //fillColor: "#D2DED6",
+                                //strokeColor: "#D2DED6",
+                                //pointStrokeColor: "#D2DED6",
+                                data: list1,
+                                borderColor: 'red',
+                                borderWidth: 1,
+                                fill: true,
+                                //yAxisID: 'y-axis-1',
+                            },
+                            {
+                                label: 'Actual',
+                                data: list2,
+                                //fillColor: "#3c8dbc",
+                                //strokeColor: "#3c8dbc",
+                                //pointStrokeColor: "#3c8dbc",
+                                borderColor: 'green',
+
+                                borderWidth: 1,
+                                fill: true,
+                                //yAxisID: 'y-axis-2',
+
+                            },
+                            {
+                                label: 'Defective',
+                                data: list3,
+                                borderColor: 'yellow',
+                                borderWidth: 1,
+                                fill: true,
+                                //yAxisID: 'y-axis-2',
+
+                            }
+                            ]
+
+                        },
+                        options: {
+                            //datasetFill: true,
+                            responsive: true,
+                            title: {
+                                display: true,
+                                text: "",
+                            },
+                            scales: {
+                                xAxes: [{
+                                    display: true,
+                                    scaleLabel: {
+                                        display: true,
+                                        labelString: 'Day'
+
+                                    },
+                                    ticks: {
+                                        beginAtZero: true
+                                    }
+                                }]
+
+                            }
+
+                        }
+                    };
+                window.myPie = new Chart(ctx, config);
+
+            },
+            error: function (rtnData) {
+                alert('error' + rtnData);
+            }
+        });
+    </script>
+    <script>
+        $.ajax({
+            url: "/system/getPieChart",
+            type: "get",
+            dataType: "json",
+            success: function (rtnData) {
+                console.log(rtnData);
+                var list1 = "";
+                list2 = "",
+                list3 = "";
+                $.each(rtnData, function (dataType, data) {
+                    console.log(dataType);
+                    if (dataType == "pie") { list1 = data }
+                    if (dataType == "roundtarget") { list2 = data }
+                });
+                new Chart(document.getElementById("myChart3"), {
+                    type: 'doughnut',
+                    data: {
+                        datasets: [
+                          {
+                              //label: "Smoke",
+
+                              backgroundColor: ["#008000", "#FF0000"],
+                              data: [list1, list2],
+                              //borderColor: "#FFCD56",
+                          }
+
+                        ],
+                        labels: ['Actual %', 'Target'],
+
+                    },
+                    options: {
+                        title: {
+                            position: 'bottom',
+                            display: true,
+                            text: 'Actual Efficiency'
+                        },
+                        animation: {
+                            ////animateRotate: true,
+
+                            //duration: 250 * 1.5,
+                            //easing: 'linear',
+                            animateRotate: false,
+                            //rotation: -10 * Math.PI,
+                            //circumference: 50 * Math.PI,
+                            //cutoutPercentage: 50,
+                            //duration: 2000,
+
+
+
+
+                        },
+                        //layout: {
+                        //    padding: {
+                        //        bottom: 5
+                        //    }
+                        //}
+                        //,
+                        tooltips: {
+                            enabled: true,
+                        }
+                    }
+                });
+            }
+
+        });
+    </script>
+    <script>
+        $.ajax({
+            url: "/system/getPieChart",
+            type: "get",
+            dataType: "json",
+            success: function (rtnData) {
+                console.log(rtnData);
+                var list1 = "";
+                list2 = "",
+                list3 = "";
+                $.each(rtnData, function (dataType, data) {
+                    console.log(dataType);
+                    if (dataType == "defective") { list1 = data }
+                    if (dataType == "targetsum") { list3 = data }
+                });
+                console.log(list1);
+                console.log(list3);
+                new Chart(document.getElementById("myChart4"), {
+                    type: 'doughnut',
+                    data: {
+                        datasets: [
+                          {
+                              //label: "Smoke",
+
+                              backgroundColor: ["#FFCD56", "#FF0000"],
+                              data: [list1, list3],
+                              //borderColor: "#FFCD56",
+                          }
+
+                        ],
+                        labels: ['Defective', 'Target']
+                    },
+                    options: {
+                        title: {
+                            position: 'bottom',
+                            display: true,
+                            text: 'Defective'
+                        },
+                        animation: {
+                            ////animateRotate: true,
+
+                            //duration: 250 * 1.5,
+                            //easing: 'linear',
+                            animateRotate: false,
+                            //rotation: -10 * Math.PI,
+                            //circumference: 50 * Math.PI,
+                            //cutoutPercentage: 50,
+                            //duration: 2000,
+
+
+
+
+                        },
+                        //layout: {
+                        //    padding: {
+                        //        bottom: 5
+                        //    }
+                        //}
+                        //,
+                        tooltips: {
+                            enabled: true,
+                        }
+                    }
+                });
+
+
+            }
+
+        });
+    </script>
+}

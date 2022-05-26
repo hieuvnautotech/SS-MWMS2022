@@ -1,0 +1,172 @@
+﻿@model IEnumerable<Mvc_VD.Models.w_vt_mt>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="FG-WMS" data-level_2="Inventory" data-level_3="Inventory Schedule(F)"></div>
+
+}
+   
+
+<div class="container-fluid">
+    <div class="row text-right">
+        <div class="col-md-12 px-3">
+            <button type="submit" id="excelBtn" class="btn btn-sm btn-warning button-top"><i class="fa fa-file-excel-o">&nbsp;Excel</i></button>
+            <button type="submit" id="htmlBtn" class="btn btn-sm btn-warning button-top"><i class="fa fa-print">&nbsp;HTML</i></button>
+            @*<button type="submit" id="pdfBtn" class="btn btn-sm btn-warning button-top"><i class="fa fa-print">&nbsp;PDF</i></button>*@
+        </div>
+    </div>       
+</div>
+
+<!-- Search function -->
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Name</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <div class="input-group mt_plus">
+                    <input type="text" name="pvn_nm" id="pvn_nm" class="input-text form-control">
+                </div>
+            </div>
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Start Date</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <input type="text" name="start_dt" id="start" class="form-control">
+            </div>
+            <div class=" p-1  text-center">
+                <label><b>~</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <input type="text" name="start_dt" id="end" class="form-control"> 
+            </div>
+              <div class="col-md-1 p-2">
+                 <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+              </div>
+        </div>
+    </div>
+</div>
+<!-- ./Search function -->
+@*---------------------------------------------------------------------------------------------------------------------------*@
+ <div class="box-body my-2 bg-white">
+    <div class="row p-0 m-0">
+        <table id="list"></table>
+        <div id="gridpager"></div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <!--BuyerInfo start -->
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active" id="tab_1"><a href="#tab_1" data-toggle="tab">Create</a></li>
+                <li id="tab_2"><a href="#tab_2" data-toggle="tab">Modify</a></li>
+            </ul>
+        </div>
+        <div class="tab-content active" id="tab_c1">
+            <form id="form1">
+                <div class="box-body box-body-input-move">
+                    <input type="hidden" name="pvno" id="c_pvno">
+                    <div class="row">
+                        <div class="col-md-10">
+                            <div class="col-xs-2 py-1">
+                                <input type="text" name='pvn_cd' id='c_pvn_cd' class="input-text form-control" placeholder="Code" readonly="readonly">
+                            </div>
+                            <div class="col-xs-2 py-1">
+                                <span>
+                                    <input type="text" name="pvn_nm" id="c_pvn_nm" class="input-text form-control required" placeholder="Inventory Name" required>
+                                </span>
+                            </div>
+                            <div class="col-xs-2 py-1">
+                                <span>
+                                    <input type="text" name="start_dt" id="c_start_dt" class="input-text form-control autocomplete" placeholder="Start date">
+                                </span>
+                            </div>
+                            <div class="col-xs-2 py-1">
+                                <span>
+                                    <input type="text" name="end_dt" id="c_end_dt" class="input-text form-control autocomplete" placeholder="End date">
+                                </span>
+                            </div>
+                            <div class="col-xs-2 py-1">
+                                <select name="use_yn" id="c_use_yn" class="form-control form-control-text select2">
+                                    <option value="Y" selected="selected">Use</option>
+                                    <option value="N">UnUse</option>
+                                </select>
+                            </div>
+                            <div class="col-xs-2 py-1">
+                                <span>
+                                    <input type="text" name="re_mark" id="c_re_mark" class="input-text form-control autocomplete" placeholder="Description">
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="clearfix">
+                                <button type="button" id="c_save_but" class="btn btn-success button-sm"><i class="fa fa-save">&nbsp;Create</i></button>
+                            </div>
+                        </div>
+                     </div>
+                </div>
+                <!-- /.box-body -->
+            </form>
+        </div>
+        <div class="tab-content hidden" id="tab_c2">
+            <form id="form2">
+                <div class="box-body box-body-input-move">
+                    <input type="hidden" name="pvno" id="m_pvno">
+                    <div class="row">
+                        <div class="col-md-10">
+                                <div class="col-xs-2 py-1">
+                                    <input type="text" name='pvn_cd' id='m_pvn_cd' class="input-text form-control" placeholder="Code" readonly="readonly" >
+                                </div>
+                                 <div class="col-xs-2 py-1">
+                                    <span>
+                                        <input type="text" name="pvn_nm" id="m_pvn_nm" class="input-text form-control required" placeholder="Inventory Name">
+                                    </span>
+                                </div>
+                                 <div class="col-xs-2 py-1">
+                                    <span>
+                                        <input type="text" name="start_dt" id="m_start_dt" class="input-text form-control autocomplete" placeholder="Start date">
+                                    </span>
+                                </div>
+                                 <div class="col-xs-2 py-1">
+                                    <span>
+                                        <input type="text" name="end_dt" id="m_end_dt" class="input-text form-control autocomplete" placeholder="End date">
+                                    </span>
+                                </div>
+                                 <div class="col-xs-2 py-1">
+                                    <select name="use_yn" id="m_use_yn" class="form-control form-control-text select2">
+                                        <option value="Y" selected="selected">Use</option>
+                                        <option value="N">UnUse</option>
+                                    </select>
+                                </div>
+                                  <div class="col-xs-2 py-1">
+                                    <span>
+                                        <input type="text" name="re_mark" id="m_re_mark" class="input-text form-control autocomplete" placeholder="Description">
+                                    </span>
+                                </div>
+                            </div>
+                        <div class="col-lg-1">
+                            <div class="row">
+                                <div class="clearfix">
+                                    <button type="button" id="m_save_but" class="btn btn-success button-sm disabled="disabled"" ><i class="fa fa-save">&nbsp;Modify</i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    </div>
+
+    <script src="~/Content/jquery.validate_V1.9/jquery.validate.min.js"></script>
+<script src="~/Scripts/fgwms/InvertorycheckSchedule/InvertorycheckScheduleF.js"></script>
+
+

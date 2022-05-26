@@ -1,0 +1,288 @@
+﻿MT NO : @ViewBag.mt_no
+
+
+
+<input type="hidden" name="name" id="mt_no" value="@ViewBag.mt_no " />
+<input type="hidden" name="name" id="mrdid" value="@ViewBag.mrdid " />
+
+<!--Popup Add-->
+
+<div class="container-fluid p-0 m-0">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" id="print_split" class="btn btn-success button-srh2 mr-3"><i class="fa fa-print">&nbsp;QR Print</i></button>
+                    <button type="button" id="Add_mt" class="btn btn-success button-srh2 mr-3">&nbsp;Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-1 px-1 py-2 text-right">
+                <label><b>ML NO</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <div class="input-group mt_plus">
+                    <input type="text" name="ml_no" id="s_ml_no" class="form-control form-control-text">
+                </div>
+            </div>
+            <div class="col-md-1 px-1 py-2 text-right">
+                <label><b>Location</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <div class="input-group mt_plus">
+
+                    <select name="lct_cd" id="s_lct_cd" class="form-control form-control-text ">
+                        <option value=""></option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-1 px-1 py-2 text-right">
+                <label><b>Expiry Date</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <input type="text" name="exp_input" id="exp_input_dt" class="form-control form-control-text">
+            </div>
+
+            <div class="col-md-1 p-2 d-flex">
+                <button id="searchBtn_pp" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <input type="hidden" name="sdmid" value=" " id="sdmid" />
+    <div class="box-body my-2 bg-white">
+        <div class=" p-0 m-0">
+            <table id="list_mt"></table>
+            <div id="list_mt_Pager"></div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+        $(function () {
+            $grid = $("#list_mt").jqGrid({
+                url: "/ShippingMgt/Get_ShippingDirection_list_mt_no?mt_no=@ViewBag.mt_no",
+                mtype: 'GET',
+                datatype: 'json',
+                colModel: [
+                  { key: true, label: 'wmtid', name: 'wmtid', width: 50, hidden: true },
+                 { label: 'ML NO', name: 'mt_cd', width: 450, align: 'left' },
+                 //{ label: 'MT No', name: 'mt_no', width: 200, align: 'left' },
+
+                 { label: 'Group Qty', name: 'gr_qty', width: 80, align: 'right' },
+                 { label: 'Location', name: 'lct_nm', width: 100, align: 'left' },
+                 { label: 'Status', name: 'mt_sts_cd', width: 110, align: 'left' },
+                 { label: 'Location Status', name: 'lct_sts_cd', width: 110, align: 'left' },
+                  {
+                      label: 'Expiry Date', name: 'expiry_dt', width: 150, align: 'center', formatter: fomatdate, cellattr: function (rowId, value, rowObject, colModel, arrData) {
+
+                          var d = new Date(), month = '' + (d.getMonth() + 1), day = '' + d.getDate(), year = d.getFullYear();
+                          if (month.length < 2)
+                              month = '0' + month;
+                          if (day.length < 2)
+                              day = '0' + day;
+                          var today = year + '-' + month + '-' + day;
+
+                          var date1 = new Date(today);
+                          var date2 = new Date(value);
+                          var diffTime = date2 - date1;
+                          var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                          if (diffDays <= 30) {
+                              return 'style=background-color:orange;';//red
+                          }
+                          return value;
+                      }
+                  },
+                   { label: 'Split', name: 'Split', width: 80, align: 'center', formatter: bntCellSplit_phan2 },
+                   { name: 'orgin_mt_cd',hidden:true },
+                   { name: 'gr_qty1', hidden: true },
+                   { name: 'mt_sts_cd1', hidden: true },
+                   { name: 'remark', hidden: true },
+                ],
+                loadonce: true,
+                shrinkToFit: false,
+                pager: '#list_mt_Pager',
+                rowNum: 50,
+                rownumbers: true,
+                rowList: [50, 100, 200, 500, 1000],
+                viewrecords: true,
+                caption: "Shipping Derection ",
+                height: 500,
+                multiselect: true,
+                jsonReader:
+              {
+                  root: "rows",
+                  page: "page",
+                  total: "total",
+                  records: "records",
+                  repeatitems: false,
+                  Id: "0"
+              },
+                width: null,
+
+                onSelectRow: function (row_id, status, e) {
+                    var selectedRowId = $("#list_edit").jqGrid("getGridParam", 'selrow');
+                    row_id = $("#list_edit").getRowData(selectedRowId);
+                    $('#sdmid').val(row_id.sdmid);
+                },
+            });
+        });
+
+    });
+
+
+
+
+
+
+    $("#Add_mt").click(function () {
+       
+        var selRowIds = $("#list_mt").jqGrid("getGridParam", 'selarrrow');
+        var mrdid = $('#mrdid').val();
+
+        if (selRowIds.length == 0) {
+            alert("Please select Grid.");
+            return false;
+        }
+
+        else {
+            $.ajax({
+                type: "get",
+                dataType: 'json',
+
+                url: "/ShippingMgt/Getds_W_material?wmtid=" + selRowIds + "&mrdid=" + mrdid,
+
+
+                success: function (response) {
+                    if (response.result) {
+                        $("#list").setGridParam({ url: "/ShippingMgt/Get_list_Generation?mr_no=" + row_id.mr_no, datatype: "json" }).trigger("reloadGrid");
+
+                        $.each(response.data, function (key, item) {
+                            var id = item.wmtid;
+                            $("#list_mt").setRowData(id, item, { background: "#d0e9c6" });
+                        });
+                        $.each(response.result2, function (key, item) {
+                            var id = item.mrdid;
+                            $("#list").setRowData(id, false, { background: "#d0e9c6" });
+                        });
+                    } else {
+
+                        alert(response.message);
+                    }
+                },
+            });
+        }
+
+    });
+    $(document).ready(function () {
+
+        _getLocation();
+
+    });
+    function _getLocation(id) {
+        var mt_no = $("#mt_no").val();
+        $.get("/ShippingMgt/getLocation" + "?id=" + mt_no, function (data) {
+            if (data != null && data != undefined && data.length) {
+                var html = '';
+                html += '<option value="" selected="selected">*</option>';
+                $.each(data, function (key, item) {
+                    html += '<option value=' + item.lct_cd + '>' + item.lct_nm + '</option>';
+                });
+                $("#s_lct_cd").html(html);
+            }
+            else {
+                var html = '';
+                $("#s_lct_cd").html(html);
+            }
+
+        });
+    };
+
+
+    function fomatdate(cellvalue, options, rowdata, action) {
+        var a, b;
+        if (cellvalue == null) {
+            return " "
+        }
+        else {
+            a = cellvalue.substr(0, 4);
+            b = cellvalue.substr(4, 2);
+            c = cellvalue.substr(6, 2);
+            a + "-" + b + "-" + c
+            return a + "-" + b + "-" + c
+        }
+    }
+
+    $("#searchBtn_pp").click(function () {
+        var s_ml_no = $('#s_ml_no').val().trim();
+        var s_lct_cd = $('#s_lct_cd').val().trim();
+        var exp_input_dt = $('#exp_input_dt').val().trim();
+
+        $.ajax({
+            url: "/ShippingMgt/Get_ShippingDirection_list_mt_no?mt_no=@ViewBag.mt_no",
+            type: "get",
+            dataType: "json",
+            data: {
+                ml_no: s_ml_no,
+                lct_cd: s_lct_cd,
+                exp_input_dt: exp_input_dt,
+
+            },
+            success: function (result) {
+                //debugger
+                $("#list_mt").jqGrid('clearGridData').jqGrid('setGridParam', { datatype: 'local', data: result }).trigger("reloadGrid");
+
+            }
+        });
+
+
+
+    });
+    $('#exp_input_dt').datepicker({ dateFormat: 'yy-mm-dd' }).val();
+    $("#print_split").on("click", function () {
+        var i, selRowIds = $('#list_mt').jqGrid("getGridParam", "selarrrow"), n, rowData;
+        if (selRowIds.length > 0) {
+            window.open("/ShippingMgt/_print_spdr?id=" + selRowIds, "PRINT", "width=600, height=800, left=200, top=100, location=no, status=no")
+        }
+        else {
+            alert("Please select Grid.");
+        }
+    })
+    function bntCellSplit_phan2(cellvalue, options, rowdata, action) {
+        var sdmid = rowdata.wmtid;
+
+        var html = '<button data-wmtid="' + rowdata.wmtid + '" data-mt_cd="' + rowdata.mt_cd + '" data-orgin_mt_cd="' + rowdata.orgin_mt_cd + '" data-gr_qty="' + rowdata.gr_qty1 + '" data-mt_sts_cd="' + rowdata.mt_sts_cd1 + '" data-remark="' + rowdata.remark + '"class=" del_save_but btn btn-xs btn-success " onclick="btn_Split_Save_phan2(this);" >Split</button>';
+
+
+        return html;
+    }
+    function btn_Split_Save_phan2(e) {
+        var wmtid = $(e).data("wmtid");
+        var mt_cd = $(e).data("mt_cd");
+        var orgin_mt_cd = $(e).data("orgin_mt_cd");
+        var gr_qty = $(e).data("gr_qty");
+        var mt_sts_cd = $(e).data("mt_sts_cd");
+        var remark = $(e).data("remark");
+        $('.Shipping_Derection_Split').dialog('open');
+        $('#wmtid1').val(wmtid);
+        $('#mt_cd1').val(mt_cd);
+        $('#mt_no_origin1').val(orgin_mt_cd);
+        $('#gr_qty1').val(gr_qty);
+        $('#mt_sts_cd1').val(mt_sts_cd); 
+        $('#remark1').val(remark);
+    }
+
+</script>
+
+
+

@@ -1,0 +1,104 @@
+﻿@{
+    ViewBag.Title = "General";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="@Html.Raw(ViewData["TIMS"])" data-level_2="@Html.Raw(ViewData["Inventory"])" data-level_3="@Html.Raw(ViewData["General"])"></div>
+}
+
+<!--SEARCH FUNCTION-->
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0" style="display: flex; flex-wrap: nowrap;">
+            <div class="col-md-1 py-1">
+                <label><b>Status</b></label>
+                <select name="use_yn" id="status" class="form-control valid">
+                    <option value="008,002,010,009,012" selected="selected">Tất Cả</option>
+                    <option value="008">Hàng chờ kiểm</option>
+                    <option value="002">Hàng đang kiểm tra</option>
+                    <option value="010">Hàng đóng gói</option>
+                    <option value="002,HCOQC">Hàng Chờ vào OQC</option>
+                    <option value="015">Sorting</option>
+                </select>
+            </div>
+            <div class="col-md-1 p-1">
+                <label><b>PO</b></label>
+                <input type="text" name="s_at_no" id="s_at_no" class="input-text form-control">
+            </div>
+            <div class="col-md-1 p-1">
+                <label><b>Model</b></label>
+                <input type="text" name="s_at_no" id="s_model" class="input-text form-control">
+            </div>
+            <div class="col-md-1 p-1">
+                <label><b>Product Code</b></label>
+                <input type="text" name="s_prd_cd" id="s_prd_cd" class="input-text form-control">
+            </div>
+            <div class="col-md-1 p-1">
+                <label>Type(Roll/Sheet)</label>
+                <select id="s_bom_type" class="form-control">
+                    <option value="" selected="selected">*Type*</option>
+                    <option value="RollType">Roll Type</option>
+                    <option value="FOLDABLE">FOLDABLE</option>
+                    <option value="SAMPLE">SAMPLE</option>
+                    <option value="ZType">Z Type</option>
+                    <option value="SheetType">Sheet Type</option>
+                    <option value="METAL">METAL</option>
+                </select>
+
+            </div>
+            <div class="col-md-1 p-1">
+                <label><b>Composite Code</b></label>
+                <input type="text" name="" id="sMaterialCode" class="input-text form-control">
+            </div>
+            <div class="col-md-2 p-1">
+                <label><b>Container</b></label>
+                <input type="text" name="" id="sVBobbinCd" class="input-text form-control">
+            </div>
+            <div class="col-md-1 p-1">
+                <label><b>Receive Date</b></label>
+                <input type="text" name="sReceivedDateStart" id="recevice_dt_start" class="form-control">
+            </div>
+            <div class="col-md-1 p-1">
+                <label style="width:100%"><b>&nbsp;&nbsp;</b></label>
+                <input type="text" name="sReceivedDateEnd" id="recevice_dt_end" class="form-control">
+            </div>
+            <div class="col-md-1 p-1">
+                <label style="width:100%"><b>&nbsp;&nbsp;</b></label>
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+
+            <div class="col-md-1 p-1">
+                <form method="post" id="exportData">
+                    <button id="excelBtn" class="btn btn-sm btn-warning button-srh" style="float:right"><i class="fa fa-file-excel-o">&nbsp;Excel</i></button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--GRID FUNCTION-->
+<div class="container-fluid">
+    <div class="box-body bg-white">
+        <div class="col-md-12">
+            <table id="list"></table>
+            <div id="listPager"></div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(function () {
+            var tab = $('.nav-tabs-custom .nav.nav-tabs li a');
+            $(tab).click(function (e) {
+                var ul = $(e.target).closest('ul');
+                $(ul).find('li').removeClass('active');
+                $(e.target).closest('li').addClass('active');
+            });
+        });
+    </script>
+    @*
+        <script src="~/Scripts/TIMS/Inventory/General.js"></script>*@
+    <script src="~/Scripts/TIMS/Inventory/General2.js"></script>
+}

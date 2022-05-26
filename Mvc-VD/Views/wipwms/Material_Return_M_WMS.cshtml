@@ -1,0 +1,264 @@
+﻿@{
+    ViewBag.Title = "Receiving_Manual";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+   
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="WIP-WMS" data-level_2="Return" data-level_3="Material Return M-WMS"></div>
+
+}
+<!-- Search function -->
+<input type="hidden" name="pdid" id="pdid" >
+<input type="hidden" name="mpo_no" id="mpo_no" >
+<input type="hidden" name="mdpo_no" id="mdpo_no" >                         
+<input type="hidden" name="mt_no_sv" id="mt_no_sv" >    
+<input type="hidden" name="c_item_vcd" id="c_item_vcd" >
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+             <div class="col-md-0 ml-5 px-1 py-2 text-right">
+                <label><b>BOM No</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <div class="input-group mt_plus">
+                    <input type="text" name="bom_no" id="bom_no" class="input-text form-control">
+                    <span class="input-group-addon ">
+                        <button type="button" id="bomPopupBtn" class="btn btn-outline-warning button-sm  poupdialog_BOM"><i class="fa fa-search text-navy"></i></button>
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-0 ml-5 px-1 py-2 text-right">
+                <label><b>Material No</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <div class="input-group mt_plus">
+                    <input type="text" name="mt_no" id="c_mt_no" class="input-text form-control">
+                    <span class="input-group-addon ">
+                        <button type="button" id="c_popupMater" class="btn btn-outline-warning button-sm  poupdialogMaterial"><i class="fa fa-search text-navy"></i></button>
+                    </span>
+                </div>
+            </div>
+             <div class="col-md-1 p-1  text-right">
+                <label><b>ML NO</b></label>
+            </div>
+            <div class="col-md-3 p-1">
+                <input type="text" name="mt_barcode" id="mt_barcode" class="form-control" ">      
+            </div>
+              @*<div class="col-md-1 px-1 py-2 text-right">
+                <label><b>Status</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <select name="mt_sts_cd" id="mt_sts_cd" class="form-control"></select>
+            </div>*@
+            <div class="col-md-1 px-1 py-2 text-right">
+                <label><b>Location</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <select name="lct_cd" id="c_lct_cd" class="form-control"></select>
+            </div>
+            <div class="col-md-1 p-1">
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+      </div>
+  </div>
+</div>
+
+
+<!-- ./Search function -->
+
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <table id="list"></table>
+            <div id="gridpager"></div> 
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="dialog2" title="Material">
+        <div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-3">
+                <div class="row">
+                    <label class="col-xs-3 control-label text-right">
+                        <h6 class="control-label-text"><b>Type</b></h6>
+                    </label>
+                    <div class="col-xs-9">
+                        <div class="input-group" style="width: 100%;">
+                            <select name="mt_type" id="mt_type" class="form-control ">
+                                <option value="">* Type *</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="row">
+                    <label class="col-xs-3 control-label text-right">
+                        <h6 class="control-label-text"><b>Code</b></h6>
+                    </label>
+                    <div class="col-xs-9" >
+                        <input type="text" name="mt_no" id="mt_no" class="form-control"  style="width: 100%;">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+
+                <div class="row">
+                    <label class="col-xs-3 control-label text-right">
+                        <h6 class="control-label-text"><b>Name</b></h6>
+                    </label>
+                    <div class="col-xs-9" >
+                        <input type="text" name="mt_nm" id="mt_nm" class="form-control" style="width: 100%;">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 text-right">
+                <button id="searchBtn_pp_mt" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                <button type="button"class="btn btn-success button-srh2" id="selected"><i class="fa fa-check">Selected</i></button>
+                <button type="button" class="btn btn-sm btn-primary button-srh" id="closestyle"><i class="fa fa-close">&nbsp;Close</i></button>
+
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <table id="popupMaterial"></table>
+                <div id="pagerMaterial"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="" id="tab_pp3"><a href="#tab_pp3" data-toggle="tab">Return</a></li>
+            </ul>
+        </div>
+        <div class="container-fluid">
+            <input type="hidden" name="name" value=" " id="cp_id_bb_no" />
+            <input type="hidden" name="name" value=" " id="gr_qty_update" />
+               <input type="hidden" name="wmtid" value=" " id="wmtid" />
+            <!-- Tab Return -->
+            <div class="tab-content active" id="tab_c_pp3">
+                <form id="form2">
+                    <div class="container-fluid p-0 m-0">
+                        <div class="box-body  text-right">
+                            <div class="row p-0 m-0">
+                                @*<div class="col-md-auto py-1">
+                                    <label><b>ML No</b></label>
+                                </div>
+                                <div class="col-md-2 p-1 mr-5">
+                                    <input type="text" name="return_mt_no" id="c_return_ml_no" class="form-control" readonly="readonly">
+                                </div>*@
+                                @*<div class="col-md-0 px-1 py-2 text-right">
+                                      <label><b>Destination</b></label>
+                                 </div>
+                                 <div class="col-md-1 p-1">
+                                          <select name="warehouse" id="warehouse" class="form-control"></select>
+                                  </div>*@
+                                @*<div class="col-md-auto py-1">
+                                    <label><b>Qty</b></label>
+                                </div>
+                                <div class="col-md-2 p-1 mr-5">
+                                    <input type="number" name="c_edit_qty" id="c_edit_qty" class="form-control text-right">
+                                    <input type="text" name="c_return_qty1" id="c_return_qty1" class="form-control text-right" hidden="hidden">
+                                  
+                                </div>*@
+                                <div class="col-md-0 p-1">
+                                    <label><b>Remark</b></label>
+                                </div>
+                                <div class="col-md-3 p-1">
+                                     <input type="text" name="c_remark" id="c_remark" class="form-control" ">      
+                                </div>
+                                <div class="col-md-1 px-1 py-2 ">
+                                    <button type="button" id="btn_save_qty" class="btn btn-success button-srh2  mr-5 "><i class="fa fa-save">&nbsp;Return</i></button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+            <!-- ./Tab Return -->
+        </div>
+
+    </div>
+</div>
+
+   
+<!--Dialog BOM-->
+<div class="dialog_BOM" title="BOM Information">
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body well text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-3 p-2">
+                    <input type="text" name="bom_no" id="s_bom_no_popup" placeholder="BOM no" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="s_style_no_popup" placeholder="Product Code" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="md_cd" id="s_model_no_popup" placeholder="Model Code" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2 d-flex">
+                    <button id="searchBtn_BOM_popup" class="btn btn-sm mr-5 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button type="button" class="btn btn-sm btn-success button-srh disabled" id="savestyle_BOM"><i class="fa fa-save">&nbsp;Selected</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid  p-0 m-0">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0 boxBOM">
+                <table id="popupBOM"></table>
+                <div id="pagerBOM"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ./ Dialog -->
+  
+
+<style>
+    span.input-group-addon {
+        padding: 0;
+        border: 0.1px solid;
+    }
+</style>
+@section scripts {
+    <script src="~/Scripts/wipwms/Material_Return_M_WMS/Material_Return_M_WMS.js"></script>
+    <script src="~/Scripts/wipwms/Material_Return_M_WMS/Material_Poup.js"></script>
+    <script src="~/Scripts/wipwms/Material_Return_M_WMS/bomno_popup.js"></script>
+
+
+     <script>
+         $(document).ready(function () {
+             $('.nav-link > p').addClass('text-white');
+             $('.POManagement').addClass('text-warning');
+             $('.Development-menu').addClass('menu-open');
+         });
+    </script>
+    
+    <script>
+        function onlyNumber(event) {
+            event = event || window.event;
+            var keyID = (event.which) ? event.which : event.keyCode;
+            if ((keyID >= 48 && keyID <= 57) || (keyID >= 96 && keyID <= 105) || keyID == 8 || keyID == 46 || keyID == 37 || keyID == 39)
+                return;
+            else
+                return false;
+        }
+    </script>
+}
+

@@ -1,0 +1,260 @@
+﻿<input type="hidden" name="" id="ProductCode" class="input-text form-control">
+<input type="hidden" name="" id="wmtid" class="input-text form-control">
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0" style="display: flex; flex-wrap: nowrap;">
+            <div class="col-md-4 p-1">
+                <label><b>Mã Tem gói</b></label>
+                <div class="input-group mt_plus">
+                    <input type="text" name="" id="BuyerCode" class="input-text form-control">
+                </div>
+            </div>
+            <div class="col-md-4 p-1">
+                <label><b>Mã Tem gói thay thế</b></label>
+                <div class="input-group mt_plus">
+                    <input type="text" name="" id="ChangeStamp" class="input-text form-control">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="p-0 m-0">
+            <table id="list"></table>
+            <div id="listPager"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+
+    $(function () {
+        $("#list").jqGrid
+            ({
+
+                mtype: 'GET',
+                datatype: 'json',
+                colModel: [
+                    { key: true, label: 'wmtid', name: 'wmtid', width: 50, align: 'center', hidden: true },
+
+                    { key: false, label: 'Mã Tem Gói', name: 'buyer_qr', width: 240, align: 'center' },
+                    { key: false, label: 'Container', name: 'mt_cd', width: 240, align: 'center' },
+                    { key: false, label: 'Product', name: 'product', width: 150, align: 'center' },
+                    { key: false, label: 'Location', name: 'locationName', width: 150, align: 'center' },
+                    { key: false, label: 'Status', name: 'NameStatus', width: 150, align: 'center' },
+                    { key: false, label: 'Quantity', name: 'gr_qty', width: 100, align: 'right', formatter: 'integer' },
+                    //{ name: '', label: 'Đổi Tem gói', width: 50, align: 'center', formatter: AddBuyerCode, exportcol: false },
+                ],
+                onSelectRow: function (rowid, selected, status, e) {
+                    var selectedRowId = $("#list").jqGrid("getGridParam", 'selrow');
+                    var rowData = $("#list").getRowData(selectedRowId);
+
+
+
+                },
+                loadonce: true,
+                shrinkToFit: false,
+                pager: '#listPager',
+                rowNum: 50,
+                width: null,
+                rownumbers: true,
+                multiselect: false,
+                multiPageSelection: true,
+                rowList: [50, 100, 200, 500, 1000],
+                viewrecords: true,
+                height: 200,
+                loadonce: true,
+                jsonReader:
+                {
+                    root: "rows",
+                    page: "page",
+                    total: "total",
+                    records: "records",
+                    repeatitems: false,
+                    Id: "0"
+                },
+
+            });
+    });
+
+    $("#BuyerCode").on("keydown", function (e) {
+
+        if (e.keyCode === 13) {
+
+            $.ajax({
+                url: "/TIMS/ViewStatusTemGoi",
+                type: "get",
+                dataType: "json",
+                data: {
+                    BuyerCode: $("#BuyerCode").val().trim()
+                },
+                success: function (response) {
+                    if (response.result) {
+                       
+                        debugger;
+
+                        $("#list").jqGrid('clearGridData');
+                        $("#list").jqGrid('addRowData', response.data.wmtid, response.data, 'first');
+                        $("#list").setRowData(response.data, false, { background: "#d0e9c6" });
+
+                        document.getElementById("ChangeStamp").focus();
+                        $("#ChangeStamp").val("");
+                        $("#ProductCode").val(response.data.product);
+                        $("#wmtid").val(response.data.wmtid);
+                        SuccessAlert(response.message);
+                    
+
+                    } else {
+                        document.getElementById("BuyerCode").focus();
+                        $("#BuyerCode").val("");
+                        $('#ChangeStamp').val("");
+                        $('#BuyerCode').val("");
+                        $('#ProductCode').val("");
+                        
+                        $.blockUI({
+                            message: response.message,
+                            timeout: 1500,
+                            css: {
+                                border: 'none',
+                                padding: '15px',
+                                backgroundColor: 'red',
+                                '-webkit-border-radius': '10px',
+                                '-moz-border-radius': '10px',
+                                opacity: 1,
+                                color: '#fff',
+                                fontSize: '20px'
+                            }
+                        });
+                        $("#list").jqGrid('clearGridData');
+                     
+                        return false;
+                    }
+                },
+                error: function (result) {
+                    $("#list").jqGrid('clearGridData');
+
+                    document.getElementById("BuyerCode").focus();
+                    $("#BuyerCode").val("");
+                    $('#ChangeStamp').val("");
+                    $('#BuyerCode').val("");
+                    $('#ProductCode').val("");
+                    
+                }
+            });
+        }
+    });
+
+    $("#ChangeStamp").on("keydown", function (e) {
+        debugger;
+        if (e.keyCode === 13) {
+            var stampOld = $("#BuyerCode").val().trim();
+            var stampNew = $("#ChangeStamp").val().trim();
+            var ProductCode = $("#ProductCode").val().trim();
+            var wmtid = $("#wmtid").val().trim();
+            if (stampOld == "" || stampOld == undefined) {
+                ErrorAlert("Vui lòng Scan tem gói");
+                $("#BuyerCode").val("");
+                $('#BuyerCode').focus();
+                return;
+            }
+            if (stampNew == "" || stampNew == undefined) {
+                ErrorAlert("Vui lòng Scan Tem gói muốn thay thế");
+                $("#ChangeStamp").val("");
+                $('#ChangeStamp').focus();
+                return;
+            }
+            if (ProductCode == "" || ProductCode == undefined) {
+                ErrorAlert("Không tìm thấy product");
+                $("#stampOld").val("");
+                $('#stampOld').focus();
+                return;
+            }
+            if (wmtid == "" || wmtid == undefined) {
+                ErrorAlert("Không tìm thấy id của mã bobbin");
+                $("#stampOld").val("");
+                $('#stampOld').focus();
+                return;
+            }
+            $.ajax({
+                url: "/TIMS/ChangStamp",
+                type: "get",
+                dataType: "json",
+                data: {
+                    stampOld: stampOld,
+                    stampNew: stampNew,
+                    ProductCode: ProductCode,
+                    wmtid: wmtid,
+
+                },
+                success: function (response) {
+                    if (response.result) {
+                       
+                        var data = $('#list').jqGrid('getRowData');
+                        for (var i = 0; i < data.length; i++) {
+                            data[i].buyer_qr = stampNew;
+                        }
+                        $("#list").jqGrid('setGridParam', {
+                            datatype: 'local',
+                                data: data
+                            })
+                            .trigger("reloadGrid");
+
+                        document.getElementById("BuyerCode").focus();
+                        $('#ChangeStamp').val("");
+                        $('#BuyerCode').val("");
+                        $('#ProductCode').val("");
+                        $('#wmtid').val("");
+                        SuccessAlert(response.message);
+                        return false;
+                    }
+                    else {
+                       
+                        $('#ChangeStamp').val("");
+                        $('#BuyerCode').val("");
+                        $('#ProductCode').val("");
+                        $('#wmtid').val("");
+                        document.getElementById("BuyerCode").focus();
+                        $.blockUI({
+                            message: response.message,
+                            timeout: 1500,
+                            css: {
+                                border: 'none',
+                                padding: '15px',
+                                backgroundColor: 'red',
+                                '-webkit-border-radius': '10px',
+                                '-moz-border-radius': '10px',
+                                opacity: 1,
+                                color: '#fff',
+                                fontSize: '20px'
+                            }
+                        });
+                        $("#list").jqGrid('clearGridData');
+                       
+                        return false;
+                    }
+                },
+                error: function (result) {
+                    $('#ChangeStamp').val("");
+                    $('#BuyerCode').val("");
+                    $('#ProductCode').val("");
+                    $('#wmtid').val("");
+                    document.getElementById("BuyerCode").focus();
+
+                    $("#list").jqGrid('clearGridData');
+                    return false;
+                  
+                }
+            });
+        }
+    });
+</script>
+
+<style>
+    button#m_save_but_p, button#c_save_but_p, button#m_delete_but_p {
+        float: right;
+        display: inline-block;
+    }
+</style>

@@ -1,0 +1,473 @@
+﻿@{
+    //ViewBag.Title = "ProcessMgt";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="DEVELOPMENT" data-level_2="Development Management" data-level_3="Line Management"></div>
+} 
+
+<link href="~/CSS/DevManagement/ProcessMgt/process.css" rel="stylesheet" />
+<!-- Search function -->
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-1 p-1 mr-5">        
+                <select id="s_fac_cd" class="form-control">
+                    <option value="">*Factory*</option>
+                </select>      
+            </div>
+            <div class="col-md-auto p-1">
+                <label><b>Line Code</b></label>
+            </div>
+            <div class="col-md-1 p-1 mr-5">
+                <input type="text" name="process_no" id="process_no" maxlength="20" class="input-text form-control">
+            </div>
+            <div class="col-md-auto p-1">
+                <label><b>Name</b></label>
+            </div>
+            <div class="col-md-1 p-1 mr-5">
+                <input type="text" name="process_nm" id="process_nm" class="form-control" maxlength="50">
+            </div>
+            <div class="col-md-auto p-1">
+                <label><b>Bom</b></label>
+            </div>
+            <div class="col-md-1 p-1 mr-5">
+                <div class="input-group mt_plus">
+                    <input type="text" name="bom_no" id="s_bom_no" class="input-text form-control" placeholder="Bom">
+                    <span class="input-group-addon dcmaterial">
+                        <button type="button" id="" class="btn button-sm form-control poupdialogbom_search"><i class="fa fa-search text-navy"></i></button>
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-auto p-1">
+                <label><b>Model</b></label>
+            </div>
+            <div class="col-md-1 p-1 mr-5">
+                <input type="text" name="md_cd" id="md_cd" class="form-control " maxlength="100">
+            </div>
+            <div class="col-md-auto p-1">
+                <label><b>Create Date</b></label>
+            </div>
+            <div class="col-md-1 p-1 mr-5">
+                <input type="text" name="start_dt" id="start" class="form-control">
+            </div>
+            <div class="col-md-auto p-1">
+                <label><b>~</b></label>
+            </div>
+            <div class="col-md-1 p-1 mr-5">
+                <input type="text" name="end_dt" id="end" class="form-control">
+            </div>
+            <div class="col-md-1 p-1">
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+            
+        </div>
+    </div>
+</div>
+<!-- ./Search function -->
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white boxA">
+        <div class="row p-0 m-0">
+            <table id="list"></table>
+            <div id="jqGridPager"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Function task-->
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li class="active" id="tab_1"><a href="#tab_1" data-toggle="tab">Create</a></li>
+                <li id="tab_2"><a href="#tab_2" data-toggle="tab">Modify</a></li>
+            </ul>
+        </div>
+        <div class="tab-content active" id="tab_c1">
+            <form name="form1" id="form1" enctype="multipart/form-data" role="form" method="post" target="zeroFrame">
+                <div class="box-body box-body-input-move">
+                    <input type="hidden" name="bid" id="c_bid" value="1">
+                    <div class="row p-0 m-0">
+                        <div class="col-md-2 p-1 mr-5">                          
+                            <select id="c_fac_cd" class="form-control">
+                                <option value="">*Factory*</option>
+                            </select>                         
+                        </div>
+                        <div class="col-md-2 p-1 mr-5">
+                            <input type="text" name="process_no" id="c_process_no" class="input-text form-control" placeholder="NO" readonly="readonly">
+                        </div>
+                        <div class="col-md-2 p-1  mr-5">
+                            <input type="text" name="process_nm" id="c_process_nm" class="input-text form-control" placeholder="Name">
+                        </div>
+                        <div class="col-md-2 p-1  mr-5">
+                            <div class="input-group mt_plus">
+                                <input type="text" name="bom_no" id="c_bom_no" class="input-text form-control" placeholder="Bom">
+                                <span class="input-group-addon dcmaterial">
+                                    <button type="button" id="" class="btn button-sm form-control poupdialogbom_func"><i class="fa fa-search text-navy"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-1 p-2 d-flex mr-5">
+                            <button type="button" id="c_save_but" class="btn btn-success button-srh2 active"><i class="fa fa-save">&nbsp;Create</i></button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="tab-content hidden" id="tab_c2">
+            <form name="form2" id="form2" enctype="multipart/form-data" role="form" method="post" target="zeroFrame">
+                <div class="box-body box-body-input-move">
+                    <input type="hidden" name="pid" id="m_pid" value="">
+                    <div class="row  p-0 m-0">
+                        <div class="col-md-2 p-1 mr-5">
+                            <select id="m_fac_cd" class="form-control"  readonly="readonly" disabled="disabled">
+                                <option value="">*Factory*</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2 p-1 mr-5">
+                            <input type="text" name="process_no" id="m_process_no" class="input-text form-control" placeholder="NO" readonly="readonly">
+                        </div>
+                        <div class="col-md-2 p-1  mr-5">
+                            <input type="text" name="process_nm" id="m_process_nm" class="input-text form-control" placeholder="Name">
+                        </div>
+                        <div class="col-md-2 p-1  mr-5">
+                            <div class="input-group mt_plus">
+                                <input type="text" name="bom_no" id="m_bom_no" class="input-text form-control" placeholder="Bom">
+                                <span class="input-group-addon dcmaterial">
+                                    <button type="button" id="" class="btn button-sm form-control poupdialogbom_func"><i class="fa fa-search text-navy"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-1 p-2 d-flex mr-5">
+                            <button type="button" id="m_save_but" class="btn btn-success button-srh2 active"><i class="fa fa-save">&nbsp;Modify</i></button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- ./Function task-->
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-7 pl-0 pr-1">
+            <div class="row p-0 m-0">
+                <div class="col-md-12">
+                    <div class="box-body m-2 bg-white boxlist">
+                        <table id="list2"></table>
+                        <div id="partpager"></div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="box-body m-2 bg-white boxlist">
+                        <div class="nav-tabs-custom">
+                            <ul class="nav nav-tabs">
+                                <li class="active" id="tab_3"><a href="#tab_1" data-toggle="tab">Save</a></li>
+                            </ul>
+                        </div>
+                        <div class="tab-content active" id="tab_c3">
+                            <form name="form4" id="form4" enctype="multipart/form-data" role="form" method="post" target="zeroFrame">
+                                <input type="hidden" name="ppid" id="m_ppid" value="">
+                                <input type="hidden" name="process_no" value=" " id="m2_process_no" />
+                                <div class="row m-1">
+                                    <div class="col-md-12 py-2 text-right">
+                                        <button type="button" id="m2_save_but" class="btn btn-success button-srh2 "><i class="fa fa-save">&nbsp;Save</i></button>
+                                    </div>
+                                    <div class="col-md-3 p-1">
+                                        <input type="text" name="part_no" id="m_part_no" class="input-text form-control" placeholder="Process Code" readonly="readonly">
+                                    </div>
+                                    <div class="col-md-3 p-1">
+                                        <input type="text" name="part_nm" id="m_part_nm" class="input-text form-control" maxlength="8" placeholder="Process Name" readonly="readonly">
+                                    </div>
+                                    <div class="col-md-3 p-1">
+                                        <input type="text" name="man_num" id="m_man_num" class="input-text form-control" maxlength="8" placeholder="Step">
+                                    </div>
+                                    <div class="col-md-3 p-1">
+                                        <input type="number" name="need_time" id="m_need_time" class="input-text form-control" maxlength="8" placeholder="Tack time">
+                                    </div>
+                                    <div class="col-md-3 p-1">
+                                        <div class="row p-0 m-0">
+                                            <div class="col-md-12 form-control-text">
+                                                <input type="file" name="file" id="imgupload2" accept="image/gif, image/jpeg, image/png">
+                                            </div>
+                                            <div class="col-xs-12 form-control-text">
+                                                <div id="m_logo" class="p-1"></div>
+                                                <input type="hidden" name="logo" id="m_logo1" value="">
+                                            </div>
+                                        </div>
+                                                    
+                                    </div>
+                                    <div class="col-md-3 p-1">
+                                        <select id="m_mc_type" class="form-control">
+                                            <option value="">*Process Type*</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 p-1">
+                                        <div class="input-group mt_plus">
+                                            <input type="text" name="m_item_vcd" id="m_item_vcd" class="input-text form-control" placeholder="Item Code">
+                                            <span class="input-group-addon dcmaterial">
+                                                <button type="button" id="" class="btn button-sm form-control poupdialog6item_mt"><i class="fa fa-search text-navy"></i></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 p-1">
+                                        <div class="input-group my-colorpicker2 colorpicker-element">
+                                            <input type="text" name="m_color" id="m_color" class="form-control" placeholder="RGB Code" maxlength="10">
+                                            <div class="input-group-addon">
+                                                <i style="background-color: rgb(0, 0, 0);"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>       
+        </div>
+
+        <div class="col-md-5  pl-1 pr-0">
+            <div class="row p-0 m-0">
+                <div class="col-md-12">
+                    <div class="box-body m-2 bg-white boxlist2">
+                        <table id="list4"></table>
+                        <div id="seguencepager"></div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="box-body m-2 bg-white">
+                        <div class="nav-tabs-custom">
+                            <ul class="nav nav-tabs">
+                                <li class="active" id="tab_7"><a href="#tab_7" data-toggle="tab">Create</a></li>
+                                <li class="" id="tab_8"><a href="#tab_8" data-toggle="tab">Modify</a></li>
+                            </ul>
+                        </div>
+                        <div class="tab-content active" id="tab_c7">
+                            <form name='form7' id='form7' enctype="multipart/form-data" role="form" method="post" target="zeroFrame">
+                                <div class="row m-1">
+                                    <div class="col-md-12 p-1 text-right">
+                                        <button type="button" id="c4_save_but" class="btn btn-success button-srh2 active"><i class='fa fa-save'>&nbsp;Create</i></button>
+                                    </div>
+                                    <div class="col-md-6 p-1">
+                                        <select id="g_part_no" class="form-control">
+                                            <option value="">*Process*</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 p-1">
+                                        <select id="be_part_no" class="form-control">
+                                            <option value="">*Next Process*</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-content hidden" id="tab_c8">
+                            <form name='form8' id='form8' enctype="multipart/form-data" role="form" method="post" target="zeroFrame">
+                                <input type="hidden" name="m_pbid" id="m_pbid" value=''>
+                                <div class="row m-1">
+                                    <div class="col-md-12 p-1 text-right">
+                                        <button type="button" id="m4_save_but" class="btn btn-success button-srh2 active"><i class='fa fa-save'>&nbsp;Modify</i></button>
+                                    </div>
+                                    <div class="col-md-6 p-1">
+                                        <select id="gm_part_no" class="form-control">
+                                            <option value="">*Part*</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 p-1">
+                                        <select id="bem_part_no" class="form-control">
+                                            <option value="">*Next Part*</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>       
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0" id="list5">
+            <div class="box"></div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="dialog" title="Machine">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-primary button-srh" id="closemachine"><i class="fa fa-close">&nbsp;Close</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <table id="popupmachine"></table>
+                <div id="pagermachine"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="dialog2_search" title="Bom Information">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-primary button-srh" id="closebom_search"><i class="fa fa-close">&nbsp;Close</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <table id="popupbom_search"></table>
+                <div id="pagerbom_search"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="dialog2_func" title="Bom Information">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-primary button-srh" id="closebom_func"><i class="fa fa-close">&nbsp;Close</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <table id="popupbom_func"></table>
+                <div id="pagerbom_func"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="dialog3">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+
+                    <button type="button" class="btn btn-sm btn-primary button-srh" id="closebom1"><i class="fa fa-close">&nbsp;Close</i></button>
+                    <button id="export">export</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div id="Process_Information">
+
+
+            <div class="box-body my-2 bg-white">
+                <div id="info"></div>
+            </div>
+        </div>
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <div id="popup">
+                    <table id="popupbom1"></table>
+                    <div id="pagerbom1"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="dialog4" title="Mind map Product ">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-primary button-srh" id="closepro"><i class="fa fa-close">&nbsp;Close</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <div id="popuppro"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="dialog5" title="Process Unit ">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-primary button-srh" id="closeproes_unit"><i class="fa fa-close">&nbsp;Close</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <table id="popupproes_unit"></table>
+                <div id="proes_unitpager"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="dialog6" title="Item Information">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-primary button-srh" id="closeitem_mt"><i class="fa fa-close">&nbsp;Close</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <table id="popupitem_mt"></table>
+                <div id="page_item_mt"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section scripts{
+    <script src="~/Scripts/DevManagement/ProcessMgt/bom_popup.js"></script>
+    <script src="~/Scripts/DevManagement/ProcessMgt/machine_popup.js"></script>
+    <script src="~/Scripts/DevManagement/ProcessMgt/popup_process_unit.js"></script>
+    <script src="~/Scripts/DevManagement/ProcessMgt/process.js"></script>
+    <script src="~/Scripts/DevManagement/ProcessMgt/popup_item_mt.js"></script>
+}
+
+

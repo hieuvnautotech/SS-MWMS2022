@@ -1,0 +1,215 @@
+﻿<div class="nav-tabs-custom">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#tab_1" data-toggle="tab">QC Result</a></li>
+        <li><a href="#tab_2" data-toggle="tab">QC Defective Result</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="tab_1">
+            @*<div class="row">
+                    <div class="col-md-4" style="margin-bottom: 1em;">
+                        <div style="border: 1px solid #333">
+                            <canvas id="myChart_info_PQC" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+
+                </div>*@
+            <div class="row">
+                @{
+                    int stt1 = 0;
+                }
+                @if (Model.Count > 0)
+                {
+                    foreach (var item in Model[0].chart_info)
+                    {
+                        stt1++;
+                        <div class="col-md-4" style="margin-bottom: 1em;">
+                            <div style="border: 1px solid #333">
+                                <canvas id="myChart_info_@stt1" width="400" height="200"></canvas>
+                            </div>
+                        </div>
+                        <script>
+
+                    $(function () {
+
+                        var data = {
+                            labels: ['Check Qty', 'Ok Qty', 'Defect Qty'],
+
+                            datasets: [
+                                {
+                                    //@* labels: [' ', '@item.fo_no', ''],*@
+                                    data: [@item.qc_qty, @item.ok_qty, @item.def_qty],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                                borderWidth: 1
+                                }]
+                        }
+                        var options = {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }],
+                            xAxes: [{
+                                scaleLabel: {
+                                    display: true,
+                                    labelString: "@item.ml_no"
+                                }
+                            }],
+                        },
+                        legend: {
+                            display: false,
+                            labels: {
+                                boxWidth: 0
+                            }
+                        },
+
+                        title: {
+                            display: true,
+                            label: false,
+                            position: 'top',
+                            text: "@item.fq_no - [ @item.ml_no ] - @item.work_dt",
+                            },
+
+
+                    }
+
+                    var myBarChart = new Chart(document.getElementById('myChart_info_@stt1').getContext('2d'), {
+                        type: 'bar',
+                        data: data,
+                        options: options
+                    });
+                                                                                                        });
+                        </script>
+                    }
+                }
+            </div>
+        </div>
+
+        <div class="tab-pane" id="tab_2">
+            @{
+                int stt = 0;
+            }
+            @foreach (var item in Model)
+            {
+
+                stt++;
+
+                <div class="col-md-4" style="margin-bottom: 1em;">
+                    <div style="border: 1px solid #333">
+                        <canvas id="myChart_error_@stt" width="400" height="200"></canvas>
+                    </div>
+                </div>
+                <script>
+                $(function () {
+
+                    var data = {
+                        labels: [@Html.Raw(item.labels)],
+
+                    datasets: [
+                        {
+                            data: [@Html.Raw(item.datasets)],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                    ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(255, 159, 64, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                        ],
+                            borderWidth: 1,
+                            }]
+                    }
+                    var options = {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }],
+                        xAxes: [{
+                            scaleLabel: {
+                                display: true,
+                                labelString: '@item.fq_no'
+                            }
+                        }],
+                    },
+
+                    title: {
+                        display: true,
+                        label: false,
+                        position: 'top',
+                        text: " [ @item.fq_no ] - [ @item.ml_no ] - [Total Defective Quantity : @item.total_def_qty ]",
+
+
+                    },
+                    legend: {
+                        display: false,
+                        labels: {
+                            boxWidth: 0
+                        }
+                    },
+                    layout: {
+                        padding: {
+                            left: 15,
+                            right: 15,
+                            top: 15,
+                            bottom: 15
+                        }
+                    }
+                }
+
+                var myBarChart = new Chart(document.getElementById('myChart_error_@stt').getContext('2d'), {
+                    type: 'bar',
+                    data: data,
+                    options: options
+                });
+                                                                                })
+                </script>
+            }
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        var tab = $('.nav-tabs-custom .nav.nav-tabs li a');
+        $(tab).click(function (e) {
+            var ul = $(e.target).closest('ul');
+            $(ul).find('li').removeClass('active');
+            $(e.target).closest('li').addClass('active');
+        })
+    });
+</script>

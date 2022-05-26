@@ -1,0 +1,48 @@
+-- SQLINES DEMO ***  Distrib 8.0.26, for Win64 (x86_64)
+--
+-- SQLINES DEMO *** .11    Database: autodb0314
+-- SQLINES DEMO *** -------------------------------------
+-- SQLINES DEMO *** 0.22
+
+/* SQLINES DEMO *** ARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/* SQLINES DEMO *** ARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/* SQLINES DEMO *** LLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/* SQLINES DEMO *** tf8 */;
+/* SQLINES DEMO *** ME_ZONE=@@TIME_ZONE */;
+/* SQLINES DEMO *** NE='+00:00' */;
+/* SQLINES DEMO *** IQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/* SQLINES DEMO *** REIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/* SQLINES DEMO *** L_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/* SQLINES DEMO *** L_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- SQLINES DEMO *** or table `shippingsdmaterial`
+--
+
+DROP TABLE IF EXISTS autodb0314.[shippingsdmaterial];
+/* SQLINES DEMO *** cs_client     = @@character_set_client */;
+/* SQLINES DEMO *** er_set_client = utf8mb4 */;
+-- SQLINES LICENSE FOR EVALUATION USE ONLY
+CREATE TABLE autodb0314.shippingsdmaterial (
+  [id] int NOT NULL IDENTITY,
+  [sd_no] varchar(100) DEFAULT NULL,
+  [mt_no] varchar(300) DEFAULT NULL,
+  [quantity] float DEFAULT NULL,
+  [meter] float DEFAULT NULL,
+  [reg_id] varchar(20) DEFAULT NULL,
+  [reg_dt] datetime2(0) NOT NULL DEFAULT GETDATE(),
+  PRIMARY KEY ([id])
+)   ;
+/* SQLINES DEMO *** er_set_client = @saved_cs_client */;
+/* SQLINES DEMO *** NE=@OLD_TIME_ZONE */;
+
+/* SQLINES DEMO *** E=@OLD_SQL_MODE */;
+/* SQLINES DEMO *** _KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/* SQLINES DEMO *** CHECKS=@OLD_UNIQUE_CHECKS */;
+/* SQLINES DEMO *** ER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/* SQLINES DEMO *** ER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/* SQLINES DEMO *** ON_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/* SQLINES DEMO *** ES=@OLD_SQL_NOTES */;
+
+-- SQLINES DEMO ***  2021-10-15 18:18:14
+

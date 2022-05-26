@@ -1,0 +1,10 @@
+ Select pmid, id_actual, 
+	DATE_FORMAT(start_dt,'%Y-%m-%d %H:%i:%s'), 
+	DATE_FORMAT(end_dt,'%Y-%m-%d %H:%i:%s'), 
+	remark, mc_no, use_yn, del_yn, reg_id, 
+	reg_dt, chg_id, chg_dt 
+From d_pro_unit_mc
+
+PRODUCT_MATERIAL
+SHIPPINGFSORTINGDETAIL
+W_BOX_MAPPING 

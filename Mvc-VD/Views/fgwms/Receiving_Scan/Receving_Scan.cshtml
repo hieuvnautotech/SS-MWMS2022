@@ -1,0 +1,197 @@
+﻿@{
+    ViewBag.Title = "Receving_Scan";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    @*<div class="col-xs-12" id="current_menu" data-level_1="FG-WMS" data-level_2="Receiving Management" data-level_3="Receiving Scan(FG)"></div>*@
+    <div class="col-xs-12" id="current_menu" data-level_1="@Html.Raw(ViewData["FG-WMS"])" data-level_2="@Html.Raw(ViewData["Receiving Management"])" data-level_3="@Html.Raw(ViewData["Receiving Scan(FG)"])"></div>
+}
+
+
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="row box-body my-2">
+        <div class="col-md-4 py-1">
+            <label>
+                Buyer QR
+            </label>
+            <input type="text" name='scan_temgoi' id='scan_temgoi' class="input-text form-control" placeholder="Buyer QR" required>
+        </div>
+        <div class="col-md-3 py-1">
+            <button type="button" id="Save_completed" class="btn btn-success button-sm"><i class="fa fa-save">&nbsp;Scan Completed</i></button>
+            <button type="button" id="Clear_all_box" class="btn btn-warning button-sm  ml-5"><i class="fa fa-refresh">&nbsp;RESET</i></button>
+        </div>
+        <div class="col-md-2 py-1">
+            <label> </label>
+            <input type="file" name="file" id="excelupload_input1" accept=".xlsx,.xls,.csv,.tsv,.xml,.json" class=" css_excel valid" />
+        </div>
+        <div class="col-md-1 p-2">
+            <label> </label>
+            <button type="button" id="ExcelUpload1" style="" class="css_excelUpload btn btn-primary"><i class="fa fa-upload">&nbsp;Upload</i></button>
+        </div>
+        <div class="col-md-2 p-2 css_button">
+            <label></label>
+            <a id="downloadBtn" href="/Excel/ExcelStamp/stamp.xlsx" class="btn btn-success btn-download btnDownload mr-3" download=""><i class="fa fa-download"> &nbsp;Download Form Excel</i></a>
+        </div>
+    </div>
+</div>
+<div id="grid_infinite"></div>
+<br>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12 p-0 m-0" id="result">
+        </div>
+    </div>
+    <div class="box-body my-2 bg-white">
+        <div class="col-md-8">
+            <table id="list2"></table>
+            <div id="listPager2"></div>
+        </div>
+        <div class="col-md-4">
+            <table id="list4"></table>
+            <div id="listPager4"></div>
+        </div>
+    </div>
+</div>
+
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-2">
+                <label>PO No</label>
+                <input type="text" name="po_no" id="s_po_no" class="input-text form-control">
+            </div>
+            <div class="col-md-2">
+                <label>Product</label>
+                <input type="text" name="product" id="s_product" class="input-text form-control">
+            </div>
+            <div class="col-md-2">
+                <label>Buyer QR</label>
+                <input type="text" name="bb_no" id="s_buyer" class="input-text form-control">
+            </div>
+            <div class="col-md-2">
+                <label>Lot Date</label>
+                <input type="text" name="lot_date" id="s_lot_date" class="input-text form-control" placeholder="From Date">
+            </div>
+
+            <div class="col-md-2">
+                <label style="width:100%">&nbsp;&nbsp;</label>
+                <input type="text" name="lot_date" id="end_lot_date" class="input-text form-control" placeholder="To Date">
+            </div>
+            <div class="col-md-1">
+                <label style="width:100%">&nbsp;&nbsp;</label>
+
+                <button id="searchBtn" class="btn btn-sm btn-success button-srh ml-5"><i class="fa fa-save">&nbsp;Search</i></button>
+            </div>
+            <form method="post" id="exportData" enctype="multipart/form-data">
+                <label style="width:100%">&nbsp;&nbsp;</label>
+                <button type="submit" id="excelBtn" class="btn btn-sm btn-warning button-top"><i class="fa fa-file-excel-o">&nbsp;Export Excel</i></button>
+            </form>
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+
+@*<div class="container-fluid">
+        <div class="row box-body my-2">
+            <div class="col-md-4 py-1">
+                <label>
+                    Buyer QR
+                </label>
+                <input type="text" name='buyer_qr' id='scan_buyer_qr' class="input-text form-control" placeholder="Buyer QR" required>
+                <input type="hidden" name='ext_no' id='m_ext_no' class="input-text form-control">
+            </div>
+            <div class="col-md-2 p-2">
+                <label> </label>
+                <input type="file" name="file" id="excelupload_input" accept=".xlsx,.xls,.csv,.tsv,.xml,.json" class="valid" />
+            </div>
+            <div class="col-md-1 p-2">
+                <label> </label>
+                <button type="button" id="ExcelUpload" style="" class="btn btn-primary css_excel"><i class="fa fa-upload">&nbsp;Upload</i></button>
+            </div>
+            <div class="col-md-2 p-2 css_button">
+                <label>
+                </label>
+                <a id="downloadBtn" href="/Excel/ExcelStamp/stamp.xlsx" class="btn btn-success btn-download btnDownload mr-3" download=""><i class="fa fa-download"> &nbsp;Download Form Excel</i></a>
+            </div>
+
+        </div>
+    </div>*@
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="">
+            <table id="list1"></table>
+            <div id="listPager1"></div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+
+
+    <script src="~/Scripts/fgwms/RecevingScan_FG/RecevingScan.js"></script>
+    <script>
+        $(function ()
+        {
+
+            var tab = $('.nav-tabs-custom .nav.nav-tabs li a');
+            $(tab).click(function (e)
+            {
+
+                var ul = $(e.target).closest('ul');
+                $(ul).find('li').removeClass('active');
+                $(e.target).closest('li').addClass('active');
+
+            });
+        });
+    </script>
+}
+<style>
+    .css_button {
+        padding: 4px;
+        font-size: 15px;
+        margin-top: 21px;
+        cursor: pointer;
+    }
+
+    button#Clear_all_box {
+        padding: 4px;
+        font-size: 15px;
+        margin-top: 21px;
+        cursor: pointer;
+    }
+
+    .css_excel {
+        padding: 4px;
+        font-size: 15px;
+        cursor: pointer;
+    }
+
+    .css_excelUpload {
+        padding: 4px;
+        font-size: 15px;
+        margin-top: 21px;
+        cursor: pointer;
+    }
+
+    td.btn.text-center.btn-delete.btn-xs.btn-warning {
+        text-align: center !important;
+        margin: 5px;
+    }
+
+    .btn-delete {
+        text-align: center !important;
+        margin: 4px 16px !important;
+        border: none;
+        padding: 5px !important;
+    }
+
+    .ui-state-hover {
+        border: 1px solid blue;
+        background: green;
+    }
+</style>

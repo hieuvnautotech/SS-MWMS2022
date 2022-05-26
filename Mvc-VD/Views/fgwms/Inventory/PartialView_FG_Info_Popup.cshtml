@@ -1,0 +1,404 @@
+﻿
+<div class="container-fluid py-4 all_lot">
+    <table id="dataTable2_PartialView_FG_Info_Popup" class="table table-bordered table-striped" style="width: 100%">
+
+        <thead>
+            <tr class="table-warning">
+                <th style="text-align: center !important">STT</th>
+                <th style="text-align: center !important" class="hidden">order_lv</th>
+                <th style="text-align: center !important">Lot</th>
+                <th style="text-align: center !important">Công Nhân + Thời gian</th>
+                <th style="text-align: center !important">Process</th>
+                <th style="text-align: center !important">Công Nhân + Thời gian</th>
+                <th style="text-align: center !important">Máy + thời Gian</th>
+                <th style="text-align: center !important">Composite/Material</th>
+                <th style="text-align: center !important">Quantity</th>
+
+            </tr>
+        </thead>
+    </table>
+
+</div>
+<div class="container-fluid py-4 all_buyer">
+    <table id="dataTable2_PartialView_FG_Info_Buyer" class="table table-bordered table-striped" style="width: 100%">
+
+        <thead>
+            <tr class="table-warning">
+                <th style="text-align: center !important">STT</th>
+                <th style="text-align: center !important" class="hidden">order_lv</th>
+                <th style="text-align: center !important">Buyer QR</th>
+                <th style="text-align: center !important">Lot</th>
+                <th style="text-align: center !important">Công Nhân + Thời gian</th>
+                <th style="text-align: center !important">Process</th>
+                <th style="text-align: center !important">Công Nhân + Thời gian</th>
+                <th style="text-align: center !important">Máy + thời Gian</th>
+                <th style="text-align: center !important">Composite/Material</th>
+                <th style="text-align: center !important">Quantity</th>
+            </tr>
+        </thead>
+    </table>
+
+</div>
+<div class="container-fluid py-4 all_box">
+    <table id="dataTable2_PartialView_FG_Info_Box" class="table table-bordered table-striped" style="width: 100%">
+
+        <thead>
+            <tr class="table-warning">
+                <th style="text-align: center !important">STT</th>
+                <th style="text-align: center !important">Box No</th>
+                <th style="text-align: center !important">Quantity</th>
+                <th style="text-align: center !important">Buyer QR</th>
+                <th style="text-align: center !important">Lot</th>
+            </tr>
+        </thead>
+    </table>
+
+</div>
+<div class="container-fluid py-4 all_mt">
+    <div id="material_all"></div>
+</div>
+
+<input type="hidden" name="name" value="@ViewBag.sts" id="sts" />
+<input type="hidden" name="value" id="value" value="@ViewBag.value">
+<style>
+    caption {
+        font-size: 20px;
+        font-weight: bold;
+        position: absolute;
+        top: -16%;
+    }
+</style>
+<script>
+
+    $(document).ready(function () {
+        //kiem tra tra trang thai view
+        var sts = $("#sts").val();
+        var value = $("#value").val();
+        switch (sts) {
+            case "container":
+                $.get("/fgwms/GetFGProductLot_bb_no?bb_no=" + value + "&mt_lot=", function (data) {
+                    if (data.data.length > 0) {
+                        //ẩn 2 table buyer and box
+                        $(".all_buyer").addClass("hidden");
+                        $("#dataTable2_PartialView_FG_Info_Buyer_wrapper").addClass("hidden");
+                        $(".all_box").addClass("hidden");
+                        $("#dataTable2_PartialView_FG_Info_wrapper").addClass("hidden");
+
+                        $("#all_lot").removeClass("hidden");
+                        $("#all_lot").addClass("active");
+                    //    $("#dataTable2_PartialView_FG_Info_Popup").addClass("hidden");
+                        var t = $('#dataTable2_PartialView_FG_Info_Popup').DataTable({
+                            data: data.data,
+                            "processing": true,
+                            "searching": false,
+                            "paging": false,
+                            "bInfo": false,
+                            "destroy": true,
+                            "columns": [
+                                {
+                                    'className': 'details-control',
+                                    'orderable': false,
+                                    'data': null,
+                                    'defaultContent': ''
+                                },
+                                { "data": "order_lv" },
+                                { "data": "cha" },
+                                { "data": "congnhan_time" },
+                                { "data": "process" },
+                                { "data": "congnhan_time" },
+                                { "data": "machine" },
+                                { "data": "mt_cd" },
+                                {
+                                    "data": "SLLD",
+                                    //render: function (data, type, row) {
+                                    //    var html = "";
+                                    //    if (data != "") {
+                                    //        html += '<a class="editor_remove" style="color:red">' + data + '</a>'
+                                    //    }
+                                    //    return html;
+                                    //}
+                                },
+
+                            ],
+                            "orderFixed": {
+                                "pre": [1, 'asc']
+                            },
+                            'rowsGroup': [2, 3, 4, 5, 6],
+                            'columnDefs': [
+                                {
+                                    "targets": 0, // your case first column
+                                    "className": "text-center",
+                                    "width:": "3%",
+                                },
+                                {
+                                    "targets": [1, 3],
+                                    "visible": false
+                                }
+                            ],
+                            "bDestroy": true,
+
+
+                        });
+                        t.on('order.dt search.dt', function () {
+                            t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+                                cell.innerHTML = i + 1;
+                            });
+                        }).draw();
+                        var data_material = data.data.filter(isCherries);
+                        call_material(data_material)
+                    }
+                    else {
+                        $(".all_lot").removeClass("active");
+                        $(".all_lot").addClass("hidden");
+                        $.unblockUI();
+                    }
+                });
+                break;
+            case "box_no":
+                debugger;
+                $.get("/fgwms/GetFGProductLot_box_no?box_no=" + box_no.value, function (data) {
+                    if (data.data.length > 0) {
+
+                        //ẩn 2 table bobin and buyer
+                        $("#dataTable2_PartialView_FG_Info_Popup").addClass("hidden");
+                        $("#dataTable2_PartialView_FG_Info_Popup_wrapper").addClass("hidden");
+                        $("#dataTable2_PartialView_FG_Info_Buyer").addClass("hidden");
+                        $("#dataTable2_PartialView_FG_Info_Buyer_wrapper").addClass("hidden");
+
+                        $("#dataTable2_PartialView_FG_Info_Box").removeClass("hidden");
+                        $("#dataTable2_PartialView_FG_Info_Box").addClass("active");
+                        var t = $('#dataTable2_PartialView_FG_Info_Box').DataTable({
+                            data: data.data,
+                            "processing": true,
+                            "searching": false,
+                            "paging": false,
+                            "bInfo": false,
+                            "destroy": true,
+                            "columns": [
+                                {
+                                    'className': 'details-control',
+                                    'orderable': false,
+                                    'data': null,
+                                    'defaultContent': ''
+                                },
+                                { "data": "bx_no" },
+                                { "data": "gr_qty" },
+                                { "data": "buyer_cd" },
+                                { "data": "mt_cd" },
+                            ],
+                            'rowsGroup': [1, 2, 3],
+                            'columnDefs': [
+                                {
+                                    "targets": 0, // your case first column
+                                    "className": "text-center",
+                                },
+                                {
+                                    "targets": 2, // your case first column
+                                    "className": "text-right",
+                                    "width:": "3%",
+                                },
+                            ],
+                            "bDestroy": true,
+
+                        });
+                        t.on('order.dt search.dt', function () {
+                            t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+                                cell.innerHTML = i + 1;
+                            });
+                        }).draw();
+                        var data_material = data.data.filter(isCherries);
+                        call_material(data_material)
+                    }
+                    else {
+                        $(".all_box").removeClass("active");
+                        $(".all_box").addClass("hidden");
+                        $.unblockUI();
+                    }
+                });
+                break;
+            case "buyer_qr":
+                $.get("/fgwms/GetFGProductLot_buyer_qr?buyer_qr=" + value, function (data) {
+                    if (data.data.length > 0) {
+                        //ẩn 2 table bobin and box
+                        $(".all_lot").addClass("hidden");
+                        $(".all_box").addClass("hidden");
+                        $(".all_buyer").removeClass("hidden");
+                        var t3 = $('#dataTable2_PartialView_FG_Info_Buyer').DataTable({
+                            "processing": true,
+                            data: data.data,
+                            "searching": false,
+                            "paging": false,
+                            "bInfo": false,
+                            "columns": [
+                                {
+                                    'className': 'details-control',
+                                    'orderable': false,
+                                    'data': null,
+                                    'defaultContent': ''
+                                },
+                                { "data": "order_lv" },
+                                { "data": "buyer_qr" },
+                                { "data": "cha" },
+                                { "data": "congnhan_time" },
+                                { "data": "process" },
+                                { "data": "congnhan_time" },
+                                { "data": "machine" },
+                                { "data": "mt_cd" },
+                                { "data": "SLLD" },
+                            ],
+                            "orderFixed": {
+                                "pre": [1, 'asc']
+                            },
+                            'rowsGroup': [2, 3, 4, 5, 6,7,8,9],
+                            'columnDefs': [
+                                {
+                                    "targets": 0, // your case first column
+                                    "className": "text-center",
+                                    "width": "3%"
+                                },
+                                {
+                                    "targets": 3, // your case first column
+                                    "className": "text-center",
+                                    "width": "10%"
+                                },
+                                {
+                                    "targets": [1,4],
+                                    "visible": false
+                                }
+
+                            ],
+                            "bDestroy": true,
+                        });//bảng 4
+                        t3.on('order.dt search.dt', function () {
+                            t3.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+                                cell.innerHTML = i + 1;
+                            });
+                        }).draw();
+                        debugger;
+                        var data_material = data.data.filter(isCherries);
+                        call_material(data_material)
+                    }
+                    else {
+                        $(".all_buyer").removeClass("active");
+                        $(".all_buyer").addClass("hidden");
+                        $.unblockUI();
+                    }
+                });
+                break;
+            case "composite":
+                $.get("/fgwms/GetFGProductLot_bb_no?mt_lot=" + value + "&bb_no=", function (data) {
+                    if (data.data.length > 0) {
+                        //ẩn 2 table buyer and box
+                        $(".all_buyer").addClass("hidden");
+                        $("#dataTable2_PartialView_FG_Info_Buyer_wrapper").addClass("hidden");
+                        $(".all_box").addClass("hidden");
+                        $("#dataTable2_PartialView_FG_Info_wrapper").addClass("hidden");
+
+                        $(".all_lot").removeClass("hidden");
+                        $(".all_lot").addClass("active");
+
+                        var t = $('#dataTable2_PartialView_FG_Info_Popup').DataTable({
+                            data: data.data,
+                            "processing": true,
+                            "searching": false,
+                            "paging": false,
+                            "bInfo": false,
+                            "destroy": true,
+                            "columns": [
+                                {
+                                    'className': 'details-control',
+                                    'orderable': false,
+                                    'data': null,
+                                    'defaultContent': ''
+                                },
+                                { "data": "order_lv" },
+                                { "data": "cha" },
+                                { "data": "congnhan_time" },
+                                { "data": "process" },
+                                { "data": "congnhan_time" },
+                                { "data": "machine" },
+                                { "data": "mt_cd" },
+                                {
+                                    "data": "SLLD",
+                                   
+                                },
+
+                            ],
+                            "orderFixed": {
+                                "pre": [1, 'asc']
+                            },
+                            'rowsGroup': [2, 3, 4, 5,6],
+                            'columnDefs': [
+                                {
+                                    "targets": 0, // your case first column
+                                    "className": "text-center",
+                                    "width:": "3%",
+                                },
+                                {
+                                    "targets": [1,3],
+                                    "visible": false
+                                }
+                            ],
+                            "bDestroy": true,
+
+
+                        });
+                        t.on('order.dt search.dt', function () {
+                            t.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+                                cell.innerHTML = i + 1;
+                            });
+                        }).draw();
+                        var data_material = data.data.filter(isCherries);
+                        call_material(data_material)
+                    }
+                    else {
+                        $(".all_lot").removeClass("active");
+                        $(".all_lot").addClass("hidden");
+                        $.unblockUI();
+                    }
+                });
+                break;
+            default:
+                break;
+        }
+        function isCherries(fruit) {
+            return fruit.mt_type != 'CMT';
+            //return fruit.mt_type != 'CMT';
+        }
+        function groupBy(list, keyGetter) {
+            const map = new Map();
+            list.forEach((item) => {
+                const key = keyGetter(item);
+                const collection = map.get(key);
+                if (!collection) {
+                    map.set(key, [item]);
+                } else {
+                    collection.push(item);
+                }
+            });
+            return map;
+        }
+        function call_material(data) {
+            $.ajax({
+                url: "/fgwms/PartialView_FG_Material",
+                type: 'POST',
+                async: true,
+                dataType: 'json',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(data),
+                traditonal: true,
+                success: function (html) {
+                    html: true,
+                        $("#material_all").html(html.responseText);
+                    $.unblockUI();
+                },
+                error: function (html) {
+                    html: true,
+                        $("#material_all").html(html.responseText);
+                    $.unblockUI();
+                }
+            });
+        }
+    });
+    //$.unblockUI();
+</script>

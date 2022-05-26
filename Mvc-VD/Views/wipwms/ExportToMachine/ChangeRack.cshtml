@@ -1,0 +1,74 @@
+﻿@{
+    ViewBag.Title = "ExportToMachineScan";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="@Html.Raw(ViewData["WIP-WMS"])" data-level_2="@Html.Raw(ViewData["Export Material"])" data-level_3="@Html.Raw(ViewData["Change Rack"])"></div>
+}
+
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="row box-body my-2 bg-white">
+        <div class="col-md-2 py-1">
+            <label>Chọn kệ</label>
+            <div class="input-group mt_plus">
+                <input type="text" name="SelectRack" id="SelectRackName" class="input-text form-control " readonly="" placeholder="Chọn kệ" required="">
+                <input type="hidden" name="SelectRack" id="SelectRack" class="input-text form-control" placeholder="Chọn kệ" required="">
+                <span class="input-group-addon psbom "><a href="#" class="SelectLocation"><i class="fa fa-search text-navy"></i></a></span>
+            </div>
+        </div>
+        <div class="col-md-4 py-1">
+            <label>ML No</label>
+            <input type="text" name='mt_cd' id='scan_mt_cd' class="input-text form-control" placeholder="ML No" required>
+
+        </div>
+        <div class="col-md-2 py-1">
+            <button type="button" id="Save_completed" class="btn btn-success button-sm"><i class="fa fa-save">&nbsp;Scan Completed</i></button>
+        </div>
+        <div class="col-md-2 py-2">
+            <button type="button" id="Clear_all" class="btn btn-danger button-sm"><i class="fa fa-trash">&nbsp;Clear All</i></button>
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="p-0 m-0">
+            <table id="list1"></table>
+            <div id="listPager1"></div>
+        </div>
+    </div>
+</div>
+
+<!--Dialog SelectLocation-->
+<div class="poupdialogSelectLocation" title="Danh sách kệ kho sản xuất">
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body well text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-3 p-2">
+                    <input type="text" name="s_locationCode" id="s_locationCode" placeholder="Code" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="s_locationName" id="s_locationName" placeholder="Name" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2 d-flex">
+                    <button id="searchBtn_Location_popup" class="btn btn-sm mr-1 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button type="button" class="btn btn-sm btn-success button-srh disabled" id="SelectLocation"><i class="fa fa-save">&nbsp;Selected</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid  p-0 m-0">
+        <div class="box-body my-2 bg-white">
+            <div class="p-0 m-0 ">
+                <table id="ListRack"></table>
+                <div id="pagerListRack"></div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Scripts/wipwms/ExportToMachine/ChangeRack.js"></script>
+    <script src="~/Scripts/wipwms/ExportToMachine/LocationPopup.js"></script>
+}

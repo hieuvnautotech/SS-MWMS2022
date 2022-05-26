@@ -1,0 +1,221 @@
+/*Import data for d_material_info using */
+select DISTINCT  mtid,mt_type,mt_no,mt_cd,mt_no_origin,mt_nm,mf_cd,gr_qty,unit_cd,bundle_qty,bundle_unit,
+sp_cd,s_lot_no,item_vcd,qc_range_cd,width,width_unit,spec,spec_unit,area,area_unit,thick,thick_unit,stick,
+stick_unit,consum_yn,price,tot_price,price_unit,price_least_unit,photo_file,re_mark,use_yn,del_yn,barcode,reg_id,reg_dt,chg_id,chg_dt 
+FROM d_material_info
+
+/*insert danh sách công nhân*/
+/****** Script for SelectTopNRows command from SSMS  ******/
+SELECT 
+   userid
+  ,uname
+  ,nick_name
+  ,upw
+  ,grade
+  ,depart_cd
+  ,gender
+  ,position_cd
+  ,tel_nb
+  ,cel_nb
+  ,e_mail
+  ,sms_yn
+  ,DATE_FORMAT(join_dt,'%Y-%m-%d %H:%i:%s')
+  ,DATE_FORMAT(birth_dt,'%Y-%m-%d %H:%i:%s')
+  ,scr_yn
+  ,mail_yn
+  ,join_ip
+  ,join_domain
+  ,ltacc_dt
+  ,ltacc_domain
+  ,mbout_dt
+  ,mbout_yn
+  ,accblock_yn
+  ,session_key
+  ,session_limit
+  ,memo
+  ,del_yn
+  ,check_yn
+  ,rem_me
+  ,barcode
+  ,mbjoin_dt
+  ,log_ip
+  ,lct_cd
+  ,reg_id
+  ,reg_dt
+  ,chg_id
+  ,chg_dt
+  ,re_mark
+  FROM mb_info
+
+  /*Insert table mb_author_info*/
+  SELECT ''
+      ,userid
+      ,at_cd
+      ,re_mark
+      ,use_yn
+      ,reg_id
+      ,reg_dt
+      ,chg_id
+      ,chg_dt
+  FROM mb_author_info
+
+  /*insert data for table author_menu_info*/
+  SELECT ''
+      ,at_cd
+      ,mn_cd
+      ,mn_nm
+      ,url_link
+      ,re_mark
+      ,use_yn
+      ,st_yn
+      ,ct_yn
+      ,mt_yn
+      ,del_yn
+      ,reg_id
+      ,reg_dt
+      ,chg_id
+      ,chg_dt
+  FROM author_menu_info
+
+  /*iNSERT MENU INFO*/
+  SELECT ''
+      ,mn_cd
+      ,mn_nm
+      ,up_mn_cd
+      ,level_cd
+      ,url_link
+      ,re_mark
+      ,col_css
+      ,sub_yn
+      ,order_no
+      ,use_yn
+      ,mn_full
+      ,mn_cd_full
+      ,reg_id
+      ,reg_dt
+      ,chg_id
+      ,chg_dt
+      ,selected
+  FROM menu_info
+
+
+  /*insert data for table w_material_info_mms*/
+ Select wmtid, 
+        id_actual, 
+        mt_cd, 
+        mt_type, 
+        gr_qty, 
+        real_qty, 
+        id_actual_oqc,
+		mt_sts_cd,
+        mt_no, 
+        bb_no, 
+        lct_cd, 
+        lot_no, 
+        from_lct_cd, 
+        to_lct_cd, 
+         DATE_FORMAT(recevice_dt,'%Y-%m-%d %H:%i:%s'), 
+        reg_dt, 
+        reg_id, 
+        chg_dt, 
+        chg_id,
+        bbmp_sts_cd,
+        orgin_mt_cd,
+        sd_no
+    from w_material_info
+    where lct_cd like '002%' and mt_sts_cd = '002' and gr_qty > 0
+
+
+    /*insert data for table w_material_mapping_mms*/
+    Select wmmid,mt_lot,mt_cd,mt_no,DATE_FORMAT(mapping_dt,'%Y-%m-%d %H:%i:%s'),use_yn,del_yn, reg_id,reg_dt,chg_id,chg_dt,sts_share 
+    From autodb0314.w_material_mapping where (mt_lot like '%STA%' or mt_lot like '%ROT%') and use_yn = 'Y';
+
+
+
+   /***************** insert data for table w_actual_primary ********************/
+  Select 
+        max(a.id_actualpr) AS id_actualpr
+    ,max(a.id_actualpr) AS id_actualpr1
+	, max(a.at_no) AS at_no
+	, max(a.type) AS type
+	, SUM(a.target) AS totalTarget
+	, max(a.target) AS target
+	, max(a.product) AS product
+	, max(a.md_cd) AS md_cd
+	, max(a.remark) AS remark
+	, max(a.style_nm) AS style_nm
+	, max(a.process_count) AS process_count
+	, sum(a.actual) AS actual
+	, max (a.count_pr_w) AS count_pr_w
+	, max (subquery.at_no) AS poRun
+	, max (a.IsApply) AS IsApply
+    , MAX(CONVERT(int,active)) as active
+    , MAX(a.CountProcess) As CountProcess
+From (
+		SELECT 
+			a.IsApply AS IsApply,
+			a.finish_yn AS finish_yn,
+			a.id_actualpr AS id_actualpr,
+			a.at_no AS at_no,
+			b.type AS type,
+			a.target AS target,
+			a.product AS product,
+			a.remark AS remark,
+			a.reg_id AS reg_id,
+			a.reg_dt AS reg_dt,
+			a.chg_id AS chg_id,
+			a.chg_dt AS chg_dt,
+			b.name AS processName,
+			(SELECT Top 1 d_style_info.style_nm FROM d_style_info WHERE (a.product = d_style_info.style_no)) AS style_nm,
+			(SELECT Top 1 d_style_info.md_cd FROM d_style_info WHERE (a.product = d_style_info.style_no)) AS md_cd,
+			(SELECT COUNT(DISTINCT w_actual.name) FROM w_actual WHERE (w_actual.at_no = a.at_no)) AS process_count,
+			(SELECT COUNT(DISTINCT w_actual.name) FROM w_actual WHERE ((w_actual.at_no = a.at_no) AND (w_actual.actual > 0))) AS count_pr_w,
+            (SELECT COUNT(id_actual) FROM w_actual WHERE TYPE ='TIMS' AND a.at_no = at_no) As CountProcess,
+			b.actual AS actual,
+            a.active As active
+		FROM
+			w_actual_primary a
+		LEFT JOIN w_actual b ON a.at_no = b.at_no
+) as a
+        LEFT JOIN
+	        (
+		        SELECT  b.at_no
+		            FROM d_pro_unit_staff AS a
+		            JOIN w_actual AS b ON a.id_actual = b.id_actual
+		            JOIN w_actual_primary AS c ON b.at_no = c.at_no
+		            WHERE (GetDate() BETWEEN a.start_dt AND  a.end_dt) And c.finish_yn ='N' And b.type ='SX'
+		            GROUP BY b.at_no) AS subquery ON subquery.at_no = a.at_no
+WHERE  a.finish_yn = 'N' And a.type = 'SX' And a.active = 1
+			--	And (@At_No = '' OR @At_No IS NULL Or a.at_no like '%'+@At_No+'%') And (@Product = '' OR @Product IS NULL Or a.product like '%'+@Product+'%') 
+			--	And (@Style_Name = '' OR @Style_Name IS NULL Or a.style_nm like '%'+@Style_Name+'%') And (@Model_Code = '' OR @Model_Code IS NULL Or a.md_cd like '%'+@Model_Code+'%') 
+			-- And (((@RegStart = '' OR @RegStart IS NULL) And (@EndStart = '' OR @EndStart IS NULL)) Or Convert(date,a.reg_dt) between @RegStart and @EndStart)
+                                            
+Group By a.at_no
+
+
+							
+    /*insert data for table d_bom_info*/
+    Select * from autodb0314.d_bom_info
+
+     /*insert data for table w_material_down*/
+    Select * from autodb0314.w_material_down
+
+
+    /* Insert data for w_policy_mt table */
+ Select policy_code, policy_name,DATE_FORMAT(policy_start_dt,'%Y-%m-%d %H:%i:%s') ,Date_FORMAT(policy_end_dt, '%Y-%m-%d %H:%i:%s'), 
+TIME_FORMAT(work_starttime,'%H:%i:%s'), TIME_FORMAT(work_endtime,'%H:%i:%s'), TIME_FORMAT(lunch_start_time,'%H:%i:%s'), TIME_FORMAT(lunch_end_time, '%H:%i:%s'), 
+TIME_FORMAT(dinner_start_time,'%H:%i:%s'),  TIME_FORMAT(dinner_end_time,'%H:%i:%s'), TIME_FORMAT(work_hour,'%H:%i:%s'), 
+ work_hour, use_yn, last_yn, re_mark, reg_id, reg_dt,chg_id, chg_dt
+From w_policy_mt
+
+
+/* Insert data for generalfg table */
+SELECT id, buyer_qr, product_code, type, md_cd, dl_no, qty, lot_no, sts_cd, use_yn, reg_id, reg_dt, chg_id, chg_dt FROM generalfg
+
+
+
+/* Insert data for inventory_products table */
+Select wmtid,mt_cd, rece_wip_dt, picking_dt, sd_no, ex_no, lct_sts_cd, mt_no, mt_type, gr_qty, real_qty,
+DATE_FORMAT(recevice_dt,'%Y-%m-%d'),DATE_FORMAT(expiry_dt,'%Y-%m-%d'),DATE_FORMAT(expore_dt,'%Y-%m-%d'),DATE_FORMAT(dt_of_receipt,'%Y-%m-%d'), 
+   lot_no, from_lct_cd, lct_cd, mt_sts_cd, reg_id, reg_dt, chg_id, chg_dt, ExportCode, LoctionMachine
+From w_material_info where mt_sts_cd = '002' OR mt_sts_cd = '013' OR mt_sts_cd = '001'  AND mt_type!='CMT' AND gr_qty > 0  AND lct_sts_cd ='101'

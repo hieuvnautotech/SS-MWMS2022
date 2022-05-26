@@ -1,0 +1,235 @@
+﻿@{
+    ViewBag.Title = "Receiving_Manual";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="WIP-WMS" data-level_2="Receiving Management" data-level_3="Receiving-Manual(WIP)"></div>
+
+}
+<!-- Search function -->
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-4 p-1">
+                <div class="tt" style="border: 1px solid #808080; padding: 8px;">
+                    <div class="row">
+                        <div class="col-md-2 p-1 text-right">
+                            <label><b>Location</b></label>
+                        </div>
+                        <div class="col-md-6 p-1 text-right">
+                            <select id="shelf_cd" class="form-control">
+                                <option value="">*Location*</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2 p-1 mr-5 text-right">
+                            <button id="getPutin" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Put Away</i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="col-md-2 p-1">
+                    <label><b>BOM </b></label>
+                    <div class="input-group mt_plus">
+                        <input type="text" name="mt_no" id="bom_no" class="input-text form-control">
+                        <span class="input-group-addon ">
+                            <button type="button" class="btn btn-outline-warning button-sm  poupdialog_BOM"><i class="fa fa-search text-navy"></i></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-2 p-1">
+                    <label><b>Material No</b></label>
+                    <div class="input-group mt_plus">
+                        <input type="text" name="mt_no" id="c_mt_no" class="input-text form-control">
+                        <span class="input-group-addon ">
+                            <button type="button" id="c_popupMater" class="btn btn-outline-warning button-sm  poupdialogMaterial"><i class="fa fa-search text-navy"></i></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-2 p-1">
+                    <label><b>ML NO</b></label>
+                    <input type="text" name="mt_barcode" id="mt_barcode" class="form-control">
+                </div>
+                <div class="col-md-2 p-1">
+                    <label><b>Destination</b></label>
+                    <select name="lct_cd" id="c_lct_cd" class="form-control"></select>
+                </div>
+               
+                <div class="col-md-1 p-1">
+                    <label style="width:100%"><b>&nbsp;&nbsp;&nbsp;</b></label>
+                    <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- ./Search function -->
+
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <table id="list"></table>
+            <div id="gridpager"></div>
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="dialog2" title="Material">
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <div class="col-md-3">
+                    <div class="row">
+                        <label class="col-xs-3 control-label text-right">
+                            <h6 class="control-label-text"><b>Type</b></h6>
+                        </label>
+                        <div class="col-xs-9">
+                            <div class="input-group" style="width: 100%;">
+                                <select name="mt_type" id="mt_type" class="form-control ">
+                                    <option value="">* Type *</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="row">
+                        <label class="col-xs-3 control-label text-right">
+                            <h6 class="control-label-text"><b>Code</b></h6>
+                        </label>
+                        <div class="col-xs-9">
+                            <input type="text" name="mt_no" id="mt_no" class="form-control" style="width: 100%;">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+
+                    <div class="row">
+                        <label class="col-xs-3 control-label text-right">
+                            <h6 class="control-label-text"><b>Name</b></h6>
+                        </label>
+                        <div class="col-xs-9">
+                            <input type="text" name="mt_nm" id="mt_nm" class="form-control" style="width: 100%;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 text-right">
+                    <button id="searchBtn_pp_mt" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button type="button" class="btn btn-success button-srh2" id="selected"><i class="fa fa-check">Selected</i></button>
+                    <button type="button" class="btn btn-sm btn-primary button-srh" id="closestyle"><i class="fa fa-close">&nbsp;Close</i></button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <table id="popupMaterial"></table>
+                <div id="pagerMaterial"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="dialog_BOM" title="BOM Information">
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body well text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-3 p-2">
+                    <input type="text" name="bom_no" id="s_bom_no_popup" placeholder="BOM no" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="s_style_no_popup" placeholder="Product Code" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="md_cd" id="s_model_no_popup" placeholder="Model Code" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2 d-flex">
+                    <button id="searchBtn_BOM_popup" class="btn btn-sm mr-5 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button type="button" class="btn btn-sm btn-success button-srh disabled" id="savestyle_BOM"><i class="fa fa-save">&nbsp;Selected</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid  p-0 m-0">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0 boxBOM">
+                <table id="popupBOM"></table>
+                <div id="pagerBOM"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Dialog -->
+
+<!--Dialog BOM-->
+@*<div class="dialog_BOM" title="BOM Information">
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body well text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-3 p-2">
+                    <input type="text" name="bom_no" id="s_bom_no_popup" placeholder="BOM no" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="s_style_no_popup" placeholder="Product Code" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="md_cd" id="s_model_no_popup" placeholder="Model Code" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2 d-flex">
+                    <button id="searchBtn_BOM_popup" class="btn btn-sm mr-5 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button type="button" class="btn btn-sm btn-success button-srh disabled" id="savestyle_BOM"><i class="fa fa-save">&nbsp;Selected</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid  p-0 m-0">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0 boxBOM">
+                <table id="popupBOM"></table>
+                <div id="pagerBOM"></div>
+            </div>
+        </div>
+    </div>
+</div>*@
+   <div id="loading"><img id="loading-image" src="/Images/loding.gif" alt="Loading..." /></div>
+
+<style>
+    span.input-group-addon {
+        padding: 0;
+        border: 0.1px solid;
+    }
+</style>
+@section scripts {
+    <script src="~/Scripts/wipwms/ReceivingManual/Receiving_Manual.js"></script>
+    <script src="~/Scripts/wipwms/ReceivingManual/Material_Poup.js"></script>
+
+    <script src="~/Scripts/wipwms/ReceivingManual/bomno_popup.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.nav-link > p').addClass('text-white');
+            $('.POManagement').addClass('text-warning');
+            $('.Development-menu').addClass('menu-open');
+        });
+    </script>
+
+    <script>
+        function onlyNumber(event) {
+            event = event || window.event;
+            var keyID = (event.which) ? event.which : event.keyCode;
+            if ((keyID >= 48 && keyID <= 57) || (keyID >= 96 && keyID <= 105) || keyID == 8 || keyID == 46 || keyID == 37 || keyID == 39)
+                return;
+            else
+                return false;
+        }
+    </script>
+}
+

@@ -1,0 +1,23 @@
+﻿#searchBtn {
+    font-size:large; 
+    border-radius: 15px;
+    background-color: #0B444F;
+    border: solid 1px white;
+}
+
+.login {
+    border-radius: 15px;
+}
+
+.btnDownload {
+    border: solid 1px white;
+
+}
+.btnDownload:hover {
+    border: solid 1px #ffd800;
+
+}
+.Remlink:hover {
+    font-weight: bold;
+
+}

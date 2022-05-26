@@ -1,0 +1,2 @@
+Select mdid, md_cd, md_nm, use_yn, del_yn, reg_id, reg_dt, chg_id, chg_dt
+ From d_model_info

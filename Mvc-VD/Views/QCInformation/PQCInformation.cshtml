@@ -1,0 +1,337 @@
+﻿@{
+    ViewBag.Title = "QMS";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="QMS" data-level_2="QC Information" data-level_3="PQC Information"></div>
+}
+
+@* Excel & HTML report buttons *@
+<div class="container-fluid">
+    <div class="row text-right">
+        <div class="col-md-12 px-3">
+            <button type="submit" id="excelBtn" class="btn btn-sm btn-warning button-top"><i class="fa fa-file-excel-o">&nbsp;Excel</i></button>
+            <button type="submit" id="htmlBtn" class="btn btn-sm btn-warning button-top"><i class="fa fa-print">&nbsp;HTML</i></button>
+        </div>
+    </div>
+</div>
+
+@* Search bar *@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-1 p-1  text-right">
+                <label><b>WO NO </b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <div class="input-group mt_plus">
+                    <input type="text" name="fo_no" id="fo_no" class="input-text form-control">
+                    <span class="input-group-addon psbom"><a href="#" class="poupdialogWO"><i class="fa fa-search text-navy"></i></a></span>
+                </div>
+            </div>
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Product</b></label>
+            </div>
+
+            <div class="col-md-1 p-1">
+                <div class="input-group mt_plus">
+                    <input type="text" name="style_no" id="style_no" class="input-text form-control">
+                    <span class="input-group-addon psbom"><a href="#" id="poupdialog2" class="poupdialog2"><i class="fa fa-search text-navy"></i></a></span>
+                </div>
+            </div>
+            <div class="col-md-1 p-1  text-right">
+                <label><b>BOM NO </b></label>
+            </div>
+
+            <div class="col-md-1 p-1">
+                <div class="input-group mt_plus">
+                    <input type="text" name="bom_no" id="s_bom_no" class="form-control form-control-text">
+                    <span class="input-group-addon psbom"><a href="#" id="poupdialog3" class="poupdialog3"><i class="fa fa-search text-navy"></i></a></span>
+                </div>
+            </div>
+
+            <div class="col-md-1 p-2">
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@* Process QC list - details *@
+<div class="container-fluid clearfix">
+    <div class="row p-0 m-0">
+
+        @* QC list *@
+        <div class="col-lg-6 col-md-6 col-xs-12">
+            <div class="box-body my-2 bg-white">
+                <table id="processQc4Grid"></table>
+                <div id="processQc4GridPager"></div>
+            </div>
+        </div>
+
+        @* QC details *@
+        <div class="col-lg-6 col-md-6 col-xs-12">
+            @*<input type="hidden"  id="fo_no_details" />
+            <input type="hidden"  id="line_no_details" />*@
+            <div class="box-body my-2 bg-white" id="_PQC_QCDetails">
+                <table id="processQcDtGrid"></table>
+                <div id="processQcDtGridPager"></div>
+            </div>
+            <!--
+                <div class="box-body my-2 bg-white" id="_PQC_QCDetails">
+                    
+                    <table id="pqcDetailsGrid"></table>
+                    <div id="pqcDetailGridPaging"></div>
+                </div>
+             -->
+        </div>
+
+
+        <!-- ./col -->
+    </div>
+</div>
+
+@* ------------------------------------------------------------TEST-------------------------------------------------------------------------- *@
+
+@* Process QC check list - charts *@
+<div class="container-fluid clearfix">
+    <div class="row p-0 m-0">
+
+        @* Sub Details List *@
+        <div class="col-lg-6 col-md-6 col-xs-12">
+            <div class="box-body my-2 bg-white">
+                <table id="processQcSubGrid"></table>
+                <div id="processQcSubGridPager"></div>
+            </div>
+            @*<div class="container-fluid">
+                <div class="box-body my-2 bg-white" id="_PQC_QC_SubDetails">*@
+            @*<table id="processQcSubGrid"></table>
+                    <div id="processQcSubGridPager"></div>*@
+            @*</div>
+            </div>*@
+        </div>
+
+        @* Charts *@
+        <div class="col-lg-6 col-md-6 col-xs-12">
+            <input type="hidden" name="name" value=" " id="item_vcd" />
+            <input type="hidden" name="name" value=" " id="fq_no" />
+
+            <div class="container-fluid">
+                <div class="box-body my-2 bg-white" style="height: 280px" id="_PQC_Chart">
+                    @* Tab 1-2 *@
+                    <div class="nav-tabs-custom">
+                        <ul class="nav nav-tabs">
+                            <li class="active" id="barChartTab"><a href="#barTab" data-toggle="tab">Bar chart</a></li>
+                            <li id="pieChartTab"><a href="#pieTab" data-toggle="tab">Pie Chart</a></li>
+                        </ul>
+                    </div>
+                    @* Tab bar chart *@
+                    
+                    <div class="tab-content active" id="tab_c1">
+
+                        <div class="box-body box-body-input-move">
+                            <div id="container-bar">
+                                <div class="box-body my-2 bg-white">
+                                    <div class="row p-0 m-0">
+                                        <div id="table_prounit">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    @* Tab pie chart *@
+                    
+                    <div class="tab-content hidden" id="tab_c2">
+                        <div class="box-body box-body-input-move">
+                            <div id="container-pie">
+                                <div class="box-body my-2 bg-white">
+                                    <div class="row p-0 m-0">
+                                        <div id="table_pie">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+@* ------------------------------------------------------------END TEST-------------------------------------------------------------------------- *@
+@*<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+        </div>
+    </div>
+</div>*@
+
+
+@*<div class="container-fluid clearfix">
+    <div class="row p-0 m-0">
+        <div class="col-lg-6 col-md-6 col-xs-12">
+            <div class="box-body my-2 bg-white">
+                <table id="processQcDtGrid"></table>
+                <div id="processQcDtGridPager"></div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-xs-12">
+
+            <div class="box-body my-2 bg-white">
+                <table id="processQcSubGrid"></table>
+                <div id="processQcSubGridPager"></div>
+            </div>
+        </div>
+        <!-- ./col -->
+    </div>
+</div>*@
+
+<div class="dialogWO" title="WO No">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-success button-srh" id="savestyle"><i class="fa fa-save">&nbsp;Selected</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <table id="popupsWO"></table>
+                <div id="popupspagerWO"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="dialog2" title="Product NO">
+
+
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-success button-srh" id="savestyle2"><i class="fa fa-save">&nbsp;Selected</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <div class="col-md-1 px-1 py-2 text-right">
+                    <label><b>BOM NO </b></label>
+                </div>
+                <div class="col-md-2 p-1">
+                    <input type="text" name="s_bom_no_popup" id="s_bom_no_popup_s" class="form-control form-control-text ">
+                </div>
+                <div class="col-md-1 px-1 py-2 text-right">
+                    <label><b>Product</b></label>
+                </div>
+                <div class="col-md-2 p-1">
+                    <input type="text" name="s_style_no_popup" id="s_style_no_popup_s" class="form-control form-control-text">
+                </div>
+                <div class="col-md-1 px-1 py-2 text-right">
+                    <label><b>Model</b></label>
+                </div>
+                <div class="col-md-2 p-1">
+                    <input type="text" name="s_model_no_popup" id="s_model_no_popup_s" class="form-control form-control-text">
+                </div>
+
+                <div class="col-md-1 p-2 clearfix">
+                    <button id="searchBtn_popup_s" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <table id="popups2"></table>
+                <div id="popupspager2"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="dialog3" title="BOM NO">
+
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-success button-srh" id="savestyle3"><i class="fa fa-save">&nbsp;Selected</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <div class="col-md-1 px-1 py-2 text-right">
+                    <label><b>BOM NO </b></label>
+                </div>
+                <div class="col-md-2 p-1">
+                    <input type="text" name="s_bom_no_popup" id="s_bom_no_popup_s2" class="form-control form-control-text ">
+                </div>
+                <div class="col-md-1 px-1 py-2 text-right">
+                    <label><b>Product</b></label>
+                </div>
+                <div class="col-md-2 p-1">
+                    <input type="text" name="s_style_no_popup" id="s_style_no_popup_s2" class="form-control form-control-text">
+                </div>
+                <div class="col-md-1 px-1 py-2 text-right">
+                    <label><b>Model</b></label>
+                </div>
+                <div class="col-md-2 p-1">
+                    <input type="text" name="s_model_no_popup" id="s_model_no_popup_s2" class="form-control form-control-text">
+                </div>
+
+                <div class="col-md-1 p-2 clearfix">
+                    <button id="searchBtn_popup_s2" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <table id="popups3"></table>
+                <div id="popupspager3"></div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+
+    <script src="~/Scripts/QCInformation/ProcessQCInformation/ProcessQCInformation.js"></script>
+    <script src="~/Scripts/QCInformation/ProcessQCInformation/PQC4_BOM.js"></script>
+    <script src="~/Scripts/QCInformation/ProcessQCInformation/PQC4_Product.js"></script>
+    <script src="~/Scripts/QCInformation/ProcessQCInformation/PQC4_WO.js"></script>
+    @*<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>*@
+    <script src="~/Content/jquery-ui.js_1.10.3/jquery-ui.js"></script>
+    @*    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>*@
+
+    <script src="~/Content/charts/Chart.min.js"></script>
+    <script src="~/Content/charts/chartjs-plugin-datalabels.js"></script>
+
+    <script src="~/Scripts/jszip.min.js"></script>
+    <script src="~/Scripts/pdfmake.min.js"></script>
+    <script src="~/Scripts/vfs_fonts.js"></script>
+}

@@ -1,0 +1,88 @@
+﻿@{
+    ViewBag.Title = "InitializationData";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+
+
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="STANDARD" data-level_2="System Management" data-level_3="Initialization Data"></div>
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12 px-3">
+            <div class="alert alert-primary" role="alert">
+                <h4 class="alert-heading">Initialization Data</h4>
+                <h5>When you click one button, some table of database will reset to beginning</h5>
+                <hr>
+                <h5 class="mb-0">Let be carefull. Good luck !!!</h5>
+            </div>
+        </div>
+    </div>       
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-auto py-2">
+            <button id="MMS" class="btn btn-sm btn-success button-top mx-2">
+                <img src="./../../Images/Share/icon/headmenu/MMS.png" style="width:25px;height:25px" />
+                &nbsp;MMS
+            </button>
+        </div>
+        <div class="col-md-auto py-2">
+            <button id="WMS" class="btn btn-sm btn-success button-top mx-2">
+                <img src="./../../Images/Share/icon/headmenu/WMS.png" style="width:25px;height:25px" />
+                &nbsp;WMS
+            </button>
+        </div>
+        <div class="col-md-auto py-2">
+            <button id="CMS" class="btn btn-sm btn-success button-top mx-2">
+                <img src="./../../Images/Share/icon/headmenu/CMS.png" style="width:25px;height:25px" />
+                &nbsp;CMS
+            </button>
+        </div>
+        <div class="col-md-auto py-2">
+            <button id="QMS" class="btn btn-sm btn-success button-top mx-2">
+                <img src="./../../Images/Share/icon/headmenu/QMS.png" style="width:25px;height:25px" />
+                &nbsp;QMS
+            </button>
+        </div>
+        <div class="col-md-auto py-2">
+            <button id="PMS" class="btn btn-sm btn-success button-top mx-2">
+                <img src="./../../Images/Share/icon/headmenu/PMS.png" style="width:25px;height:25px" />
+                &nbsp;PMS
+            </button>
+        </div>
+        <div class="col-md-auto py-2">
+            <button id="SMS" class="btn btn-sm btn-success button-top mx-2">
+               <img src="./../../Images/Share/icon/headmenu/SMS.png" style="width:25px;height:25px" />
+                &nbsp;SMS
+            </button>
+        </div>
+        <div class="col-md-auto py-2">
+            <button id="DMS" class="btn btn-sm btn-success button-top mx-2">
+                <img src="./../../Images/Share/icon/headmenu/DMS.png" style="width:25px;height:25px" />
+                &nbsp;DMS
+            </button>
+        </div>
+        <div class="col-md-auto py-2">
+            <button id="STANDARD" class="btn btn-sm btn-success button-top mx-2">
+                <img src="./../../Images/Share/icon/headmenu/STANDARD.png" style="width:25px;height:25px" />
+                &nbsp;STANDARD
+            </button>
+        </div>
+        <div class="col-md-auto py-2">
+            <button id="ALL" class="btn btn-sm btn-success button-top mx-2">
+                <img src="./../../Images/Share/icon/headmenu/STANDARD.png" style="width:25px;height:25px" />
+                &nbsp;RESET ALL
+            </button> 
+        </div>
+    </div>       
+</div>
+  
+@section scripts{
+    <script src="~/Scripts/system/InitializationData/InitializationData.js"></script>
+
+}
+
+

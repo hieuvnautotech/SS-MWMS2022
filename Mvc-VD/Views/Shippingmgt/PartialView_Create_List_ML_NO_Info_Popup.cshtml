@@ -1,0 +1,547 @@
+﻿@*---------------------------------------------------------------------------------------------------------------------------*@
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-3 py-1 ml-10">
+                <input type="file" name="file" id="imgupload" accept=".xlsx,.xls,.csv,.tsv,.xml,.json" class="valid">
+            </div>
+            <div class="col-md-4 py-2 px-3">
+                <button id="uploadBtn" class="btn btn-sm btn-primary button-srh mr-3"><i class="fa fa-upload">&nbsp;Upload</i></button>
+                <a style="color:white" id="downloadBtn" href="/Images/Upload_Memo/Memory_Excel_Form_Shinsung.xlsx" class="btn btn-success btn-download btnDownload mr-3" download><i class="fa fa-download"> &nbsp;Download Form Excel</i></a>
+            </div>
+            <div class="col-md-5 p-0 m-0" id="result"></div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0" style="display: flex; flex-wrap: nowrap;">
+            <div class="col-md-2 p-1">
+                <label><b>Model</b></label>
+                <div class="input-group mt_plus">
+                    <input type="text" name="" id="S_Model" class="input-text form-control">
+                </div>
+            </div>
+            <div class="col-md-2 p-1">
+                <label><b>Product</b></label>
+                <div class="input-group mt_plus">
+                    <input type="text" name="" id="sProductCode" class="input-text form-control">
+                </div>
+            </div>
+            <div class="col-md-2 p-1">
+                <label><b>Tên Sản Phẩm</b></label>
+                <div class="input-group mt_plus">
+                    <input type="text" name="" id="smt_cd" class="input-text form-control">
+                </div>
+            </div>
+            <div class="col-md-2 p-1">
+                <label><b>Lot</b></label>
+                <div class="input-group mt_plus">
+                    <input type="text" name="" id="slot_no" class="input-text form-control">
+                </div>
+            </div>
+            <div class="col-md-1 p-2">
+                <label style="width:100%"><b>&nbsp;&nbsp;</b></label>
+                <button id="searchBtn_Memo" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="p-0 m-0">
+            <table id="list_create"></table>
+            <div id="listPager_create"></div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs">
+                <li id="tab_11" class="active"><a href="#tab_c11" data-toggle="tab">Create</a></li>
+                <li id="tab_22"><a href="#tab_c22" data-toggle="tab">Modify</a></li>
+            </ul>
+        </div>
+        <div class="tab-content">
+            <div class="tab-pane active" id="tab_c11">
+                <form id="form11">
+                    <div class="box-body box-body-input-move">
+                        <div class="col-md-12 pull-right" style="margin-top:-39px">
+                            <button type="button" id="c_save_but_p" class="btn btn-success button-sm"><i class="fa fa-save">&nbsp;Create</i></button>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-3 py-1">
+                                    <label>Product</label>
+                                    <div class="input-group mt_plus">
+                                        <input type="text" name="style_no" id="cm_style_no" class="input-text form-control" placeholder="Product" readonly="readonly">
+                                        <span class="input-group-addon psbom"><a href="#" class="poupdialogStyle"><i class="fa fa-search text-navy"></i></a></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 py-1">
+                                    <label>MT CD</label>
+                                    <input type="text" name='mt_cd' id='c_mt_cd_p' class="input-text form-control" placeholder="MT CD">
+                                </div>
+                                <div class="col-md-3 py-1">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label><b>Width</b></label>
+                                            <input type="text" name="width" id="c_width" class="form-control form-control-text" maxlength="4" placeholder="Width">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label style="width:100%">&nbsp;&nbsp;</label>
+                                            <select name="width_unit" id="c_width_unit" class="getwidth form-control"><option value="mm" selected="selected">MM</option></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 py-1">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label><b>Length</b></label>
+                                            <input type="text" name="spec" id="c_spec" class="form-control form-control-text" placeholder="Length">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label style="width:100%">&nbsp;&nbsp;</label>
+                                            <select name="spec_unit" id="c_spec_unit" class="form-control getspec"><option value="m">M</option></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 py-1">
+                                    <label>Lot No</label>
+                                    <input type="text" name='lot_no' id='c_lot_no_p' class="input-text form-control" placeholder="Lot No">
+                                </div>
+                                <div class="col-md-3 py-1">
+                                    <label>Thực Xuất</label>
+                                    <input type="number" name='TX' id='c_roll' class="input-text form-control" placeholder="Thực Xuất">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-12 py-1">
+                                    <textarea name="c_memo" id="c_memo_p" rows="7" placeholder="Memory ..." maxlength="200" class="form-control form-control-text  mx-2"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="tab-pane" id="tab_c22">
+                <form id="form22">
+                    <input type="hidden" name="name" id="m_id" value="" />
+                    <input type="hidden" name="name" id="m_sd_no" value="" />
+
+                    <div class="box-body box-body-input-move">
+                        <div class="col-md-12 pull-right" style="margin-top:-39px">
+                            <button type="button" id="m_delete_but_p" class="btn btn-danger button-sm "><i class="fa fa-trash">&nbsp;Delete</i></button>
+                            <button type="button" id="m_save_but_p" class="btn btn-success button-sm mr-3"><i class="fa fa-save">&nbsp;Modify</i></button>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-3 py-1">
+                                    <label>Product</label>
+                                    <div class="input-group mt_plus">
+                                        <input type="text" name="style_no" id="m_style_no" class="input-text form-control" placeholder="Product" readonly="readonly">
+                                        <span class="input-group-addon"><a href="#" class="poupdialogStyle"><i class="fa fa-search text-navy"></i></a></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 py-1">
+                                    <label>MT CD</label>
+                                    <input type="text" name='mt_cd' id='m_mt_cd_p' class="input-text form-control" placeholder="MT CD">
+                                </div>
+                                <div class="col-md-3 py-1">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label><b>Width</b></label>
+                                            <input type="text" name="width" id="m_width" class="form-control form-control-text" maxlength="4" placeholder="Width">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label style="width:100%">&nbsp;&nbsp;</label>
+                                            <select name="width_unit" id="m_width_unit" class="getwidth form-control"><option value="mm" selected="selected">MM</option></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 py-1">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label><b>Length</b></label>
+                                            <input type="text" name="spec" id="m_spec" class="form-control form-control-text" placeholder="Length">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label style="width:100%">&nbsp;&nbsp;</label>
+                                            <select name="spec_unit" id="m_spec_unit" class="form-control getspec"><option value="m">M</option></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 py-1">
+                                    <label>Lot No</label>
+                                    <input type="text" name='lot_no' id='m_lot_no_p' class="input-text form-control" placeholder="Lot No">
+                                </div>
+                                <div class="col-md-3 py-1">
+                                    <label>Thực Xuất</label>
+                                    <input type="number" name='TX' id='m_roll' class="input-text form-control" placeholder="Thực Xuất">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-12 py-1">
+                                    <textarea name="c_memo" id="m_memo_p" rows="7" placeholder="Memory ..." maxlength="200" class="form-control form-control-text  mx-2"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+<input type="hidden" name="name" value="@ViewBag.sd_no" id="sd_mm" />
+
+@*<div class="dialog_PRODUCT" title="Product Information">
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body well text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="style_no_popup" placeholder="Product Code" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="style_nm_popup" placeholder="Product Name" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="md_cd" id="md_cd_popup" placeholder="Model Code" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2 d-flex">
+                    <button id="searchBtn_product_popup" class="btn btn-sm mr-5 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button type="button" class="btn btn-sm btn-success button-srh disabled" id="savestyle_product"><i class="fa fa-save">&nbsp;Selected</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid  p-0 m-0">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0 boxProduct">
+                <table id="popupProduct"></table>
+                <div id="pagerProduct"></div>
+            </div>
+        </div>
+    </div>
+</div>*@
+
+<script src="~/Scripts/Shippingmgt/ShippingPickingScan/UploadMemo.js"></script>
+<script src="~/Scripts/Shippingmgt/ShippingPickingScan/Product_Poup.js"></script>
+<script>
+
+
+    $(function () {
+        $("#list_create").jqGrid
+            ({
+                datatype: function (postData) { getData_primary(postData); },
+                mtype: 'Get',
+                colModel: [
+                    { key: true, label: 'id', name: 'id', width: 50, align: 'center', hidden: true },
+                    { label: 'Model', name: 'md_cd', width: 100 },
+                    { label: 'Tên', name: 'style_no', width: 100 },
+                    { label: 'Code', name: 'style_nm', width: 100 },
+                    { label: 'Tên Sản Phẩm', name: 'mt_cd', width: 120 },
+                    { label: 'Size', name: 'size', width: 100, formatter: size },
+                    { label: 'width', name: 'width', hidden: true },
+                    { label: 'spec', name: 'spec', hidden: true },
+                    { label: 'Date InCome', name: 'month_excel', width: 100, },
+                    { label: 'Lot', name: "xd", width: 150, formatter: xuongdong },
+                    { label: 'Lot', name: 'lot_no', width: 150, hidden: true },
+                    { label: 'Thực Xuất(Roll)', name: 'TX', width: 150 },
+                    { label: 'Total(M)', name: 'total_m', width: 150 },
+                    { label: 'Total(M2)', name: 'total_m2', width: 150 },
+                    { label: 'Total(EA)', name: 'total_ea', width: 150 },
+                    { label: 'Memory', name: 'memo', width: 300, },
+                    { label: 'Recevice Date', name: 'receiving_dt', align: 'center' },
+                ],
+                onSelectRow: function (rowid, selected, status, e) {
+                    var selectedRowId = $("#list_create").jqGrid("getGridParam", 'selrow');
+                    var rowData = $("#list_create").getRowData(selectedRowId);
+
+
+                    $("#m_id").val(rowData.id);
+                    $("#m_mt_cd_p").val(rowData.mt_cd);
+                    $("#m_lot_no_p").val(rowData.lot_no);
+                    $("#m_style_no").val(rowData.style_no);
+                    $("#m_width").val(rowData.width);
+                    $("#m_spec").val(rowData.spec);
+                    $("#m_memo_p").val(rowData.memo);
+                    $("#m_roll").val(rowData.TX);
+
+                    $("#tab_11").removeClass("active");
+                    $("#tab_22").addClass("active");
+                    $("#tab_c11").removeClass("show");
+                    $("#tab_c11").removeClass("active");
+                    $("#tab_c22").addClass("active");
+
+                    $("#m_save_but").attr("disabled", false);
+                    $("#del_save_but").attr("disabled", false);
+                },
+                pager: jQuery('#listPager1'),
+                rowNum: 50,
+                rowList: [50, 100, 200, 500, 1000],
+                loadonce: false, //tải lại dữ liệu
+                viewrecords: true,
+                rownumbers: true,
+                hoverrows: false,
+                caption: '',
+                emptyrecords: "No data.",
+                height: 250,
+                width: null,
+                autowidth: false,
+                shrinkToFit: false,
+                jsonReader:
+                {
+                    root: "rows",
+                    page: "page",
+                    total: "total",
+                    records: "records",
+                    repeatitems: false,
+                    Id: "0"
+                },
+
+            });
+    });
+
+    function xuongdong(cellValue, options, rowdata, action) {
+        var html = "";
+        if (rowdata.lot_no != null)
+        {
+            var n = rowdata.lot_no.indexOf(" ");
+            if (n != -1)
+            {
+                var array = rowdata.lot_no.split(" ");
+                array.forEach(function (item, index, array)
+                {
+                    html += item + "<br>";
+                });
+                return html;
+            } else { return rowdata.lot_no; }
+
+            return html;
+        }
+        return html;
+    }
+    $("#searchBtn_Memo").click(function () {
+        $('#list_create').clearGridData();
+        $('#list_create').jqGrid('setGridParam', { search: true });
+        var pdata = $('#list_create').jqGrid('getGridParam', 'postData');
+        getData_primary(pdata);
+    });
+    function getData_primary(pdata) {
+        var params = new Object();
+
+        if ($('#list_create').jqGrid('getGridParam', 'reccount') == 0) {
+            params.page = 1;
+        }
+        else { params.page = pdata.page; }
+
+        params.rows = pdata.rows;
+        params.sidx = pdata.sidx;
+        params.sord = pdata.sord;
+        params._search = pdata._search;
+        params.md_cd = $("#S_Model").val().trim();
+        params.style_no = $("#sProductCode").val().trim();
+        params.mt_cd = $("#smt_cd").val().trim();
+        params.lot_no = $("#slot_no").val().trim();
+        $('#list_create').jqGrid('setGridParam', { search: true, postData: { searchString: $("#auto_complete_search").val() } });
+
+        $.ajax({
+            url: "/ShippingMgt/GetInfo_memo?sd_no=" + '@ViewBag.sd_no',
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            traditional: true,
+            data: params,
+            success: function (data, st) {
+                if (st == "success") {
+                    var showing = $('#list_create')[0];
+                    showing.addJSONData(data);
+                }
+            },
+            error: function () {
+                return;
+            }
+        });
+    };
+    function size(cellValue, options, rowdata, action) {
+        return rowdata.width + "MM x " + rowdata.spec + "M";
+    };
+    $(function () {
+        var tab = $('.nav-tabs-custom .nav.nav-tabs li a');
+        $(tab).click(function (e) {
+
+            var ul = $(e.target).closest('ul');
+            $(ul).find('li').removeClass('active');
+            $(e.target).closest('li').addClass('active');
+
+        })
+    })
+    //-------INSERT------------//
+    $("#c_save_but_p").click(function () {
+        var isValid = $('#form11').valid();
+        if (isValid == true) {
+            var sd_no = '@ViewBag.sd_no';
+            var style_no = $('#cm_style_no').val().trim();
+            var mt_cd = $('#c_mt_cd_p').val().trim();
+            var lot_no = $('#c_lot_no_p').val().trim();
+            var width = $('#c_width').val().trim();
+            var spec = $('#c_spec').val().trim();
+            var memo = $('#c_memo_p').val().trim();
+            var tx = $('#c_roll').val().trim();
+
+            {
+                $.ajax({
+                    url: "/ShippingMgt/InsertCreate_memo",
+                    type: "get",
+                    dataType: "json",
+                    data: {
+                        sd_no: sd_no,
+                        style_no: style_no,
+                        mt_cd: mt_cd,
+                        lot_no: lot_no,
+                        width: width,
+                        spec: spec,
+                        memo: memo,
+                        TX: tx,
+                    },
+
+                    success: function (response) {
+                        //debugger
+                        if (response.result) {
+                            var id = response.data.id;
+                            $("#list_create").jqGrid('addRowData', id, response.data, 'first');
+                            $("#list_create").setRowData(id, false, { background: "#28a745", color: "#fff" });
+                            SuccessAlert(response.message);
+
+                        } else {
+                            ErrorAlert(response.message);
+                        }
+                    }
+                });
+            }
+        }
+    });
+    //-------UPDATE------------//
+    $("#m_save_but_p").click(function () {
+        var isValid = $('#form22').valid();
+        if (isValid == false) {
+            return false;
+        }
+
+        var id = $('#m_id').val();
+        var mt_cd = $('#m_mt_cd_p').val();
+        var style_no = $('#m_style_no').val();
+        var lot_no = $('#m_lot_no_p').val();
+        var width = $('#m_width').val();
+        var spec = $('#m_spec').val();
+        var memo = $('#m_memo_p').val();
+        var tx = $('#m_roll').val().trim();
+
+
+        $.ajax({
+            url: "/ShippingMgt/UpdateCreate_memo",
+            type: "get",
+            dataType: "json",
+            data: {
+                id: id,
+                style_no: style_no,
+                mt_cd: mt_cd,
+                lot_no: lot_no,
+                width: width,
+                spec: spec,
+                memo: memo,
+                TX: tx,
+            },
+            success: function (response) {
+                console.log(response);
+                if (response.result) {
+                    var id = response.data.id;
+
+                    var rowData = $('#list_create').jqGrid('getRowData', response.data.id);
+                    rowData.md_cd = response.data.md_cd;
+                    rowData.style_no = response.data.style_no;
+                    rowData.style_nm = response.data.style_nm;
+                    rowData.mt_cd = response.data.mt_cd;
+                    rowData.size = response.data.width + "MM x " + response.data.spec + "M";
+                    rowData.width = response.data.width;
+                    rowData.spec = response.data.spec;
+                    rowData.month_excel = response.data.month_excel;
+                    rowData.lot_no = response.data.lot_no;
+                    rowData.memo = response.data.memo;
+                    rowData.receiving_dt = response.data.receiving_dt;
+                    rowData.TX = response.data.TX;
+                    rowData.total_m = response.data.total_m;
+                    rowData.total_m2 = response.data.total_m2;
+                    rowData.total_ea = response.data.total_ea;
+
+                    var html = "";
+                    var n = response.data.lot_no.indexOf(" ");
+                    if (n != -1) {
+                        var array = response.data.lot_no.split(" ")
+                        array.forEach(function (item, index, array) {
+                            html += item + "<br>";
+                        })
+                    } else { html = response.data.lot_no; }
+
+                    rowData.xd = html;
+
+
+                    $('#list_create').jqGrid('setRowData', id, rowData);
+                    $("#list_create").setRowData(id, false, { background: "#28a745" });
+                    SuccessAlert(response.message);
+                } else {
+                    ErrorAlert(response.message);
+                }
+            },
+
+        });
+    });
+    $("#m_delete_but_p").click(function () {
+        var isValid = $('#form22').valid();
+        if (isValid == false) {
+            return false;
+        }
+        var r = confirm("Are you make sure DELETE Events?");
+        if (r === true) {
+            var id = $('#m_id').val();
+            $.ajax({
+                url: "/ShippingMgt/DelCreate_memo?id=" + id,
+                type: "POST",
+                success: function (response) {
+                    if (response.result) {
+
+                        $('#list_create').jqGrid('delRowData', id);
+                        document.getElementById("form2").reset();
+                        document.getElementById("form1").reset();
+                        $("#tab_22").removeClass("active");
+                        $("#tab_11").addClass("active");
+                        $("#tab_c22").removeClass("show");
+                        $("#tab_c22").removeClass("active");
+                        $("#tab_c11").addClass("active");
+
+                        SuccessAlert(response.message);
+
+                    } else {
+                        ErrorAlert(response.message);
+                    }
+                }
+            });
+        }
+    });
+</script>
+
+<style>
+    button#m_save_but_p, button#c_save_but_p, button#m_delete_but_p {
+        float: right;
+        display: inline-block;
+    }
+</style>

@@ -1,0 +1,177 @@
+﻿
+<div class="container-fluid p-0 m-0">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-success button-srh" onclick="btn_Feed_Back(this);" id="btn_Feed_Back" style="float: right">Feedback</button>
+                    <button type="button" class="btn btn-sm btn-warning button-srh" onclick="btn_cancel(this);" id="btn_cancel" style="float: right;margin-right: 14px;">Cancel</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+
+    <div class="box-body my-2 bg-white">
+        <div class=" p-0 m-0">
+            <table id="list_missMaterial"></table>
+            <div id="list_missMaterial_Pager"></div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+       
+        var alert = @ViewBag.alert;
+        if (alert == "2") {
+            $("#btn_Feed_Back").attr("disabled", true);
+            $("#btn_cancel").attr("disabled", false);
+        }
+        else {
+            $("#btn_Feed_Back").attr("disabled", false);
+            $("#btn_cancel").attr("disabled", true);
+        }
+
+        $(function () {
+            $grid = $("#list_missMaterial").jqGrid({
+                url: "/wipwms/Get_List_MissMaterial?sd_no=@ViewBag.sd_no",
+                mtype: 'GET',
+                datatype: 'json',
+                colModel: [
+                    { key: true, label: 'wmtid', name: 'wmtid', width: 50, align: 'center', hidden: true },
+                    { label: 'ML NO', name: 'mt_cd', width: 300, align: 'left' },
+                    { label: 'Material NO', name: 'mt_no', width: 100, align: 'left' },
+                    { label: 'Material Type', name: 'mt_type', width: 80, align: 'left' },
+                    { label: 'Lot No', name: 'lot_no', width: 100, align: 'right' },
+                    { label: 'm/EA', name: 'gr_qty', width: 100, align: 'right', formatter: 'integer' },
+                    { label: 'mt_sts_cd', name: 'mt_sts_cd', width: 100, align: 'right',  hidden: true },
+                    { label: 'Status', name: 'sts_nm', width: 120, align: 'center'},
+
+                    { label: 'Expiry Date', name: 'expiry_dt', width: 180, align: 'center', formatter: convertDate },
+                    { label: 'Date of Receipt', name: 'dt_of_receipt', width: 180, align: 'center', formatter: convertDate },
+                    { label: 'Expore Date', name: 'expore_dt', width: 180, align: 'center', formatter: convertDate },
+        
+                ],
+                loadonce: true,
+                shrinkToFit: false,
+                pager: '#list_missMaterial_Pager',
+                rowNum: 50,
+                rownumbers: true,
+                rowList: [50, 100, 200, 500, 1000],
+                viewrecords: true,
+                caption: "Missing Material",
+                height: 270,
+                multiselect: false,
+                jsonReader:
+              {
+                  root: "rows",
+                  page: "page",
+                  total: "total",
+                  records: "records",
+                  repeatitems: false,
+                  Id: "0"
+              },
+                width: null,
+
+                onSelectRow: function (row_id, status, e) {
+                    var selectedRowId = $("#list_missMaterial").jqGrid("getGridParam", 'selrow');
+                    row_id = $("#list_edit").getRowData(selectedRowId);
+
+                },
+            });
+        });
+
+    });
+
+    function convertDate(cellValue, options, rowdata, action) {
+
+        if (cellValue != null) {
+
+            a = cellValue.substr(0, 4);
+            b = cellValue.substr(4, 2);
+            c = cellValue.substr(6, 2);
+
+            var html = a + "-" + b + "-" + c;
+            return html;
+        }
+        else {
+            var html = "";
+            return html;
+        }
+
+
+
+    };
+
+
+    function btn_Feed_Back() {
+   
+            $.ajax({
+                url: "/wipwms/Feed_back_sd_no?sid=" + @ViewBag.sid,
+                type: "get",
+                dataType: "json",
+
+                success: function (response) {
+                
+                    if (response.result) {
+
+                        var id = response.data.sid;
+                        $("#list").setRowData(id, response.data);
+
+                        $("#list").jqGrid('setCell', id, "sts_nm", "", {
+                            'background-color': 'rgb(244,177,131) ',
+                        });
+                        $("button[data-sid='" + id + "']").attr("data-alert", response.data.alert);
+                        //$("#btn_Feed_Back").attr("disabled", true);
+                     
+                        alert(response.message);
+                      
+                    }
+                    else {
+                        alert(response.message);
+                    }
+                }
+            });
+
+
+       
+    }
+    function btn_cancel() {
+   
+            $.ajax({
+                url: "/wipwms/Cancel_sd_no?sid=" + @ViewBag.sid,
+                type: "get",
+                dataType: "json",
+
+                success: function (response) {
+
+
+                    if (response.result) {
+
+                        var id = response.data.sid;
+
+                        $("#list").setRowData(id, response.data);
+
+                        $("#list").jqGrid('setCell', id, "sts_nm", "", {
+                            'background-color': '',
+                        });
+
+                        $("button[data-sid='" + id + "']").attr("data-alert", response.data.alert);
+
+                        //$("#btn_cancel").attr("disabled", true);
+
+                        alert(response.message);
+
+                    }
+                    else {
+                        alert(response.message);
+                    }
+                }
+            });
+
+
+       
+    }
+</script>

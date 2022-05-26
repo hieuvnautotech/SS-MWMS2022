@@ -1,0 +1,110 @@
+﻿@model IEnumerable<Mvc_VD.Models.w_material_info>
+
+@{
+    ViewBag.Title = "PoMgt";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="WMS" data-level_2="Shipping Management" data-level_3="Picking Scan"></div>
+}
+
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-1 px-1 py-2 text-right">
+                <label><b>SD NO</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <div class="input-group mt_plus">
+                    <input type="text" name="sd_no" id="c_sd_no" class="form-control form-control-text">
+                    <span class="input-group-addon psbom"><a href="#" class="poupdialog"><i class="fa fa-search text-navy"></i></a></span>
+                </div>
+                @* <input type="text" name="sd_no" id="c_sd_no" class="input-text form-control" placeholder="SD NO">*@
+            </div>
+            @*            <div class="col-md-0 p-1">
+                <button type="button" id="c_btnpoup" class="btn btn-outline-warning button-sm form-control poupdialog"><i class="fa fa-search text-navy"></i></button>
+            </div>*@
+            <div class="col-md-1 px-1 py-2 text-right">
+                <label><b>Location</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <select name="lct_cd" id="m_lct_cd" class="form-control form-control-text select2">
+                    <option value="">*</option>
+                </select>
+            </div>
+            <div class="col-md-1 px-1 py-2 text-right">
+                <label><b>Barcode</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <input type="text" name="m_mt_barcode" id="m_mt_barcode" class="form-control form-control-text">
+            </div>
+            <div class="col-md-1 p-1">
+                <button id="m_save_but" class="btn btn-sm btn-primary button-srh"><i class="fa fa-save">&nbsp;Save</i></button>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <table id="picScanGrid"></table>
+            <div id="picScanGridPager"></div>
+        </div>
+    </div>
+</div>
+<div class="dialog" title="SD NO">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-primary button-srh" id="closestyle"><i class="fa fa-close">&nbsp;Close</i></button>
+                    @*<button type="button" class="btn btn-sm btn-success button-srh" id="savestyle"><i class="fa fa-save">&nbsp;Selected</i></button>*@
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <table id="popups"></table>
+                <div id="popupspager"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section scripts{
+    <script src="~/Scripts/ShippingMgt/_PickingScan.js"></script>
+    <script src="~/Scripts/ShippingMgt/_SDNO_Poup.js"></script>
+
+    <script>
+        $("#c_sd_no").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/ShippingMgt/autoSDNo",
+                    type: "POST",
+                    dataType: "json",
+                    data: { Prefix: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.sd_no, value: item.sd_no };
+                        }))
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        var result = [{ label: "No results found", value: ' ' }];
+                        response(result);
+                        $('#c_sd_no').val('');
+
+                    },
+                })
+            }
+        })
+    </script>
+}

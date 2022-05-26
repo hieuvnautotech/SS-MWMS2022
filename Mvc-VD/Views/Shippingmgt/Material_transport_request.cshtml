@@ -1,0 +1,260 @@
+﻿@{
+    ViewBag.Title = "Material_transport_request";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="MMS" data-level_2="Material Request Management" data-level_3="Material Request">
+    </div>
+}
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-2 p-1">
+                <label><b>Requester&nbsp;&nbsp;</b></label>
+                <input type="text" name="userid" id="userid" class="input-text form-control">
+            </div>
+            <div class="col-md-2 p-1">
+                <label style="width: 100%"><b>&nbsp;&nbsp;</b></label>
+                <input type="text" name="uname" id="uname" class="input-text form-control" placeholder="Name" readonly="readonly">
+            </div>
+            <div class="col-md-2 p-1">
+                <label><b>Manager&nbsp;&nbsp;</b></label>
+                <input type="text" name="m_userid" id="userid2" class="input-text form-control">
+            </div>
+            <div class="col-md-2 p-1" id="new1">
+                <label style="width: 100%"><b>&nbsp;&nbsp;</b></label>
+                <input type="text" name="m_uname" id="uname2" class="input-text form-control" placeholder="Name" readonly="readonly">
+            </div>
+            <div class="col-md-2 p-1">
+                <label><b>Req Date</b></label>
+                <input type="text" name="req_rec_dt" id="req_rec_dt" class="form-control">
+            </div>
+            <div class="col-md-1 py-1">
+                <label style="width: 100%"><b>&nbsp;&nbsp;</b></label>
+                <button id="Request" class="btn btn-sm btn-success button-srh save_req"><i class="fa ">Request</i></button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="box-body bg-white">
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <form id="form1" style="width: 100%">
+                <div class="row p-0 m-0">
+
+                    <div class="col-md-12">
+
+                        <div class="col-md-2 p-1">
+                            <label><b>WO NO </b></label>
+                            <div class="input-group mt_plus">
+                                <input type="text" name="fo_no" id="c_fo_no" class="input-text form-control">
+                                <input type="hidden" name="bom_fo" id="bom_fo" class="input-text form-control">
+                                <span class="input-group-addon ">
+                                    <button type="button" id="c_popupfono" class="btn btn-outline button-sm  poupdialogFono"><i class="fa fa-search text-navy"></i></button>
+                                </span>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 p-1">
+                            <label><b>BOM </b></label>
+                            <div class="input-group mt_plus">
+                                <input type="text" name="bom_no" id="c_bom_no" class="input-text form-control">
+                                <span class="input-group-addon ">
+                                    <button type="button" id="" class="btn btn-outline button-sm  poupdialogbom"><i class="fa fa-search text-navy"></i></button>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 p-1">
+                            <label><b>Amount Plan(EA)</b></label>
+                            <input type="text" name="Amout_qty" id="Amout_qty" class="input-text form-control" placeholder="Amount Plan(EA)" required>
+                        </div>
+                        <div class="col-md-1 p-1">
+                            <label style="width: 100%"><b>&nbsp;&nbsp;</b></label>
+                            <button type="button" class="btn btn-sm btn-primary button-srh m-2" id="Save_amout_qty"><i class="fa fa-save">&nbsp;Save</i></button>
+                        </div>
+                    </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+
+    <div class="row p-0 m-0">
+        <div class="col-md-6">
+            <div class="box-body my-2 bg-white ">
+                <div class="col-md-label">
+                    <button type="button" class="btn btn-sm btn-primary button-srh  p-2" id="clear_Material_List"><i class="fa fa-close">&nbsp;Clear</i></button>
+                </div>
+                <table id="ShipRequest"></table>
+                <div id="ShipRequestPager"></div>
+            </div>
+        </div>
+
+        <div class="col-md-1 col-h">
+            <button type="button" id="save_2"><i class="fa fa-hand-o-right" aria-hidden="true"></i></button>
+            <p></p>
+            <button type="button" id="save_3" class=""><i class="fa fa-hand-o-left" aria-hidden="true"></i></button>
+        </div>
+
+        <div class="col-md-5">
+            <div class=" p-0 m-0">
+                <div class="box-body my-2 bg-white ">
+                    <div class="col-md-label py-1">
+                        <button type="button" class="btn btn-sm btn-primary button-srh" id="clear_Req"><i class="fa fa-close">&nbsp;Clear</i></button>
+                    </div>
+                    <table id="State"></table>
+                    <div id="StatePager"></div>
+                    <div id="count"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="container-fluid boxA">
+    <table id="check_kq"></table>
+    <div id="check_kqPager"></div>
+</div>
+<div class="dialog" title="BOM Information">
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body well text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-3 p-2">
+                    <input type="text" name="bom_no" id="s_bom_no" placeholder="BOM no" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="s_style_no" placeholder="Product Code" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="md_cd" id="s_md_cd" placeholder="Model Code" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2 d-flex">
+                    <button id="searchBtn_ppb" class="btn btn-sm mr-1 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button type="button" class="btn btn-sm btn-success mr-1 button-srh disabled" id="selected1"><i class="fa fa-save">&nbsp;Selected</i></button>
+                    <button type="button" class="btn btn-sm btn-primary button-srh" id="closebom"><i class="fa fa-close">&nbsp;Close</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid  p-0 m-0">
+        <div class="box-body my-2 bg-white">
+            <div class=" p-0 m-0 ">
+                <table id="popupbom"></table>
+                <div id="pagerbom"></div>
+            </div>
+        </div>
+    </div>
+</div>
+@*<div class="dialog" title="Bom">
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <div class="col-md-5">
+                    <div class="col-md-2 p-1  text-right">
+                        <label><b>Code</b></label>
+                    </div>
+                    <div class="col-md-4 p-1">
+                        <input type="text" name="bom_no" id="s_bom_no" maxlength="20" class="input-text form-control">
+                    </div>
+                    <div class="col-md-2 p-1  text-right">
+                        <label><b>Product Code</b></label>
+                    </div>
+                    <div class="col-md-4 p-1">
+                        <input type="text" name="style_no" id="s_style_no" maxlength="20" class="input-text form-control">
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="col-md-2 p-1  text-right">
+                        <label><b>Product Name</b></label>
+                    </div>
+                    <div class="col-md-4 p-1">
+                        <input type="text" name="style_nm" id="s_style_nm" maxlength="20" class="input-text form-control">
+                    </div>
+                    <div class="col-md-2 p-1  text-right">
+                        <label><b>Model</b></label>
+                    </div>
+                    <div class="col-md-4 p-1">
+                        <input type="text" name="md_cd" id="s_md_cd" class="form-control" maxlength="50">
+                    </div>
+                </div>
+                <div class="col-md-3 text-right">
+                    <button id="searchBtn_ppb" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button type="button" class="btn btn-success button-srh2" id="selected1"><i class="fa fa-check">Selected</i></button>
+                    <button type="button" class="btn btn-sm btn-primary button-srh" id="closebom"><i class="fa fa-close">&nbsp;Close</i></button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid box-body">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <table id="popupbom"></table>
+                <div id="pagerbom"></div>
+            </div>
+        </div>
+    </div>
+</div>*@
+<div class="dialog3" title="WO">
+
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <div class="col-md-3">
+                    <div class="row">
+                        <label class="col-xs-3 control-label text-right">
+                            <h6 class="control-label-text"><b>Code</b></h6>
+                        </label>
+                        <div class="col-xs-9">
+                            <input type="text" name="fo_no" id="fo_no" class="form-control" maxlength="20" style="width: 100%;">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9 text-right">
+                    <button id="searchBtn_pp_fo_no" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button type="button" class="btn btn-success button-srh2" id="selected2"><i class="fa fa-check">Selected</i></button>
+                    <button type="button" class="btn btn-sm btn-primary button-srh" id="closefo"><i class="fa fa-close">&nbsp;Close</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid box-body">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <table id="popupfo"></table>
+                <div id="pagerfo"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<input type="hidden" name="name" value=" " id="style_no" />
+<input type="hidden" name="name" value=" " id="style_nm" />
+<input type="hidden" name="name" value=" " id="md_cd" />
+<input type="hidden" name="name" value=" " id="tam_thoi" />
+<style>
+    .col-md-1.col-h {
+        display: inline-block;
+        text-align: center;
+        padding-top: 9%;
+    }
+    span.input-group-addon {
+        padding: 0;
+        border: 0.1px solid;
+    }
+    .ui-jqgrid tr.ui-row-ltr td {
+        padding: 5px;
+        text-align: center;
+    }
+</style>
+@section scripts{
+    <script src="~/Content/jquery.validate_V1.9/jquery.validate.min.js"></script>
+    <script src="~/Scripts/Shippingmgt/Material_transport_request/bom_popup.js"></script>
+    <script src="~/Scripts/Shippingmgt/Material_transport_request/Fo_popup.js"></script>
+    <script src="~/Scripts/Shippingmgt/Material_transport_request/Shipping_transport.js"></script>
+}

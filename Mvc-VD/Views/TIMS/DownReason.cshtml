@@ -1,0 +1,370 @@
+﻿@{
+    ViewBag.Title = "DownReason";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="@Html.Raw(ViewData["TIMS"])" data-level_2="@Html.Raw(ViewData["Inventory"])" data-level_3="@Html.Raw(ViewData["Quantity Management"])"></div>
+}
+
+
+<div class="container-fluid p-0 m-0">
+    <div class="box-body well">
+        <div class="row p-0 m-0">
+            <div class="col-md-3 p-2">
+                <label>Product</label>
+                <input type="text" id="product" placeholder="Product" class="input-text form-control">
+            </div>
+            <div class="col-md-3 p-2">
+                <label>PO NO</label>
+                <input type="text" id="at_no" placeholder="PO NO" class="input-text form-control">
+            </div>
+            <div class="col-md-3 p-2">
+                <label>Staff ID</label>
+                <input type="text" id="staff_id" placeholder="Staff ID" class="input-text form-control">
+            </div>
+            <div class="col-md-3 p-2">
+                <label>Container</label>
+                <input type="text" id="bb_no_mergeOQC" placeholder="Container" class="input-text form-control">
+            </div>
+            <div class="col-md-3 p-2">
+                <label>MT LOT</label>
+                <input type="text" id="mt_cd_mergeOQC" placeholder="MT LOT" class="input-text form-control">
+            </div>
+            <div class="col-md-2 p-2">
+                <label>MT NO</label>
+                <input type="text" id="mt_no_mergeOQC" placeholder="MT NO" class="input-text form-control">
+            </div>
+            <div class="col-md-1 p-2 ">
+                <label style="width:100%">&nbsp;&nbsp;</label>
+                <button id="PopupmergeOQC_Search" class="btn btn-sm mr-5 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid p-0 m-0">
+    <input type="hidden" name="name" value="" id="mt_cd_mer" />
+    <div class="box-body well text-right">
+        <div class="col-md-12 pl-0 pr-1">
+            <div class="row p-0 m-0">
+                <div class="col-md-12">
+                    <div class="row p-0 m-0 boxStaff">
+                        <table id="dialogMergeOQC"></table>
+                        <div id="dialogMergeOQCPage"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="dialogReturn">
+    <input type="hidden" name="name" value="" id="mt_cd_down" />
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-success button-srh" id="check_update_grty"><i class="fa fa-save">&nbsp;Save</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="box-body well text-right">
+        <div class="row p-0 m-0">
+            <div class="col-md-6 p-2">
+                <label>Length</label>
+                <input type="number" id="return_length" class="input-text form-control">
+            </div>
+            <div class="col-md-6 p-2 ">
+                <div class="form-group">
+                    <label>Reason</label>
+                    <textarea class="form-control" id="reason" rows="3"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="dialog1">
+    <div id="all_in1">
+        <div class="container-fluid">
+            <div class="box-body my-2 bg-white">
+                <h4>Detail</h4>
+                <div class="row p-0 m-0">
+                    <table id="popupbom" class="table table-striped table-bordered">
+                        <thead>
+                            <tr class="table-warning">
+                                <th scope="col" style="text-align: center !important">STT</th>
+                                <th scope="col" style="text-align: center !important">Container</th>
+                                <th scope="col" style="text-align: center !important">MT LOT</th>
+                                <th scope="col" style="text-align: center !important">Quantity</th>
+                                <th scope="col" style="text-align: left !important">Quantity Change</th>
+                                <th scope="col" style="text-align: left !important">Reason</th>
+                                <th scope="col" style="text-align: center !important">Create User</th>
+                                <th scope="col" style="text-align: center !important">Create Date</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    //#region Merge_OK OQC
+    $("#dialogReturn").dialog({
+        width: '50%',
+        height: 200,
+        maxWidth: '20%',
+        maxHeight: 500,
+        minWidth: '20%',
+        minHeight: 100,
+        resizable: false,
+        fluid: true,
+        modal: true,
+        autoOpen: false,
+        classes: {
+            "ui-dialog": "ui-dialog",
+            "ui-dialog-titlebar": "ui-dialog ui-dialog-titlebar-sm",
+            "ui-dialog-titlebar-close": "visibility: hidden",
+        },
+        resize: function (event, ui) {
+            $('.ui-dialog-content').addClass('m-0 p-0');
+        },
+        open: function (event, ui) {
+
+        },
+    });
+    $("#dialogMergeOQC").jqGrid
+        ({
+            datatype: function (postData) { getData_MergeOQC(postData); },
+            mtype: 'Get',
+            colModel: [
+                { key: true, name: 'wmtid', hidden: true },
+                { label: 'Container', name: 'bb_no', width: 350, sortable: true },
+                { label: 'PO NO', name: 'at_no', width: 100, sortable: true, align: 'center' },
+                { label: 'Staff ID', name: 'staff_id', width: 100, sortable: true },
+                { label: 'ML No', name: 'mt_cd', width: 350, sortable: true },
+                { label: 'MT NO', name: 'mt_no', width: 200, },
+                { label: 'Quantity', name: 'gr_qty', align: 'right' },
+                { label: 'Down Quantity', name: 'downQuantity', formatter: Down, align: 'center' },
+                { label: 'Detail',name:'detail', align: 'center', formatter: Detail, },
+            ],
+            onSelectRow: function (id, rowid, status, e) {
+                var selectedRowId = $("#dialogMergeOQC").jqGrid("getGridParam", 'selrow');
+                row_id = $("#dialogMergeOQC").getRowData(selectedRowId);
+            },
+            pager: jQuery('#dialogMergeOQCPage'),
+            rowNum: 50,
+            rowList: [50, 100, 200, 500, 1000],
+            sortable: true,
+            loadonce: false,
+            height: 400,
+            multiselect: false,
+            rownumbers: true,
+            width: $(".boxStaff").width() - 5,
+            shrinkToFit: false,
+            viewrecords: true,
+            caption: 'Composite',
+            jsonReader:
+            {
+                root: "rows",
+                page: "page",
+                total: "total",
+                records: "records",
+                repeatitems: false,
+                Id: "0"
+            },
+        });
+    $(".dialog1").dialog({
+        width: '70%',
+        height: "auto",
+        maxWidth: 1000,
+        maxHeight: 450,
+        minWidth: '50%',
+        minHeight: 450,
+        zIndex: 1000,
+        resizable: false,
+        fluid: true,
+        modal: true,
+        autoOpen: false,
+        classes: {
+            "ui-dialog": "ui-dialog",
+            "ui-dialog-titlebar": "ui-dialog ui-dialog-titlebar-sm",
+            "ui-dialog-titlebar-close": "visibility: hidden",
+        },
+        resize: function (event, ui) {
+            $('.ui-dialog-content').addClass('m-0 p-0');
+        },
+        open: function (event, ui) {
+
+        },
+        close: function (event, ui) {
+            $('#popupbom').empty();
+        },
+    });
+    $('#closebom1').click(function () {
+        $('.dialog1').dialog('close');
+        $('#popupbom').empty();
+    });
+
+    function Down(cellValue, options, rowdata, action) {
+        html = '<button  class="btn btn-sm btn-info button-srh" data-gr_qty="' + rowdata.gr_qty + '" data-mt_cd="' + rowdata.mt_cd + '"onclick="down_gr(this);">Change</button>';
+        return html;
+    }
+
+    function Detail(cellValue, options, rowdata, action) {
+        html = '<button  class="btn btn-sm btn-info button-srh" data-mt_cd="' + rowdata.mt_cd + '"onclick="detail_con(this);">Detail</button>';
+        return html;
+    }
+    function detail_con(e) {
+        $('.dialog1').dialog('open');
+        var table = $('#popupbom').DataTable({
+            "processing": true,
+            "ajax": {
+                "url": "/TIMS/GetReasonDown?mt_cd=" + $(e).data("mt_cd"),
+                "type": "Post",
+                "datatype": "json"
+            },
+
+            "searching": false,
+            "paging": false,
+            "bInfo": false,
+            "lengthMenu": [50, 100, 200, 500, 1000],
+            "columns": [
+                {
+                    'className': 'details-control',
+                    'orderable': false,
+                    'data': null,
+                    'defaultContent': ''
+                },
+
+                { "data": "bb_no" },
+                { "data": "mt_cd" },
+                { "data": "gr_qty" },
+                { "data": "gr_down" },
+                { "data": "reason" },
+                { "data": "reg_id" },
+                { "data": "reg_dt" },
+            ],
+            'columnDefs': [
+                {
+                    "searchable": false,
+                    "orderable": false,
+                    "targets": 0, // your case first column
+                    "className": "text-center",
+                },
+                {
+                    "targets": 3, // your case first column
+                    "className": "text-right",
+                },
+                {
+                    "targets": 4, // your case first column
+                    "className": "text-right",
+                },
+            ],
+            "order": [[2, 'asc']],
+            //'rowsGroup': [1],
+            'rowsGroup': true,
+            "bDestroy": true,
+        });
+        table.on('order.dt search.dt', function () {
+            table.column(0, { search: 'applied', order: 'applied' }).nodes().each(function (cell, i) {
+                cell.innerHTML = i + 1;
+            });
+        }).draw();
+
+    }
+
+    function down_gr(e) {
+        $('#dialogReturn').dialog('open');
+        $("#mt_cd_down").val($(e).data("mt_cd"));
+        $("#return_length").val($(e).data("gr_qty"));
+    }
+    $("#PopupmergeOQC_Search").click(function () {
+        $('#dialogMergeOQC').clearGridData();
+        $('#dialogMergeOQC').jqGrid('setGridParam', { search: true });
+        var pdata = $('#dialogMergeOQC').jqGrid('getGridParam', 'postData');
+        getData_MergeOQC(pdata);
+    });
+    function getData_MergeOQC(pdata) {
+        var params = new Object();
+
+        if ($('#dialogMergeOQC').jqGrid('getGridParam', 'reccount') == 0) {
+            params.page = 1;
+        }
+        else { params.page = pdata.page; }
+        var mt_cd = $('#mt_cd_mergeOQC').val().trim();
+        var mt_no = $('#mt_no_mergeOQC').val().trim();
+        var bb_no = $('#bb_no_mergeOQC').val().trim();
+        var product = $('#product').val().trim();
+        var at_no = $('#at_no').val().trim();
+        var staff_id = $('#staff_id').val().trim();
+
+        params.rows = pdata.rows;
+        params.sidx = pdata.sidx;
+        params.sord = pdata.sord;
+        params._search = pdata._search;
+        params.mt_cd = mt_cd;
+        params.mt_no = mt_no;
+        params.bb_no = bb_no;
+        params.product = product;
+        params.at_no = at_no;
+        params.staff_id = staff_id;
+
+        $('#dialogMergeOQC').jqGrid('setGridParam', { search: true, postData: { searchString: $("#auto_complete_search").val() } });
+        $.ajax({
+            url: "/TIMS/Get_OKPO",
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            traditional: true,
+            data: params,
+            success: function (data, st) {
+                if (st == "success") {
+                    var showing = $('#dialogMergeOQC')[0];
+                    showing.addJSONData(data);
+                }
+            },
+            error: function () {
+                return;
+            }
+        });
+    };
+    $("#check_update_grty").click(function () {
+        var params = new Object();
+        params.mt_cd = $("#mt_cd_down").val();;
+        params.value = $("#return_length").val();
+        params.reason = $("#reason").val().trim();
+        $.ajax({
+            url: "/TIMS/check_update_grty",
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            traditional: true,
+            data: params,
+            success: function (data) {
+                if (data.result == true) {
+                    var rowData = $('#dialogMergeOQC').jqGrid('getRowData', data.wmtid);
+                    rowData.gr_qty = $("#return_length").val();
+                    $('#dialogMergeOQC').jqGrid('setRowData', data.wmtid, rowData);
+                    $('#dialogMergeOQC').setRowData(data.wmtid, false, { background: "#d0e9c6" });
+                    SuccessAlert("Success");
+                } else {
+                    ErrorAlert(data.message);
+                    $('#dialogMergeOQC').clearGridData();
+                    $('#dialogMergeOQC').jqGrid('setGridParam', { search: true });
+                    var pdata = $('#dialogMergeOQC').jqGrid('getGridParam', 'postData');
+                    getData_MergeOQC(pdata);
+                }
+                $('#dialogReturn').dialog('close');
+
+            },
+            error: function () {
+                return;
+            }
+        });
+
+    });
+//#endregion
+</script>

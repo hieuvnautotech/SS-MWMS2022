@@ -1,0 +1,2 @@
+Select wmtid, mt_cd, gr_qty, gr_down, reason, sts_now As Status, bb_no, use_yn, reg_id, reg_dt, chg_id, chg_dt
+From w_material_down

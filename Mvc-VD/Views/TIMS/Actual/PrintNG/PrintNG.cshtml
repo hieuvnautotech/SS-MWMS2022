@@ -1,0 +1,219 @@
+﻿@{
+    ViewBag.Title = "PrintNG";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="@Html.Raw(ViewData["TIMS"])" data-level_2="@Html.Raw(ViewData["Actual"])" data-level_3="@Html.Raw(ViewData["Print NG"])"></div>
+}
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0" style="display: flex; flex-wrap: nowrap;">
+            <div class="row col-md-12">
+                <div class="col-md-1 p-1  text-right">
+                    <label><b>Composite Code</b></label>
+                </div>
+
+                <div class="col-md-3 p-1  text-right">
+                    <div class="input-group mt_plus">
+                        <input type="text" name="" id="mt_cd" class="input-text form-control">
+                    </div>
+                </div>
+                <div class="col-md-1 p-1  text-right">
+                    <label><b>Quantity</b></label>
+                </div>
+                <div class="col-md-2 p-1">
+                    <div class="input-group mt_plus">
+                        <input type="number" name="" id="gr_qty" class="input-text form-control">
+                    </div>
+                </div>
+                <div class="col-md-1 p-1  text-right">
+                    <label>Reason</label>
+                </div>
+                <div class="col-md-3 p-2 ">
+                    <div class="form-group">
+                        <textarea class="form-control" id="reason" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="col-md-1 p-2">
+                    <button id="Scan" class="btn btn-success button-srh2 "><i class="fa fa-qrcode" aria-hidden="true">Scan</i></button>
+                </div>
+            </div>
+        </div>
+        <div class="row col-md-12">
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Buyer QR</b></label>
+            </div>
+
+            <div class="col-md-3 p-1  text-right">
+                <div class="input-group mt_plus">
+                    <input type="text" name="" id="buyer_qr" class="input-text form-control">
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!--SEARCH FUNCTION-->
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0" style="display: flex; flex-wrap: nowrap;">
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Composite Code</b></label>
+            </div>
+            <div class="col-md-2 p-1  text-right">
+                <div class="input-group mt_plus">
+                    <input type="text" name="" id="sMaterialCode" class="input-text form-control">
+                </div>
+            </div>
+            <div class="col-md-1 p-1  text-right">
+                <label><b>PO NO</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <div class="input-group mt_plus">
+                    <input type="text" name="" id="sat_no" class="input-text form-control">
+                </div>
+            </div>
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Product</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <div class="input-group mt_plus">
+                    <input type="text" name="" id="sproduct" class="input-text form-control">
+                </div>
+            </div>
+
+            <div class="col-md-1 p-2">
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+            <div class="col-md-1 p-2">
+                <button style="float:right" id="printBtn" class="btn btn-sm btn-warning button-srh"><i class="fa fa-print">&nbsp;Print</i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--/.SEARCH FUNCTION-->
+<div class="container-fluid">
+    <div class="box-body bg-white">
+        <div class="col-md-12">
+            <table id="list"></table>
+            <div id="listpage"></div>
+        </div>
+        <div class="col-md-12 mt-3">
+            <table id="OK"></table>
+            <div id="OKpage"></div>
+        </div>
+    </div>
+</div>
+<div class="dialog1">
+    <div id="all_in1">
+        <div class="container-fluid">
+            <div class="box-body my-2 bg-white">
+                <h4>Detail</h4>
+                <div class="row p-0 m-0">
+                    <table id="popupbom" class="table table-striped table-bordered">
+                        <thead>
+                            <tr class="table-warning">
+                                <th scope="col" style="text-align: center !important">STT</th>
+                                <th scope="col" style="text-align: center !important">MT LOT</th>
+                                <th scope="col" style="text-align: center !important">Quantity</th>
+                                <th scope="col" style="text-align: left !important">Quantity Change</th>
+                                <th scope="col" style="text-align: left !important">Reason</th>
+                                <th scope="col" style="text-align: center !important">Create User</th>
+                                <th scope="col" style="text-align: center !important">Create Date</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Dialog qc code-->
+<div class="dialog_qc_code_pp" title="QC Web">
+
+    <input type="hidden" name="name" value="" id="tong_qc" />
+    <input type="hidden" name="name" value="" id="qc_mt_cd" />
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button id="save_qc_code" class="btn btn-success button-srh2">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+                <div class="col-md-4 p-1">
+                    <label><b>PO</b></label>
+                    <input type="text" name="qc_po" id="qc_po" class="input-text form-control" readonly="readonly" value="">
+                </div>
+                <div class="col-md-4 p-1">
+                    <label><b>QC</b></label>
+                    <input type="text" name="qc_item_vcd" id="qc_item_vcd" class="input-text form-control" readonly="readonly" value="">
+                </div>
+                <div class="col-md-2 p-1">
+                    <label><b>Date</b></label>
+                    <input type="text" name="qc_date" id="qc_date" class="input-text form-control" value="">
+                </div>
+                <div class="col-md-2 p-1">
+                    <label><b>Check Qty</b></label>
+                    <input type="number" name="qc_gr_qty" id="qc_gr_qty" class="input-text form-control" value="0" min="0" style="text-align: right">
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="row p-0 m-0">
+        <div class="col-md-5" id="view_qc">
+        </div>
+        <div class=" col-md-6  table_m_facline_qc" id="tab2">
+            <div class="row">
+                <div class="col-md-12 pl-0 list_qc">
+                    <div class="box-body my-2 " style="color: #ff6a00">
+                        <div class="box-header">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <h3 class="box-title">QC Main</h3>
+                                </div>
+                                <div class="col-xs-6 text-right">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-0 m-0">
+                            <table id="list_facline_qc" width="100%"></table>
+                            <div id="gridpager_facline_qc"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 pl-0 list_qc">
+                    <div class="box-body my-2 " style="color: #ff6a00">
+                        <div class="box-header">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <h3 class="box-title">QC Detail</h3>
+                                </div>
+                                @*<div class="col-xs-6 text-right">
+                                        <button type="button" class="btn btn-sm btn-primary button-srh" id="p_SaveQcfacline" disabled="disabled"><i class="fa fa-check">&nbsp;Save</i></button>
+                                    </div>*@
+                            </div>
+                        </div>
+                        <div class="p-0 m-0">
+                            <table id="list_facline_qc_value" width="100%"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--SCRIPT-->
+@section scripts{
+    <script src="~/Scripts/TIMS/Actual/PrintNG/PrintNG.js"></script>
+}

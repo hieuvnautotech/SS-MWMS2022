@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html lang="en" style="height: 100%; width: 100%; position: absolute;">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Autonsi | ssmes</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="./../Content/themes/base/resources/plugins/font-awesome/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    @*    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">*@
+    <link href="~/Content/themes/base/resources/plugins/ionicons/ionicons.css" rel="stylesheet" />
+    <!-- Theme style -->
+    <link rel="stylesheet" href="./../Content/themes/base/resources/dist/css/Arthur.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="./../Content/themes/base/resources/plugins/iCheck/flat/blue.css">
+    <!-- Date Picker -->
+    <link rel="stylesheet" href="./../Content/themes/base/resources/plugins/datepicker/datepicker3.css">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="./../Content/themes/base/resources/plugins/daterangepicker/daterangepicker-bs3.css">
+    <!-- bootstrap wysihtml5 - text editor -->
+    <link rel="stylesheet" href="./../Content/themes/base/resources/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="~/Content/themes/base/resources/plugins/googleapis/css.css" rel="stylesheet" />
+    <!-- jqGrid -->
+    <link rel="stylesheet" type="text/css" media="screen" href="./../Content/themes/base/jquery-ui.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="./../Content/jquery.jqGrid/ui.jqgrid.css" />
+    <link href="~/Content/themes/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/important.css" rel="stylesheet" />
+    <!-- jQuery -->
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/ckeditor/ckeditor.js"></script>
+    <!-- jQuery UI 1.11.4 -->
+    @*<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>*@
+    <script src="~/Content/jquery-ui_v1.12.1/jquery-ui_v1.12.1.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="./../Content/themes/base/resources/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <!-- Morris.js charts -->
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>*@
+        <script src="~/Content/themes/base/resources/plugins/raphael/raphael-min.js"></script>
+    <!-- Char.js charts -->
+    <script src="~/Scripts/Chart.min.js"></script>
+    @*<script src="http://code.jquery.com/jquery-2.0.0.min.js"></script>*@
+    <script src="~/Content/jquery-2.0.0.min/jquery-2.0.0.min.js"></script>
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js"></script>*@
+    <script src="~/Content/charts/moment.min.js"></script>
+    <script src="./../Content/themes/base/resources/plugins/daterangepicker/daterangepicker.js"></script>
+    <!-- datepicker -->
+    <script src="./../Content/themes/base/resources/plugins/datepicker/bootstrap-datepicker.js"></script>
+    <!-- Bootstrap WYSIHTML5 -->
+    <script src="./../Content/themes/base/resources/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+    <!-- Slimscroll -->
+    <!-- FastClick -->
+    <script src="./../Content/themes/base/resources/plugins/fastclick/fastclick.js"></script>
+    <!-- Arthur App -->
+    <script src="./../Content/themes/base/resources/dist/js/Arthur.min.js"></script>
+    <style>
+        .embed-responsive-5by4 {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body style="height: 100%; width: 100%; position: absolute;">
+
+    @RenderBody()
+
+</body>
+@RenderSection("scripts", required: false)
+</html>

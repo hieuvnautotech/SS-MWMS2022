@@ -1,0 +1,88 @@
+﻿@{
+    ViewBag.Title = "Scan_Buyer";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="@Html.Raw(ViewData["TIMS"])" data-level_2="@Html.Raw(ViewData["Actual"])" data-level_3="@Html.Raw(ViewData["Buyer QR"])"></div>
+}
+
+
+
+<input type="hidden" name="name" value="" id="id_dv" />
+<div class="container-fluid">
+    <div class="box-body bg-white ">
+        <div class="row p-0 m-0">
+            <div class="col-md-12">
+                <div class="col-md-1 p-1  text-right">
+                    <label><b>Container</b></label>
+                </div>
+                <div class="col-md-3">
+                    <input type="text" name="bb_no" id="bb_no" class="input-text form-control" />
+                </div>
+                <div class="col-md-1 p-1  text-right">
+                    <label>Tem gói</label>
+                </div>
+                <div class="col-md-3">
+                    <input type="text" name="buyerQR" id="buyer_qr" class="input-text form-control" />
+                </div>
+                <div class="col-md-2">
+                    <button id="Mapping_Buyer" class="btn btn-success button-srh2 ">Mapping</button>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" id="ChangeTemgoi" class="btn btn-success button-sm "><i class="fa fa-check">&nbsp;Đổi Tem Gói</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0" style="display: flex; flex-wrap: nowrap;">
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Container</b></label>
+            </div>
+            <div class="col-md-3 p-1  text-right">
+                <div class="input-group mt_plus">
+                    <input type="text" name="" id="container" class="input-text form-control">
+                </div>
+            </div>
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Product</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <div class="input-group mt_plus">
+                    <input type="text" name="" id="Product" class="input-text form-control">
+                </div>
+            </div>
+            <div class="col-md-1 p-1  text-right">
+                <label><b>PO NO</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <div class="input-group mt_plus">
+                    <input type="text" name="" id="at_no" class="input-text form-control">
+                </div>
+            </div>
+            <div class="col-md-1 p-2">
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+            <div class="col-md-1 py-1">
+                <button type="button" id="Shipping" class="btn btn-warning button-sm"><i class="fa fa-save">&nbsp;Shipping</i></button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="col-md-12 p-2  text-right">
+    <div class="box-body my-2 bg-white">
+        <div class=" p-0 m-0 boxBOM">
+            <table id="table_mapping_oqc"></table>
+            <div id="table_mapping_oqc_page"></div>
+        </div>
+    </div>
+</div>
+<div class="popup-dialog ViewStatusTemGoi" title="Đổi tem gói">
+    <div id="PartialView_ViewStatusTemGoiPopup"></div>
+</div>
+@section scripts{
+    <script src="~/Scripts/TIMS/Actual/Buyer_qr/Buyer_qr.js"></script>
+}

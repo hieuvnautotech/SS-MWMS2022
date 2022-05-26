@@ -1,0 +1,3 @@
+Select wmmid,mt_lot,mt_cd,mt_no,DATE_FORMAT(mapping_dt,'%Y-%m-%d %H:%i:%s'),use_yn,del_yn, reg_id,reg_dt,chg_id,chg_dt,sts_share 
+From w_material_mapping 
+Where wmmid NOT IN (SELECT wmmid FROM w_material_mapping WHERE mt_lot NOT LIKE '%ROT%' AND mt_lot NOT LIKE '%STA%') -- 388896

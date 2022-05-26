@@ -1,0 +1,129 @@
+﻿@{
+    ViewBag.Title = "Material_Information_Wip";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="FG-WMS" data-level_2="Inventory" data-level_3="General"></div>
+}
+
+<div class="container-fluid">
+    <div class="row text-right">
+
+        <div class="col-md-12 px-3">
+            <form method="post" id="exportData">
+                <button type="submit" id="excelBtn" class="btn btn-sm btn-warning button-top"><i class="fa fa-file-excel-o">&nbsp;Excel</i></button>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-2 p-1">
+                <label><b>Buyer</b></label>
+                <input type="text" name="buyer_cd" id="buyer_cd" class="input-text form-control">
+            </div>
+            <div class="col-md-2 p-1">
+                <label><b>Product</b></label>
+                <input type="text" name="productCode" id="productCode" class="input-text form-control">
+            </div>
+            <div class="col-md-2 p-1">
+                <label><b>PO</b></label>
+                <input type="text" name="poCode" id="poCode" class="input-text form-control">
+            </div>
+
+            @*<div class="col-md-2 p-1">
+                    <label><b>Return Date</b></label>
+                    <input type="text" name="return_date" id="return_date" class="form-control">
+                </div>*@
+            <div class="col-md-2 p-1">
+                <label><b>Receive Date</b></label>
+                <input type="text" name="recevice_dt_start" id="recevice_dt_start" class="form-control">
+            </div>
+            <div class=" p-1">
+                <label style="width:100%">&nbsp;&nbsp;</label>
+                <label><b>~</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <label style="width:100%">&nbsp;&nbsp;</label>
+                <input type="text" name="recevice_dt_end" id="recevice_dt_end" class="form-control">
+            </div>
+            <div class="col-md-1 p-2">
+                <label style="width:100%">&nbsp;&nbsp;</label>
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="p-0 m-0">
+            <table id="GeneralGrid"></table>
+            <div id="GeneralGridPager"></div>
+        </div>
+    </div>
+</div>
+@*------------------------------------------*@
+
+<style>
+    .alert {
+        margin: auto;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        z-index: 1001;
+        background-color: #ff9800;
+        color: white;
+        width: 30%;
+        height: 7%;
+        padding: 12px;
+        font-size: 21px;
+        text-align: center;
+    }
+
+    .thongbao {
+        padding: 20px;
+        color: white;
+        width: 100%;
+        height: 100%;
+        top: 0px;
+        left: 0px;
+        position: fixed;
+        opacity: 1;
+        background-color: #ffffff82;
+        z-index: 1000;
+        text-align: center;
+    }
+
+    .closebtn {
+        margin-left: 15px;
+        color: white;
+        font-weight: bold;
+        float: right;
+        font-size: 22px;
+        line-height: 20px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+        .closebtn:hover {
+            color: black;
+        }
+</style>
+
+
+<!-- ./ Dialog -->
+<style>
+    span.input-group-addon {
+        padding: 0;
+        border: 0.1px solid;
+    }
+</style>
+@section scripts{
+    <script src="~/Scripts/fgwms/Inventory/General.js"></script>
+}

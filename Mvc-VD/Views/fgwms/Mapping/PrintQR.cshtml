@@ -1,0 +1,355 @@
+﻿@{
+    Layout = null;
+}
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ko" lang="ko">
+<head>
+    <title>::: Finished Goods Shipping Management :::</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+    @*<script type="text/javascript" src="http://fsm.autonsi.com/resources/plugins/grcodejs/jquery.min.js"></script>*@
+    <script src="~/Content/jquery.min_1.8.3/jquery.min_1.8.3.js"></script>
+
+    @*<script type="text/javascript" src="http://fsm.autonsi.com/resources/plugins/grcodejs/qrcode.js"></script>*@
+    <script src="~/Content/grcodejs/qrcode.js"></script>
+    @*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">*@
+    @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>*@
+    <script src="~/Content/jquery-3.4.1.min/jquery-3.4.1.min.js"></script>
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>*@
+    <script src="~/Content/popper_1.14.7/popper.min.js"></script>
+
+    <link href="~/Content/bootstrap_4.3.1/bootstrap.min.css" rel="stylesheet" />
+    <style type="text/css">
+        .table-bordered td, .table-bordered th {
+            border: 2px solid #000 !important;
+            padding: 3px !important;
+        }
+
+        .logoo {
+            font-size: 18px;
+            width: 90px;
+            margin: 0;
+            padding-top: 11px;
+        }
+
+        td {
+            color: #000;
+            font-weight: 700;
+        }
+
+        th.center {
+            vertical-align: middle !important;
+        }
+
+        td {
+            vertical-align: middle !important;
+            margin: 0 !important;
+            padding: 0px 0px 0px 5px !important;
+        }
+
+        table {
+            font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+        }
+
+        .all_cg {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 8px 0;
+        }
+
+        table.qrhead {
+            page-break-before: always;
+        }
+
+        tbody > tr > td {
+            border: 2px solid #0c0c0c !important;
+        }
+
+        th {
+            border: 2px solid #0c0c0c !important;
+        }
+
+        tbody {
+            font-size: 12px;
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .qrhead {
+            /*   width: 500px;
+            height: 100px;*/
+            width: 415px;
+            height: 188px;
+        }
+
+        .logo_sdv2019 {
+            font-size: 18px;
+            width: 100%;
+            margin: 0;
+            padding-top: 11px;
+            text-align: center;
+        }
+
+        span {
+            font-size: 12px;
+        }
+
+        td.title {
+            font-size: 12px;
+        }
+
+        td.title1 {
+            font-size: 15px;
+        }
+
+        td.title {
+            padding-left: 5px !important;
+            /*  padding: 0 !important;*/
+            margin: 0 !important;
+        }
+
+
+        /*  td.title {
+            padding: 0px !important;
+        }*/
+        /* td {
+            margin: 2px !important;
+            padding: 4px !important;
+        }*/
+        th.bentrai.SDV3 {
+            padding: 15px;
+        }
+
+        th.bentrai {
+            text-align: center;
+            background: #fff;
+            padding: 15px;
+        }
+
+        td.title {
+            color: #000;
+            font-weight: 700;
+        }
+
+        .right {
+            text-align: right;
+        }
+
+        .table > tbody > tr > th {
+            padding: 0px !important;
+        }
+
+        td.title {
+            font-weight: 700;
+            width: 30%;
+        }
+
+        .hidden {
+            color: #ffffff00;
+        }
+
+        th.bentrai {
+            width: 5%;
+        }
+
+        .phancuoi {
+            text-align: center;
+        }
+
+        td.phancuoi {
+            font-weight: 700;
+        }
+
+        .Description {
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div id="targetcode"></div>
+
+    @*---------------------------------------------------------------------------------------------------------------------------*@
+    <script>
+    $(document).ready(function () {
+        printQRCode();
+    });
+
+    var x = "@ViewData["Message"]";
+
+    function printQRCode() {
+
+        $.get("/fgwms/QRbarcodeInfo" + "?id=" + x, function (data) {
+            if (data.row_data != null && data.row_data != undefined && data.row_data.length) {
+
+                var html = '';
+                $.each(data.row_data, function (key, item) {
+                    switch (item.stamp_code) {
+                        case "001"://inter
+                        case "003"://Wooree
+                        case "004"://BHFLEX
+
+                            html += '<table class="table table-striped table-hover table-bordered qrhead"><tbody><tr><th rowspan="9" class="bentrai">';
+                            html += '<img src = "/Content/themes/logo.PNG" /><div id="code_' + item.id + '"  class="all_cg"></div>';
+                            html += '<div  class="Description">' + item.Description + '</div></th>';
+                            html += '<th class="center" colspan="2"><span>SHINSUNG C&T VINA</span></th></tr>';
+
+                            html += '<tr><td class ="title">MODEL/모델</td> <td>' + item.model + '</td></tr>';
+                            html += '<tr><td class ="title"> Part Name/품명</td> <td>' + item.part_name + '</td></tr>';
+                            html += '<tr><td class ="title"> Code/코드</td> <td>' + item.product_code + '</td></tr>';
+                            html += '<tr><td class ="title">Q’ty/수량</td> <td class="right">' + numberWithCommas(item.quantity)+ '</td></tr>';
+                            html += '<tr><td class ="title">LOT NO</td> <td>' + item.lotNo + '</td></tr>';
+                            html += '<tr><td class ="title"> Ngày SX/제조일</td><td>' + item.nsx + ' </td></tr>';
+                            html += '<tr><td class ="title"> HSD/만료일</td> <td>' + item.hsd + '</td></tr>';
+                            html += '<tr><td class ="title">Nhiệt độ bảo quản</td><td>' + item.nhietdobaoquan + '</td></tr>';
+                            html += '<tr> <td class = "phancuoi" colspan="3">' + item.bx_no + '</td></tr>';
+
+                            html += ' </tbody></table>';
+                            break;
+
+                        case "002"://SDV3
+                        case "006"://SDV2019
+
+                            html += '<table class="table table-striped table-hover table-bordered qrhead"><tbody>';
+                            if (item.stamp_code == "002") {
+                                html += '<tr><td rowspan= "2" class="bentrai SDV3"><div class="logo_sdv2019">SDV3</div></td>';
+                            }
+                            else {
+                                html += '<tr><td rowspan= "2" class="bentrai SDV3"><div class="logo_sdv2019">SDV 2019</div></td>';
+                            }
+
+
+                            html += '<td class ="title1">Material Code</td> <td  class ="title1">' + item.product_code + '</td></tr>'
+                            html += '<tr><td class ="title1">SDV Product</td> <td  class ="title1">' + item.model + '</td></tr>';
+
+
+                            html += '<tr><td rowspan="6" class="bentrai"><div id="code_' + item.id + '"  class="all_cg"></div></td>';
+                            html += '<td class ="title1">Supplier(Factory)</td> <td class ="title1">' + item.supplier + item.vendor_line + '</td></tr>';
+                            html += '<tr><td class ="title1">Quantity</td> <td class="right title1">' + numberWithCommas(item.quantity) + '</td></tr>';
+                            html += '<tr><td class ="title1">LOT NO</td> <td class ="title1">' + item.lotNo + '</td></tr>';
+                            html += '<tr><td class ="title1">Expiration Date</td><td class ="title1">' + item.hsd + ' </td></tr>';
+                            html += '<tr><td class ="title1">ETC1</td> <td class ="title1">' + item.ssver + '</td></tr>';
+                            html += '<tr><td class ="title1">ETC2</td> <td class ="title1">' + item.lotNo + '</td></tr>';
+                            html += '<tr> <td class = "phancuoi title1" colspan="3">' + item.bx_no + '</td></tr>';
+
+                            html += ' </tbody></table>';
+                            break;
+
+                        case "005"://SDVCODE
+                            html += '<table class="table table-striped table-hover table-bordered qrhead"><tbody>';
+                            html += '<tr><th rowspan= "2" class="bentrai SDV3"></th>'
+                            html += '<td class ="title1">Material Code</td> <td class ="title1">' + item.product_code + '</td></tr>'
+                            html += '<tr><td class ="title1">SDC Product</td> <td class ="title1">' + item.model + '</td></tr>';
+
+                            html += '<tr><td rowspan="7" class="bentrai"><div id="code_' + item.id + '"  class="all_cg"></div></td></tr>';
+                            html += '<tr><td class ="title1">Supplier(Factory)</td> <td class ="title1">' + item.supplier + item.vendor_line + '</td></tr>';
+                            html += '<tr><td class ="title1">Quantity</td> <td class="right title1">' + numberWithCommas(item.quantity) + '</td></tr>';
+                            html += '<tr><td class ="title1">Lot No</td> <td class ="title1">' + item.lotNo + '</td></tr>';
+                            html += '<tr><td class ="title1">Expiration Date</td><td class ="title1">' + item.hsd + ' </td></tr>';
+                            html += '<tr><td class ="title1">Remark1</td> <td class ="title1"> ' + item.ssver + '</td></tr>';
+                            html += '<tr><td class ="title1">Remark2</td> <td  class ="title1">' + item.lotNo + '</td></tr>';
+                            html += '<tr> <td class = "phancuoi title1" colspan="3">' + item.bx_no + '</td></tr>';
+
+                            html += ' </tbody></table>';
+                            break;
+
+                        case "007"://SDV
+                            html += '<table class="table table-striped table-hover table-bordered qrhead"><tbody>';
+                            html += '<tr><th rowspan= "2" class="bentrai SDV3"><div class="logoo"></div></th>'
+                            html += '<td class ="title1">Material Code</td> <td class ="title1">' + item.product_code  + '</td></tr>'
+                            html += '<tr><td class ="title1">SDC Product</td> <td class ="title1">' + item.model + '</td></tr>';
+
+                            html += '<tr><td rowspan="7" class="bentrai"><div id="code_' + item.id + '"  class="all_cg"></div></td></tr>';
+                            html += '<tr><td class ="title1">Supplier(Factory)</td> <td class ="title1">' + item.supplier + item.vendor_line + '</td></tr>';
+                            html += '<tr><td class ="title1">Quantity</td> <td class ="right title1">' + numberWithCommas(item.quantity) + '</td></tr>';
+                            html += '<tr><td class ="title1">Lot No</td> <td class ="title1">' + item.lotNo + '</td></tr>';
+                            html += '<tr><td class ="title1">Expiration Date</td><td class ="title1">' + item.hsd + ' </td></tr>';
+                            html += '<tr><td class ="title1">Remark</td> <td class ="title1">' + item.ssver + '</td></tr>';
+                            html += '<tr><td class ="title1"></td> <td class="  hidden">a</td></tr>';
+
+                            html += '<tr> <td class = "phancuoi title1" colspan="3">' + item.bx_no + '</td></tr>';
+
+                            html += ' </tbody></table>';
+                            break;
+
+                    
+
+                        case "008"://INDIA
+                            html += '<table class="table table-striped table-hover table-bordered qrhead"><tbody>';
+                            html += '<tr><th rowspan= "2" class="bentrai SDV3">' + item.prj_nm + '</th>'
+                            html += '<td class ="title1">Material Code</td> <td class ="title1">' + item.product_code + '</td></tr>'
+                            html += '<tr><td class ="title1">SDC Product</td> <td class ="title1">' + item.model + '</td></tr>';
+
+                            html += '<tr><td rowspan="7" class="bentrai"><div id="code_' + item.id + '"  class="all_cg"></div></td></tr>';
+                            html += '<tr><td class ="title1">Supplier(Factory)</td> <td class ="title1">' + item.supplier + item.vendor_line + '</td></tr>';
+                            html += '<tr><td class ="title1">Quantity</td> <td class="right title1">' + numberWithCommas(item.quantity) + '</td></tr>';
+                            html += '<tr><td class ="title1">Lot No</td> <td class ="title1">' + item.lotNo + '</td></tr>';
+                            html += '<tr><td class ="title1">Expiration Date</td><td class ="title1">' + item.hsd + ' </td></tr>';
+                            html += '<tr><td class ="title1">Remark1</td> <td class ="title1"> ' + item.ssver + '</td></tr>';
+                            html += '<tr><td class ="title1">Remark2</td> <td  class ="title1">' + item.lotNo + '</td></tr>';
+                            html += '<tr> <td class = "phancuoi title1" colspan="3">' + item.bx_no + '</td></tr>';
+
+                            html += ' </tbody></table>';
+                            break;
+
+                        case "009"://INDIA2
+
+                            html += '<table class="table table-striped table-hover table-bordered qrhead"><tbody>';
+                            html += '<tr><td rowspan= "2" class="bentrai SDV3"><div class="logo_sdv2019">' + item.prj_nm + '</div></td>';
+
+                            html += '<td class ="title1">Material Code</td> <td  class ="title1">' + item.product_code + '</td></tr>'
+                            html += '<tr><td class ="title1">SDV Product</td> <td  class ="title1">' + item.model + '</td></tr>';
+
+
+                            html += '<tr><td rowspan="6" class="bentrai"><div id="code_' + item.id + '"  class="all_cg"></div></td>';
+                            html += '<td class ="title1">Supplier(Factory)</td> <td class ="title1">' + item.supplier + item.vendor_line + '</td></tr>';
+                            html += '<tr><td class ="title1">Quantity</td> <td class="right title1">' + numberWithCommas(item.quantity) + '</td></tr>';
+                            html += '<tr><td class ="title1">LOT NO</td> <td class ="title1">' + item.lotNo + '</td></tr>';
+                            html += '<tr><td class ="title1">Expiration Date</td><td class ="title1">' + item.hsd + ' </td></tr>';
+                            html += '<tr><td class ="title1">ETC1</td> <td class ="title1">' + item.ssver + '</td></tr>';
+                            html += '<tr><td class ="title1">ETC2</td> <td>' + item.lotNo + '</td></tr>';
+                            html += '<tr> <td class = "phancuoi title1" colspan="3">' + item.bx_no + '</td></tr>';
+
+                            html += ' </tbody></table>';
+                            break;
+                        default:
+                            break;
+                    }
+
+
+                });
+
+                $("#targetcode").html(html);
+                $.each(data.row_data, function (key, item) {
+                    var code = new QRCode(document.getElementById("code_" + item.id + ""), {
+                        width: 100,
+                        height: 100,
+                    });
+                    code.makeCode(item.bx_no);
+                });
+            }
+        });
+
+
+    }
+    $("#c_print").on("click", function () {
+        window.print();
+    });
+        function numberWithCommas(x) {
+            if (x != null || x != "" || x != undefined) {
+                return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            }
+            return "";
+        }
+    </script>
+
+
+
+</body>
+</html>

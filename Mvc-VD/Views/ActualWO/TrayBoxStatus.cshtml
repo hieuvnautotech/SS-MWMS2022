@@ -1,0 +1,74 @@
+﻿@{
+    ViewBag.Title = "TrayBoxStatus";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="MMS" data-level_2="Actual WO" data-level_3="Tray Box Status"></div>
+}
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-1 px-1 py-2 text-right">
+                <label><b>Tray Box Code</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <div class="input-group mt_plus">
+                    <input type="text" name="bx_no" id="bx_no" class="form-control form-control-text" >
+                </div>
+            </div>
+            <div class="col-md-1 px-1 py-2 text-right">
+                <label><b>Tray Box Name</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <div class="input-group mt_plus">
+                    <input type="text" name="bx_nm" id="bx_nm" class="form-control form-control-text" >
+                </div>
+            </div>
+            <div class="col-md-1 px-1 py-2 text-right">
+                <label><b>Product No</b></label>
+            </div>
+            <div class="col-md-1 p-1">
+                <div class="input-group mt_plus">
+                    <input type="text" name="style_no" id="style_no" class="form-control form-control-text ">
+                </div>
+            </div>
+              <div class="col-md-1 px-1 py-2 text-right">
+                <label><b>Product Lot</b></label>
+            </div>
+            <div class="col-md-3 p-1">
+                <div class="input-group mt_plus">
+                    <input type="text" name="prd_lcd" id="prd_lcd" class="form-control form-control-text ">
+                </div>
+            </div>
+            <div class="col-md-1 p-2 d-flex">
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh mr-2"><i class="fa fa-search">&nbsp;search</i></button>
+            </div>
+        </div>
+    </div>
+</div>
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white boxA">
+        <div class="row p-0 m-0 ">
+            <div class="col-md-12 p-0 m-0">
+                <table id="list"></table>
+                <div id="gridpager"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white boxA">
+        <div class="row p-0 m-0 ">
+            <div class="col-md-12 p-0 m-0">
+                <table id="list1"></table>
+                <div id="gridpager1"></div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Scripts/ActualWO/TrayBoxStatus/TrayBoxStatus.js"></script>
+}
+
+

@@ -1,0 +1,71 @@
+﻿@{
+    ViewBag.Title = "Resource";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+
+}
+@section Tilte {
+    @*<div class="col-xs-12" id="current_menu" data-level_1="MMS" data-level_2="Plan" data-level_3="Resource Management"></div>*@
+    <div class="col-xs-12" id="current_menu" data-level_1="@Html.Raw(ViewData["MMS"])" data-level_2="@Html.Raw(ViewData["Plan"])" data-level_3="@Html.Raw(ViewData["Resource Management"])"></div>
+
+}
+
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-2 p-1">
+                <label><b>PO</b></label>
+                <input type="text" name="po_no" id="s_po_no" class="form-control form-control-text">
+            </div>
+            <div class="col-md-2 p-1">
+                <label><b>Product Code</b></label>
+                <div class="input-group mt_plus">
+                    <input type="text" name="s_style_no" id="s_style_no" class="form-control form-control-text">
+                    <span class="input-group-addon psbom"><a href="#" class="poupdialogStyle"><i class="fa fa-search text-navy"></i></a></span>
+                </div>
+            </div>
+            <div class="col-md-2 p-1">
+                <label><b>Code</b></label>
+                <input type="text" name="value" id="value_code" class="form-control form-control-text">
+            </div>
+
+            <div class="col-md-2 p-1">
+                <label><b>Name</b></label>
+                <input type="text" name="value_nm" id="value_nm" class="form-control form-control-text">
+            </div>
+            <div class="col-md-2 p-1">
+                <label style="width:100%"><b>Type</b></label>
+                <div class="input-group" style="width: 100%;" onchange="change_type()">
+                    <select id="type_kind" class="form-control">
+                        <option value="mc">Machine</option>
+                        <option value="wk">Worker</option>
+                        <option value="mold">Mold</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-1 ">
+                <label style="width:100%"><b>&nbsp;&nbsp;</b></label>
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<div class="box-body my-2 bg-white">
+    <div class="fc-button-group">
+        <input type="hidden" name="name" value="0" id="prev_next" />
+        <button type="button" class="fc-prev-button fc-button fc-state-default fc-corner-left" onclick="prev()"><span class="fc-icon fc-icon-left-single-arrow"></span></button>
+        <button type="button" class="fc-next-button fc-button fc-state-default fc-corner-right" onclick="next()"><span class="fc-icon fc-icon-right-single-arrow"></span></button>
+        <button type="button" class="fc-today-button fc-button fc-state-default fc-corner-left fc-corner-right " onclick="today()">today</button>
+    </div>
+</div>
+
+<div class="box-body my-2 bg-white">
+    <input type="hidden" name="name" value="0" id="day" />
+    <div id="html"></div>
+</div>
+
+<script src="~/Scripts/DevManagement/Resource/PartialView_Resource.js"></script>

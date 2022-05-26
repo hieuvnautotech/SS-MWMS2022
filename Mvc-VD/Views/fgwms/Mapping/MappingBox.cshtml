@@ -1,0 +1,213 @@
+﻿@{
+    ViewBag.Title = "Print Box";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    @*<div class="col-xs-12" id="current_menu" data-level_1="FG-WMS" data-level_2="Mapping" data-level_3="Mapping QR Box"></div>*@
+    <div class="col-xs-12" id="current_menu" data-level_1="@Html.Raw(ViewData["FG-WMS"])" data-level_2="@Html.Raw(ViewData["Mapping"])" data-level_3="@Html.Raw(ViewData["Mapping QR Box"])"></div>
+}
+
+<!--SCAN FUNCTION-->
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0" style="display: flex; flex-wrap: nowrap;">
+            <div class="col-md-1 p-1  text-right">
+                <label><b>Tem gói</b></label>
+            </div>
+            <div class="col-md-3 p-1  text-right">
+                <div class="input-group mt_plus">
+                    <div class="col-md-11">
+                        <input type="text" name="" id="scBuyerCode" class="input-text form-control">
+                    </div>
+                    <div class="col-md-1">
+                        <span class="css-pp-icon-search"><a href="#" class="popupDialogBuyer"><i class="fa fa-search text-navy"></i></a></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-1 p-2 text-right">
+                <button id="mapBtn" class="btn btn-sm btn-success button-srh"><i class="fa fa-link" aria-hidden="true">&nbsp;FINISH</i></button>
+            </div>
+            <div class="col-md-1 p-2">
+                <button id="resetBtn" class="btn btn-sm btn-warning button-srh"><i class="fa fa-refresh" aria-hidden="true">&nbsp;RESET</i></button>
+            </div>
+
+            <div class="col-md-2 p-2">
+                <input type="file" name="file" id="excelupload_input" accept=".xlsx,.xls,.csv,.tsv,.xml,.json" class="valid" />
+            </div>
+            <div class="col-md-1 p-2">
+                <button type="button" id="ExcelUpload" style="margin-top: 0px !important" class="btn btn-primary"><i class="fa fa-upload">&nbsp;Upload</i></button>
+            </div>
+            <div class="col-md-2 p-2 css_button">
+                <label>
+                </label>
+                <a id="downloadBtn" href="/Excel/ExcelMappingBox/Mapping_Box.xlsx" class="btn btn-success btn-download btnDownload mr-3" download=""><i class="fa fa-download"> &nbsp;Download Form Excel</i></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--GRID FUNCTION-->
+<div class="container-fluid">
+    <div class="box-body bg-white">
+        <div class="row">
+            <b id="er" style="margin-left: 30px;width: 90%;white-space: nowrap;overflow: hidden;"></b>
+        </div>
+        <div class="col-md-6">
+            <div class="box-body bg-white">
+                <div class="col-sm-12">
+                    <table id="listProduct"></table>
+                    <div id="listProductPager"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="box-body bg-white">
+                <div class="col-sm-12">
+                    <table id="listBox"></table>
+                    <div id="listBoxPager"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid" style="margin-top: 20px">
+    <div class="box-body bg-white">
+        <!--SEARCH FUNCTION-->
+        <div class="row p-0 m-0" style="display: flex; flex-wrap: nowrap;">
+            <div class="col-md-4 p-1"></div>
+            <div class="col-md-1 p-1">
+                <div class="input-group mt_plus">
+                    <input type="text" name="" id="searchProductCode" class="input-text form-control" placeholder="Product">
+                </div>
+            </div>
+            <div class="col-md-2 p-1">
+                <div class="input-group mt_plus">
+                    <input type="text" name="" id="searchBuyerCode" class="input-text form-control" placeholder="tem gói">
+                </div>
+            </div>
+            <div class="col-md-2 p-1">
+                <div class="input-group mt_plus">
+                    <input type="text" name="" id="searchBoxCode" class="input-text form-control" placeholder="Tem thùng">
+                </div>
+            </div>
+            <div class="col-md-1">
+                <input type="text" id="sDate" class="input-text form-control">
+            </div>
+            <div class="col-md-1 p-1 text-center">
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search" aria-hidden="true">&nbsp;SEARCH</i></button>
+            </div>
+            <div class="col-md-1 p-1">
+                <button type="button" id="printQRBtn" class="btn btn-warning"><i class="fa fa-print">&nbsp;IN MÃ</i></button>
+            </div>
+            @*<div class="col-md-1 p-1">
+                    <form method="post" id="exportData">
+                        <button type="button" id="excelBtn" class="btn btn-warning"><i class="fa fa-print">&nbsp;Excel</i></button>
+                    </form>
+                </div>*@
+        </div>
+        <!--/.SEARCH FUNCTION-->
+
+        <div class="col-md-6">
+            <div class="box-body bg-white">
+                <div class="col-sm-12">
+                    <table id="listProductOverview"></table>
+                    <div id="listProductOverviewPager"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="box-body bg-white">
+                <div class="col-sm-12">
+                    <table id="listBoxOverView"></table>
+                    <div id="listBoxOverViewPager"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--DIALOG BUYER-->
+<div class="dialogBuyer" title="Buyer" style="display:none">
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body well text-right">
+            <div class="row p-0 m-0">
+
+                <div class="col-md-3 p-2">
+                    <input type="text" id="dialogBuyerCode" class="input-text form-control" placeholder="Buyer Code">
+                </div>
+                <div class="col-md-2 p-2">
+                    <input type="text" id="dialogBuyerProductCode" class="input-text form-control" placeholder="Product Code">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" id="dialogBuyerMaterialCode" class="input-text form-control" placeholder="Material Code">
+                </div>
+                <div class="col-md-2 p-2 ">
+                    <button id="dialogBuyerSearchBtn" class="btn btn-sm mr-2 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                </div>
+                <div class="col-md-1 p-2">
+                    <button id="dialogBuyerSelectBtn" class="btn btn-sm btn-success button-srh disabled"><i class="fa fa-save">&nbsp;Selected</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class=" p-0 m-0">
+                <table id="dialogBuyerGrid"></table>
+                <div id="dialogBuyerPager"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="dialog_Finish" title="Tồn tại LOT cũ hơn. Chọn 'YES' để tiếp tục." style="display:none">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-success button-srh mr-3" id="closefinish">NO</button>
+                    <button type="button" class="btn btn-sm btn-danger button-srh" id="finish_mapping">YES</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--SCRIPT-->
+@section scripts{
+    <script>
+                    //$(function ()
+                    //{
+                    //    var tab = $('.nav-tabs-custom .nav.nav-tabs li a');
+                    //    $(tab).click(function (e)
+                    //    {
+                    //        var ul = $(e.target).closest('ul');
+                    //        $(ul).find('li').removeClass('active');
+                    //        $(e.target).closest('li').addClass('active');
+                    //    });
+                    //});
+    </script>
+    <script src="~/Scripts/fgwms/Mapping/MappingBox.js"></script>
+}
+<style>
+    .css_button {
+        padding: 4px;
+        font-size: 15px;
+        /*  margin-top: 21px;*/
+        cursor: pointer;
+    }
+
+    .btn-delete {
+        text-align: center !important;
+        margin: 2px 3px !important;
+        border: none;
+        background: #e35050;
+        border: none !important;
+        color: #f4e3e3;
+        padding-left: 13px !important;
+        font-size: 17px;
+    }
+</style>

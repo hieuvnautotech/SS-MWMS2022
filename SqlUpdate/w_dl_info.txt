@@ -1,0 +1,2 @@
+Select dlid, dl_no, dl_nm, dl_sts_cd As Status, work_dt, lct_cd, remark, use_yn, reg_id, 
+reg_dt, chg_id, chg_dt From w_dl_info

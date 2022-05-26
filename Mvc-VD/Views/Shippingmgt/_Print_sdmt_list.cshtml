@@ -1,0 +1,77 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/Print.cshtml";
+}
+
+<style type="text/css">
+    .all_cg {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    table.qrhead {
+        page-break-before: always;
+    }
+
+    tbody {
+        font-size: 12px;
+        margin: 0px;
+        padding: 0px;
+    }
+
+   .qrhead {
+        width: 229px;
+        height: 229px;
+    }
+</style>
+
+<div id="tagetcode"></div>
+@*<div id="tagetcode2"></div>*@
+@*---------------------------------------------------------------------------------------------------------------------------*@
+<script>
+    $(document).ready(function () {
+        print2();
+    });
+
+    var x = "@ViewData["Message"]";
+    function print2() {
+
+        $.get("/ShippingMgt/_Print2" + "?sdmid=" + x, function (data) {
+            if (data != null && data != undefined && data.length) {
+                var html = '';
+                $.each(data, function (key, item) {
+                    var day = (item.mt_no).length;
+                    var date = (item.mt_cd).substr(day + 1, 10);
+
+                    var date2 = date.replace(/(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/g, "$1-$2-$3 $4:$5").substr(0, 8);
+                    var time = date.replace(/(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})/g, "$1-$2-$3 $4:$5").slice(-5);
+                    var code = (item.mt_cd).slice(-6);
+                    html += ' <table class="table table-striped table-hover table-bordered qrhead">';
+                    html += ' <tbody> <tr><td><div id="code_' + item.sdmid + '" class="all_cg"></div></td> </tr>';
+                
+                    html += ' <tr><td style="font-size: 11px; text-align: center;">' + item.mt_cd + '</td></tr>';
+                    html += ' </tbody></table>';
+                });
+
+                $("#tagetcode").html(html);
+                $.each(data, function (key, item) {
+                    var code = new QRCode(document.getElementById("code_" + item.sdmid + ""), {
+                        width: 180,
+                        height: 180,
+                    });
+                    code.makeCode(item.mt_cd);
+                });
+            }
+        });
+
+
+    }
+    $("#c_print").on("click", function () {
+        window.print();
+    });
+
+</script>
+
+@*<script type="text/javascript" src="http://fsm.autonsi.com/resources/plugins/grcodejs/qrcode.js"></script>*@
+<script src="~/Content/grcodejs/qrcode.js"></script>

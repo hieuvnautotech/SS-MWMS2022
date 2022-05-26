@@ -1,0 +1,433 @@
+﻿@{
+    ViewBag.Title = "Product Lot";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    @*<div class="col-xs-12" id="current_menu" data-level_1="FG-WMS" data-level_2="Inventory" data-level_3="Product Lot"></div>*@
+    <div class="col-xs-12" id="current_menu" data-level_1="@Html.Raw(ViewData["FG-WMS"])" data-level_2="@Html.Raw(ViewData["Inventory"])" data-level_3="@Html.Raw(ViewData["Product Lot"])"></div>
+}
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-2 p-1">
+                <label><b>Box No</b></label>
+                <input type="text" name="box_no" id="box_no" class="input-text form-control">
+            </div>
+            <div class="col-md-2 p-1">
+                <label><b>Buyer QR</b></label>
+                <div class="input-group mt_plus">
+                    <input type="text" name="buyer_qr" id="buyer_qr" class="input-text form-control">
+                    <span class="input-group-addon pp_buyer"><a href="#"><i class="fa fa-search text-navy"></i></a></span>
+                </div>
+            </div>
+            <div class="col-md-2 p-1">
+                <label><b>Container</b></label>
+                <input type="text" name="bb_no" id="bb_no" class="input-text form-control">
+            </div>
+            <div class="col-md-2 p-1">
+                <label><b>Composite</b></label>
+                <input type="text" name="mt_lot" id="mt_lot" class="input-text form-control">
+            </div>
+            <div class="col-md-2 p-1">
+                <label><b>Total Consumption Po</b></label>
+                <div class="input-group mt_plus">
+                    <input type="text" name="at_no" id="at_no" class="input-text form-control">
+                    <span class="input-group-addon pp_at_no"><a href="#"><i class="fa fa-search text-navy"></i></a></span>
+                </div>
+            </div>
+            <div class="col-md-1 p-1 text-left">
+                <label style="width:100%"><b> &nbsp;&nbsp;</b></label>
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div id="PartialView_FG_Info" style="margin-top:38px">
+</div>
+<div id="View_PO"></div>
+<div class="dialogbuyer" title="Buyer QR Information">
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="row p-0 m-0">
+
+                <div class="col-md-2 p-1">
+                    <label><b>Product</b></label>
+                    <input type="text" name="productCode" id="productCode" class="input-text form-control">
+                </div>
+                <div class="col-md-2 p-1">
+                    <label><b>PO</b></label>
+                    <input type="text" name="poCode" id="poCode" class="input-text form-control">
+                </div>
+
+
+                <div class="col-md-2 p-1">
+                    <label><b>Receive Date</b></label>
+                    <input type="text" name="recevice_dt_start" id="recevice_dt_start" class="form-control">
+                </div>
+                <div class=" p-1">
+                    <label style="width:100%">&nbsp;&nbsp;</label>
+                    <label><b>~</b></label>
+                </div>
+                <div class="col-md-2 p-1">
+                    <label style="width:100%">&nbsp;&nbsp;</label>
+                    <input type="text" name="recevice_dt_end" id="recevice_dt_end" class="form-control">
+                </div>
+                <div class="col-md-2 p-2">
+                    <label style="width:100%">&nbsp;&nbsp;</label>
+                    <button id="searchBtn_buyer" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button type="button" class="btn btn-sm btn-success button-srh" id="Selected"><i class="fa fa-save">&nbsp;Selected</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="p-0 m-0">
+                <table id="GeneralGrid"></table>
+                <div id="GeneralGridPager"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="dialogpo" title="PO Information">
+    <div class="container-fluid">
+        <div class="box-body well text-right">
+            <div class="row p-0 m-0" style="display: flex; flex-wrap: nowrap;">
+
+                <div class="col-md-2 p-1  text-right">
+                    <div class="input-group mt_plus">
+                        <input type="text" name="" id="at_nos" placeholder="PO NO" class="input-text form-control">
+                    </div>
+                </div>
+                <div class="col-md-2 p-1">
+                    <div class="input-group mt_plus">
+                        <input type="text" name="" id="sProductCode" placeholder="Product Code" class="input-text form-control">
+                    </div>
+                </div>
+                <div class="col-md-2 p-1">
+                    <div class="input-group mt_plus">
+                        <input type="text" name="" id="sDate" placeholder="Create Date" class="input-text form-control">
+                    </div>
+                </div>
+
+                <div class="col-md-4 p-2">
+                    <button id="searchBtn_po" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button type="button" class="btn btn-sm btn-success button-srh" id="Selected_po"><i class="fa fa-save">&nbsp;Selected</i></button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div class="p-0 m-0">
+                <table id="list_primary"></table>
+                <div id="jqGrid_primaryPager"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ./ Dialog -->
+@section scripts{
+    <script src="~/Scripts/rowsGroup_datatable/dataTables.rowsGroup.js"></script>
+    <script src="~/Scripts/fgwms/Inventory/ppopup_buyer.js"></script>
+    <script src="~/Scripts/fgwms/Inventory/pp_po.js"></script>
+    <script>
+        $(`#searchBtn`).on(`click`, function (e)
+        {
+            $.blockUI({
+                message: "Đang thực hiện vui lòng đợi trong giây lát...",
+                css: {
+
+                    border: 'none',
+                    padding: '15px',
+                    backgroundColor: 'green',
+                    '-webkit-border-radius': '10px',
+                    '-moz-border-radius': '10px',
+                    opacity: 1,
+                    color: '#fff',
+                    fontSize: '20px'
+                }
+            });
+            var e = jQuery.Event("keydown", { keyCode: 13 });
+            var bobbin = $(`#bb_no`).val() == null ? `` : $(`#bb_no`).val().trim();
+            var buyer = $(`#buyer_qr`).val() == null ? `` : $(`#buyer_qr`).val().trim();
+            var box = $(`#box_no`).val() == null ? `` : $(`#box_no`).val().trim();
+            var mt_lot = $(`#mt_lot`).val() == null ? `` : $(`#mt_lot`).val().trim();
+            var at_no = $(`#at_no`).val() == null ? `` : $(`#at_no`).val().trim();
+            var flag = -1;
+            if (bobbin != ``)
+            {
+                flag = 0;
+            }
+            if (buyer != ``)
+            {
+                flag = 1;
+            }
+            if (box != ``)
+            {
+                flag = 2;
+            }
+            if (mt_lot != ``)
+            {
+                flag = 3;
+            }
+            if (at_no != ``)
+            {
+                flag = 4;
+            }
+            switch (flag)
+            {
+                case 0:
+                    $(`#bb_no`).trigger(e);
+                    break;
+                case 1:
+                    $(`#buyer_qr`).trigger(e);
+                    break;
+                case 2:
+                    $(`#box_no`).trigger(e);
+                    break;
+                case 3:
+                    $(`#mt_lot`).trigger(e);
+                    break;
+                case 4:
+                    $(`#at_no`).trigger(e);
+                    break;
+                default:
+                    $.unblockUI();
+                    break;
+            }
+        });
+        //#region   view composite
+        $("#mt_lot").on("keydown", function (e)
+        {
+            $(`#buyer_qr`).val(``);
+            $(`#box_no`).val(``);
+            $(`#bb_no`).val(``);
+            $(`#at_no`).val(``);
+
+            var mt_lot = e.target.value.trim();
+            if (e.keyCode == 13)
+            {
+                $.blockUI({
+                    message: "Đang thực hiện vui lòng đợi trong giây lát...",
+                    css: {
+
+                        border: 'none',
+                        padding: '15px',
+                        backgroundColor: 'green',
+                        '-webkit-border-radius': '10px',
+                        '-moz-border-radius': '10px',
+                        opacity: 1,
+                        color: '#fff',
+                        fontSize: '20px'
+                    }
+                });
+                //kiem tra ml_no null ko
+                if (mt_lot == "" || mt_lot == null || mt_lot == undefined)
+                {
+                    $("#mt_lot").val("");
+                    document.getElementById("mt_lot").focus();
+                    return false;
+                }
+                else
+                {
+                    getdata("composite", mt_lot);
+                }
+            }
+        });
+        //#endregion
+        //#region   view bobin
+        $("#bb_no").on("keydown", function (e)
+        {
+            $(`#mt_lot`).val(``);
+            $(`#buyer_qr`).val(``);
+            $(`#at_no`).val(``);
+            $(`#box_no`).val(``);
+            var bb_no = e.target.value.trim();
+            if (e.keyCode == 13)
+            {
+                $.blockUI({
+                    message: "Đang thực hiện vui lòng đợi trong giây lát...",
+                    css: {
+
+                        border: 'none',
+                        padding: '15px',
+                        backgroundColor: 'green',
+                        '-webkit-border-radius': '10px',
+                        '-moz-border-radius': '10px',
+                        opacity: 1,
+                        color: '#fff',
+                        fontSize: '20px'
+                    }
+                });
+                //kiem tra ml_no null ko
+                if (bb_no == "" || bb_no == null || bb_no == undefined)
+                {
+                    $("#bb_no").val("");
+                    document.getElementById("bb_no").focus();
+                    return false;
+                }
+                else
+                {
+                    getdata("container", bb_no);
+                }
+            }
+        });
+        //#endregion
+        //#region   view Buyer
+        $("#buyer_qr").on("keydown", function (e)
+        {
+            $(`#bb_no`).val(``);
+            $(`#at_no`).val(``);
+            $(`#mt_lot`).val(``);
+            $(`#box_no`).val(``);
+            var buyer_qr = e.target.value.trim();
+            if (e.keyCode == 13)
+            {
+                $.blockUI({
+                    message: "Đang thực hiện vui lòng đợi trong giây lát...",
+                    css: {
+
+                        border: 'none',
+                        padding: '15px',
+                        backgroundColor: 'green',
+                        '-webkit-border-radius': '10px',
+                        '-moz-border-radius': '10px',
+                        opacity: 1,
+                        color: '#fff',
+                        fontSize: '20px'
+                    }
+                });
+                //kiem tra ml_no null ko
+                if (buyer_qr == "" || buyer_qr == null || buyer_qr == undefined)
+                {
+                    $("#buyer_qr").val("");
+                    document.getElementById("buyer_qr").focus();
+                    return false;
+                }
+                else
+                {
+
+                    getdata("buyer_qr", buyer_qr);
+                }
+            }
+        });
+
+        //#endregion
+        //#region   view Po
+        $("#at_no").on("keydown", function (e)
+        {
+            $(`#bb_no`).val(``);
+            $(`#mt_lot`).val(``);
+            $(`#box_no`).val(``);
+            $(`#buyer_qr`).val(``);
+            var at_no = e.target.value.trim();
+            if (e.keyCode == 13)
+            {
+                $.blockUI({
+                    message: "Đang thực hiện vui lòng đợi trong giây lát...",
+                    css: {
+
+                        border: 'none',
+                        padding: '15px',
+                        backgroundColor: 'green',
+                        '-webkit-border-radius': '10px',
+                        '-moz-border-radius': '10px',
+                        opacity: 1,
+                        color: '#fff',
+                        fontSize: '20px'
+                    }
+                });
+                //kiem tra ml_no null ko
+                if (at_no == "" || at_no == null || at_no == undefined)
+                {
+                    $("#at_no").val("");
+                    document.getElementById("at_no").focus();
+                    return false;
+                }
+                else
+                {
+
+                    getdata_po(at_no);
+                }
+            }
+        });
+
+        //#endregion
+        //#region  view box
+        $("#box_no").on("keydown", function (e)
+        {
+            $(`#bb_no`).val(``);
+            $(`#mt_lot`).val(``);
+            $(`#buyer_qr`).val(``);
+            var box_no = e.target.value.trim();
+            if (e.keyCode == 13)
+            {
+                $.blockUI({
+                    message: "Đang thực hiện vui lòng đợi trong giây lát...",
+                    css: {
+
+                        border: 'none',
+                        padding: '15px',
+                        backgroundColor: 'green',
+                        '-webkit-border-radius': '10px',
+                        '-moz-border-radius': '10px',
+                        opacity: 1,
+                        color: '#fff',
+                        fontSize: '20px'
+                    }
+                });
+                //kiem tra ml_no null ko
+                if (buyer_qr == "" || buyer_qr == null || buyer_qr == undefined)
+                {
+                    $("#box_no").val("");
+                    document.getElementById("box_no").focus();
+                    return false;
+                }
+                else
+                {
+                    getdata("box_no", box_no);
+
+                }
+            }
+        });
+
+        //#endregion
+        function getdata(sts, value)
+        {
+            $("#PartialView_FG_Info").html("");
+            $(".all_po").addClass("hidden");
+
+            $.get("/fgwms/PartialView_FG_Info_Popup?" +
+                "sts=" + sts + "" + "&value=" + value + ""
+                , function (html)
+                {
+                    $("#PartialView_FG_Info").html(html);
+                });
+        }
+        function getdata_po(value)
+        {
+
+            $(".all_lot").addClass("hidden");
+            $(".all_box").addClass("hidden");
+            $(".all_buyer").addClass("hidden");
+            $(".all_mt").addClass("hidden");
+
+            $(".all_po").removeClass("hidden");
+            $(".all_po").addClass("active");
+            $("#PartialView_PO").html("");
+            $.get("/fgwms/PartialView_FG_PO?" +
+                "value=" + value + ""
+                , function (html)
+                {
+                    $("#View_PO").html(html);
+                });
+        }
+
+    </script>
+    <!-- DATATABLE -->
+
+}

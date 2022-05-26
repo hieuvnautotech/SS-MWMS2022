@@ -1,0 +1,140 @@
+﻿@{
+
+    <div class="showChart">
+        <button data-at_no=@ViewBag.at_no data-mc_no=@ViewBag.mc_no onclick="ClickViewChart(this);">Chart</button>
+    </div>
+}
+
+    <table>
+        <tr><th colspan="4" style="text-align:center">Machine running </th></tr>
+        <tr>
+            <th rowspan="14" width="5%">Actual</th>
+            <th>PO</th>
+            <th>Machine No</th>
+            <th>Time</th>
+            <th>Start</th>
+            <th>Quantity</th>
+        </tr>
+        @foreach (var item in @Model)
+        {
+            <tr>
+                <td>@item.at_no</td>
+                <td>@item.mc_no</td>
+                <td>@item.hour</td>
+                <td>@item.hourRun</td>
+                <td>@item.Quantity</td>
+            </tr>
+
+        }
+    </table>
+    <div class="container-fluid">
+        <figure class="highcharts-figure">
+            <div id="container"></div>
+        </figure>
+
+    </div>
+    <style>
+            table {
+                font-family: arial, sans-serif;
+                border-collapse: collapse;
+                width: 100%;
+            }
+
+            td, th {
+                border: 1px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+            }
+        text.highcharts-credits {
+            display: none !important;
+        }
+            /*    tr:nth-child(even) {
+            background-color: #dddddd;
+        }*/
+    </style>
+
+    <script>
+
+        function ClickViewChart(e) {
+
+            var at_no = $(e).data("at_no")
+            var mc_no = $(e).data("mc_no")
+
+            LoadDataChart(at_no, mc_no);
+
+        }
+        function LoadDataChart(at_no, mc_no) {
+            $.ajax({
+                url: `/DevManagement/GetDataChart?at_no=${at_no}&mc_no=${mc_no}`,
+                async: true
+            })
+                .done(function (response) {
+                    var tempListQuantity = [];
+                    var tempListTime = [];
+                    for (var i = 0; i < response.data.length; i++) {
+                        var tempQty = response.data[i].Quantity === "" ? 0 : parseFloat(response.data[i].Quantity);
+                        var tempTime = response.data[i].hour === "" ? 0 : parseFloat(response.data[i].hour);
+                        tempListQuantity.push(tempQty);
+                        tempListTime.push(tempTime);
+
+                    }
+                    Highcharts.chart('container', {
+                        chart: {
+                            type: 'line'
+                        },
+                        title: {
+                            text: 'Actual Quantity'
+                        },
+                        subtitle: {
+                            text: ''
+                        },
+                        xAxis: {
+                            categories: [
+                                '08',
+                                '09',
+                                '10',
+                                '11',
+                                '12',
+                                '13',
+                                '14',
+                                '15',
+                                '16',
+                                '17',
+                                '18',
+                                '19',
+                                '20',
+                            ],
+                            crosshair: true
+                        },
+                        yAxis: {
+                            min: 0,
+                            title: {
+                                text: 'Quantity'
+                            }
+                        },
+                        //tooltip: {
+                        //    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                        //    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                        //        '<td style="padding:0"><b>{point.y:.1f} </b></td></tr>',
+                        //    footerFormat: '</table>',
+                        //    shared: true,
+                        //    useHTML: true
+                        //},
+                        plotOptions: {
+                            column: {
+                                pointPadding: 0.2,
+                                borderWidth: 0
+                            }
+                        },
+                        series: [{
+                            name: 'Hour',
+                            data: tempListQuantity
+
+                        }]
+                    });
+                });
+
+        }
+
+
+    </script>

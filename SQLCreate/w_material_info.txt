@@ -1,0 +1,745 @@
+
+USE ShinSungNewMirga
+GO
+ IF NOT EXISTS(SELECT * FROM sys.schemas WHERE [name] = N'autodb0314')      
+     EXEC (N'CREATE SCHEMA autodb0314')                                   
+ GO                                                               
+
+USE ShinSungNewMirga
+GO
+IF EXISTS (SELECT * FROM sys.objects so JOIN sys.schemas sc ON so.schema_id = sc.schema_id WHERE so.name = N'w_material_info'  AND sc.name = N'autodb0314'  AND type in (N'U'))
+BEGIN
+
+  DECLARE @drop_statement nvarchar(500)
+
+  DECLARE drop_cursor CURSOR FOR
+      SELECT 'alter table '+quotename(schema_name(ob.schema_id))+
+      '.'+quotename(object_name(ob.object_id))+ ' drop constraint ' + quotename(fk.name) 
+      FROM sys.objects ob INNER JOIN sys.foreign_keys fk ON fk.parent_object_id = ob.object_id
+      WHERE fk.referenced_object_id = 
+          (
+             SELECT so.object_id 
+             FROM sys.objects so JOIN sys.schemas sc
+             ON so.schema_id = sc.schema_id
+             WHERE so.name = N'w_material_info'  AND sc.name = N'autodb0314'  AND type in (N'U')
+           )
+
+  OPEN drop_cursor
+
+  FETCH NEXT FROM drop_cursor
+  INTO @drop_statement
+
+  WHILE @@FETCH_STATUS = 0
+  BEGIN
+     EXEC (@drop_statement)
+
+     FETCH NEXT FROM drop_cursor
+     INTO @drop_statement
+  END
+
+  CLOSE drop_cursor
+  DEALLOCATE drop_cursor
+
+  DROP TABLE [autodb0314].[w_material_info]
+END 
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE 
+[autodb0314].[w_material_info]
+(
+   [wmtid] int IDENTITY(574809, 1)  NOT NULL,
+
+   /*
+   *   SSMA informational messages:
+   *   M2SS0052: string literal was converted to NUMERIC literal
+   */
+
+   [id_actual] int  NULL,
+
+   /*
+   *   SSMA informational messages:
+   *   M2SS0052: string literal was converted to NUMERIC literal
+   */
+
+   [id_actual_oqc] int  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+
+   *   SSMA informational messages:
+   *   M2SS0003: The following SQL clause was ignored during conversion: COMMENT '????'.
+   */
+
+   [at_no] nvarchar(18)  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+   */
+
+   [product] nvarchar(100)  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+
+   *   SSMA informational messages:
+   *   M2SS0003: The following SQL clause was ignored during conversion: COMMENT '????'.
+   */
+
+   [staff_id] nvarchar(max)  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+   */
+
+   [staff_id_oqc] nvarchar(max)  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+   */
+
+   [machine_id] nvarchar(max)  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+   */
+
+   [mt_type] nvarchar(20)  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+   */
+
+   [mt_cd] nvarchar(500)  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+   */
+
+   [mt_no] nvarchar(250)  NULL,
+   [gr_qty] float(53)  NULL,
+   [real_qty] float(53)  NULL,
+   [staff_qty] int  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+   */
+
+   [sp_cd] nvarchar(500)  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+   */
+
+   [rd_no] nvarchar(50)  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+   */
+
+   [sd_no] nvarchar(50)  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+   */
+
+   [ext_no] nvarchar(50)  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+   */
+
+   [ex_no] nvarchar(50)  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+   */
+
+   [dl_no] nvarchar(50)  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+   */
+
+   [recevice_dt] nvarchar(14)  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+   */
+
+   [date] nvarchar(14)  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+   */
+
+   [return_date] nvarchar(14)  NULL,
+
+   /*
+   *   SSMA informational messages:
+   *   M2SS0052: string literal was converted to NUMERIC literal
+   */
+
+   [alert_NG] int  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+   */
+
+   [expiry_dt] nvarchar(14)  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+   */
+
+   [dt_of_receipt] nvarchar(14)  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+   */
+
+   [expore_dt] nvarchar(14)  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+   */
+
+   [recevice_dt_tims] nvarchar(25)  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+   */
+
+   [rece_wip_dt] nvarchar(25)  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+   */
+
+   [picking_dt] nvarchar(25)  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+   */
+
+   [shipping_wip_dt] nvarchar(25)  NULL,
+   [end_production_dt] datetime  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+   */
+
+   [lot_no] nvarchar(200)  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+   */
+
+   [mt_barcode] nvarchar(200)  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+   */
+
+   [mt_qrcode] nvarchar(200)  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+   */
+
+   [mt_sts_cd] nvarchar(6)  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+   */
+
+   [bb_no] nvarchar(35)  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+   */
+
+   [bbmp_sts_cd] nvarchar(6)  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+   */
+
+   [lct_cd] nvarchar(50)  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+   */
+
+   [lct_sts_cd] nvarchar(6)  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+   */
+
+   [from_lct_cd] nvarchar(18)  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+   */
+
+   [to_lct_cd] nvarchar(18)  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+   */
+
+   [output_dt] nvarchar(20)  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+   */
+
+   [input_dt] nvarchar(14)  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+   */
+
+   [buyer_qr] nvarchar(200)  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+   */
+
+   [orgin_mt_cd] nvarchar(500)  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+   */
+
+   [remark] nvarchar(200)  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+   */
+
+   [sts_update] nvarchar(100)  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+   */
+
+   [use_yn] nchar(1)  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+   */
+
+   [ExportCode] nvarchar(200)  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+   */
+
+   [LoctionMachine] nvarchar(50)  NULL,
+   [ShippingToMachineDatetime] datetime2(0)  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+   */
+
+   [Description] nvarchar(500)  NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+   */
+
+   [reg_id] nvarchar(20)  NULL,
+   [reg_dt] datetime  NOT NULL,
+
+   /*
+   *   SSMA warning messages:
+   *   M2SS0183: The following SQL clause was ignored during conversion: COLLATE utf8_general_ci.
+   */
+
+   [chg_id] nvarchar(20)  NULL,
+   [chg_dt] datetime  NOT NULL
+)
+WITH (DATA_COMPRESSION = NONE)
+GO
+BEGIN TRY
+    EXEC sp_addextendedproperty
+        N'MS_SSMA_SOURCE', N'autodb0314.w_material_info',
+        N'SCHEMA', N'autodb0314',
+        N'TABLE', N'w_material_info'
+END TRY
+BEGIN CATCH
+    IF (@@TRANCOUNT > 0) ROLLBACK
+    PRINT ERROR_MESSAGE()
+END CATCH
+GO
+
+USE ShinSungNewMirga
+GO
+IF EXISTS (SELECT * FROM sys.objects so JOIN sys.schemas sc ON so.schema_id = sc.schema_id WHERE so.name = N'PK_w_material_info_wmtid'  AND sc.name = N'autodb0314'  AND type in (N'PK'))
+ALTER TABLE [autodb0314].[w_material_info] DROP CONSTRAINT [PK_w_material_info_wmtid]
+ GO
+
+
+
+ALTER TABLE [autodb0314].[w_material_info]
+ ADD CONSTRAINT [PK_w_material_info_wmtid]
+   PRIMARY KEY
+   CLUSTERED ([wmtid] ASC)
+
+GO
+
+
+USE ShinSungNewMirga
+GO
+IF EXISTS (
+       SELECT * FROM sys.objects  so JOIN sys.indexes si
+       ON so.object_id = si.object_id
+       JOIN sys.schemas sc
+       ON so.schema_id = sc.schema_id
+       WHERE so.name = N'w_material_info'  AND sc.name = N'autodb0314'  AND si.name = N'gr_qty' AND so.type in (N'U'))
+   DROP INDEX [gr_qty] ON [autodb0314].[w_material_info] 
+GO
+CREATE NONCLUSTERED INDEX [gr_qty] ON [autodb0314].[w_material_info]
+(
+   [id_actual_oqc] ASC
+)
+WITH (SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF) ON [PRIMARY] 
+GO
+GO
+
+USE ShinSungNewMirga
+GO
+
+   /* 
+   *   SSMA error messages:
+   *   M2SS0020: The size of the index key is more than 900 bytes
+
+
+IF EXISTS (
+       SELECT * FROM sys.objects  so JOIN sys.indexes si
+       ON so.object_id = si.object_id
+       JOIN sys.schemas sc
+       ON so.schema_id = sc.schema_id
+       WHERE so.name = N'w_material_info'  AND sc.name = N'autodb0314'  AND si.name = N'mt_cd' AND so.type in (N'U'))
+   DROP INDEX [mt_cd] ON [autodb0314].[w_material_info] 
+GO
+CREATE NONCLUSTERED INDEX [mt_cd] ON [autodb0314].[w_material_info]
+(
+   [mt_cd] ASC,
+   [id_actual] ASC
+)
+WITH (SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF) ON [PRIMARY] 
+GO
+GO
+   */
+
+
+USE ShinSungNewMirga
+GO
+
+   /* 
+   *   SSMA error messages:
+   *   M2SS0020: The size of the index key is more than 900 bytes
+
+
+IF EXISTS (
+       SELECT * FROM sys.objects  so JOIN sys.indexes si
+       ON so.object_id = si.object_id
+       JOIN sys.schemas sc
+       ON so.schema_id = sc.schema_id
+       WHERE so.name = N'w_material_info'  AND sc.name = N'autodb0314'  AND si.name = N'orgin_mt_cd' AND so.type in (N'U'))
+   DROP INDEX [orgin_mt_cd] ON [autodb0314].[w_material_info] 
+GO
+CREATE NONCLUSTERED INDEX [orgin_mt_cd] ON [autodb0314].[w_material_info]
+(
+   [orgin_mt_cd] ASC,
+   [at_no] ASC
+)
+WITH (SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF) ON [PRIMARY] 
+GO
+GO
+   */
+
+
+USE ShinSungNewMirga
+GO
+IF EXISTS (
+       SELECT * FROM sys.objects  so JOIN sys.indexes si
+       ON so.object_id = si.object_id
+       JOIN sys.schemas sc
+       ON so.schema_id = sc.schema_id
+       WHERE so.name = N'w_material_info'  AND sc.name = N'autodb0314'  AND si.name = N'rd,sd' AND so.type in (N'U'))
+   DROP INDEX [rd,sd] ON [autodb0314].[w_material_info] 
+GO
+CREATE NONCLUSTERED INDEX [rd,sd] ON [autodb0314].[w_material_info]
+(
+   [ExportCode] ASC
+)
+WITH (SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF) ON [PRIMARY] 
+GO
+GO
+
+USE ShinSungNewMirga
+GO
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT 0 FOR [id_actual]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT 0 FOR [id_actual_oqc]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [at_no]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [product]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [mt_type]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [mt_cd]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [mt_no]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [gr_qty]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [real_qty]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [staff_qty]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [sp_cd]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [rd_no]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [sd_no]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [ext_no]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [ex_no]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [dl_no]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [recevice_dt]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [date]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [return_date]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT 0 FOR [alert_NG]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [expiry_dt]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [dt_of_receipt]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [expore_dt]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [recevice_dt_tims]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [rece_wip_dt]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [picking_dt]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [shipping_wip_dt]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [end_production_dt]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [lot_no]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [mt_barcode]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [mt_qrcode]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT N'000' FOR [mt_sts_cd]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [bb_no]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT N'000' FOR [bbmp_sts_cd]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [lct_cd]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [lct_sts_cd]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [from_lct_cd]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [to_lct_cd]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [output_dt]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [input_dt]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [buyer_qr]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [orgin_mt_cd]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [remark]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [sts_update]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT N'Y' FOR [use_yn]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [ExportCode]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [LoctionMachine]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [ShippingToMachineDatetime]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [Description]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [reg_id]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT getdate() FOR [reg_dt]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT NULL FOR [chg_id]
+GO
+
+ALTER TABLE  [autodb0314].[w_material_info]
+ ADD DEFAULT getdate() FOR [chg_dt]
+GO
+

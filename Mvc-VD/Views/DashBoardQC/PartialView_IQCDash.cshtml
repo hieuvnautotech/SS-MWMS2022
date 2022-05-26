@@ -1,0 +1,140 @@
+﻿<div class="nav-tabs-custom">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#tab_1" data-toggle="tab">QC Result</a></li>
+        <li><a href="#tab_2" data-toggle="tab">QC Defective Result</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="tab_1">
+            <div class="row">
+                <div class="col-md-4" style="margin-bottom: 1em;">
+                    <div style="border: 1px solid #333">
+                        <canvas id="myChart_info" width="350" height="200"></canvas>
+                    </div>
+                </div>
+              
+            </div>
+        </div>
+        <div class="tab-pane" id="tab_2">
+          @{
+              
+                int stt = 0;    
+                }
+                @foreach (var item in Model)
+                {
+
+                    stt++;
+                    
+                    <div class="col-md-4" style="margin-bottom: 1em;">
+                        <div style="border: 1px solid #333">
+                            <canvas id="myChart_error_@stt" width="350" height="200"></canvas>
+                        </div>
+                    </div>
+                    <script>
+                        $(function () {
+                          
+                            var data = {
+                                labels: [@Html.Raw(item.labels)],
+                                datasets: [@Html.Raw(item.datasets)]
+                            }
+
+                            var options = {
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true
+                                        }
+                                    }]
+                                },
+                                title: {
+                                    display: true,
+                                    label: true,
+                                    position: 'top',
+                                    text: "@item.check_subject",
+                                },
+                                legend: {
+                                    display: false,
+                                    labels: {
+                                        boxWidth: 0
+                                    }
+                                },
+                            }
+
+                            var myBarChart = new Chart(document.getElementById('myChart_error_@stt').getContext('2d'), {
+                                type: 'bar',
+                                data: data,
+                                options: options
+                            });
+                        })
+                    </script>
+                }
+        </div>
+    </div>
+</div>
+
+<script>
+ 
+    $(function () {
+
+        $.ajax({
+            url: "/DashBoardQC/Get_table_info",
+            type: "get",
+            success: function (response) {
+
+                if (!response.result) {
+                    $('.tab-content .tab-pane .row').remove();
+                } else {
+                    var data = {
+                        labels: ['Check', 'Ok', 'Defective'],
+                        datasets: [{
+                            label: ['Check'],
+                            data: [response.data.qc_qty],
+                            backgroundColor: 'blue'
+                        }, {
+                            label: ['Ok'],
+                            data: [response.data.ok_qty],
+                            backgroundColor: 'yellow'
+                        }, {
+                            label: ['Defective'],
+                            data: [response.data.def_qty],
+                            backgroundColor: 'red'
+                        }]
+                    }
+   
+                    var options = {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        },
+                        title: {
+                            display: true,
+                            label: true,
+                            position: 'bottom',
+                            text: response.data.mdpo_no + "[" + response.data.mt_no + "]",
+                        },
+                    }
+
+                    var myBarChart = new Chart(document.getElementById('myChart_info').getContext('2d'), {
+                        type: 'bar',
+                        data: data,
+                        options: options
+                    });
+
+                
+                }
+            }
+        });
+    })
+
+    $(function () {
+     
+        var tab = $('.nav-tabs-custom .nav.nav-tabs li a');
+        $(tab).click(function (e) {
+            var ul = $(e.target).closest('ul');
+            $(ul).find('li').removeClass('active');
+            $(e.target).closest('li').addClass('active');
+        })
+    })
+</script>

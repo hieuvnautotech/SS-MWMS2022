@@ -1,0 +1,16 @@
+Select '',
+	mno, 
+	mc_type, 
+	mc_no, 
+	mc_nm, 
+	purpose, 
+	color, 
+	barcode, 
+	re_mark, 
+	use_yn, 
+	del_yn, 
+	reg_id, 
+	reg_dt, 
+	chg_id, 
+	chg_dt 
+From d_machine_info

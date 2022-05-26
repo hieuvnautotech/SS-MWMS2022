@@ -1,0 +1,386 @@
+﻿@{
+    string language = "";
+    if (ViewBag.language == "vi")
+    {
+        language = "flag-icon flag-icon-vn";
+    }
+    else if (ViewBag.language == "en")
+    {
+        language = "flag-icon flag-icon-gb";
+    }
+    else if (ViewBag.language == "kr")
+    {
+        language = "flag-icon flag-icon-kr";
+    }
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>::: Shinsung :::</title>
+    <!--add new lib 2021-->
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" />
+    <link href="~/lib/flag-icon-css-master/assets/docs.css" rel="stylesheet" />
+    <link href="~/lib/flag-icon-css-master/css/flag-icon.css" rel="stylesheet" />
+    <script src="~/lib/assets/js/popper.js"></script>
+    <link rel="shortcut icon" href="./../Images/AccountImg/image_account_new.png" type="image/png">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/Content/themes/base/resources/plugins/font-awesome/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    @*    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">*@
+    <link href="~/Content/themes/base/resources/plugins/ionicons/ionicons.css" rel="stylesheet" />
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/Content/themes/base/resources/dist/css/Arthur.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="~/Content/themes/base/resources/plugins/iCheck/flat/blue.css">
+    <!-- Date Picker -->
+    <link rel="stylesheet" href="~/Content/themes/base/resources/plugins/datepicker/datepicker3.css">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="~/Content/themes/base/resources/plugins/daterangepicker/daterangepicker-bs3.css">
+    <!-- bootstrap wysihtml5 - text editor -->
+    <link rel="stylesheet" href="~/Content/themes/base/resources/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="~/Content/themes/base/resources/plugins/googleapis/css.css" rel="stylesheet" />
+    <!-- jqGrid -->
+    <link rel="stylesheet" type="text/css" media="screen" href="~/Content/themes/base/jquery-ui.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="~/Content/jquery.jqGrid/ui.jqgrid.css" />
+    <link href="~/Content/themes/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/important.css" rel="stylesheet" />
+
+    <!-- Bootstrap Color Picker -->
+    <link rel="stylesheet" href="~/Content/themes/base/resources/plugins/colorpicker/bootstrap-colorpicker.min.css">
+    <!-- Bootstrap Full Calendar -->
+    <link href="~/Content/themes/base/resources/plugins/fullcalendar/fullcalendar.css" rel="stylesheet" />
+    <link href="~/Content/themes/base/resources/plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet" />
+    <link href="~/Content/themes/base/resources/plugins/datetimepicker/bootstrap-datetimepicker.css" rel="stylesheet" />
+    <link href="~/CSS/Shared/_LayoutSI.css" rel="stylesheet" />
+
+    <!-- jQuery -->
+    <script src="~/Scripts/jquery-1.9.1.js"></script>
+
+
+    <!-- Bootstrap 4 -->
+    <script src="~/Content/themes/base/resources/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <link href="~/Content/themes/base/resources/summernote/summernote-lite.css" rel="stylesheet" />
+    <!-- include summernote css/js -->
+    <link href="~/Content/themes/base/resources/plugins/summernote/summernote-bs4.css" rel="stylesheet" />
+    @*<script src="~/Content/themes/base/resources/plugins/summernote/summernote-bs4.js"></script>*@
+    <script src="~/Content/themes/base/resources/summernote/summernote-lite.js"></script>
+
+    <!-- Morris.js charts -->
+    <script src="~/Content/themes/base/resources/plugins/raphael/raphael-min.js"></script>
+    <!-- Char.js charts -->
+    <script src="~/Scripts/Chart.min.js"></script>
+    <script src="~/Content/themes/base/resources/plugins/moment/moment.min.js"></script>
+    <script src="~/Content/themes/base/resources/plugins/daterangepicker/daterangepicker.js"></script>
+    <!-- datepicker -->
+    <script src="~/Content/themes/base/resources/plugins/datepicker/bootstrap-datepicker.js"></script>
+    <script src="~/Content/themes/base/resources/plugins/datetimepicker/bootstrap-datetimepicker.js"></script>
+    <!-- Bootstrap WYSIHTML5 -->
+    <script src="~/Content/themes/base/resources/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+    <!-- Slimscroll -->
+    <!-- FastClick -->
+    <script src="~/Content/themes/base/resources/plugins/fastclick/fastclick.js"></script>
+    <!-- Arthur App -->
+    <script src="~/Content/themes/base/resources/dist/js/Arthur.min.js"></script>
+    <!-- jqGrid -->
+    <script src="~/Scripts/i18n/grid.locale-en.js" type="text/javascript"></script>
+    <script src="~/Content/export/tableExport.jquery.plugin-master/libs/es6-promise/es6-promise.auto.min.js"></script>
+    <script src="~/Content/export/tableExport.jquery.plugin-master/libs/js-xlsx/xlsx.core.min.js"></script>
+    <script src="~/Content/export/tableExport.jquery.plugin-master/libs/html2canvas/html2canvas.min.js"></script>
+    <script src="~/Content/export/tableExport.jquery.plugin-master/libs/jsPDF/jspdf.min.js"></script>
+    <script src="~/Content/export/tableExport.jquery.plugin-master/libs/jsPDF-AutoTable/jspdf.plugin.autotable.js"></script>
+    <script src="~/Content/export/tableExport.jquery.plugin-master/tableExport.js"></script>
+    <script src="~/Scripts/jquery.jqGrid.js" type="text/javascript"></script>
+
+    <script src="~/Content/themes/base/resources/plugins/jQueryUI/jquery-ui-v1.10.3.js"></script>
+
+    <!-- bootstrap color picker -->
+    <script src="~/Content/themes/base/resources/plugins/colorpicker/bootstrap-colorpicker.min.js"></script>
+    <!-- Bootstrap Full Calendar -->
+    <script src="~/Content/themes/base/resources/plugins/fullcalendar/fullcalendar.min.js"></script>
+
+    <script type="text/javascript" src="~/Scripts/system/pdfmake.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/system/vfs_fonts.js"></script>
+    <script type="text/javascript" src="~/Scripts/system/jszip.min.js"></script>
+    <!-- toastr -->
+    <link href="~/Content/toastr/toastr.css" rel="stylesheet" />
+    <!-- sweetalert2 -->
+    <link href="~/Content/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+
+
+    <script src="~/Content/bootstrap-material-datetimepicker-gh-pages/js/bootstrap-material-datetimepicker.js"></script>
+    <link href="~/Content/bootstrap-material-datetimepicker-gh-pages/css/bootstrap-material-datetimepicker.css" rel="stylesheet" />
+
+    <!-- BARCODE -->
+    <script src="~/Scripts/jquery-barcode.js"></script>
+    <!-- DATATABLE -->
+    <link href="~/Content/themes/base/resources/plugins/dataTable/jquery.dataTables.min.css" rel="stylesheet" />
+    <script src="~/Content/themes/base/resources/plugins/dataTable/jquery.dataTables.min.js"></script>
+
+    <!--Plugin CSS file with desired skin-->
+    <link href="~/Content/themes/base/resources/plugins/rangeSlider/ion.rangeSlider.min.css" rel="stylesheet" />
+    <script src="~/Content/jquery.validate_V1.9/jquery.validate.min.js"></script>
+    <script src="~/Content/themes/base/resources/plugins/rangeSlider/ion.rangeSlider.min.js"></script>
+    <script src="~/Scripts/jquery.blockUI.js"></script>
+
+
+    <script src="~/Scripts/Shared/_MenuInit.js"></script>
+    <style>
+
+
+        #loading {
+            width: 100%;
+            height: 100%;
+            top: 0px;
+            left: 0px;
+            position: fixed;
+            display: none;
+            opacity: 0.7;
+            background-color: #fff;
+            z-index: 1000;
+            text-align: center;
+        }
+
+        #loading-image {
+            position: absolute;
+            top: 45%;
+            left: 45%;
+            width: 100px;
+            height: 100px;
+            z-index: 1001;
+        }
+
+        .ui-front {
+            z-index: 1000;
+        }
+
+        body .bg-dialog-loading {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: none;
+            background: #333333;
+            background: rgba(51, 51, 51, 0.5);
+            z-index: 999;
+        }
+
+        body.dialog-loading .bg-dialog-loading {
+            display: block;
+        }
+
+        body .bg-dialog-loading .image-dialog-loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+        }
+
+        i.fa.fa-language {
+            font-size: 43px;
+            color: yellow;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body class="hold-transition sidebar-dark-primary">
+    <div class="thongbao hidden">
+        <div class="alert warning ">
+            <a id="tabClose" class="closebtn">&times;</a>
+
+            <div id="noidung"></div>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="main-sidebar sidebar-dark-primary pt-0">
+        <div class="sidebar">
+            <a href="@Url.Action("DashBoard", "Home")">
+                <img src="../Images/AccountImg/Logo-suplier_in.png" class="mt-2" />
+
+            </a>
+
+            <h3 class="text-white">Menu</h3>
+            <nav class="side-menu">
+                <ul class="nav nav-pills nav-sidebar flex-column side-menu-item" data-widget="treeview" role="menu" data-accordion="false">
+                </ul>
+            </nav>
+        </div>
+    </aside>
+    <!-- Navbar -->
+    <div class="content-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-9 form-inline navbar-expand-md py-0 my-0  navmenu">
+                    <h4><a class="nav-link  text-white" data-widget="pushmenu" href="#" id="menu_left_right"><i class="fa fa-angle-double-left" title="Toogle sidebar"></i></a></h4>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                        <span class="fa fa-bars"></span>
+                    </button>
+                    <ul class="navbar-nav collapse navbar-collapse nav-menu-item ml-2" id="collapsibleNavbar"></ul>
+                </div>
+                <div class="col-md-3 form-inline justify-content-end navmenu navmenu-right">
+
+                    <div class="position-relative" id="language">
+                        <div class="d-lg-block d-none dropdown position-absolute" style="z-index:1">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink78" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size:16px;color:white"></a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink78">
+                                <div class="dropdown-item" href="#" style="font-size:16px;cursor:pointer" onclick="changeLanguage('en')"><span class="flag-icon flag-icon-gb"></span> United Kingdom</div>
+                                <div class="dropdown-item" href="#" style="font-size:16px;cursor:pointer" onclick="changeLanguage('kr')"><span class="flag-icon flag-icon-kr"></span> Korea</div>
+                                @*<div class="dropdown-item" href="#" style="font-size: 16px;cursor: pointer" onclick="changeLanguage('vi')"><span class="flag-icon flag-icon-vn"></span> Vietnam</div>*@
+                            </div>
+                        </div>
+                        <div id="flag" class="@language" style="font-size: 20px;margin-right:10px">
+                        </div>
+                    </div>
+                    <style>
+                        #language .dropdown-toggle {
+                            width: 25px;
+                            height: 25px;
+                        }
+
+                            #language .dropdown-toggle::after {
+                                display: none;
+                            }
+                    </style>
+                    <h5 class="m-0 p-0  justify-content-end">
+                        <a href="#">
+                            <p class="mt-4 mr-4 text-white" id="username"></p>
+                        </a>
+                    </h5>
+                    <h4 class="mt-4"><a href="@Url.Action("Logout", "Home")"><i class="fa fa-sign-out fa-lg text-white" title="Logout"></i></a></h4>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="container-fluid">
+            <div class="box-body py-0">
+                <div class="row p-2">
+                    @RenderSection("Tilte", required: false)
+                </div>
+            </div>
+        </div>
+
+        @RenderBody()
+    </div>
+    <div class="Manual_detail_page" title="Manual Detail">
+        <div class="container-fluid">
+            <div class="row p-0 mt-2">
+                <div class="col-md-12 text-right">
+                    <a href="#">
+                        <img id="code_lang_EN" src="../Images/AccountImg/EN.png" style="width: 50px; height: 25px" class="mr-3" onclick="lang_EN();" />
+                    </a>
+                    <a href="#">
+                        <img id="code_lang_VN" src="../Images/AccountImg/VN.png" style="width: 50px; height: 25px" onclick="lang_VN();" />
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row p-0 m-0">
+                <div class="col-md-12">
+                    <div id="info_detail"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" name="name" value="" id="authoryty_readonly" />
+    <div id="loading">
+        <img id="loading-image" src="~/Images/loding.gif" alt="Loading..." />
+    </div>
+
+
+    <!--dialog alert -->
+    <div id="dialogAlert" style="display:none">
+        <div class="container-fluid">
+            <div class="box-body bg-white text-right">
+                <div class="row p-0 m-0">
+                    <div class="col-md-12 p-2">
+                        <button type="button" class="btn btn-sm btn-success button-srh mr-3" id="closeAlert">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <script src="~/Scripts/translate.js-master/jquery.translate.js"></script>
+
+    <!--Script references. -->
+    <!--The jQuery library is required and is referenced by default in _Layout.cshtml. -->
+    <!--Reference the SignalR library. -->
+    <script src="~/Scripts/jquery.signalR-2.4.1.min.js"></script>
+    <!--Reference the autogenerated SignalR hub script. -->
+    <script src="~/signalr/hubs"></script>
+    <!--SignalR script to update the chat page and send messages.-->
+    <script>
+        //function AddBellIcon(count) {
+        //    $(`#bellTIMS`).remove();
+        //    $(`#TIMS`).append(`<i class="fa fa-bell" id="bellTIMS" style="margin-left:5px;color:red;" aria-hidden="true" style="color:red" title="` + count + `"></i>`);
+        //}
+        //function AddFGWMS(total) {
+        //    $(`#bellFGWMS`).remove();
+        //    $(`#FG-WMS`).append(`<i class="fa fa-bell" id="bellFGWMS" style="margin-left:5px;color:red;" aria-hidden="true" style="color:red" title="` + total + `"></i>`);
+        //}
+        //$(function () {
+        //    // Reference the auto-generated proxy for the hub.
+        //    var chat = $.connection.shinsungHub;
+        //    // Create a function that the hub can call back to display messages.
+        //    chat.client.hello = function (code) {
+        //        console.log(code);
+        //        GetSumNote(code);
+        //    };
+        //    chat.client.bell = function (count) {
+        //        AddBellIcon(count);
+        //    };
+        //    chat.client.fGWMS = function (count) {
+        //        AddFGWMS(count);
+        //    };
+        //    //// Get the user name and store it to prepend to messages.
+        //    //$('#displayname').val(prompt('Enter your name:', ''));
+        //    //// Set initial focus to message input box.
+        //    //$('#message').focus();
+        //    // Start the connection.
+        //    $.connection.hub.start().done(function () {
+        //        chat.server.hello();
+        //    });
+        //});
+        // This optional function html-encodes messages for display in the page.
+        function htmlEncode(value) {
+            var encodedValue = $('<div />').text(value).html();
+            return encodedValue;
+        }
+    </script>
+    <script src="~/Scripts/Shared/Manual_detail_page.js"></script>
+    <script src="~/Scripts/temp/common.js"></script>
+    <script src="~/Scripts/translate.js-master/change_language.js"></script>
+
+    <!-- toastr -->
+    <script src="~/Content/toastr/toastr.min.js"></script>
+
+    <!-- sweetalert2 -->
+    <script src="~/Content/sweetalert2/sweetalert2.all.min.js"></script>
+    <script src="~/Content/sweetalert2/swal.js"></script>
+
+    <script src="~/Content/toastr/toastr.custom.js"></script>
+
+    <!-- jQuery Modal -->
+    <script src="~/Content/jquerymodal/jquery.modal.min.js"></script>
+    <link href="~/Content/jquerymodal/jquery.modal.css" rel="stylesheet" />
+    <link href="~/Content/jquerymodal/jquerymodal.css" rel="stylesheet" />
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>
+
+

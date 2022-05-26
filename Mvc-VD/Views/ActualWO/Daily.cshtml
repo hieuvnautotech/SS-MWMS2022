@@ -1,0 +1,460 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    @*
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>*@
+    <script src="~/Content/jquery-3.4.1.min/jquery-3.4.1.min.js"></script>
+    <link href="./../../Content/themes/bootstrap.css" rel="stylesheet" />
+    <link href="./../../Content/SSMMS/animations.css" rel="stylesheet" />
+    <link href="./../../Content/ActualWO/slick.css" rel="stylesheet" />
+    <link href="./../../Content/ActualWO/slick-theme.css" rel="stylesheet" />
+    @*
+    <link href="https://fonts.googleapis.com/css?family=Oswald&display=swap" rel="stylesheet">*@
+    <link href="~/Content/googleapis/css.css" rel="stylesheet" />
+
+    <style>
+        .slick-slide img {
+            max-height: 65vh;
+        }
+
+        .image {
+            height: 100%;
+        }
+
+        body {
+            font-size: 2vw;
+            font-family: Oswald;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .active {
+            display: block;
+        }
+
+        .pt-page {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            visibility: hidden;
+            overflow: hidden;
+            -webkit-backface-visibility: hidden;
+            -moz-backface-visibility: hidden;
+            backface-visibility: hidden;
+            -webkit-transform: translate3d(0, 0, 0);
+            -moz-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+            -webkit-transform-style: preserve-3d;
+            -moz-transform-style: preserve-3d;
+            transform-style: preserve-3d;
+        }
+
+        .pt-page-current, .no-js .pt-page {
+            visibility: visible;
+            z-index: 1;
+        }
+
+        .all_cg {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        form#reset_page {
+            text-align: center;
+        }
+
+        h2 {
+            text-transform: uppercase;
+            font-size: 2.3vw;
+            padding-top: 2vh;
+        }
+
+        h3 {
+            font-size: 1.2vw;
+        }
+
+        h4.xanh {
+            font-size: 12.5vw;
+            text-align: center;
+            vertical-align: middle;
+            line-height: 38vh;
+        }
+
+        h4.vang {
+            font-size: 12.5vw;
+            text-align: center;
+            vertical-align: middle;
+            line-height: 20vh;
+        }
+
+        h2 {
+            margin-top: 0px;
+        }
+
+        .h-45 {
+            height: 20vh;
+        }
+
+        form#reset_page,
+        form#reset_page3,
+        .full_height {
+            height: 100vh;
+        }
+
+        /*.row.bg-dark {
+            height: 8vh;
+        }*/
+
+        .embed-responsive-5by4 {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .bg-dark {
+            background: #170000;
+        }
+
+        .text-white {
+            color: white;
+        }
+
+        .bg-light {
+            height: 20vh;
+            background: #534b4b;
+        }
+
+        .text-left {
+            text-align: left;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .pd_1vh {
+            padding: 1vh;
+            font-size: 3vw;
+        }
+
+        .mg_4vh {
+            MARGIN-TOP: 2VH;
+        }
+
+        .h_72 {
+            height: 75vh;
+        }
+
+        .h_12 {
+            height: 12vh;
+        }
+
+        .h_10 {
+            height: 10vh;
+        }
+
+        .pd_2vh {
+            padding: 2vh;
+        }
+
+        .h_50 {
+            height: 50vh;
+            font-size: 16vw;
+        }
+
+        .bg_reg {
+            background: #d81624;
+        }
+
+        .bg_blue {
+            background: #00c6bb;
+        }
+
+        .bg {
+            background-image: url("../Images/bg.jpg");
+            background-repeat: no-repeat;
+        }
+
+        .border {
+            border: 3px solid white;
+        }
+
+        iframe {
+            overflow: hidden;
+        }
+    </style>
+    <style>
+        /*//style_nga*/
+
+
+        .head {
+            background: #000;
+            height: 12vh;
+        }
+
+            .head .head_t {
+                text-align: center;
+                color: #2ce2d1;
+            }
+
+        .head_p {
+            text-align: center;
+            color: #fff;
+        }
+
+            .head_p h3 {
+                font-size: 3.3vw;
+            }
+
+        .header {
+            height: 12vh;
+            background: #808080;
+        }
+
+        #bg_target {
+            background: #6ad14a;
+            height: 13vh;
+            color: #000;
+        }
+
+            #bg_target h3 {
+                font-size: 2vw;
+            }
+
+        #bg_actual h3 {
+            font-size: 2vw;
+        }
+
+        #bg_eff h3 {
+            font-size: 2vw;
+        }
+
+        #bg_actual {
+            background: hsl(179, 75%, 30%);
+            height: 13vh;
+            color: #000;
+        }
+
+        #bg_eff {
+            background: hsl(39, 82%, 53%);
+            height: 13vh;
+            color: #000;
+        }
+
+        .header .header_t {
+            text-align: left;
+        }
+
+        .header_t {
+            padding-left: 0px;
+            padding-right: 0px;
+        }
+
+        .header header_p {
+            text-align: left;
+        }
+
+        .header_t h2 {
+            color: #fff;
+            font-size: 2vw;
+        }
+
+        .header_p h2 {
+            color: #fff;
+            font-size: 2vw;
+        }
+
+        .day {
+            background: #000;
+            text-align: center;
+            margin: 4vh 10px;
+        }
+
+        .col-md-4.day h2 {
+            font-size: 3vw;
+            padding: 0;
+        }
+
+        .table {
+            margin: 0;
+        }
+
+            .table tr td {
+                text-align: center;
+            }
+
+        td.bg_td {
+            background: #0094ff;
+            color: #FFF;
+            font-size: 15px;
+        }
+
+        .table tr th {
+            width: 5%;
+            background: #808080;
+            color: #FFF;
+            font-size: 15px;
+            text-align: center;
+        }
+
+        .hatio_time {
+            height: 100vh;
+        }
+
+        .table {
+            height: 63vh;
+        }
+
+        .banner {
+            height: 13vh;
+        }
+
+        .table tr th.bg_th {
+            background: #30827e;
+            color: #000;
+            font-size: 3vw;
+            vertical-align: inherit;
+            font-weight: 100;
+        }
+
+        .table tr th {
+            color: #fff;
+            font-size: 3vw;
+            font-weight: 100;
+            vertical-align: inherit !important;
+        }
+
+        .table tr td {
+            color: #000;
+            font-size: 3vw;
+            vertical-align: inherit !important;
+        }
+    </style>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var at_no = $('#at_no').val();
+            var id_actual = $('#id_actual').val();
+            var product = $('#product').val();
+            var reg_dt = $('#reg_dt').val();
+            var reg_dt_end = $('#reg_dt_end').val();
+            _getData(id_actual, at_no, product, reg_dt, reg_dt_end);
+        });
+
+
+
+
+        function _getData(id_actual, at_no, product, reg_dt, reg_dt_end){
+            $.get("/ActualWO/getData?at_no=" + at_no + "&product=" + product+ "&reg_dt=" + reg_dt + "&reg_dt_end=" + reg_dt_end, function (data) {
+                if (data.result == true) {
+                    if (data.type == "at_no") {
+                        $("#startDate_id").html(data.data[0].reg_dt);
+                        $("#endDate_id").html(data.data[0].reg_dt);
+                        $(".tong_ngay").html("1 DAY");
+                        $("#actual_id").html(data.data[0].actual);
+                        $("#qq_m").html(data.data[0].m_lieu);
+                        $("#effect_id").html((data.data[0].HS == null ? "0" : data.data[0].HS) + "%");
+                    } if (data.type == "product") {
+                        $("#startDate_id").html(data.data[0].min_day);
+                        $("#endDate_id").html(data.data[0].max_day);
+                        $(".tong_ngay").html(data.data[0].count_day +" DAY");
+                        $("#actual_id").html(data.data[0].actual);
+                        $("#qq_m").html(data.data[0].m_lieu);
+                        $("#effect_id").html((data.data[0].HS == null ? "0" : data.data[0].HS) + "%");
+                    }
+                }
+                setTimeout(function () {
+                    var at_no = $('#at_no').val();
+                    var id_actual = $('#id_actual').val();
+                    var product = $('#product').val();
+                    var reg_dt = $('#reg_dt').val();
+                    var reg_dt_end = $('#reg_dt_end').val();
+                    _getData(id_actual, at_no, product, reg_dt, reg_dt_end);
+                }, 10000);
+
+            });
+
+        }
+
+    </script>
+</head>
+<body>
+    <input type="text" name="name" value="@ViewBag.at_no" id="at_no" />
+    <input type="text" name="name" value="@ViewBag.id_actual" id="id_actual" />
+    <input type="text" name="name" value="@ViewBag.product" id="product" />
+    <input type="text" name="name" value="@ViewBag.reg_dt" id="reg_dt" />
+    <input type="text" name="name" value="@ViewBag.reg_dt_end" id="reg_dt_end" />
+    <div class="pt-page tab_c1 pt-page-current">
+        <form id="reset_page">
+            <div class="row  bg-dark">
+                <div class=" text-white align-items-center justify-content-start px-4">
+                    <div class="row">
+                        <div class="col-md-12 text-white align-items-center justify-content-start all_cg">
+                            <h2 class="tieu_de">@ViewBag.tieude</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-light">
+                <div class="row">
+                    <div class="col-md-8 text-white h-20 bg-secondary h-45 all_cg">
+                        <div class="col-md-4 star">
+                            <h2>Start Date</h2>
+                            <h2>End Date</h2>
+                        </div>
+                        <div class="col-md-3 star">
+                            <h2 class="start_time" id="startDate_id"></h2>
+                            <h2 class="end_time" id="endDate_id"></h2>
+                        </div>
+                        <div class="col-md-4  bg-dark mg_4vh ">
+                            <h2 class="tong_ngay" style="font-size: 4vw; padding: 1vh;"></h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row ">
+                    <div class="col-md-4 d-flex text-white h_72 bg_reg">
+                        <div class="col-md-12 text-left h_12">
+                            <h2 class="pd_1vh ">Actual</h2>
+                        </div>
+                        <div class="col-md-12 h_50 all_cg prod_qty" style="font-size: 10vw;" id="actual_id"></div>
+                        <div class="col-md-12 text-right h_10">
+                        </div>
+                    </div>
+                    <div class="col-md-4 d-flex text-white h_72 bg_blue">
+                        <div class="col-md-12 text-left h_12">
+                            <h2 class="pd_1vh">Quantity Material(m)</h2>
+                        </div>
+                        <div class="col-md-12 h_50 all_cg done_qty" style="font-size: 10vw;" id="qq_m"></div>
+                        <div class="col-md-12 text-right h_10">
+                        </div>
+                    </div>
+                    <div class="col-md-4 d-flex text-white h_72 bg-dark">
+                        <div class="col-md-12 text-left h_12">
+                            <h2 class="pd_1vh">Efficiency(%)</h2>
+                        </div>
+                        <div class="col-md-12 h_50 all_cg Efficiency" style="font-size: 10vw;" id="effect_id"></div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+
+</body>
+</html>
+
+

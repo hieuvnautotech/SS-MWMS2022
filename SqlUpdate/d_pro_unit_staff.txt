@@ -1,0 +1,3 @@
+Select psid, staff_id, actual, defect, id_actual, staff_tp, DATE_FORMAT(start_dt,'%Y-%m-%d %H:%i:%s'), DATE_FORMAT(end_dt,'%Y-%m-%d %H:%i:%s') 
+use_yn, del_yn, reg_id, reg_dt, chg_id, chg_dt
+from d_pro_unit_staff;

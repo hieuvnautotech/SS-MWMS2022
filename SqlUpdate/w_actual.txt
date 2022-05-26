@@ -1,0 +1,2 @@
+Select id_actual, at_no, type, actual, defect, name, level, date, don_vi_pr, item_vcd, description, IsFinished, reg_id, reg_dt, chg_id, chg_dt 
+From w_actual

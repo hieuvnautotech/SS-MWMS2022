@@ -1,0 +1,108 @@
+﻿@{
+    ViewBag.Title = "Confirm";
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="WMS" data-level_2="Shipping Management" data-level_3="Confirm"></div>
+}
+
+<!-- Search function -->
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-3">
+                <div class="row">
+                    <div class="col-md-3 p-1  text-right">
+                        <label><b>SD NO </b></label>
+                    </div>
+                    <div class="col-md-9 p-1">
+                        <input type="text" name="sd_no" id="c_sd_no" class="input-text form-control" >
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 p-1  text-right">
+                        <label><b>Status </b></label>
+                    </div>
+                    <div class="col-md-9 p-1">
+                        <input type="text" name="" id="Status" class="input-text form-control" placeholder="WMS007" readonly="readonly">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="row">
+                    <div class="col-md-3 p-1  text-right">
+                        <label><b>Location </b></label>
+                    </div>
+                    <div class="col-md-9 p-1">
+                        <select name="whouse" id="whouse" class="form-control selectMf select2"></select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 p-1  text-right">
+                        <label><b>Worker </b></label>
+                    </div>
+                    <div class="col-md-9 p-1">
+                        <input type="text" name="" id="work" class="input-text form-control">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="row">
+                    <div class="col-md-3 p-1  text-right">
+                        <label><b>Manager </b></label>
+                    </div>
+                    <div class="col-md-9 p-1">
+                        <input type="text" name="" id="manager" class="input-text form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 p-1  text-right">
+                        <label><b>Work Date</b></label>
+                    </div>
+                    <div class="col-md-9 p-1">
+                        <div class="row p-0 m-0">
+                            <div class="col-md-5 p-0 m-0">
+                                <input type="text" name="start_dt" id="start" class="form-control">
+                            </div>
+                            <div class="col-md-2 p-1 pr-2 text-right">
+                                <label>~</label>
+                            </div>
+                            <div class="col-md-5 p-0 m-0">
+                                <input type="text" name="end_dt" id="end" class="form-control">
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-2 p-1">
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh ml-5"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+    </div>
+    </div>
+</div>
+
+<!-- ./Search function -->
+
+@*---------------------------------------------------------------------------------------------------------------------------*@
+
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <table id="Cofirm"></table>
+        <div id="Cofirmpage"></div>
+    </div>
+</div>
+
+@*---------------------------------------------------------------------------------------------------------------------------*@
+
+
+@section scripts{
+    <script src="~/Scripts/Shippingmgt/_confirm.js"></script>
+}
+
+

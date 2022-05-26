@@ -1,0 +1,415 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutSI.cshtml";
+}
+
+@section Tilte {
+    <div class="col-xs-12" id="current_menu" data-level_1="QMS" data-level_2="QC Management" data-level_3="QC Master"></div>
+}
+
+<!--Dialog -->
+<div class="dialog" title="Popup Detail">
+    <div class="container-fluid">
+        <div class="box-body bg-white text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-12 p-2">
+                    <button type="button" class="btn btn-sm btn-primary button-srh" id="close"><i class="fa fa-close">&nbsp;Close</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="box-body my-2 bg-white">
+            <div id="view">
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ./ Dialog -->
+<!-- Search function -->
+<div class="container-fluid">
+    <div class="box-body my-2 bg-white">
+        <div class="row p-0 m-0">
+            <div class="col-md-2">
+                <div class="input-group" style="width: 100%;">
+                    <select id="s_item_type" class="form-control">
+                        <option value="">*QC Type*</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-1 p-1  text-right">
+                <label><b>QC Code</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <input type="text" name="s_item_cd" id="s_item_cd" maxlength="20" class="input-text form-control">
+            </div>
+            <div class="col-md-1 p-1  text-right">
+                <label><b>QC Name</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <input type="text" name="s_item_nm" id="s_item_nm" class="form-control" maxlength="50">
+            </div>
+            <div class="col-md-1 p-1  text-right">
+                <label><b>QC Explain</b></label>
+            </div>
+            <div class="col-md-2 p-1">
+                <input type="text" name="s_item_exp" id="s_item_exp" class="form-control " maxlength="100">
+            </div>
+            <div class="col-md-1  p-2">
+                <button id="searchBtn" class="btn btn-sm btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ./Search function -->
+<div class="container-fluid">
+    <div class="row mt-2">
+        <div class="col-md-5 ">
+            <div class="box-body my-2 bg-white">
+                <table id="list"></table>
+                <div id="jqGridPager"></div>
+            </div>
+        </div>
+        <div class=" col-md-7">
+            <div class="box-body my-2 bg-white">
+                <table id="list2"></table>
+                <div id="jqGrid2Pager"></div>
+            </div>
+            <div class="box-body my-2 bg-white">
+                <!--BuyerInfo start -->
+                <div class="nav-tabs-custom">
+                    <ul class="nav nav-tabs">
+                        <li class="active" id="tab_3"><a href="#tab_3" data-toggle="tab">Create</a></li>
+                        <li id="tab_4"><a href="#tab_4" data-toggle="tab">Modify</a></li>
+                       
+                    </ul>
+                </div>
+                <div class="tab-content active" id="tab_c3">
+                    <form name="form3" id="form3" enctype="multipart/form-data" role="form" method="post" target="zeroFrame">
+                        <div class="col-md-8 pull-right" style="margin-top:-34px">
+                            <button type="button" id="c2_save_but" class="btn btn-success button-srh2 active"><i class='fa fa-save'>&nbsp;Create</i></button>
+                        </div>
+                        <div class="box-body box-body-input-move">
+                            <div class="row py-1">
+                                <div class="col-md-2 ">
+                                    <input type="text" name="c2_item_cd" id="c2_item_cd" class="input-text form-control" placeholder="QC Code" readonly="readonly">
+                                </div>
+                                @*<div class="col-md-2 ">
+                                    <input type="text" name="c2_ver" id="c2_ver" class="input-text form-control" placeholder="Ver" readonly="readonly">
+                                </div>*@
+                                <div class="col-md-2 ">
+                                    <input type="text" name="c_check_id" id="c_check_id" class="input-text form-control" placeholder="Check Id" readonly="readonly">
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="input-group" style="width: 100%;">
+                                        <select id="c_check_type" class="form-control">
+                                            <option value="">*Check Type*</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 ">
+                                    <input type="text" name="c_check_subject" id="c_check_subject" class="input-text form-control" placeholder="Subject">
+                                </div>
+                            </div>
+                            <div class="row py-1">
+                                <div class="col-md-2 ">
+                                    <input type="text" name="min_value" id="c_min_value" class="input-text form-control text-right" placeholder="Min value" value="0">
+                                </div>
+                                <div class="col-md-2 ">
+                                    <input type="text" name="max_value" id="c_max_value" class="input-text form-control text-right" placeholder="max value" value="0">
+                                </div>
+                                <div class="col-md-2 ">
+                                    <div class="input-group" style="width: 100%;">
+                                        <select id="c_range_type" class="form-control">
+                                            <option value="">*Range Type*</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="text" name="order_no" id="c_order_no" class="input-text form-control text-right" placeholder="Order" value="1">
+                                </div>
+
+                                <div class="col-md-1">
+                                    <div class="input-group" style="width: 100%;">
+                                        <select name="use_yn" id="c2_use_yn" class="form-control select2">
+                                            <option value="Y" selected="selected">Use</option>
+                                            <option value="N">UnUse</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 ">
+                                    <input type="text" name="c_re_mark" id="c_re_mark" class="input-text form-control" placeholder="Remark">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                    </form>
+                </div>
+                <div class="tab-content hidden" id="tab_c4">
+                    <form name="form4" id="form4" enctype="multipart/form-data" role="form" method="post" target="zeroFrame">
+                        <div class="col-md-8 pull-right" style="margin-top:-34px">
+                            <button type="button" id="m2_save_but" class="btn btn-success button-srh2 hidden"><i class='fa fa-save'>&nbsp;Modify</i></button>&nbsp;&nbsp;&nbsp;&nbsp;
+                        </div>
+                        <input type="hidden" name="name" value=" " id="icno" />
+                        <div class="box-body box-body-input-move">
+                            <div class="row py-1">
+                                <div class="col-md-2 ">
+                                    <input type="text" name="m2_item_cd" id="m2_item_cd" class="input-text form-control" placeholder="QC Code" readonly="readonly">
+                                </div>
+                                @*<div class="col-md-2 ">
+                                    <input type="text" name="m2_ver" id="m2_ver" class="input-text form-control" placeholder="Ver" readonly="readonly">
+                                </div>*@
+                                <div class="col-md-2 ">
+                                    <input type="text" name="m_check_id" id="m_check_id" class="input-text form-control" placeholder="Check Id" readonly="readonly">
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="input-group" style="width: 100%;">
+                                        <select id="m_check_type" class="form-control" name="range_type">
+                                            <option value="">*Check Type*</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 ">
+                                    <input type="text" name="m_check_subject" id="m_check_subject" class="input-text form-control" placeholder="Subject">
+                                </div>
+                            </div>
+                            <div class="row py-1">
+                                <div class="col-md-2 ">
+                                    <input type="text" name="min_value" id="m_min_value" class="input-text form-control text-right" placeholder="Min value">
+                                </div>
+                                <div class="col-md-2 ">
+                                    <input type="text" name="max_value" id="m_max_value" class="input-text form-control text-right" placeholder="max value">
+                                </div>
+                                <div class="col-md-2 ">
+                                    <div class="input-group" style="width: 100%;">
+                                        <select id="m_range_type" class="form-control" name="range_type">
+                                            <option value="">*Range Type*</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="text" name="order_no" id="m_order_no" class="input-text form-control text-right" placeholder="Order" value="1">
+                                </div>
+                                <div class="col-md-1">
+                                    <div class="input-group" style="width: 100%;">
+                                        <select name="use_yn" id="m2_use_yn" class="form-control select2">
+                                            <option value="Y" selected="selected">Use</option>
+                                            <option value="N">UnUse</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 ">
+                                    <input type="text" name="m_re_mark" id="m_re_mark" class="input-text form-control" placeholder="Remark">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="box-body my-2 bg-white">
+                    <table id="list3"></table>
+                    <div id="jqGrid3Pager"></div>
+                </div>
+                <!--BuyerInfo start -->
+                <div class="box-body my-2 bg-white">
+                    <div class="nav-tabs-custom">
+                        <ul class="nav nav-tabs">
+                            <li class="active" id="tab_5"><a href="#tab_5" data-toggle="tab">Create</a></li>
+                            <li id="tab_6"><a href="#tab_6" data-toggle="tab">Modify</a></li>
+                           
+                        </ul>
+                    </div>
+                    <div class="tab-content active" id="tab_c5">
+                        <form name="form5" id="form5" enctype="multipart/form-data" role="form" method="post" target="zeroFrame">
+                            <div class="box-body box-body-input-move">
+                                <div class="col-md-8 pull-right" style="margin-top:-39px">
+                                    <button type="button" id="c3_save_but" class="btn btn-success button-srh2 active"><i class='fa fa-save'>&nbsp;Create</i></button>
+                                </div>
+                                <div class="row  py-1">
+                                    <div class="col-md-4 ">
+                                        <input type="text" name="c_check_id" id="c2_check_id" class="input-text form-control" placeholder="QC Code" readonly="readonly">
+                                    </div>
+                                    <div class="col-md-4 ">
+                                        <input type="text" name="c_check_cd" id="c_check_cd" class="input-text form-control" placeholder="Check Code" readonly="readonly">
+                                    </div>
+                                    <div class="col-md-4 ">
+                                        <input type="text" name="c_check_name" id="c_check_name" class="input-text form-control" placeholder="Check Name">
+                                    </div>
+                                </div>
+                                <div class="row py-1">
+                                    <div class="col-md-4 ">
+                                        <input type="number" name="c2_order_no" id="c2_order_no" class="input-text form-control text-right" placeholder="Order" value="1">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="input-group" style="width: 100%;">
+                                            <select name="use_yn" id="c3_use_yn" class="form-control select2">
+                                                <option value="Y" selected="selected">Use</option>
+                                                <option value="N">UnUse</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="input-group" style="width: 100%;">
+                                            <select name="use_yn" id="c_defect_yn" class="form-control select2" disabled>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="text" name="c2_re_mark" id="c2_re_mark" class="input-text form-control" placeholder="Remark">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.box-body -->
+                        </form>
+                    </div>
+                    <div class="tab-content hidden" id="tab_c6">
+                        <form name="form6" id="form6" enctype="multipart/form-data" role="form" method="post" target="zeroFrame">
+                            <input type="hidden" name="name" value=" " id="icdno" />
+                            <div class="box-body box-body-input-move">
+                                <div class="col-md-8 pull-right" style="margin-top:-39px">
+                                    <button type="button" id="m3_save_but" class="btn btn-success button-srh2 hidden"><i class='fa fa-save'>&nbsp;Modify</i></button>&nbsp;&nbsp;&nbsp;&nbsp;
+                                </div>
+                                <div class="row  py-1">
+                                    <div class="col-md-4 ">
+                                        <input type="text" name="m2_check_id" id="m2_check_id" class="input-text form-control" placeholder="QC Code" readonly="readonly">
+                                    </div>
+                                    <div class="col-md-4 ">
+                                        <input type="text" name="m_check_cd" id="m_check_cd" class="input-text form-control" placeholder="Check Code" readonly="readonly">
+                                    </div>
+                                    <div class="col-md-4 ">
+                                        <input type="text" name="m_check_name" id="m_check_name" class="input-text form-control" placeholder="Check Name">
+                                    </div>
+                                </div>
+                                <div class="row py-1">
+                                    <div class="col-md-4 ">
+                                        <input type="number" name="m2_order_no" id="m2_order_no" class="input-text form-control" placeholder="Order">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="input-group" style="width: 100%;">
+                                            <select name="use_yn" id="m3_use_yn" class="form-control select2">
+                                                <option value="Y" selected="selected">Use</option>
+                                                <option value="N">UnUse</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="input-group" style="width: 100%;">
+                                            <select name="use_yn" id="m_defect_yn" class="form-control select2">
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="text" name="m2_re_mark" id="m2_re_mark" class="input-text form-control" placeholder="Remark">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    </div>
+    @*---------------------------------------------------------------------------------------------------------------------------*@
+
+    <style>
+        div#view {
+            line-height: 2.5;
+        }
+
+        h4 {
+            line-height: 1.5;
+        }
+
+        div#radio-group {
+            padding: 0 10px;
+        }
+
+        h6 {
+            padding: 4px;
+        }
+    </style>
+    <style>
+        input.order-qty {
+            text-align: right;
+            width: 100%;
+            font-size: 13px;
+        }
+
+        div#radio-group {
+            margin-bottom: -10px !important;
+            margin-top: -3px !important;
+        }
+
+        table.table_con, table.table_con td.day_css {
+            border: 1px solid #777;
+            border-collapse: collapse;
+            padding: 7px;
+        }
+
+            table.table_con th, table.table_con td.title_qty {
+                padding: 5px;
+                text-align: left;
+                padding: 7px;
+                font-size: 16px;
+                text-align: center;
+                border-left: 1px solid;
+            }
+        .pull-right {
+            width: 13%;
+            padding-top: 3px;
+        }
+        .pull-right1 {
+            width: 84%;
+            padding-top: 3px;
+            float: right;
+        }
+    </style>
+
+    @section scripts{
+        <script src="~/Scripts/QMS/QCMaster/item.js"></script>
+        <script src="~/Scripts/QMS/QCMaster/popup_m_day.js"></script>
+        <script src="~/Content/jquery.validate_V1.9/jquery.validate.min.js"></script>
+        <script>
+            $("#form3").validate({
+                rules: {
+                    "min_value": {
+                        required: true,
+                        number: true,
+                    },
+                    "max_value": {
+                        required: true,
+                        number: true,
+                    },
+                    "order_no": {
+                        required: true,
+                        number: true,
+                    },
+                },
+            });
+            $("#form4").validate({
+                rules: {
+                    "min_value": {
+                        required: true,
+                        number: true,
+                    },
+                    "max_value": {
+                        required: true,
+                        number: true,
+                    },
+                    "range_type": {
+                        required: true,
+                    },
+                    "order_no": {
+                        required: true,
+                        number: true,
+                    },
+                },
+            });
+
+        </script>
+    }
+
