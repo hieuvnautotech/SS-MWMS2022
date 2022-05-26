@@ -502,6 +502,7 @@
     <Compile Include="Controllers\ExportToMachineController.cs" />
     <Compile Include="Controllers\FGGeneralController.cs" />
     <Compile Include="Controllers\fgwmsController.cs" />
+    <Compile Include="Controllers\HieuShippingMgt.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InitMethods.cs" />
     <Compile Include="Controllers\LanguageController.cs" />
@@ -4429,6 +4430,7 @@
     <Content Include="Scripts\fgwms\SortingFG\RecevingFG\RecevingSortingfgScan.js" />
     <Content Include="Scripts\fgwms\SortingFG\ShippingFG\Product_Poup.js" />
     <Content Include="Scripts\fgwms\SortingFG\ShippingFG\ShippingSortingFGScan.js" />
+    <Content Include="Scripts\HieuShippingMgt\HieuPickingShippingScan\HieuPickingScan.js" />
     <Content Include="Scripts\Shippingmgt\_ShowMaterialShipping.js" />
     <Content Include="Scripts\temp\app.js" />
     <Content Include="Scripts\temp\bom_popup.js" />
@@ -6716,6 +6718,7 @@
     <Content Include="Views\DevManagement\ResourceMgt.cshtml" />
     <Content Include="Views\DevManagement\PartialView_ResourceMgt.cshtml" />
     <Content Include="Views\DevManagement\PartialView_dialog_Viewdetail.cshtml" />
+    <Content Include="Views\HieuShippingMgt\HieuShippingPickingScan.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

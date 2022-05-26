@@ -724,7 +724,7 @@ namespace Mvc_VD.Controllers
             else
             {
                 UserCookie = HttpContext.Request.Cookies.Get("usercode");
-                Response.Cookies.Add(UserCookie);
+                //Response.Cookies.Add(UserCookie);
             }
             return UserCookie;
         }
