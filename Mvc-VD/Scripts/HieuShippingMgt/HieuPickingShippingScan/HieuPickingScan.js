@@ -6,7 +6,7 @@
             mtype: 'Get',
             colModel: [
                 { key: true, label: 'sid', name: 'sid', width: 50, align: 'center', hidden: true },
-                { label: 'SD NO', name: 'sd_no', width: 100, align: 'center', formatter: SD_popup },
+                //{ label: 'SD NO', name: 'sd_no', width: 100, align: 'center', formatter: SD_popup },
                 { label: 'SD NO', name: 'sd_no', width: 100, align: 'left', hidden: true },
                 { label: 'SD Name', name: 'sd_nm', width: 300, align: 'left' },
                 { label: 'Product', name: 'product_cd', width: 150, align: 'left' },
@@ -99,3 +99,4 @@
             }
         });
 });
+

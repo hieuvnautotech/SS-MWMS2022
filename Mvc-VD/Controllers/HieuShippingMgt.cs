@@ -15,6 +15,20 @@ namespace Mvc_VD.Controllers
         private readonly IWIPService _IWIPService;
         private readonly IcommonService _IcommonService;
         private readonly IhomeService _ihomeService;
+
+        public HieuShippingMgtController(
+          IWMSServices IWMSServices,
+           IWIPService IWIPService,
+           IcommonService IcommonService,
+          IDbFactory DbFactory, IhomeService ihomeService)
+        {
+            _IWMSServices = IWMSServices;
+            _IWIPService = IWIPService;
+            _IcommonService = IcommonService;
+            _ihomeService = ihomeService;
+
+
+        }
         // GET: HieuShippingMgt
         public ActionResult HieuShippingPickingScan(string code)
         {

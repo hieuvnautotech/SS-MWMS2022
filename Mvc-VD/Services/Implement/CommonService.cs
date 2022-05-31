@@ -34,7 +34,9 @@ namespace Mvc_VD.Services.Implement
         }
         public async Task<IReadOnlyList<SdInfos>> GetListSDInfo(string SdNo,string SdName,string ProductCode,string remark)
         {
-            string sql = @"SELECT
+            try
+            {
+                string sql = @"SELECT
 	            a.*,
 	            ( SELECT dt_nm FROM comm_dt WHERE mt_cd = 'WHS005' AND dt_cd = a.status ) AS sts_nm,
 	            ( SELECT lct_nm FROM lct_info WHERE lct_cd = a.lct_cd ) AS lct_nm 
@@ -46,8 +48,15 @@ namespace Mvc_VD.Services.Implement
 	            AND ( @procd = '' OR @procd is null OR a.product_cd LIKE '%'+@procd+'%' ) 
 	            AND ( @remark = '' OR @remark is null OR a.remark LIKE '%'+@remark+'%' ) 
             ORDER BY sid DESC";
-            var result = await base.DbConnection.QueryAsync<SdInfos>(sql, new { sdno = SdNo, sdnm = SdName, procd = ProductCode, remark= remark });
-            return result.ToList();
+                var result = await base.DbConnection.QueryAsync<SdInfos>(sql, new { sdno = SdNo, sdnm = SdName, procd = ProductCode, remark = remark });
+                return result.ToList();
+            }
+            catch (Exception e)
+            {
+
+                throw;
+            }
+           
         }
 
 
