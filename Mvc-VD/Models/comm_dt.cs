@@ -12,7 +12,7 @@ namespace Mvc_VD.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class comm_dt
+    public partial class comm_dt : Pageing
     {
         public int cdid { get; set; }
         public string mt_cd { get; set; }
@@ -38,5 +38,20 @@ namespace Mvc_VD.Models
         public string chg_id { get; set; }
         public System.DateTime chg_dt { get; set; }
         public string unit { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            return base.Equals(obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return base.ToString();
+        }
     }
 }

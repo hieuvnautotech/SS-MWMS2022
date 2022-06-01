@@ -1,8 +1,9 @@
 ﻿$(function () {
     $("#list").jqGrid
         ({
-            url: "/HieuShippingMgt/GetPickingScan",
-            datatype: 'json',
+            //url: "/HieuShippingMgt/GetPickingScan",
+            datatype: function (postData) { getData_primary(postData); },
+          
             mtype: 'Get',
             colModel: [
                 { key: true, label: 'sid', name: 'sid', width: 50, align: 'center', hidden: true },
@@ -100,3 +101,41 @@
         });
 });
 
+function getData_primary(pdata) {
+    //debugger;
+    var params = new Object();
+
+    if ($('#list').jqGrid('getGridParam', 'reccount') == 0) {
+        params.page = 1;
+    }
+    else { params.page = pdata.page; }
+
+    params.rows = pdata.rows;
+    params.sidx = pdata.sidx;
+    params.sord = pdata.sord;
+    params._search = pdata._search;
+
+   
+
+    $('#list').jqGrid('setGridParam', { search: true, postData: { searchString: $("#auto_complete_search").val() } });
+    //debugger;
+    $.ajax({
+        url: `/HieuShippingMgt/GetPickingScan`,
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        traditional: true,
+        data: params,
+        success: function (data, st) {
+            if (st == "success") {
+                var showing = $('#list')[0];
+                showing.addJSONData(data);
+            }
+        },
+        error: function () {
+            return;
+        }
+    });
+
+    //getData_Finished(pdata);
+};

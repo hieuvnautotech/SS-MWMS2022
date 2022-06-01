@@ -32,7 +32,7 @@ namespace Mvc_VD.Services.Implement
             var result = await base.DbConnection.QueryAsync<WMaterialInfo>(sql, new { MtNo = mt_no, StyleNo = style_no });
             return result.ToList();
         }
-        public async Task<IReadOnlyList<SdInfos>> GetListSDInfo(string SdNo,string SdName,string ProductCode,string remark)
+        public async Task<IEnumerable<SdInfos>> GetListSDInfo(string SdNo,string SdName,string ProductCode,string remark)
         {
             try
             {

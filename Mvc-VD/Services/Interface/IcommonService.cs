@@ -13,7 +13,7 @@ namespace Mvc_VD.Services.Interface
     public interface IcommonService
     {
         Task<IReadOnlyList<WMaterialInfo>> GetListMAterialNo(string mt_no, string style_no);
-        Task<IReadOnlyList<SdInfos>> GetListSDInfo(string SdNo, string SdName, string ProductCode, string remark);
+        Task<IEnumerable<SdInfos>> GetListSDInfo(string SdNo, string SdName, string ProductCode, string remark);
         Task<int> InsertSdInfo(SdInfo item);
         Task<string> GetLastSdNo();
         Task<IReadOnlyList<lct_info>> GetLocationFactory();
