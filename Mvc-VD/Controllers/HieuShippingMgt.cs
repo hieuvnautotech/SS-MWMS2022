@@ -1,4 +1,5 @@
-﻿using Mvc_VD.Models;
+﻿using Mvc_VD.Commons;
+using Mvc_VD.Models;
 using Mvc_VD.Models.NewVersion;
 using Mvc_VD.Models.Request;
 using Mvc_VD.Services;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
+using HttpPostAttribute = System.Web.Http.HttpPostAttribute;
 
 namespace Mvc_VD.Controllers
 {
@@ -19,6 +21,7 @@ namespace Mvc_VD.Controllers
         private readonly IWMSServices _IWMSServices;
         private readonly IWIPService _IWIPService;
         private readonly IcommonService _IcommonService;
+        private readonly IHieuCommonServices _IHieuCommonServices;
         private readonly IhomeService _ihomeService;
 
         #region nay dùng để cheat code max lenght json để đổ db lớn từ db
@@ -39,11 +42,13 @@ namespace Mvc_VD.Controllers
           IWMSServices IWMSServices,
            IWIPService IWIPService,
            IcommonService IcommonService,
+           IHieuCommonServices IHieuCommonServices,
           IDbFactory DbFactory, IhomeService ihomeService)
         {
             _IWMSServices = IWMSServices;
             _IWIPService = IWIPService;
             _IcommonService = IcommonService;
+            _IHieuCommonServices = IHieuCommonServices;
             _ihomeService = ihomeService;
 
 
@@ -80,14 +85,14 @@ namespace Mvc_VD.Controllers
             return SetLanguage("");
         }
 
-        public async Task<ActionResult> GetPickingScan(string sd_no, string sd_nm, string product_cd, string remark, Pageing commPag)
+        public async Task<ActionResult> GetPickingScan(string sd_no, string sd_nm, string product_cd, string remark, Pageing commPag)// có kết hợp phân trang
         {
             try
             {
                 
                 //var data = await _IcommonService.GetListSDInfo(sd_no, sd_nm, product_cd, remark);
 
-                IEnumerable<SdInfos> data = await _IcommonService.GetListSDInfo(sd_no, sd_nm, product_cd, remark);
+                IEnumerable<SdInfos> data = await _IHieuCommonServices.GetListSDInfo(sd_no, sd_nm, product_cd, remark);
                 int start = (commPag.page - 1) * commPag.rows;
                 int end = (commPag.page - 1) * commPag.rows + commPag.rows;
                 int totals = data.Count();
@@ -114,22 +119,47 @@ namespace Mvc_VD.Controllers
             }
 
         }
-        #region phan trang
-        public Dictionary<string, string> PagingAndOrderBy(Pageing pageing, string orderByStr)
-        {
-            Dictionary<string, string> list = new Dictionary<string, string>();
-            int pageIndex = pageing.page;
-            int pageSize = pageing.rows;
-            int start_r = pageing.page > 1 ? ((pageIndex - 1) * pageSize) : pageing.page;
-            int end_r = (pageIndex * pageSize);
-            string order_by = pageing.sidx != null ? (" ORDER BY " + pageing.sidx + " " + pageing.sord) : orderByStr;
-            list.Add("index", pageIndex.ToString());
-            list.Add("size", pageSize.ToString());
-            list.Add("start", start_r.ToString());
-            list.Add("end", end_r.ToString());
-            list.Add("orderBy", order_by);
-            return list;
+
+        [HttpPost]
+        public async Task<ActionResult> InsertSDInfo(SdInfo w_sd_info) {
+            string sd_no = "SD1";
+            var sd_no_last = await _IcommonService.GetLastSdNo();
+            if (sd_no_last != null) {
+                var sd_noCode = sd_no_last;
+                sd_no = string.Concat("SD", (int.Parse(sd_noCode.Substring(2)) + 1).ToString());
+            }
+            string trimmed = String.Concat(w_sd_info.product_cd.Where(c => !Char.IsWhiteSpace(c)));
+            w_sd_info.product_cd = trimmed.ToUpper();
+            w_sd_info.sd_no = sd_no;
+            w_sd_info.alert = 0;
+            w_sd_info.lct_cd = "002000000000000000";
+            w_sd_info.status = "000";
+            w_sd_info.reg_id = Session["userid"] == null ? null : Session["userid"].ToString();
+            w_sd_info.chg_id = Session["userid"] == null ? null : Session["userid"].ToString();
+
+            w_sd_info.use_yn = "Y";
+            w_sd_info.del_yn = "N";
+            w_sd_info.reg_dt = DateTime.Now;
+            w_sd_info.chg_dt = DateTime.Now;
+            int kqq = await _IcommonService.InsertSdInfo(w_sd_info);
+            var data = await _IcommonService.GetListSDInfo(sd_no, "", "", "");
+            return Json(new { result = true, data = data, message = Constant.Success }, JsonRequestBehavior.AllowGet);
         }
-        #endregion
+
+        public ActionResult PartialView_SD_Info_Popup(string sd_no)
+        {
+            ViewBag.sd_no = sd_no;
+
+            return PartialView();
+        }
+
+        public async Task<ActionResult> GetPickingScanPP(string sd_no)
+        {
+            var listdata = await _IWMSServices.GetPickingScanPP(sd_no);
+            var result = listdata.ToList();
+            return Json(new { data = result }, JsonRequestBehavior.AllowGet);
+        }
     }
+
+
 }

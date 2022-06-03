@@ -62,6 +62,7 @@ namespace Mvc_VD.Services
             builder.RegisterType<QMSService>().As<IQMSService>().InstancePerRequest();
 
             builder.RegisterType<FGMWServices>().As<IFGMWServices>().InstancePerRequest();
+            builder.RegisterType<HieuCommonService>().As<IHieuCommonServices>().InstancePerRequest();
 
             IContainer container = builder.Build();
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));

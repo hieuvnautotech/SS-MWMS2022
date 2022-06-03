@@ -1010,6 +1010,7 @@
     <Compile Include="Services\Implement\CreateBuyerQRService.cs" />
     <Compile Include="Services\Implement\DMS\DevManagementService.cs" />
     <Compile Include="Services\Implement\FGMWServices.cs" />
+    <Compile Include="Services\Implement\HieuCommonService.cs" />
     <Compile Include="Services\Implement\HomeServices.cs" />
     <Compile Include="Services\Implement\MenuServices.cs" />
     <Compile Include="Services\Implement\QMS\QMSService.cs" />
@@ -1025,6 +1026,7 @@
     <Compile Include="Services\Interface\IcommonService.cs" />
     <Compile Include="Services\Interface\ICreateBuyerQRService.cs" />
     <Compile Include="Services\Interface\IFGMWServices.cs" />
+    <Compile Include="Services\Interface\IHieuCommonServices.cs" />
     <Compile Include="Services\Interface\IhomeService.cs" />
     <Compile Include="Services\Interface\IMenuServices.cs" />
     <Compile Include="Services\Interface\MMS\IStandardManagementWO.cs" />

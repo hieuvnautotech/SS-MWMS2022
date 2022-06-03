@@ -109,7 +109,7 @@ $("#c_save_but").click(function () {
         var remark = $('#c_remark').val();
         var product_cd = $('#c_style_no').val().trim();
 
-        {
+        
             $.ajax({
                 url: "/ShippingMgt/InsertSDInfo",
                 type: "Post",
@@ -131,7 +131,7 @@ $("#c_save_but").click(function () {
                     }
                 }
             });
-        }
+        
     }
 });
 

@@ -179,8 +179,39 @@
     <div id="PartialView_List_ML_NO_Info_Popup"></div>
 </div>
 
-@section scripts{
+<!--Dialog Product-->
+<div class="dialog_PRODUCT" title="Product Information">
+    <div class="container-fluid p-0 m-0">
+        <div class="box-body well text-right">
+            <div class="row p-0 m-0">
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="style_no_popup" placeholder="Product Code" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="style_no" id="style_nm_popup" placeholder="Product Name" maxlength="50" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2">
+                    <input type="text" name="md_cd" id="md_cd_popup" placeholder="Model Code" class="input-text form-control">
+                </div>
+                <div class="col-md-3 p-2 d-flex">
+                    <button id="searchBtn_product_popup" class="btn btn-sm mr-1 btn-primary button-srh"><i class="fa fa-search">&nbsp;Search</i></button>
+                    <button type="button" class="btn btn-sm btn-success button-srh disabled" id="savestyle_product"><i class="fa fa-save">&nbsp;Selected</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid  p-0 m-0">
+        <div class="box-body my-2 bg-white">
+            <div class="p-0 m-0 ">
+                <table id="popupProduct"></table>
+                <div id="pagerProduct"></div>
+            </div>
+        </div>
+    </div>
+</div>
 
+@section scripts{
+    <script src="~/Scripts/Shippingmgt/ShippingPickingScan/Product_Poup.js"></script>
     <script src="~/Scripts/HieuShippingMgt/HieuPickingShippingScan/HieuPickingScan.js"></script>
     @*<script src="~/Scripts/ShippingMgt/ShippingPickingScan/_PickingScan.js"></script>*@
     <script>
