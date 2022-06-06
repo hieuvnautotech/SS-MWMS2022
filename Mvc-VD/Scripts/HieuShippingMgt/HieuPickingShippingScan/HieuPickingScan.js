@@ -7,7 +7,7 @@
             mtype: 'Get',
             colModel: [
                 { key: true, label: 'sid', name: 'sid', width: 50, align: 'center', hidden: true },
-                { label: 'SD NO', name: 'sd_no', width: 100, align: 'center', formatter: SD_popup },
+                //{ label: 'SD NO', name: 'sd_no', width: 100, align: 'center', formatter: SD_popup },
                 { label: 'SD NO', name: 'sd_no', width: 100, align: 'left', hidden: true },
                 { label: 'SD Name', name: 'sd_nm', width: 300, align: 'left' },
                 { label: 'Product', name: 'product_cd', width: 150, align: 'left' },
@@ -171,7 +171,7 @@ $("#c_save_but").click(function () {
             data: {
                 sd_nm: sd_nm,
                 remark: remark,
-                product_cd : product_cd,
+                product_cd: product_cd,
             },
 
             success: function (response) {
@@ -189,6 +189,45 @@ $("#c_save_but").click(function () {
         });
 
     }
+});
+    //-----------------update------------------//
+
+$("#m_save_but").click(function () {
+    alert('gg');
+    var isValid = $('#form2').valid();
+    if (isValid == false) {
+        return false;
+    }
+    var sid = $('#m_sid').val();
+    var sd_nm = $('#m_sd_nm').val();
+    var remark = $('#m_remark').val();
+    var product_cd = $('#m_style_no').val();
+    $.ajax({
+        url: "/HieuShippingMgt/UpdateSDInfo",
+        type: "get",
+        dataType: "json",
+        data: {
+            sid: sid,
+            sd_nm: sd_nm,
+            product_cd: product_cd,
+            remark: remark
+
+        },
+        success: function (response) {
+            if (response.result) {
+                var id = response.data.sid;
+                $("#list").setRowData(id, response.data, { background: "#28a745", color: "#fff" });
+                SuccessAlert(response.message);
+
+            } else {
+                ErrorAlert(response.message);
+            }
+        },
+
+    });
+
+
+});
 
     //----- SD POPUP------------------//
     function SD_popup(cellValue) {
@@ -229,4 +268,4 @@ $("#c_save_but").click(function () {
 
 
     });
-});
+

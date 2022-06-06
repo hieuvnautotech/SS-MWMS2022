@@ -146,18 +146,49 @@ namespace Mvc_VD.Controllers
             return Json(new { result = true, data = data, message = Constant.Success }, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult PartialView_SD_Info_Popup(string sd_no)
-        {
-            ViewBag.sd_no = sd_no;
+        //public ActionResult PartialView_SD_Info_Popup(string sd_no)
+        //{
+        //    ViewBag.sd_no = sd_no;
 
-            return PartialView();
-        }
+        //    return PartialView();
+        //}
 
-        public async Task<ActionResult> GetPickingScanPP(string sd_no)
+        //public async Task<ActionResult> GetPickingScanPP(string sd_no)
+        //{
+        //    var listdata = await _IWMSServices.GetPickingScanPP(sd_no);
+        //    var result = listdata.ToList();
+        //    return Json(new { data = result }, JsonRequestBehavior.AllowGet);
+        //}
+
+        public async Task<ActionResult> UpdateSDInfo(SdInfo w_sd_info) 
         {
-            var listdata = await _IWMSServices.GetPickingScanPP(sd_no);
-            var result = listdata.ToList();
-            return Json(new { data = result }, JsonRequestBehavior.AllowGet);
+            try
+            {
+                //var KTTT = db.w_sd_info.Find(w_sd_info.sid);
+                var KTTT = await _IWMSServices.GetListSdInfoById(w_sd_info.sid);
+                var rs = await _IcommonService.GetListSDInfo(KTTT.sd_no, "", "", "");
+                var status = rs.FirstOrDefault();
+                if (KTTT == null)
+                {
+                    return Json(new { result = false, message = Constant.DataNoExist }, JsonRequestBehavior.AllowGet);
+                }
+                string trimmed = String.Concat(w_sd_info.product_cd.Where(c => !Char.IsWhiteSpace(c)));
+                KTTT.product_cd = trimmed.ToUpper();
+                KTTT.sd_nm = w_sd_info.sd_nm;
+                KTTT.sts_nm = status.sts_nm;
+                KTTT.remark = w_sd_info.remark;
+                KTTT.chg_id = Session["userid"] == null ? null : Session["userid"].ToString();
+                KTTT.reg_id = Session["userid"] == null ? null : Session["userid"].ToString();
+                KTTT.chg_dt = DateTime.Now;
+                KTTT.reg_dt = DateTime.Now;
+                await _IWMSServices.UpdateSdInfoTable(KTTT);
+                return Json(new { result = true, data = KTTT, message = Constant.Success }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                return Json(new { result = false, message = Constant.ErrorSystem }, JsonRequestBehavior.AllowGet);
+            }
+
         }
     }
 
