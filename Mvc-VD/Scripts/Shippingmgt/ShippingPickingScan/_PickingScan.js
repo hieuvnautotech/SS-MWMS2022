@@ -172,6 +172,8 @@ $("#m_save_but").click(function () {
 
     });
 });
+
+//-------------delete-----------------------//
 $("#m_delete_but").click(function () {
     var isValid = $('#form2').valid();
     if (isValid == false) {

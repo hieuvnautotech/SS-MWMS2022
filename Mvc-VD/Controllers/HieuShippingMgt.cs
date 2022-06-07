@@ -190,6 +190,41 @@ namespace Mvc_VD.Controllers
             }
 
         }
+
+        public async Task<ActionResult> DeleteSDInfo(SdInfo w_sd_info) 
+        {
+            try
+            {
+                var checkSdInfo = await _IWMSServices.GetListSdInfoById(w_sd_info.sid);
+                if (checkSdInfo == null)
+                {
+                    return Json(new { result = false, message = Constant.DataNoExist }, JsonRequestBehavior.AllowGet);
+                }
+                //kiểm tra xem sd này bên wip đã nhận chưa nếu nhận rồi là không được xóa
+
+                var checkSdInfoBySd_No = await _IWMSServices.GetListDatabySdNo(w_sd_info.sd_no);
+                if (checkSdInfoBySd_No != null)
+                {
+                    return Json(new { result = false, message = "SD này đã được kho sản xuất nhận rồi " }, JsonRequestBehavior.AllowGet);
+                }
+                await _IWMSServices.DeleteSdInfo(w_sd_info.sid);
+                await _IWMSServices.DeleteShippingSDInfo(w_sd_info.sd_no);
+                return Json(new { result = true, data = w_sd_info.sid, message = Constant.Success }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                return Json(new { result = false, message = Constant.ErrorSystem }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public async Task<ActionResult> Getshippingsdmaterial(string sd_no)
+        {
+            //var datas = _IWMSService.Getshippingsdmaterial(sd_no);
+            //var data = _IWIPService.GetListMaterialInfoBySdNo(sd_no);
+            var data = await _IWMSServices.GetListMaterialInfoBySdNo(sd_no, "");
+            return (Json(data, JsonRequestBehavior.AllowGet));
+
+        }
     }
 
 

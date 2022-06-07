@@ -41,7 +41,7 @@
                 $("#del_save_but").attr("disabled", false);
 
 
-                $("#list2").setGridParam({ url: "/ShippingMgt/Getshippingsdmaterial?sd_no=" + rowData.sd_no, datatype: "json" }).trigger("reloadGrid");
+                $("#list2").setGridParam({ url: "/HieuShippingMgt/Getshippingsdmaterial?sd_no=" + rowData.sd_no, datatype: "json" }).trigger("reloadGrid");
 
 
             },
@@ -228,6 +228,41 @@ $("#m_save_but").click(function () {
 
 
 });
+//-----------------------------------------delete-------------------------------------------------//
+
+$("#m_delete_but").click(function () {
+    var isValid = $("#form2").valid();
+    if (isValid == false){
+        return false;
+    }
+    var r = confirm("Bạn có chắc muốn xóa?");
+    if (r === true){
+        var m_sid = $("#m_sid").val();
+        var m_sd_no = $("#m_sd_no").val();
+        $.ajax({
+            url: "/HieuShippingMgt/DeleteSDInfo?sid=" + m_sid + "&sd_no" + m_sd_no,
+            type: "POST",
+            success: function (response){
+                if (response.result){
+                    $('#list').jqGrid('delRowData', m_sid);
+                    document.getElementById("form2").reset();
+                    document.getElementById("form1").reset();
+                    $("#tab_2").removeClass("active");
+                    $("#tab_1").addClass("active");
+                    $("#tab_c2").removeClass("show");
+                    $("#tab_c2").removeClass("active");
+                    $("#tab_c1").addClass("active");
+                    SuccessAlert(response.message);
+                    $("#list2").setGridParam({ url: "/HieuShippingMgt/Getshippingsdmaterial?sd_no=" + m_sd_no, datatype: "json" }).trigger("reloadGrid");
+                }
+                else {
+                    ErrorAlert(response.message);
+                }
+            }
+        });
+    }
+});
+
 
     //----- SD POPUP------------------//
     function SD_popup(cellValue) {
